@@ -2,7 +2,7 @@
 
 ## Update Monitoring App
 
-### One-Click Update
+![](https://raw.githubusercontent.com/batterX/LiveSmart-Home/master/images/update-gif.gif)
 
 Navigate to `http://YOUR_RASPI_IP_ADDRESS/service`
 
