@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<title>batterX Service</title>
+
+		<link rel="stylesheet" type="text/css" href="../css/components/bundle.css">
+		<link rel="stylesheet" type="text/css" href="css/common.css">
+		<link rel="stylesheet" type="text/css" href="css/parameters.css">
+
+	</head>
+	
+	
+	<body>
+	
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-expand-xl navbar-dark fixed-top">
+			<!-- Menu Title -->
+			<a class="navbar-brand" href="#">batterX Service</a>
+			<!-- Hamburger Button -->
+			<button class="navbar-toggler p-0" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<!-- Menu Items -->
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="labels.html">Labels</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="outputs.html">Outputs</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="commands.html">Commands</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="settings.html">Settings</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item active"><a class="nav-link" href="parameters.html">Inverter Parameters</a></li></ul>
+			</div>
+		</nav>
+		
+		
+		
+		
+		
+		<div class="overlay text-center" style="display:none">
+			<div>
+				<h2>Setting Parameters</h2>
+				<h4 style="color: red !important"><small>PLEASE DO NOT CLOSE THIS PAGE</small></h4>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		<button id="showAdvanced" class="btn btn-danger py-2">ADVANCED SETUP</button>
+		
+		
+		
+		
+		
+		<div id="quickSetup" class="container p-2 pt-2 pt-lg-4">
+			
+			<div class="row p-0 m-0">
+				
+				<div class="col-12 col-lg-6">
+					<div class="container-box card bg-dark m-0 p-0">
+						<h5>Quick LiFePO Battery Setup</h5>
+						<div class="p-3">
+							<div class="form-inline mb-4">
+								<label for="numberOfModules">Number of Modules</label>
+								<select id="numberOfModules" class="form-control input-dark ml-auto mr-0" style="width: 40%">
+									<option disabled selected></option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+								</select>
+							</div>
+							<div class="custom-control custom-checkbox mb-4">
+								<input type="checkbox" class="custom-control-input" id="enable_feedInLimit_70p_lifepo">
+								<label class="custom-control-label" for="enable_feedInLimit_70p_lifepo">70% Feed-in Limitation (Germany)</label>
+							</div>
+							<div class="lifepo setting-preview mb-3 d-none">
+								<div class="d-flex mb-3">
+									<span class="flex-grow-1">Max. Grid Feed-in Power</span>
+									<span class="maxGridFeedInPower">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Max. Charging Current</span>
+									<span class="maxChargingCurrent">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Max. AC Charging Current</span>
+									<span class="maxChargingCurrentAC">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Bulk Charging Voltage</span>
+									<span class="bulkChargingVoltage">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Floating Charging Voltage</span>
+									<span class="floatChargingVoltage">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Cutoff Voltage Hybrid</span>
+									<span class="cutoffVoltageHybrid">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Re-discharging voltage when Grid is available</span>
+									<span class="redischargeVoltageHybrid">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Cut-off voltage when Grid is unavailable</span>
+									<span class="cutoffVoltage">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Re-discharging voltage when Grid is unavailable</span>
+									<span class="redischargeVoltage">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Max. Discharging Current</span>
+									<span class="maxDischargeCurrentHybrid">-</span>
+								</div>
+								<div class="d-flex mb-3">
+									<span class="flex-grow-1">Battery Type</span>
+									<span class="batteryType">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Solar Energy Priority</span>
+									<span class="solarEnergyPriority">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow battery charging</span>
+									<span class="allowBatteryCharging">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow battery charging from AC</span>
+									<span class="allowBatteryChargingAC">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow to feed-in to the Grid</span>
+									<span class="allowGridFeedIn">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow battery to discharge when PV is available</span>
+									<span class="allowBatteryDischargeSolarOK">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow battery to discharge when PV is unavailable </span>
+									<span class="allowBatteryDischargeSolarNOK">-</span>
+								</div>
+							</div>
+							<div class="lifepoSpace" style="min-height:92px"></div>
+							<div class="col-12 m-0 p-0">
+								<button id="applyLiFePO" class="btn btn-inverse btn-block py-2">APPLY DATA TO INVERTER</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-12 col-lg-6 mt-2 mt-lg-0">
+			
+					<div class="container-box card bg-dark m-0 p-0">
+						<h5>Quick Carbon Battery Setup</h5>
+						<div class="p-3">
+							<div class="form-inline mb-2">
+								<label for="batteryCapacity">Battery Capacity (Ah)</label>
+								<select id="batteryCapacity" class="form-control input-dark ml-auto mr-0" style="width: 40%">
+									<option disabled selected></option>
+									<option value="50">50 Ah</option>
+									<option value="100">100 Ah</option>
+								</select>
+							</div>
+							<div class="form-inline mb-2">
+								<label for="numberOfBatteries">Number of Batteries</label>
+								<select id="numberOfBatteries" class="form-control input-dark ml-auto mr-0" style="width: 40%">
+									<option disabled selected></option>
+									<option value="4">4</option>
+									<option value="8">8</option>
+									<option value="12">12</option>
+									<option value="16">16</option>
+									<option value="20">20</option>
+								</select>
+							</div>
+							<div class="form-inline mb-4">
+								<label for="depthOfDischarge">Depth of Discharge (DoD)</label>
+								<select id="depthOfDischarge" class="form-control input-dark ml-auto mr-0" style="width: 40%">
+									<option disabled selected></option>
+									<option value="70">70 %</option>
+									<option value="60">60 %</option>
+									<option value="50">50 %</option>
+									<option value="40">40 %</option>
+								</select>
+							</div>
+							
+							<div class="custom-control custom-checkbox mb-4">
+								<input type="checkbox" class="custom-control-input" id="enable_feedInLimit_70p_carbon">
+								<label class="custom-control-label" for="enable_feedInLimit_70p_carbon">70% Feed-in Limitation (Germany)</label>
+							</div>
+							<div class="carbon setting-preview mb-3 d-none">
+								<div class="d-flex mb-3">
+									<span class="flex-grow-1">Max. Grid Feed-in Power</span>
+									<span class="maxGridFeedInPower">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Max. Charging Current</span>
+									<span class="maxChargingCurrent">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Max. AC Charging Current</span>
+									<span class="maxChargingCurrentAC">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Bulk Charging Voltage</span>
+									<span class="bulkChargingVoltage">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Floating Charging Voltage</span>
+									<span class="floatChargingVoltage">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Cutoff Voltage Hybrid</span>
+									<span class="cutoffVoltageHybrid">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Re-discharging voltage when Grid is available</span>
+									<span class="redischargeVoltageHybrid">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Cut-off voltage when Grid is unavailable</span>
+									<span class="cutoffVoltage">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Re-discharging voltage when Grid is unavailable</span>
+									<span class="redischargeVoltage">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Max. Discharging Current</span>
+									<span class="maxDischargeCurrentHybrid">-</span>
+								</div>
+								<div class="d-flex mb-3">
+									<span class="flex-grow-1">Battery Type</span>
+									<span class="batteryType">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Solar Energy Priority</span>
+									<span class="solarEnergyPriority">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow battery charging</span>
+									<span class="allowBatteryCharging">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow battery charging from AC</span>
+									<span class="allowBatteryChargingAC">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow to feed-in to the Grid</span>
+									<span class="allowGridFeedIn">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow battery to discharge when PV is available</span>
+									<span class="allowBatteryDischargeSolarOK">-</span>
+								</div>
+								<div class="d-flex mb-1">
+									<span class="flex-grow-1">Allow battery to discharge when PV is unavailable </span>
+									<span class="allowBatteryDischargeSolarNOK">-</span>
+								</div>
+							</div>
+							<div class="col-12 m-0 p-0">
+								<button id="applyCarbon" class="btn btn-inverse btn-block py-2">APPLY DATA TO INVERTER</button>
+							</div>
+						</div>
+
+					</div>
+					
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		
+		
+		
+		
+		<div id="advancedSetup" class="container px-2 d-none">
+			
+			<div class="row p-0 m-0">
+				
+				<!-- GRID PARAMETERS -->
+				
+				<div class="col-12 p-0 m-0">
+				
+					<div id="gridParameters" class="container-box card bg-dark m-0 p-0 pb-1">
+						<h5 class="mb-1">Grid Parameters</h5>
+						<div class="row m-0 p-0">
+							<div class="col-lg-6 m-0 px-2 pr-lg-5">
+								<div class="form-inline py-1">
+									<label for="maxGridFeedInPower">Max. Grid Feed-in Power</label>
+									<input id="maxGridFeedInPower" type="number" step="10" min="0" max="10000" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>W</span>
+								</div>
+							</div>
+							<div class="col-lg-6 m-0 px-2 pl-lg-5">
+								<div class="form-inline py-1">
+									<label for="waitTimeForFeed">Waiting time before Grid-connection</label>
+									<input id="waitTimeForFeed" type="number" step="1" min="0" max="999" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>s</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<!-- BATTERY PARAMETERS -->
+				
+				<div class="col-12 p-0 m-0 mt-2">
+				
+					<div id="batteryParameters" class="container-box card bg-dark m-0 p-0 pb-1">
+						<h5 class="mb-1">Battery Parameters</h5>
+						<div class="row m-0 p-0">
+							<div class="col-xl-6 m-0 px-2 pr-xl-5">
+								<div class="form-inline py-1">
+									<label for="maxChargingCurrent">Max. Charging Current</label>
+									<input id="maxChargingCurrent" type="number" step="0.1" min="1" max="999.9" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>A</span>
+								</div>
+								<div class="form-inline py-1">
+									<label for="maxChargingCurrentAC">Max. AC Charging Current</label>
+									<input id="maxChargingCurrentAC" type="number" step="0.1" min="1" max="999.9" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>A</span>
+								</div>
+								<div class="form-inline py-1">
+									<label for="bulkChargingVoltage">Bulk Charging Voltage</label>
+									<input id="bulkChargingVoltage" type="number" step="0.1" min="0" max="99.9" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>V</span>
+								</div>
+								<div class="form-inline py-1">
+									<label for="floatChargingVoltage">Floating Charging Voltage</label>
+									<input id="floatChargingVoltage" type="number" step="0.1" min="0" max="99.9" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>V</span>
+								</div>
+								<div class="form-inline py-1">
+									<label>Battery Type</label>
+									<select id="batteryType" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+										<option value="0">Ordinary</option>
+										<option value="1">Li-Fe</option>
+									</select>
+									<span>&nbsp;</span>
+								</div>
+							</div>
+							<div class="col-xl-6 m-0 px-2 pl-xl-5 pt-xl-0 pt-2">
+								<div class="form-inline py-1">
+									<label for="cutoffVoltageHybrid">Cut-off voltage when Grid is available</label>
+									<input id="cutoffVoltageHybrid" type="number" step="0.1" min="0" max="99.9" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>V</span>
+								</div>
+								<div class="form-inline py-1">
+									<label for="redischargeVoltageHybrid">Re-discharging voltage when Grid is available</label>
+									<input id="redischargeVoltageHybrid" type="number" step="0.1" min="0" max="99.9" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>V</span>
+								</div>
+								<div class="form-inline py-1">
+									<label for="cutoffVoltage">Cut-off voltage when Grid is unavailable</label>
+									<input id="cutoffVoltage" type="number" step="0.1" min="0" max="99.9" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>V</span>
+								</div>
+								<div class="form-inline py-1">
+									<label for="redischargeVoltage">Re-discharging voltage when Grid is unavailable</label>
+									<input id="redischargeVoltage" type="number" step="0.1" min="0" max="99.9" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>V</span>
+								</div>
+								<div class="form-inline py-1">
+									<label for="maxDischargeCurrentHybrid">Max. discharging current in Hybrid Mode</label>
+									<input id="maxDischargeCurrentHybrid" type="number" step="1" min="0" max="999" class="form-control input-dark p-1 m-0 ml-auto mr-2">
+									<span>A</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<!-- ENERGY DISTRIBUTION -->
+				
+				<div class="col-lg-6 col-12 p-0 m-0 mt-2 pr-lg-1">
+				
+					<div id="energyDistribution" class="container-box card bg-dark m-0 p-0 pb-1">
+						<h5 class="mb-1">Energy Distribution</h5>
+						<div class="row m-0 p-0">
+							<div class="col-12 m-0 pl-2 pr-2">
+								<div class="form-inline py-1">
+									<label class="d-inline-block">Solar Energy Priority<br><i class="_h3 _h5e" style="color: #ff1919 !important;">Output will be switched off during setup</i></label>
+									<select id="solarEnergyPriority" class="form-control input-dark p-1 m-0 ml-auto mr-0">
+										<option value="0">Battery - Load - Grid</option>
+										<option value="1">Load - Battery - Grid</option>
+										<option value="2">Load - Grid - Battery</option>
+									</select>
+								</div>
+								<div class="custom-control custom-checkbox py-1">
+									<input type="checkbox" class="custom-control-input" id="allowBatteryCharging">
+									<label class="custom-control-label" for="allowBatteryCharging">Allow battery charging</label>
+								</div>
+								<div class="custom-control custom-checkbox pb-1">
+									<input type="checkbox" class="custom-control-input" id="allowBatteryChargingAC">
+									<label class="custom-control-label" for="allowBatteryChargingAC">Allow battery charging from AC</label>
+								</div>
+								<div class="custom-control custom-checkbox pb-1">
+									<input type="checkbox" class="custom-control-input" id="allowGridFeedIn">
+									<label class="custom-control-label" for="allowGridFeedIn">Allow to feed-in to the Grid</label>
+								</div>
+								<div class="custom-control custom-checkbox pb-1">
+									<input type="checkbox" class="custom-control-input" id="allowBatteryDischargeSolarOK">
+									<label class="custom-control-label" for="allowBatteryDischargeSolarOK">Allow battery to discharge when PV is available</label>
+								</div>
+								<div class="custom-control custom-checkbox pb-1">
+									<input type="checkbox" class="custom-control-input" id="allowBatteryDischargeSolarNOK">
+									<label class="custom-control-label" for="allowBatteryDischargeSolarNOK">Allow battery to discharge when PV is unavailable</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<!-- OTHER PARAMETERS -->
+				
+				<div class="col-lg-6 col-12 p-0 m-0 mt-2 pl-lg-1">
+				
+					<div id="otherParameters" class="container-box card bg-dark m-0 p-0 pb-1">
+						<h5 class="mb-1">Other Parameters</h5>
+						<div class="row m-0 p-0">
+							<div class="col-12 m-0 pl-2 pr-2">
+								<div class="form-inline py-1">
+									<label>LCD Active Time</label>
+									<select id="LCDActiveTime" class="form-control input-dark p-1 m-0 ml-auto mr-0">
+										<option value="00">Always On</option>
+										<option value="01">30 seconds</option>
+										<option value="02">60 seconds</option>
+										<option value="10">300 seconds</option>
+										<option value="20">600 seconds</option>
+									</select>
+								</div>
+								<div class="form-inline py-1">
+									<label for="deviceDate">Date-Time</label>
+									<input id="deviceDate" type="date" class="form-control input-dark p-1 m-0 mr-2 ml-auto" disabled>
+									<input id="deviceTime" type="time" class="form-control input-dark p-1 m-0" disabled>
+								</div>
+								<div class="custom-control custom-checkbox py-1">
+									<input type="checkbox" class="custom-control-input" id="muteBuzzer">
+									<label class="custom-control-label" for="muteBuzzer">Mute buzzer alarm</label>
+								</div>
+								<div class="custom-control custom-checkbox pb-1">
+									<input type="checkbox" class="custom-control-input" id="muteBuzzerStandby">
+									<label class="custom-control-label" for="muteBuzzerStandby">Mute buzzer alarm in standby mode</label>
+								</div>
+								<div class="custom-control custom-checkbox pb-1">
+									<input type="checkbox" class="custom-control-input" id="muteBuzzerBattery">
+									<label class="custom-control-label" for="muteBuzzerBattery">Mute buzzer alarm in battery mode</label>
+								</div>
+								<div class="custom-control custom-checkbox pb-1">
+									<input type="checkbox" class="custom-control-input" id="wideInputRange">
+									<label class="custom-control-label" for="wideInputRange">Enable wide AC input range</label>
+								</div>
+								<div class="_h5 _h10 custom-control custom-checkbox pb-1">
+									<input type="checkbox" class="custom-control-input" id="generatorAsInput">
+									<label class="custom-control-label" for="generatorAsInput">Generator as Input</label>
+								</div>
+								<div class="_h5 _h10 custom-control custom-checkbox pb-1">
+									<input type="checkbox" class="custom-control-input" id="ngRelayFunction">
+									<label class="custom-control-label" for="ngRelayFunction">N/G Relay Function</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+			
+			<div class="container-box card text-white bg-dark p-2 mt-2 mb-2">
+				<button id="submit" class="btn btn-inverse btn-block py-3">A P P L Y &nbsp; P A R A M E T E R S</button>
+			</div>
+			
+		</div>
+		
+		
+		
+		
+		
+		<script src="../js/components/jquery.js"></script>
+		<script src="../js/components/bootstrap.js"></script>
+		<script src="js/parameters.js"></script>
+		
+	</body>
+	
+</html>

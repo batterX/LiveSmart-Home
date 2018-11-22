@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<title>batterX Service</title>
+
+		<link rel="stylesheet" type="text/css" href="../css/components/bundle.css">
+		<link rel="stylesheet" type="text/css" href="css/common.css">
+		<link rel="stylesheet" type="text/css" href="css/settings.css">
+
+	</head>
+	
+	
+	<body>
+	
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-expand-xl navbar-dark fixed-top">
+			<!-- Menu Title -->
+			<a class="navbar-brand" href="#">batterX Service</a>
+			<!-- Hamburger Button -->
+			<button class="navbar-toggler p-0" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<!-- Menu Items -->
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="labels.html">Labels</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="outputs.html">Outputs</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="commands.html">Commands</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item active"><a class="nav-link" href="settings.html">Settings</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="parameters.html">Inverter Parameters</a></li></ul>
+			</div>
+		</nav>
+		
+		
+		
+		
+		
+		<div class="container px-2">
+			
+			<div class="row p-0 m-0">
+			
+				<!-- LIVE&SMART SETTINGS -->
+				<div class="col-12 p-0 m-0">
+					<div class="container-box card text-white bg-dark">
+						<h5>Live &amp; Smart</h5>
+						<div class="m-0 p-1">
+							<div class="form-inline p-1">
+								<label for="CloudLogging">Cloud Logging</label>
+								<select id="CloudLogging" class="form-control input-dark ml-auto mr-2 w-50">
+									<option value="1">Enabled</option>
+									<option value="0">Disabled</option>
+								</select>
+								<button id="submitCloudLogging" class="btn btn-inverse btn-sm py-2 px-4">APPLY</button>
+							</div>
+							<div class="form-inline p-1">
+								<label for="ChangeHostname">Change Hostname</label>
+								<input id="ChangeHostname" type="text" class="form-control input-dark ml-auto mr-2 w-50" placeholder="Hostname">
+								<button id="submitChangeHostname" class="btn btn-inverse btn-sm py-2 px-4">APPLY</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- IGNORE WARNINGS -->
+				<div class="col-12 p-0 m-0 mt-2">
+					<div class="container-box card text-white bg-dark m-0 p-0">
+						<h5>Ignore Warnings</h5>
+						<div class="row m-0 p-1">
+							
+							<div class="col-6 m-0 p-0">
+								<div class="row m-0 px-0 pt-1">
+									<div class="col-xl-6 m-0 py-0 px-1">
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16640" value="16640"><label class="custom-control-label" for="w16640">Input Loss</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16641" value="16641"><label class="custom-control-label" for="w16641">Input Island</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16643" value="16643"><label class="custom-control-label" for="w16643">Input Wave Loss</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16657" value="16657"><label class="custom-control-label" for="w16657">Input Voltage Loss</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16658" value="16658"><label class="custom-control-label" for="w16658">Input Voltage High Loss</label></div>
+									</div>
+									<div class="col-xl-6 m-0 py-0 px-1">
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16659" value="16659"><label class="custom-control-label" for="w16659">Input Voltage Low Loss</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16660" value="16660"><label class="custom-control-label" for="w16660">Input Average Voltage Over</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16738" value="16738"><label class="custom-control-label" for="w16738">Input Frequency Loss</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16739" value="16739"><label class="custom-control-label" for="w16739">Input Frequency High Loss</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w16740" value="16740"><label class="custom-control-label" for="w16740">Input Frequency Low Loss</label></div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-6 m-0 p-0">
+								<div class="row m-0 px-0 pt-1">
+									<div class="col-xl-6 m-0 py-0 px-1">
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w17408" value="17408"><label class="custom-control-label" for="w17408">Battery Open</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w17426" value="17426"><label class="custom-control-label" for="w17426">Battery Low</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w17441" value="17441"><label class="custom-control-label" for="w17441">Battery Weak</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w17442" value="17442"><label class="custom-control-label" for="w17442">Battery Discharge Low</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w17443" value="17443"><label class="custom-control-label" for="w17443">Battery Low in Hybrid Mode</label></div>
+									</div>
+									<div class="col-xl-6 m-0 py-0 px-1">
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w17920" value="17920"><label class="custom-control-label" for="w17920">Solar Loss</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w17921" value="17921"><label class="custom-control-label" for="w17921">Solar Input 1 Loss</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w17922" value="17922"><label class="custom-control-label" for="w17922">Solar Input 2 Loss</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w17938" value="17938"><label class="custom-control-label" for="w17938">Solar Voltage Too Low</label></div>
+										<div class="custom-control custom-checkbox py-1"><input type="checkbox" class="custom-control-input" name="ignoreWarnings" id="w18928" value="18928"><label class="custom-control-label" for="w18928">Energy Meter Not Working</label></div>
+									</div>
+								</div>
+							</div>
+							
+							<button id="submitIgnoreWarnings" class="btn btn-inverse btn-block py-3 m-1 mt-2">A P P L Y &nbsp; C H A N G E S</button>
+							
+						</div>
+					</div>
+				</div>
+				
+				<!-- NOTICE -->
+				<div class="col-12 p-0 mt-2 mb-2">
+					<div class="container-box card bg-dark m-0 p-0 p-3">
+						<span class="text-center p-0 m-0 p-2" style="font-size: 0.8rem">NOTE: Reboot is required to apply the new settings</span>
+					</div>
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		
+		
+		<script src="../js/components/jquery.js"></script>
+		<script src="../js/components/bootstrap.js"></script>
+		<script src="js/settings.js"></script>
+		
+	</body>
+	
+</html>

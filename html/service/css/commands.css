@@ -1,0 +1,22 @@
+.container h5 {
+	padding: 1rem;
+	background: #212121;
+	border-radius: 0.25rem 0.25rem 0 0;
+	margin: 0;
+	border-bottom: 1px solid #111111;
+}
+
+.btnFunc, #statement, #delayView label, #delayView input {
+	font-size: 0.8rem !important;
+}
+
+.p-0_5  { padding:        0.125rem !important; }
+.pt-0_5 { padding-top:    0.125rem !important; }
+.pr-0_5 { padding-right:  0.125rem !important; }
+.pb-0_5 { padding-bottom: 0.125rem !important; }
+.pl-0_5 { padding-left:   0.125rem !important; }
+.m-0_5  { margin:         0.125rem !important; }
+.mt-0_5 { margin-top:     0.125rem !important; }
+.mr-0_5 { margin-right:   0.125rem !important; }
+.mb-0_5 { margin-bottom:  0.125rem !important; }
+.ml-0_5 { margin-left:    0.125rem !important; }

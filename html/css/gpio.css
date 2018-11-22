@@ -1,0 +1,236 @@
+* {
+	font-family: 'Raleway' !important;
+	color: white;
+	padding: 0;
+	margin: 0;
+}
+
+
+
+body {
+	background-color: #131313;
+}
+
+.overlay {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	background-color: #131313;
+	z-index: 10000;
+}
+
+
+
+
+
+/* COMMON STYLE */
+
+.card {
+	border: 0;
+	border-radius: 0 !important;
+	height: 100%;
+}
+
+
+
+
+
+/* OUTPUTS */
+
+.output {
+	background-color: #191919;
+	border-top: 0.3vh solid #87d403 !important;
+	display: flex;
+	flex-direction: column;
+}
+.output .name {
+	background-color: #000000;
+}
+
+.output .no-decoration {
+	user-select: none;
+}
+.output .no-decoration:focus, .no-decoration:hover {
+	text-decoration: none;
+}
+.output .no-decoration:focus, .no-decoration.focus {
+	outline: 0;
+	box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.25);
+}
+
+.output h6 {
+	font-weight: 100;
+	font-size: 2.5vh;
+	letter-spacing: 1px;
+	margin: 0;
+	line-height: 3.5vh;
+	flex: 1;
+}
+
+.output span {
+	font-size: 1.6vh;
+	line-height: 3.5vh;
+}
+
+.output .btn-mode {
+	border: none;
+	height: 4vh;
+	width: 100%;
+	border-radius: 4vh;
+	color: white;
+	background: #666666;
+	cursor: pointer;
+	font-size: 1.6vh;
+}
+.output .btn-mode.active {
+	background: #d9534f;
+}
+
+.output .btn-toggle {
+	border: none;
+	height: 4vh;
+	width: 100%;
+	border-radius: 4vh;
+	color: white;
+	background: #d9534f;
+	cursor: pointer;
+	font-size: 1.6vh;
+}
+.output .btn-toggle.active {
+	background: #87d403;
+}
+
+
+
+/* SWITCHES */
+
+.switch {
+	background-color: #191919;
+	border-top: 0.3vh solid #87d403 !important;
+	display: flex;
+	flex-direction: column;
+}
+
+.switch .name {
+	background-color: #000000;
+}
+
+.switch .no-decoration {
+	user-select: none;
+}
+.switch .no-decoration:focus, .no-decoration:hover {
+	text-decoration: none;
+}
+.switch .no-decoration:focus, .no-decoration.focus {
+	outline: 0;
+	box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.25);
+}
+
+.switch h6 {
+	font-weight: 100;
+	font-size: 2.5vh;
+	letter-spacing: 1px;
+	margin: 0;
+	line-height: 3.5vh;
+	flex: 1;
+}
+
+.switch .btn-toggle {
+	left: 50%;
+	transform: translateX(-50%);
+	position: relative;
+	border: none;
+	height: 4vh;
+	width: 8vh;
+	border-radius: 4vh;
+	color: white;
+	background: #666666;
+	cursor: pointer;
+}
+.switch .btn-toggle:before, .switch .btn-toggle:after {
+	line-height: 4vh;
+	width: 8vh;
+	text-align: center;
+	font-weight: 100;
+	font-size: 1.6vh;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	position: absolute;
+	bottom: 0;
+	transition: opacity .25s;
+}
+.switch .btn-toggle:before {
+	content: attr(data-off);
+	left: -7vh;
+}
+.switch .btn-toggle:after {
+	content: attr(data-on);
+	right: -7vh;
+	opacity: .5;
+}
+.switch .btn-toggle > .handle {
+	position: absolute;
+	top: 0.5vh;
+	left: 0.5vh;
+	width: 3vh;
+	height: 3vh;
+	border-radius: 3vh;
+	background: white;
+	transition: left .25s;
+}
+.switch .btn-toggle.active {
+	transition: background-color 0.25s;
+	background-color: #87d403;
+}
+.switch .btn-toggle.active > .handle {
+	left: 4.5vh;
+	transition: left .25s;
+}
+.switch .btn-toggle.active:before { opacity: 0.5; }
+.switch .btn-toggle.active:after  { opacity: 1; }
+
+
+
+
+
+/* INPUTS & OUTPUTS */
+
+.status-led {
+	display: grid;
+	align-items: center;
+	border-left: 0.3vh solid #87d403;
+	background-color: #191919;
+}
+
+.status-led .name {
+	max-width: calc(100% - 6vh);
+	letter-spacing: 0px;
+	font-size: 2.25vh;
+}
+
+.status-led .status {
+	line-height: 3.5vh;
+	width: 6vh;
+	border-radius: 100px !important;
+	letter-spacing: 0px;
+	font-size: 1.2vh;
+}
+
+.status-led .red   { background-color: #d9534f !important; }
+.status-led .green { background-color: #87d403 !important; }
+
+
+
+/* CLOUD CONNECTION LOSS ALERT */
+
+.alert-custom {
+	background-color: black;
+	border-radius: 0;
+	border: 0.3vh solid red !important;
+	color: red !important;
+	letter-spacing: 0.25vh;
+	font-size: 2.5vh;
+}
+.alert-custom * { color: red !important; }

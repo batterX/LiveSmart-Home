@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<title>batterX Service</title>
+
+		<link rel="stylesheet" type="text/css" href="../css/components/bundle.css">
+		<link rel="stylesheet" type="text/css" href="css/common.css">
+		<link rel="stylesheet" type="text/css" href="css/labels.css">
+
+	</head>
+	
+	
+	<body>
+	
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-expand-xl navbar-dark fixed-top">
+			<!-- Menu Title -->
+			<a class="navbar-brand" href="#">batterX Service</a>
+			<!-- Hamburger Button -->
+			<button class="navbar-toggler p-0" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<!-- Menu Items -->
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item active"><a class="nav-link" href="labels.html">Labels</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="outputs.html">Outputs</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="commands.html">Commands</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="settings.html">Settings</a></li></ul>
+				<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="parameters.html">Inverter Parameters</a></li></ul>
+			</div>
+		</nav>
+		
+		
+		
+		
+		
+		<div class="container px-2">
+				
+			<!-- SWITCHES -->
+			<div class="container-box card text-white bg-dark">
+				<h5>Switches</h5>
+				<div class="row m-0 p-1">
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="switch1">Switch 1</label>
+						<input id="switch1" type="text" class="form-control text-center input-dark" placeholder="Switch 1">
+					</div>
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="switch2">Switch 2</label>
+						<input id="switch2" type="text" class="form-control text-center input-dark" placeholder="Switch 2">
+					</div>
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="switch3">Switch 3</label>
+						<input id="switch3" type="text" class="form-control text-center input-dark" placeholder="Switch 3">
+					</div>
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="switch4">Switch 4</label>
+						<input id="switch4" type="text" class="form-control text-center input-dark" placeholder="Switch 4">
+					</div>
+				</div>
+			</div>
+			
+			<!-- OUTPUTS -->
+			<div class="container-box card text-white bg-dark mt-2">
+				<h5>Outputs</h5>
+				<div class="row m-0 p-1">
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="out1">Output 1</label>
+						<input id="out1" type="text" class="form-control text-center input-dark" placeholder="Output 1">
+					</div>
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="out2">Output 2</label>
+						<input id="out2" type="text" class="form-control text-center input-dark" placeholder="Output 2">
+					</div>
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="out3">Output 3</label>
+						<input id="out3" type="text" class="form-control text-center input-dark" placeholder="Output 3">
+					</div>
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="out4">Output 4</label>
+						<input id="out4" type="text" class="form-control text-center input-dark" placeholder="Output 4">
+					</div>
+				</div>
+			</div>
+			
+			<!-- INPUTS -->
+			<div class="container-box card text-white bg-dark mt-2">
+				<h5>Inputs</h5>
+				<div class="row m-0 p-1">
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="in1">Input 1</label>
+						<input id="in1" type="text" class="form-control text-center input-dark" placeholder="Input 1">
+					</div>
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="in2">Input 2</label>
+						<input id="in2" type="text" class="form-control text-center input-dark" placeholder="Input 2">
+					</div>
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="in3">Input 3</label>
+						<input id="in3" type="text" class="form-control text-center input-dark" placeholder="Input 3">
+					</div>
+					<div class="col m-0 p-1">
+						<label class="d-block w-100 text-center" for="in4">Input 4</label>
+						<input id="in4" type="text" class="form-control text-center input-dark" placeholder="Input 4">
+					</div>
+				</div>
+			</div>
+			
+			<!-- APPLY CHANGES -->
+			<div class="container-box card text-white bg-dark p-2 mt-2 mb-2">
+				<button id="submit" class="btn btn-inverse btn-block py-3">A P P L Y &nbsp; C H A N G E S</button>
+			</div>
+			
+		</div>
+		
+		
+		
+		
+		
+		<script src="../js/components/jquery.js"></script>
+		<script src="../js/components/bootstrap.js"></script>
+		<script src="js/labels.js"></script>
+		
+	</body>
+	
+</html>

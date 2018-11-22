@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html>
+	
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="description" content="The „Live&amp;Smart“ monitoring and controlling tool designed by batterX® is a sophisticated energy management for optimizing production and consumption." />
+		<title>batterX | GPIO</title>
+		<link rel="shortcut icon" href="img/x.png">
+		<link rel="stylesheet" type="text/css" href="css/components/bundle.css">
+		<link rel="stylesheet" type="text/css" href="css/gpio.css">
+	</head>
+	
+	
+	
+	<body>
+	
+		
+		<!-- OVERLAY -->
+		<div class="overlay"></div>
+		
+		
+		<!-- SOCKET CONNECTION LOST - WARNING -->
+		<div id="connectionLoss" class="alert alert-custom m-3 text-center" style="display:none">
+			<b>CONNECTION LOST</b><br>GPIO CONTROL NOT POSSIBLE
+		</div>
+		
+		
+		
+		<!-- SWITCHES DIVIDER -->
+		<div class="container-fluid">
+			<div class="mt-3">
+				<table>
+					<tr>
+						<td style="min-width: 22.5vh;"><span style="font-size: 2.75vh;">S W I T C H E S</span></td>
+						<td style="width: 100%;"><hr style="background-color: white !important;"/></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<!-- SWITCHES CONTAINER -->
+		<div class="container-fluid switch-container">
+			<div class="row text-center">
+				<!-- SWITCH 1 -->
+				<div class="col-6 col-md-3 m-0 pt-3 pb-0 pb-md-3 pl-3 pr-2">
+					<div id="switch1" class="switch card pb-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-3 px-2">Switch 1</h6>
+						<button type="button" class="no-decoration btn-toggle" value="0" data-on="ON" data-off="OFF">
+							<div class="handle"></div>
+						</button>
+					</div>
+				</div>
+				<!-- SWITCH 2 -->
+				<div class="col-6 col-md-3 m-0 pt-3 pb-0 pb-md-3 pl-2 pr-3 pr-md-2">
+					<div id="switch2" class="switch card pb-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-3 px-2">Switch 2</h6>
+						<button type="button" class="no-decoration btn-toggle" value="0" data-on="ON" data-off="OFF">
+							<div class="handle"></div>
+						</button>
+					</div>
+				</div>
+				<!-- SWITCH 3 -->
+				<div class="col-6 col-md-3 m-0 py-3 pl-3 pl-md-2 pr-2">
+					<div id="switch3" class="switch card pb-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-3 px-2">Switch 3</h6>
+						<button type="button" class="no-decoration btn-toggle" value="0" data-on="ON" data-off="OFF">
+							<div class="handle"></div>
+						</button>
+					</div>
+				</div>
+				<!-- SWITCH 4 -->
+				<div class="col-6 col-md-3 m-0 py-3 pl-2 pr-3">
+					<div id="switch4" class="switch card pb-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-3 px-2">Switch 4</h6>
+						<button type="button" class="no-decoration btn-toggle" value="0" data-on="ON" data-off="OFF">
+							<div class="handle"></div>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<!-- OUTPUTS DIVIDER -->
+		<div class="container-fluid">
+			<div class="mt-3">
+				<table>
+					<tr>
+						<td style="min-width: 22.5vh;"><span style="font-size: 2.75vh;">O U T P U T S</span></td>
+						<td style="width: 100%;"><hr style="background-color: white !important;"/></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<!-- OUTPUTS CONTAINER -->
+		<div class="container-fluid">
+			<div class="row text-center">
+				<!-- OUTPUT 1 -->
+				<div class="col-6 col-md-3 m-0 pt-3 pb-0 pb-md-3 pl-3 pr-2">
+					<div id="out1" class="output card pb-2 pb-md-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-0 mb-md-2">Output 1</h6>
+						<div class="row p-0 m-0">
+							<div class="col-6 m-0 p-0 pr-1 pr-md-2 pr-lg-3 pl-2 pl-md-3 pl-lg-4">
+								<span>MODE</span>
+								<button class="no-decoration btn-mode" value="0">AUTO</button>
+							</div>
+							<div class="col-6 m-0 p-0 pl-1 pl-md-2 pl-lg-3 pr-2 pr-md-3 pr-lg-4">
+								<span>STATUS</span>
+								<button class="no-decoration btn-toggle" value="0">OFF</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- OUTPUT 2 -->
+				<div class="col-6 col-md-3 m-0 pt-3 pb-0 pb-md-3 pl-2 pr-3 pr-md-2">
+					<div id="out2" class="output card pb-2 pb-md-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-0 mb-md-2">Output 2</h6>
+						<div class="row p-0 m-0">
+							<div class="col-6 m-0 p-0 pr-1 pr-md-2 pr-lg-3 pl-2 pl-md-3 pl-lg-4">
+								<span>MODE</span>
+								<button class="no-decoration btn-mode" value="0">AUTO</button>
+							</div>
+							<div class="col-6 m-0 p-0 pl-1 pl-md-2 pl-lg-3 pr-2 pr-md-3 pr-lg-4">
+								<span>STATUS</span>
+								<button class="no-decoration btn-toggle" value="0">OFF</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- OUTPUT 3 -->
+				<div class="col-6 col-md-3 m-0 py-3 pl-3 pl-md-2 pr-2">
+					<div id="out3" class="output card pb-2 pb-md-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-0 mb-md-2">Output 3</h6>
+						<div class="row p-0 m-0">
+							<div class="col-6 m-0 p-0 pr-1 pr-md-2 pr-lg-3 pl-2 pl-md-3 pl-lg-4">
+								<span>MODE</span>
+								<button class="no-decoration btn-mode" value="0">AUTO</button>
+							</div>
+							<div class="col-6 m-0 p-0 pl-1 pl-md-2 pl-lg-3 pr-2 pr-md-3 pr-lg-4">
+								<span>STATUS</span>
+								<button class="no-decoration btn-toggle" value="0">OFF</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- OUTPUT 4 -->
+				<div class="col-6 col-md-3 m-0 py-3 pl-2 pr-3">
+					<div id="out4" class="output card pb-2 pb-md-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-0 mb-md-2">Output 4</h6>
+						<div class="row p-0 m-0">
+							<div class="col-6 m-0 p-0 pr-1 pr-md-2 pr-lg-3 pl-2 pl-md-3 pl-lg-4">
+								<span>MODE</span>
+								<button class="no-decoration btn-mode" value="0">AUTO</button>
+							</div>
+							<div class="col-6 m-0 p-0 pl-1 pl-md-2 pl-lg-3 pr-2 pr-md-3 pr-lg-4">
+								<span>STATUS</span>
+								<button class="no-decoration btn-toggle" value="0">OFF</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<!-- COMMANDS DIVIDER -->
+		<div class="container-fluid">
+			<div class="mt-3">
+				<table>
+					<tr>
+						<td style="min-width: 22.5vh;"><span style="font-size: 2.75vh;">I N V E R T E R</span></td>
+						<td style="width: 100%;"><hr style="background-color: white !important;"/></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<!-- COMMANDS CONTAINER -->
+		<div class="container-fluid">
+			<div class="row text-center">
+				<!-- GRID INJECTION -->
+				<div class="col-6 col-md-3 m-0 pt-3 pb-0 pb-md-3 pl-3 pr-2">
+					<div id="cmd1" class="output card pb-2 pb-md-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-0 mb-md-2 px-2">Grid Injection</h6>
+						<div class="row p-0 m-0">
+							<div class="col-6 m-0 p-0 pr-1 pr-md-2 pr-lg-3 pl-2 pl-md-3 pl-lg-4">
+								<span>MODE</span>
+								<button class="no-decoration btn-mode" value="0">AUTO</button>
+							</div>
+							<div class="col-6 m-0 p-0 pl-1 pl-md-2 pl-lg-3 pr-2 pr-md-3 pr-lg-4">
+								<span>STATUS</span>
+								<button class="no-decoration btn-toggle" value="0">OFF</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- BATTERY CHARGING -->
+				<div class="col-6 col-md-3 m-0 pt-3 pb-0 pb-md-3 pl-2 pr-3 pr-md-2">
+					<div id="cmd2" class="output card pb-2 pb-md-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-0 mb-md-2 px-2">Battery Charging</h6>
+						<div class="row p-0 m-0">
+							<div class="col-6 m-0 p-0 pr-1 pr-md-2 pr-lg-3 pl-2 pl-md-3 pl-lg-4">
+								<span>MODE</span>
+								<button class="no-decoration btn-mode" value="0">AUTO</button>
+							</div>
+							<div class="col-6 m-0 p-0 pl-1 pl-md-2 pl-lg-3 pr-2 pr-md-3 pr-lg-4">
+								<span>STATUS</span>
+								<button class="no-decoration btn-toggle" value="0">OFF</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- BATTERY CHARGING AC -->
+				<div class="col-6 col-md-3 m-0 py-3 pl-3 pl-md-2 pr-2">
+					<div id="cmd3" class="output card pb-2 pb-md-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-0 mb-md-2 px-2">Battery Charging AC</h6>
+						<div class="row p-0 m-0">
+							<div class="col-6 m-0 p-0 pr-1 pr-md-2 pr-lg-3 pl-2 pl-md-3 pl-lg-4">
+								<span>MODE</span>
+								<button class="no-decoration btn-mode" value="0">AUTO</button>
+							</div>
+							<div class="col-6 m-0 p-0 pl-1 pl-md-2 pl-lg-3 pr-2 pr-md-3 pr-lg-4">
+								<span>STATUS</span>
+								<button class="no-decoration btn-toggle" value="0">OFF</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- BATTERY DISCHARGING -->
+				<div class="col-6 col-md-3 m-0 py-3 pl-2 pr-3">
+					<div id="cmd4" class="output card pb-2 pb-md-3 m-0">
+						<h6 class="name pt-3 pb-3 mb-0 mb-md-2 px-2">Battery Discharging</h6>
+						<div class="row p-0 m-0">
+							<div class="col-6 m-0 p-0 pr-1 pr-md-2 pr-lg-3 pl-2 pl-md-3 pl-lg-4">
+								<span>MODE</span>
+								<button class="no-decoration btn-mode" value="0">AUTO</button>
+							</div>
+							<div class="col-6 m-0 p-0 pl-1 pl-md-2 pl-lg-3 pr-2 pr-md-3 pr-lg-4">
+								<span>STATUS</span>
+								<button class="no-decoration btn-toggle" value="0">OFF</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<!-- INPUTS DIVIDER -->
+		<div class="container-fluid">
+			<div class="my-3">
+				<table>
+					<tr>
+						<td style="min-width: 22.5vh;"><span style="font-size: 2.75vh;">I N P U T S</span></td>
+						<td style="width: 100%;"><hr style="background-color: white !important;"/></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<!-- INPUTS CONTAINER -->
+		<div class="container-fluid">
+			<div class="row">
+				<!-- INPUT 1 -->
+				<div class="col-6 col-md-3 m-0 pb-3 pl-3 pr-2">
+					<div id="in1" class="card status-led py-3 px-2 px-md-3 m-0">
+						<div class="form-inline">
+							<span class="name pr-1">Input 1</span>
+							<span class="status text-center float-right ml-auto red">OFF</span>
+						</div>
+					</div>
+				</div>
+				<!-- INPUT 2 -->
+				<div class="col-6 col-md-3 m-0 pb-3 pl-2 pr-3 pr-md-2">
+					<div id="in2" class="card status-led py-3 px-2 px-md-3 m-0">
+						<div class="form-inline">
+							<span class="name pr-1">Input 2</span>
+							<span class="status text-center float-right ml-auto red">OFF</span>
+						</div>
+					</div>
+				</div>
+				<!-- INPUT 3 -->
+				<div class="col-6 col-md-3 m-0 pb-3 pl-3 pl-md-2 pr-2">
+					<div id="in3" class="card status-led py-3 px-2 px-md-3 m-0">
+						<div class="form-inline">
+							<span class="name pr-1">Input 3</span>
+							<span class="status text-center float-right ml-auto red">OFF</span>
+						</div>
+					</div>
+				</div>
+				<!-- INPUT 4 -->
+				<div class="col-6 col-md-3 m-0 pb-3 pl-2 pr-3">
+					<div id="in4" class="card status-led py-3 px-2 px-md-3 m-0">
+						<div class="form-inline">
+							<span class="name pr-1">Input 4</span>
+							<span class="status text-center float-right ml-auto red">OFF</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<!-- IMPORT JS FILES -->
+		<script src="js/components/bundle.js"></script>
+		<script src="js/components/moment.js"></script>
+		<script src="js/gpio.js"></script>
+		
+	</body>
+
+</html>

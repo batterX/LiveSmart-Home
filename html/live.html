@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="description" content="The „Live&amp;Smart“ monitoring and controlling tool designed by batterX® is a sophisticated energy management for optimizing production and consumption." />
+		<title>batterX | Live Data</title>
+		<link rel="stylesheet" type="text/css" href="css/components/bundle.css">
+		<link rel="stylesheet" type="text/css" href="css/live.css">
+	</head>
+	
+	
+	
+	<body>
+		
+		<!-- OVERLAY -->
+		<div class="overlay"></div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- MODAL SOLAR -->
+		<div id="modal_solar" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content p-0">
+					<!-- HEAD -->
+					<div class="card-img"><div></div></div>
+					<span class="card-title">Solar</span>
+					<!-- TAB CONTROL - CONTROLLERS -->
+					<h6>SELECT CONTROLLER</h6>
+					<div class="controller-nav nav nav-pills">
+						<span class="controller-1 active" data-toggle="pill" href="#controller_1">1</span>
+						<span class="controller-2"        data-toggle="pill" href="#controller_2">2</span>
+					</div>
+					<!-- DATA -->
+					<div class="tab-content">
+						<!-- CONTROLLER 1 -->
+						<div id="controller_1" class="tab-pane show active">
+							<!-- TAB CONTROL - MPPTs -->
+							<h6>SELECT MPPT</h6>
+							<div class="mppt-nav nav nav-pills">
+								<span class="mppt-1 active" data-toggle="pill" href="#c1_mppt1">1</span>
+								<span class="mppt-2"        data-toggle="pill" href="#c1_mppt2">2</span>
+								<span class="mppt-3"        data-toggle="pill" href="#c1_mppt3">3</span>
+								<span class="mppt-4"        data-toggle="pill" href="#c1_mppt4">4</span>
+							</div>
+							<!-- DATA -->
+							<div class="tab-content">
+								<div id="c1_mppt1" class="data tab-pane show active">
+									<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+									<div class="current"><span>Current</span><span class="value">-</span></div>
+									<div class="power"><span>Power</span><span class="value">-</span></div>
+								</div>
+								<div id="c1_mppt2" class="data tab-pane">
+									<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+									<div class="current"><span>Current</span><span class="value">-</span></div>
+									<div class="power"><span>Power</span><span class="value">-</span></div>
+								</div>
+								<div id="c1_mppt3" class="data tab-pane">
+									<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+									<div class="current"><span>Current</span><span class="value">-</span></div>
+									<div class="power"><span>Power</span><span class="value">-</span></div>
+								</div>
+								<div id="c1_mppt4" class="data tab-pane">
+									<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+									<div class="current"><span>Current</span><span class="value">-</span></div>
+									<div class="power"><span>Power</span><span class="value">-</span></div>
+								</div>
+							</div>
+						</div>
+						<!-- CONTROLLER 2 -->
+						<div id="controller_2" class="tab-pane">
+							<!-- TAB CONTROL - MPPTs -->
+							<h6>SELECT MPPT</h6>
+							<div class="mppt-nav nav nav-pills">
+								<span class="mppt-1 active" data-toggle="pill" href="#c2_mppt1">1</span>
+								<span class="mppt-2"        data-toggle="pill" href="#c2_mppt2">2</span>
+								<span class="mppt-3"        data-toggle="pill" href="#c2_mppt3">3</span>
+								<span class="mppt-4"        data-toggle="pill" href="#c2_mppt4">4</span>
+							</div>
+							<!-- DATA -->
+							<div class="tab-content">
+								<div id="c2_mppt1" class="data tab-pane show active">
+									<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+									<div class="current"><span>Current</span><span class="value">-</span></div>
+									<div class="power"><span>Power</span><span class="value">-</span></div>
+								</div>
+								<div id="c2_mppt2" class="data tab-pane">
+									<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+									<div class="current"><span>Current</span><span class="value">-</span></div>
+									<div class="power"><span>Power</span><span class="value">-</span></div>
+								</div>
+								<div id="c2_mppt3" class="data tab-pane">
+									<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+									<div class="current"><span>Current</span><span class="value">-</span></div>
+									<div class="power"><span>Power</span><span class="value">-</span></div>
+								</div>
+								<div id="c2_mppt4" class="data tab-pane">
+									<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+									<div class="current"><span>Current</span><span class="value">-</span></div>
+									<div class="power"><span>Power</span><span class="value">-</span></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MODAL SOLAR -->
+		
+		
+		
+		<!-- MODAL EXTERNAL SOLAR -->
+		<div id="modal_extsol" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content p-0">
+					<!-- HEAD -->
+					<div class="card-img"><div></div></div>
+					<span class="card-title">External Solar</span>
+					<!-- DATA -->
+					<div class="data">
+						<div class="power1"><span>Power L1</span><span class="value">-</span></div>
+						<div class="power2"><span>Power L2</span><span class="value">-</span></div>
+						<div class="power3"><span>Power L3</span><span class="value">-</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MODAL EXTERNAL SOLAR -->
+		
+		
+		
+		<!-- MODAL BATTERY -->
+		<div id="modal_battery" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content p-0">
+					<!-- HEAD -->
+					<div class="card-img"><div></div></div>
+					<span class="card-title">Battery</span>
+					<!-- TAB CONTROL -->
+					<div class="nav nav-pills">
+						<span class="active" data-toggle="pill" href="#battery_plus">Plus</span>
+						<span data-toggle="pill" href="#battery_minus">Minus</span>
+					</div>
+					<!-- DATA -->
+					<div class="tab-content">
+						<div id="battery_plus" class="data tab-pane show active">
+							<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+							<div class="current"><span>Current</span><span class="value">-</span></div>
+							<div class="capacity"><span>Capacity</span><span class="value">-</span></div>
+						</div>
+						<div id="battery_minus" class="data tab-pane">
+							<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+							<div class="current"><span>Current</span><span class="value">-</span></div>
+							<div class="capacity"><span>Capacity</span><span class="value">-</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MODAL BATTERY -->
+		
+		
+		
+		<!-- MODAL GRID -->
+		<div id="modal_grid" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content p-0">
+					<!-- HEAD -->
+					<div class="card-img"><div></div></div>
+					<span class="card-title">Grid</span>
+					<!-- TAB CONTROL -->
+					<div class="nav nav-pills">
+						<span class="active" data-toggle="pill" href="#grid_1">L1</span>
+						<span data-toggle="pill" href="#grid_2">L2</span>
+						<span data-toggle="pill" href="#grid_3">L3</span>
+					</div>
+					<!-- DATA -->
+					<div class="tab-content">
+						<div id="grid_1" class="data tab-pane show active">
+							<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+							<div class="power"><span>Power</span><span class="value">-</span></div>
+						</div>
+						<div id="grid_2" class="data tab-pane">
+							<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+							<div class="power"><span>Power</span><span class="value">-</span></div>
+						</div>
+						<div id="grid_3" class="data tab-pane">
+							<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+							<div class="power"><span>Power</span><span class="value">-</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MODAL GRID -->
+		
+		
+		
+		<!-- MODAL HOUSE -->
+		<div id="modal_house" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content p-0">
+					<!-- HEAD -->
+					<div class="card-img"><div></div></div>
+					<span class="card-title">House</span>
+					<!-- DATA -->
+					<div class="data">
+						<div class="power1"><span>Power L1</span><span class="value">-</span></div>
+						<div class="power2"><span>Power L2</span><span class="value">-</span></div>
+						<div class="power3"><span>Power L3</span><span class="value">-</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MODAL HOUSE -->
+		
+		
+		
+		<!-- MODAL LOAD -->
+		<div id="modal_load" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content p-0">
+					<!-- HEAD -->
+					<div class="card-img"><div></div></div>
+					<span class="card-title">Load</span>
+					<!-- TAB CONTROL -->
+					<div class="nav nav-pills">
+						<span class="active" data-toggle="pill" href="#load_1">L1</span>
+						<span data-toggle="pill" href="#load_2">L2</span>
+						<span data-toggle="pill" href="#load_3">L3</span>
+					</div>
+					<!-- DATA -->
+					<div class="tab-content">
+						<div id="load_1" class="data tab-pane show active">
+							<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+							<div class="power"><span>Power</span><span class="value">-</span></div>
+						</div>
+						<div id="load_2" class="data tab-pane">
+							<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+							<div class="power"><span>Power</span><span class="value">-</span></div>
+						</div>
+						<div id="load_3" class="data tab-pane">
+							<div class="voltage"><span>Voltage</span><span class="value">-</span></div>
+							<div class="power"><span>Power</span><span class="value">-</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MODAL LOAD -->
+		
+		
+		
+		<!-- MODAL SYSTEM -->
+		<div id="modal_device" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content p-0">
+					<!-- HEAD -->
+					<div class="card-img"><div></div></div>
+					<span class="card-title">System</span>
+					<!-- DATA HOME -->
+					<div class="data home">
+						<div class="text-center"><span>Autarky</span></div>
+						<div id="progressBar"></div>
+					</div>
+					<!-- DATA BUSINESS -->
+					<div class="data business d-none">
+						<div class="pfc"><span>PFC</span><span class="value">-</span></div>
+						<div class="eco"><span>ECO</span><span class="value">-</span></div>
+						<div class="boost"><span>BOOST</span><span class="value">-</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MODAL SYSTEM -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<div class="container-top">
+		
+			<div id="extsol" class="container-block">
+				<div class="block-card" data-toggle="modal" data-target="#modal_extsol">
+					<div>
+						<div class="img-label"></div>
+						<span class="power">1234 W</span>
+						<div class="img-plus"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="container-spacing-horizontal"></div>
+			
+			<div id="solar" class="container-block">
+				<div class="block-card" data-toggle="modal" data-target="#modal_solar">
+					<div>
+						<div class="img-label"></div>
+						<span class="power">1234 W</span>
+						<div class="img-plus"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="container-spacing-horizontal"></div>
+			
+			<div id="battery" class="container-block">
+				<div class="block-card" data-toggle="modal" data-target="#modal_battery">
+					<div>
+						<div class="img-label"></div>
+						<span class="power">1234 W</span>
+						<div class="img-plus"></div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		
+		
+		<div class="container-spacing-vertical">
+		
+			<div class="arrow-line solar">
+				<div class="line"></div>
+				<div class="arrow arrow-down"></div>
+			</div>
+		
+			<div class="arrow-line battery">
+				<div class="line"></div>
+				<div class="arrow arrow-up"></div>
+			</div>
+			
+		</div>
+		
+		
+		
+		<div class="container-middle">
+			
+			<div id="device" class="container-block">
+				<div class="block-card" data-toggle="modal" data-target="#modal_device">
+					<div>
+						<div class="img-plus"></div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		
+		
+		<div class="container-spacing-vertical">
+		
+			<div class="arrow-line grid">
+				<div class="line"></div>
+				<div class="arrow arrow-down"></div>
+			</div>
+			
+			<div class="arrow-line house-device">
+				<div class="line"></div>
+				<div class="arrow arrow-down"></div>
+			</div>
+		
+			<div class="arrow-line load">
+				<div class="line"></div>
+				<div class="arrow arrow-down"></div>
+			</div>
+			
+		</div>
+		
+		
+		
+		<div class="container-bottom">
+			
+			<div id="grid" class="container-block">
+				<div class="block-card" data-toggle="modal" data-target="#modal_grid">
+					<div>
+						<div class="img-label"></div>
+						<span class="power">1234 W</span>
+						<div class="img-plus"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="container-spacing-horizontal">
+				<div class="arrow-line house-emeter">
+					<div class="line"></div>
+					<div class="arrow arrow-right"></div>
+				</div>
+			</div>
+			
+			<div id="house" class="container-block">
+				<div class="block-card" data-toggle="modal" data-target="#modal_house">
+					<div>
+						<div class="img-label"></div>
+						<span class="power">1234 W</span>
+						<div class="img-plus"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="container-spacing-horizontal"></div>
+			
+			<div id="load" class="container-block">
+				<div class="block-card" data-toggle="modal" data-target="#modal_load">
+					<div>
+						<div class="img-label"></div>
+						<span class="power">1234 W</span>
+						<div class="img-plus"></div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- IMPORT JS FILES -->
+		<script src="js/components/bundle.js"></script>
+		<script src="js/components/progressbar.js"></script>
+		<script src='js/live.js'></script>
+		
+	</body>
+	
+</html>

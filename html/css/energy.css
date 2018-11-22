@@ -1,0 +1,165 @@
+* {
+	font-family: 'Raleway' !important;
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	height: 100%;
+}
+body {
+	background-color: #131313;
+	display: flex;
+	flex-flow: column;
+}
+.row {
+	margin: 0;
+	padding: 0;
+}
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #131313;
+	z-index: 10000;
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	line-height: 1.1 !important;
+	margin: 0 !important;
+}
+
+
+
+
+
+
+
+
+
+
+/* NAVIGATION ROW */
+
+.top {
+	flex-grow: 0;
+	flex-shrink: 1;
+	flex-basis: auto;
+	padding: 0 1vw;
+}
+
+.top .container {
+	background-color: #1b1b1b;
+	width: 100%;
+	padding: 1.25vh 0;
+	cursor: pointer;
+}
+
+.top .col-2, .top .col-4, .top .col-5 {
+	padding: 3.5vh 1vw 2.25vh 1vw;
+}
+
+.top .col-1 {
+	padding: 3.5vh 0 2.25vh 0;
+}
+
+.top .container .name {
+	color: gray;
+	font-size: 2.5vh;
+	padding: 5px;
+}
+
+.top .container img {
+	height: 2.5vh;
+}
+
+.btn-selected h4 {
+	color: white !important;
+}
+
+
+
+
+
+/* CHART SECTION */
+
+div.bottom {
+	height: auto;
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: auto;
+	position: relative;
+}
+
+div.bottom .chart-container {
+	height: calc(100vh - 14.75vh - 2.5vh - 15px);
+	width: 100%;
+}
+
+#chart {
+	width: 100%;
+	height: 100%;
+	padding: 2vh 10px 1vh 10px;
+}
+
+#btnZoom {
+	width: 5vh;
+	height: 5vh;
+	position: absolute;
+	right: 3vh;
+	top: 4vh;
+	background: url(../img/plus.png);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+
+
+
+
+/* TOOLTIP STYLE */
+
+#chartjs-tooltip {
+	font-family: 'Raleway';
+	font-size: 14px;
+	opacity: 1;
+	position: absolute;
+	background: rgba(0, 0, 0, .9);
+	color: white;
+	border-radius: 5px;
+	box-shadow: 0 0 0 0.3vh #87d403;
+	transition: all 0.1s ease;
+	pointer-events: none;
+	transform: translate(-50%, 0);
+}
+
+.chartjs-tooltip-key {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin-right: 10px;
+}
+
+thead { border-bottom: 0.3vh solid #87d403; }
+tfoot { border-top:    0.3vh solid #87d403; }
+
+th, td {
+	font-family: "Raleway";
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+thead th { padding-bottom: 5px; }
+tfoot td { padding-top:    5px; }
+
+.value {
+	padding-left:10px;
+	color: #87d403;
+}
+
+.date-range {
+	font-size: 2.5vh !important;
+	color: white;
+}

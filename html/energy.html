@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="description" content="The „Live&amp;Smart“ monitoring and controlling tool designed by batterX® is a sophisticated energy management for optimizing production and consumption." />
+		<title>batterX | Energy</title>
+		<link rel="stylesheet" type="text/css" href="css/components/bundle.css">
+		<link rel="stylesheet" type="text/css" href="css/components/daterangepicker.css">
+		<link rel="stylesheet" type="text/css" href="css/energy.css">
+	</head>
+	
+	<body>
+		
+		<!-- OVERLAY -->
+		<div class="overlay"></div>
+		
+		<!-- NAVIGATION ROW -->
+		<div class="top row">
+			
+			<!-- PRODUCTION -->
+			<div class="main-toggler col-4">
+				<div class="container text-center btn-selected" id="btn-production">
+					<h4 class="name">Production</h4>
+				</div>
+			</div>
+			
+			<!-- PREV -->
+			<div class="main-control col-1">
+				<div id="btnPrev" class="container text-center">
+					<h4 class="name">&lt;</h4>
+				</div>
+			</div>
+			
+			<!-- DATE-RANGE PICKER -->
+			<div class="col-2">
+				<div class="container text-center" id="btn-calendar">
+					<h4 class="name"><img src="img/ic_calendar.png" /></h4>
+				</div>
+			</div>
+			
+			<!-- NEXT -->
+			<div class="main-control col-1">
+				<div id="btnNext" class="container text-center">
+					<h4 class="name">&#8635;</h4>
+				</div>
+			</div>
+			
+			<!-- CONSUMPTION -->
+			<div class="main-toggler col-4">
+				<div class="container text-center" id="btn-consumption">
+					<h4 class="name">Consumption</h4>
+				</div>
+			</div>
+						
+		</div>
+		
+		<!-- SELECTED DATE-RANGE -->
+		<h4 class="date-range text-center"></h4>
+		
+		<!-- DIVIDER -->
+		<div class="middle row"></div>
+		
+		<!-- CHART SECTION -->
+		<div class="bottom row">
+			<div id="btnZoom"></div>
+			<div class="chart-container">
+				<canvas id="chart"></canvas>
+			</div>
+		</div>
+		
+		<!-- IMPORT JS FILES -->
+		<script src="js/components/bundle.js"></script>
+		<script src="js/components/chart.js"></script>
+		<script src="js/components/moment.js"></script>
+		<script src="js/components/daterangepicker.js"></script>
+		<script src="js/energy.js"></script>
+		
+	</body>
+	
+</html>
