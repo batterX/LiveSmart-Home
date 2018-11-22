@@ -12,6 +12,15 @@ Click `OK` to confirm that the Live&Smart should be updated
 
 After the update the Live&Smart will automatically reboot and apply the new version
 
+**Note:** Connect Inverter RS232 to Top-Left USB Connector of the Live&Smart
+```
+╔════════╗╔═══════╦═══════╗
+║        ║║ RS232 ║  USB  ║
+║  RJ45  ║╠═══════╬═══════╣
+║        ║║  USB  ║  USB  ║
+╚════════╝╚═══════╩═══════╝
+```
+
 ### Manual Update:
 
 If for some reason it is not possible to update the software using the Local Web App
