@@ -12,7 +12,7 @@ Click `OK` to confirm that the Live&Smart should be updated
 
 After the update the Live&Smart will automatically reboot and apply the new version
 
-**Note:** Connect Inverter RS232 to Top-Left USB Connector of the Live&Smart
+**Note:** Starting with v18.12.1 the RS232 converter must be connected to the Top-Left USB Port of the Live&Smart
 ```
 ╔════════╗╔═══════╦═══════╗
 ║        ║║ RS232 ║  USB  ║
