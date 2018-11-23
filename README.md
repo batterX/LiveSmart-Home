@@ -15,9 +15,9 @@ After the update the Live&Smart will automatically reboot and apply the new vers
 **Note:** Starting with v18.12.1 the RS232 converter must be connected to the Top-Left USB Port of the Live&Smart
 ```
 ╔════════╗╔═══════╦═══════╗
-║        ║║ RS232 ║  USB  ║
-║  RJ45  ║╠═══════╬═══════╣
-║        ║║  USB  ║  USB  ║
+║  RJ45  ║║ RS232 ║  USB  ║
+║  NET-  ║╠═══════╬═══════╣
+║  WORK  ║║  USB  ║  USB  ║
 ╚════════╝╚═══════╩═══════╝
 ```
 
