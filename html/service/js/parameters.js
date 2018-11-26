@@ -146,24 +146,27 @@ $.ajax({
 				case 'batterx h3':
 					deviceModel = "batterx h3";
 					$('._h3').css('display', 'flex');
+					$('#enable_feedInLimit_70p_lifepo_kWp, #enable_feedInLimit_70p_carbon_kWp').val(3000);
 					break;
 				case 'batterx h5':
 					deviceModel = "batterx h5";
 					$('._h5').css('display', 'flex');
+					$('#enable_feedInLimit_70p_lifepo_kWp, #enable_feedInLimit_70p_carbon_kWp').val(5000);
 					break;
 				case 'batterx h5-eco':
 					deviceModel = "batterx h5-eco";
 					$('._h5e').css('display', 'flex');
+					$('#enable_feedInLimit_70p_lifepo_kWp, #enable_feedInLimit_70p_carbon_kWp').val(5500);
 					break;
 				case 'batterx h10':
 					deviceModel = "batterx h10";
 					$('._h10').css('display', 'flex');
+					$('#enable_feedInLimit_70p_lifepo_kWp, #enable_feedInLimit_70p_carbon_kWp').val(10000);
 					break;
 				default:
 					$('._h3, ._h5e, ._h5, ._h10').hide();
 					break;
 			}
-			deviceModel = "batterx h5";
 			setQuickCarbonBatterySetup();
 		}
 	}
@@ -803,13 +806,24 @@ $('#applyLiFePO').on('click', function() {
 	else if(deviceModel == 'batterx h5')     { _maxChargingCurrent = 100; _maxDischargingCurrent = 150; }
 	else if(deviceModel == 'batterx h10')    { _maxChargingCurrent = 200; _maxDischargingCurrent = 300; }
 	
-	var temp_maxGridFeedInPower = "";
-	     if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "2100" :  "3000";
-	else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "3850" :  "5500";
-	else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "3500" :  "5000";
-	else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "7000" : "10000";
-	if(temp_maxGridFeedInPower != "") $('#maxGridFeedInPower').val(temp_maxGridFeedInPower);
+	var temp_maxGridFeedInPower = $('#enable_feedInLimit_70p_lifepo_kWp').val();
+	if(enable_feedInLimit_70p) {
+		if(temp_maxGridFeedInPower != "") {
+			temp_maxGridFeedInPower = Math.round(parseInt(temp_maxGridFeedInPower) * 0.7);
+		} else {
+				 if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower = "2100";
+			else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower = "3850";
+			else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower = "3500";
+			else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = "7000";
+		}
+	} else {
+			 if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower =  "3000";
+		else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower =  "5500";
+		else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower =  "5000";
+		else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = "10000";
+	}
 	
+	$('#maxGridFeedInPower'           ).val(temp_maxGridFeedInPower);
 	$('#maxChargingCurrent'           ).val(Math.min(numberOfModules * 37, _maxChargingCurrent));
 	$('#maxChargingCurrentAC'         ).val(Math.min(numberOfModules * 37, Math.min(72, _maxChargingCurrent)));
 	$('#maxDischargeCurrentHybrid'    ).val(Math.min(numberOfModules * 37, _maxDischargingCurrent));
@@ -850,12 +864,22 @@ $('#applyCarbon').on('click', function() {
 	else if(deviceModel == 'batterx h5')     { _maxChargingCurrent = 100; _maxDischargingCurrent = 150; }
 	else if(deviceModel == 'batterx h10')    { _maxChargingCurrent = 200; _maxDischargingCurrent = 300; }
 	
-	var temp_maxGridFeedInPower = "";
-	     if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "2100" :  "3000";
-	else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "3850" :  "5500";
-	else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "3500" :  "5000";
-	else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "7000" : "10000";
-	if(temp_maxGridFeedInPower != "") $('#maxGridFeedInPower').val(temp_maxGridFeedInPower);
+	var temp_maxGridFeedInPower = $('#enable_feedInLimit_70p_carbon_kWp').val();
+	if(enable_feedInLimit_70p) {
+		if(temp_maxGridFeedInPower != "") {
+			temp_maxGridFeedInPower = Math.round(parseInt(temp_maxGridFeedInPower) * 0.7);
+		} else {
+				 if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower = "2100";
+			else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower = "3850";
+			else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower = "3500";
+			else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = "7000";
+		}
+	} else {
+			 if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower =  "3000";
+		else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower =  "5500";
+		else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower =  "5000";
+		else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = "10000";
+	}
 	
 	var temp_cutoffVoltageHybrid = "48.0";
 	     if(depthOfDischarge == 70) temp_cutoffVoltageHybrid = "47.9";
@@ -865,6 +889,7 @@ $('#applyCarbon').on('click', function() {
 	
 	var temp_storageCapacity = numberOfBatteries / 4 * batteryCapacity;
 	
+	$('#maxGridFeedInPower'           ).val(temp_maxGridFeedInPower);
 	$('#maxChargingCurrent'           ).val(Math.round(Math.min(temp_storageCapacity * 0.15, _maxChargingCurrent)));
 	$('#maxChargingCurrentAC'         ).val(Math.round(Math.min(temp_storageCapacity * 0.15, _maxChargingCurrent)));
 	$('#maxDischargeCurrentHybrid'    ).val(Math.round(Math.min(temp_storageCapacity * 0.40, _maxDischargingCurrent)));
@@ -888,7 +913,11 @@ $('#applyCarbon').on('click', function() {
 
 
 
-$('#numberOfModules, #enable_feedInLimit_70p_lifepo').on('change', function() {
+$('#numberOfModules, #enable_feedInLimit_70p_lifepo, #enable_feedInLimit_70p_lifepo_kWp').on('change input', function() {
+	
+	var enable_feedInLimit_70p = $('#enable_feedInLimit_70p_lifepo').is(':checked');
+	if(enable_feedInLimit_70p) $('#enable_feedInLimit_70p_lifepo_kWp').removeAttr('disabled');
+	else $('#enable_feedInLimit_70p_lifepo_kWp').attr('disabled', true);
 	
 	var numberOfModules = $('#numberOfModules').val();
 	if(!parseInt(numberOfModules)) {
@@ -897,8 +926,6 @@ $('#numberOfModules, #enable_feedInLimit_70p_lifepo').on('change', function() {
 		return false;
 	}
 	
-	var enable_feedInLimit_70p = $('#enable_feedInLimit_70p_lifepo').is(':checked');
-	
 	var _maxChargingCurrent = 25;
 	var _maxDischargingCurrent = 150;
 	     if(deviceModel == 'batterx h3')     { _maxChargingCurrent =  25; _maxDischargingCurrent = 150; }
@@ -906,13 +933,24 @@ $('#numberOfModules, #enable_feedInLimit_70p_lifepo').on('change', function() {
 	else if(deviceModel == 'batterx h5')     { _maxChargingCurrent = 100; _maxDischargingCurrent = 150; }
 	else if(deviceModel == 'batterx h10')    { _maxChargingCurrent = 200; _maxDischargingCurrent = 300; }
 	
-	var temp_maxGridFeedInPower = "";
-	     if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "2100" :  "3000";
-	else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "3850" :  "5500";
-	else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "3500" :  "5000";
-	else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "7000" : "10000";
-	if(temp_maxGridFeedInPower != "") $('.lifepo .maxGridFeedInPower').text(temp_maxGridFeedInPower + " W");
+	var temp_maxGridFeedInPower = $('#enable_feedInLimit_70p_lifepo_kWp').val();
+	if(enable_feedInLimit_70p) {
+		if(temp_maxGridFeedInPower != "") {
+			temp_maxGridFeedInPower = Math.round(parseInt(temp_maxGridFeedInPower) * 0.7);
+		} else {
+				 if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower = "2100";
+			else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower = "3850";
+			else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower = "3500";
+			else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = "7000";
+		}
+	} else {
+			 if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower =  "3000";
+		else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower =  "5500";
+		else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower =  "5000";
+		else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = "10000";
+	}
 	
+	$('.lifepo .maxGridFeedInPower'           ).text(temp_maxGridFeedInPower + " W");
 	$('.lifepo .maxChargingCurrent'           ).text(Math.min(numberOfModules * 37, _maxChargingCurrent) + " A");
 	$('.lifepo .maxChargingCurrentAC'         ).text(Math.min(numberOfModules * 37, Math.min(72, _maxChargingCurrent)) + " A");
 	$('.lifepo .maxDischargeCurrentHybrid'    ).text(Math.min(numberOfModules * 37, _maxDischargingCurrent) + " A");
@@ -935,7 +973,11 @@ $('#numberOfModules, #enable_feedInLimit_70p_lifepo').on('change', function() {
 	
 });
 
-$('#batteryCapacity, #numberOfBatteries, #depthOfDischarge, #enable_feedInLimit_70p_carbon').on('change', function() {
+$('#batteryCapacity, #numberOfBatteries, #depthOfDischarge, #enable_feedInLimit_70p_carbon, #enable_feedInLimit_70p_carbon_kWp').on('change input', function() {
+	
+	var enable_feedInLimit_70p = $('#enable_feedInLimit_70p_carbon').is(':checked');
+	if(enable_feedInLimit_70p) $('#enable_feedInLimit_70p_carbon_kWp').removeAttr('disabled');
+	else $('#enable_feedInLimit_70p_carbon_kWp').attr('disabled', true);
 	
 	var numberOfBatteries = $('#numberOfBatteries').val();
 	var batteryCapacity = $('#batteryCapacity').val();
@@ -945,8 +987,6 @@ $('#batteryCapacity, #numberOfBatteries, #depthOfDischarge, #enable_feedInLimit_
 		return false;
 	}
 	
-	var enable_feedInLimit_70p = $('#enable_feedInLimit_70p_carbon').is(':checked');
-	
 	var _maxChargingCurrent = 25;
 	var _maxDischargingCurrent = 150;
 	     if(deviceModel == 'batterx h3')     { _maxChargingCurrent =  25; _maxDischargingCurrent = 150; }
@@ -954,12 +994,22 @@ $('#batteryCapacity, #numberOfBatteries, #depthOfDischarge, #enable_feedInLimit_
 	else if(deviceModel == 'batterx h5')     { _maxChargingCurrent = 100; _maxDischargingCurrent = 150; }
 	else if(deviceModel == 'batterx h10')    { _maxChargingCurrent = 200; _maxDischargingCurrent = 300; }
 	
-	var temp_maxGridFeedInPower = "";
-	     if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "2100" :  "3000";
-	else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "3850" :  "5500";
-	else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "3500" :  "5000";
-	else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = enable_feedInLimit_70p ?  "7000" : "10000";
-	if(temp_maxGridFeedInPower != "") $('.carbon .maxGridFeedInPower').text(temp_maxGridFeedInPower + " W");
+	var temp_maxGridFeedInPower = $('#enable_feedInLimit_70p_carbon_kWp').val();
+	if(enable_feedInLimit_70p) {
+		if(temp_maxGridFeedInPower != "") {
+			temp_maxGridFeedInPower = Math.round(parseInt(temp_maxGridFeedInPower) * 0.7);
+		} else {
+				 if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower = "2100";
+			else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower = "3850";
+			else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower = "3500";
+			else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = "7000";
+		}
+	} else {
+			 if(deviceModel == 'batterx h3')     temp_maxGridFeedInPower =  "3000";
+		else if(deviceModel == 'batterx h5-eco') temp_maxGridFeedInPower =  "5500";
+		else if(deviceModel == 'batterx h5')     temp_maxGridFeedInPower =  "5000";
+		else if(deviceModel == 'batterx h10')    temp_maxGridFeedInPower = "10000";
+	}
 	
 	var temp_cutoffVoltageHybrid = "48.0";
 	     if(depthOfDischarge == 70) temp_cutoffVoltageHybrid = "47.9";
@@ -969,6 +1019,7 @@ $('#batteryCapacity, #numberOfBatteries, #depthOfDischarge, #enable_feedInLimit_
 	
 	var temp_storageCapacity = numberOfBatteries / 4 * batteryCapacity;
 	
+	$('.carbon .maxGridFeedInPower'           ).text(temp_maxGridFeedInPower + " W");
 	$('.carbon .maxChargingCurrent'           ).text(Math.round(Math.min(temp_storageCapacity * 0.15, _maxChargingCurrent)) + " A");
 	$('.carbon .maxChargingCurrentAC'         ).text(Math.round(Math.min(temp_storageCapacity * 0.15, _maxChargingCurrent)) + " A");
 	$('.carbon .maxDischargeCurrentHybrid'    ).text(Math.round(Math.min(temp_storageCapacity * 0.40, _maxDischargingCurrent)) + " A");
