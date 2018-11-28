@@ -181,38 +181,37 @@ $('#submit').on('click', function() {
 	
 	// STATEMENT
 	var st = $('#statement').val().trim();
-	var last = st.substr(st.lastIndexOf(' ') + 1);
 	
-	if(st.trim() != '' && last.trim() != '') {
-		if(st.split('(').join('').length == st.split(')').join('').length)
-			S1 = st;
-	}
-
-	$.ajax({
-		type: 'POST',
-		url: '../db-interaction/service.php',
-		data: {
-			"action": 'setCommandConfig',
-			"VarName": VarName,
-			"mode": mode,
-			"V4": V4,
-			"V5": V5,
-			"V6": V6,
-			"S1": S1
-		},
-		success: function (response) {
-			if(response) {
-				alert("Command Configuration Saved!");
-				console.log(response);
-			} else {
+	if(st != '' && st.split('(').join('').length == st.split(')').join('').length) {
+		S1 = st;
+		$.ajax({
+			type: 'POST',
+			url: '../db-interaction/service.php',
+			data: {
+				"action": 'setCommandConfig',
+				"VarName": VarName,
+				"mode": mode,
+				"V4": V4,
+				"V5": V5,
+				"V6": V6,
+				"S1": S1
+			},
+			success: function (response) {
+				if(response) {
+					alert("Command Configuration Saved!");
+					console.log(response);
+				} else {
+					alert("Error, please try again!");
+					console.log(response);
+				}
+			},
+			error: function (response) {
 				alert("Error, please try again!");
 				console.log(response);
 			}
-		},
-		error: function (response) {
-			alert("Error, please try again!");
-			console.log(response);
-		}
-	});
+		});
+	} else {
+		alert("There seems to be an error in the statement");
+	}
 
 });
