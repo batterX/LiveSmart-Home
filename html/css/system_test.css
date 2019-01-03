@@ -1,0 +1,73 @@
+.loading {
+    display: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 0.25rem solid #b2b2b2;
+    border-radius: 50%;
+    border-top-color: #000000;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+    margin-right: 1.5rem;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+
+.error, .success {
+    display: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-right: 1.5rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.error {
+    background-image: url(../img/ic_error.png);
+}
+.success {
+    background-image: url(../img/ic_success.png);
+}
+
+.waiting {
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-right: 1.5rem;
+}
+
+.status span {
+    font-size: 1.25rem;
+}
+.status span span {
+    font-size: 1rem;
+    display: block;
+    color: red;
+}
+
+
+
+
+
+h1 {
+    font-size: 2.5rem;
+    margin-top: 3rem;
+    padding: 1.5rem 0;
+    margin-bottom: 1.5rem;
+}
+
+#log {
+    max-height: 50vh;
+    overflow: auto;
+}
+#log p {
+    margin-bottom: 0.5rem !important;
+    padding-left: 1rem !important;
+}
+#log p.head {
+    padding-left: 0 !important;
+    padding-top: 1rem !important;
+}

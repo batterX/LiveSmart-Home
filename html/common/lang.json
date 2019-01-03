@@ -1,0 +1,116 @@
+{
+    
+    "langs": [
+        { "name": "English", "code": "en", "table": 0 },
+        { "name": "Deutsch", "code": "de", "table": 1 }
+    ],
+
+    "tables": [
+
+        [
+            "English",
+
+            "Software Update",
+            [
+                "Checking Internet Connection",
+                "Searching for Updates",
+                "Downloading Update",
+                "Rebooting",
+                "Finishing Update",
+                "Update completed",
+                "No Internet Connection",
+                "Make sure the network cable is connected"
+            ],
+
+            "Installer Login",
+            "Customer Login",
+            [
+                "Email",
+                "Password",
+                "Login",
+                "Wrong email or password. Please try again!"
+            ],
+
+            "Customer Informations",
+            "Installation Address",
+            [
+                [
+                    "Mr.",
+                    "Ms."
+                ],
+                "First name",
+                "Last name",
+                "Email",
+                "Telephone",
+                [
+                    "Belgium",
+                    "France",
+                    "Germany"
+                ],
+                "City",
+                "Zip Code",
+                "Address"
+            ],
+            "Existing customer",
+            "Same as customer address",
+
+            "Inverter Unknown",
+            "Please connect your Inverter to the Live & Smart",
+            "Continue"
+        ],
+
+        [
+            "Deutsch",
+
+            "Software-Aktualisierung",
+            [
+                "Überprüfung der internetverbindung",
+                "Es wird nach updates gesucht",
+                "Update wird heruntergeladen",
+                "Neustarten",
+                "Update abschließen",
+                "Update abgeschlossen",
+                "Keine Internetverbindung",
+                "Stellen Sie sicher, dass das Netzwerkkabel angeschlossen ist"
+            ],
+
+            "Installateur-Anmeldung",
+            "Kunden-Anmeldung",
+            [
+                "Email",
+                "Kennwort",
+                "Anmelden",
+                "Falsche Email oder Kennwort. Bitte versuchen Sie es noch einmal!"
+            ],
+
+            "Kundeninformationen",
+            "Installationsadresse",
+            [
+                [
+                    "Herr",
+                    "Frau"
+                ],
+                "Vorname",
+                "Nachname",
+                "Email",
+                "Telefon",
+                [
+                    "Belgien",
+                    "Frankreich",
+                    "Deutschland"
+                ],
+                "Stadt",
+                "Postleitzahl",
+                "Adresse"
+            ],
+            "Bestehender Kunde",
+            "Gleich Kundenadresse",
+
+            "Wechselrichter unbekannt",
+            "Bitte verbinden Sie Ihren Inverter mit dem Live & Smart",
+            "Weiter"
+        ]
+
+    ]
+
+}

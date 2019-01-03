@@ -1,0 +1,30 @@
+h1 {
+    font-size: 6vmin;
+    margin-top: 25vmin;
+    margin-bottom: 10vmin;
+}
+
+input {
+    width: 50vmin !important;
+    height: 6vmin !important;
+    margin-bottom: 2.5vmin !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    font-size: 2.5vmin !important;
+}
+
+#btnLogin {
+    font-size: 2vmin;
+    padding: 1.5vmin 6vmin;
+    letter-spacing: 0.3vmin;
+}
+
+#errorMsg {
+    display: block;
+    height: 5vmin;
+    font-size: 2vmin;
+    visibility: hidden;
+}
+#errorMsg * {
+    color: red !important;
+}

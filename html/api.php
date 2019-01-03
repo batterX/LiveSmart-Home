@@ -183,6 +183,28 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'settings') {
 	
 }
 
+// GET device_info
+
+else if(isset($_GET['get']) && strtolower($_GET['get']) == 'device_info') {
+	
+	// Connect to Database
+	$db = new PDO('sqlite:/srv/bx/usv.db3');
+	
+	// Returns the full Settings table
+	// ?get=device_info
+	$result = $db->query("SELECT setting, value FROM device_info", PDO::FETCH_ASSOC);
+	$dbh = new stdClass();
+	foreach($result as $row) {
+		$setting = (string) $row['setting'];
+		$value = (string) $row['value'];
+		$dbh->$setting = $value;
+	}
+	
+	header('Content-Type: application/json');
+	echo json_encode($dbh, JSON_FORCE_OBJECT);
+	
+}
+
 // SET Command
 
 else if(isset($_GET['set']) && strtolower($_GET['set']) == 'command') {
