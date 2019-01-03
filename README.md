@@ -1,47 +1,12 @@
-# batterX Live&Smart Home (v18.12.1)
+# batterX Live&Smart Home (v19.1.1)
 
-## Update Monitoring App
+This is just a test version of our new software. It is under development and not usable in any way right now.
 
-![](https://raw.githubusercontent.com/batterX/LiveSmart-Home/master/images/update-gif.gif)
-
-Navigate to `http://YOUR_RASPI_IP_ADDRESS/service`
-
-Click the `Update` icon (enter the correct password)
-
-Click `OK` to confirm that the Live&Smart should be updated
-
-After the update the Live&Smart will automatically reboot and apply the new version
-
-**Note:** Starting with v18.12.1 the RS232 converter must be connected to the Top-Left USB Port of the Live&Smart
+**Note:** Starting with v19.1.1 the RS232 converter must be connected to the Top-Left USB Port of the Live&Smart
 ```
 ╔═════════╗╔═══════╦═══════╗
 ║ NETWORK ║║ RS232 ║  USB  ║
 ║         ║╠═══════╬═══════╣
 ║  CABLE  ║║  USB  ║  USB  ║
 ╚═════════╝╚═══════╩═══════╝
-```
-
-### Manual Update:
-
-If for some reason it is not possible to update the software using the Local Web App
-
-Login to your Live&Smart using `Remote Desktop Connection`, `PuTTY` or directly using an HDMI display
-
-Open Raspberry Pi's `File Manager` and navigate to `/home/pi`
-
-Double-click on `updater.sh` and click `Execute in Terminal`
-
-After the update the Live&Smart will automatically reboot and apply the new version.
-
-### If the 'One-Click' and 'Manual' Update don't work:
-
-Login to your Raspberry Pi using `Remote Desktop Connection` or directly using an HDMI display
-
-Open the Linux `Terminal` and execute the following commands:
-```
-$ cd /home/pi
-$ git clone https://github.com/batterx/livesmart-home.git
-$ sudo cp /home/pi/livesmart-home/update.sh /home/pi
-$ sudo chmod 777 /home/pi/update.sh
-$ sudo sh /home/pi/update.sh
 ```
