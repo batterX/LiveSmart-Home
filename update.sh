@@ -22,10 +22,16 @@ sudo chmod 777 /home/pi/launcher.sh
 sudo cp /home/pi/livesmart-home/updater.sh /home/pi
 sudo chmod 777 /home/pi/updater.sh
 
+
+
+sudo sed -i 's/.*www-data .*/www-data ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
+
+sudo apt-get install rng-tools -y
+
+
+
 sudo rm /home/pi/livesmart-home -r
 
 sudo rm /home/pi/update.sh
-
-sudo sed -i 's/.*www-data .*/www-data ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
 
 sudo reboot
