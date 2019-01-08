@@ -6,7 +6,7 @@ $output = shell_exec('cat /proc/cpuinfo');
 $find = 'Serial';
 $pos = strpos($output, $find);
 
-$serial = substr($output, $pos + 11, 16);
+$serial = substr($output, $pos + 10, 16);
 
 $apikey = sha1(strval($serial));
 
