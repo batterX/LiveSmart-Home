@@ -72,10 +72,8 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div class="bullet-progress">
-			<div class="progress-bar">
-				<div class="progress"></div>
-			</div>
+		<div id="progress" class="progress m-3">
+			<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%"></div>
 		</div>
 
 
@@ -98,7 +96,7 @@ $_SESSION['last_step'] = $step;
 
 					<span id="errorMsg"><i><?php echo $strings[5][3]; ?></i></span>
 					
-					<button type="submit" id="btnLogin" class="btn btn-primary levitate ripple"><?php echo $strings[5][2]; ?></button>
+					<button type="submit" id="btnLogin" class="btn btn-success levitate ripple"><?php echo $strings[5][2]; ?></button>
 				
 				</form>
 			

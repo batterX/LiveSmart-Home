@@ -67,10 +67,8 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div class="bullet-progress">
-			<div class="progress-bar">
-				<div class="progress"></div>
-			</div>
+		<div id="progress" class="progress m-3">
+			<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%"></div>
 		</div>
 
 
@@ -97,7 +95,7 @@ $_SESSION['last_step'] = $step;
                     <div class="loading"></div>
                     <span class="standard">VDE4105</span>
                 </div>
-                <button id="btnSubmit" class="btn btn-primary levitate ripple d-none">Continue</button>
+                <button id="btnSubmit" class="btn btn-success levitate ripple d-none">Continue</button>
             </div>
 
 		</div>

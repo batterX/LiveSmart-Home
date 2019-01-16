@@ -1,4 +1,4 @@
-$container.trigger('step', 7);
+$progress.trigger('step', 7);
 
 
 
@@ -47,9 +47,10 @@ $('#btnFinishInstallation').on('click', function() {
     if(dataObj.hasOwnProperty('installer_firstname'   ) && dataObj['installer_firstname'   ] != "") data['installer_firstname'   ] = dataObj['installer_firstname'   ];
     if(dataObj.hasOwnProperty('installer_lastname'    ) && dataObj['installer_lastname'    ] != "") data['installer_lastname'    ] = dataObj['installer_lastname'    ];
     if(dataObj.hasOwnProperty('installer_company'     ) && dataObj['installer_company'     ] != "") data['installer_company'     ] = dataObj['installer_company'     ];
+    if(dataObj.hasOwnProperty('installer_telephone'   ) && dataObj['installer_telephone'   ] != "") data['installer_telephone'   ] = dataObj['installer_telephone'   ];
     if(dataObj.hasOwnProperty('installer_email'       ) && dataObj['installer_email'       ] != "") data['installer_email'       ] = dataObj['installer_email'       ];
     if(dataObj.hasOwnProperty('installer_password'    ) && dataObj['installer_password'    ] != "") data['installer_password'    ] = dataObj['installer_password'    ];
-
+    
     if(dataObj.hasOwnProperty('customer_gender'       ) && dataObj['customer_gender'       ] != "") data['customer_gender'       ] = dataObj['customer_gender'       ];
     if(dataObj.hasOwnProperty('customer_firstname'    ) && dataObj['customer_firstname'    ] != "") data['customer_firstname'    ] = dataObj['customer_firstname'    ];
     if(dataObj.hasOwnProperty('customer_lastname'     ) && dataObj['customer_lastname'     ] != "") data['customer_lastname'     ] = dataObj['customer_lastname'     ];
@@ -86,7 +87,7 @@ $('#btnFinishInstallation').on('click', function() {
         data: data,
         success: function(response) {
             if(response === "1")
-                alert("Everything Created & Set-up Successfully");
+                alert("Everything Created & Set-up Successfully\n\nHere we need one more page...");
             else
                 alert("Error: " + response);
         },

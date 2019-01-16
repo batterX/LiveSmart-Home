@@ -1,4 +1,4 @@
-$container.trigger('step', 5);
+$progress.trigger('step', 5);
 
 
 
@@ -8,6 +8,66 @@ var deviceModel = "";
 var deviceDatetime = "";
 var newParameters = {};
 var oldParameters = {};
+
+
+
+
+
+$.get({
+    url: 'cmd/apikey.php',
+    success: function(response) {
+        console.log(response);
+        if(response && response.length == 40) {
+            $.post({
+                url: "https://api.batterx.io/v2/installation.php",
+                data: {
+                    action: "retrieve_installation_info",
+                    apikey: response.toString()
+                },
+                success: function(json) {
+                    console.log(json);
+                    if(json != "")
+                    {
+                        // Set System Info
+                        if(json.hasOwnProperty('system')) {
+                            if(json.system.hasOwnProperty('serialnumber'))
+                                $("#bx_system").val(json.system.serialnumber);
+                        }
+                        // Set Device Info
+                        if(json.hasOwnProperty('device')) {
+                            if(json.device.hasOwnProperty('solar_watt_peak'))
+                                $('#solar_wattPeak').val(json.device.solar_watt_peak);
+                            if(json.device.hasOwnProperty('grid_feedin_limitation'))
+                                $('#solar_feedInLimitation').val(json.device.grid_feedin_limitation);
+                        }
+                        // Set Batteries Info
+                        if(json.hasOwnProperty('batteries')) {
+                            if(json.batteries.length > 0 && json.batteries[0].hasOwnProperty('serialnumber'))
+                                $('#battery_1').val(json.batteries[0].serialnumber);
+                            if(json.batteries.length > 1 && json.batteries[1].hasOwnProperty('serialnumber'))
+                                $('#battery_2').val(json.batteries[1].serialnumber);
+                            if(json.batteries.length > 2 && json.batteries[2].hasOwnProperty('serialnumber'))
+                                $('#battery_3').val(json.batteries[2].serialnumber);
+                            if(json.batteries.length > 3 && json.batteries[3].hasOwnProperty('serialnumber'))
+                                $('#battery_4').val(json.batteries[3].serialnumber);
+                        }
+                    }
+                },
+                error: function() { alert("An error has occured. Please refresh the page! _003"); }
+            });
+        } else alert("An error has occured. Please refresh the page! _002");
+    },
+    error: function() { alert("An error has occured. Please refresh the page! _001"); }
+});
+
+
+
+
+
+
+
+
+
 
 
 
@@ -304,14 +364,10 @@ function finishSetup()
 
                 newParameters['maxGridFeedInPower'           ] = Math.max(parseInt($('#solar_wattPeak').val()) * parseInt($('#solar_feedInLimitation').val()) / 100, 50);
                 newParameters['maxGridFeedInPower'           ] = Math.min(newParameters['maxGridFeedInPower'], maxGridFeedInPower);
-                newParameters['maxChargingCurrent'           ] = Math.min(numberOfModules * 3700, maxChargingCurrent   ).toString();
                 newParameters['maxChargingCurrentAC'         ] = Math.min(numberOfModules * 3700, maxChargingCurrent   ).toString();
-                newParameters['maxDischargingCurrentHybrid'  ] = Math.min(numberOfModules * 37  , maxDischargingCurrent).toString();
-                newParameters['bulkChargingVoltage'          ] = '5320';
-                newParameters['floatChargingVoltage'         ] = '5320';
-                newParameters['cutoffVoltageHybrid'          ] = '4600';
+                newParameters['cutoffVoltageHybrid'          ] = '4700';
                 newParameters['redischargeVoltageHybrid'     ] = '5000';
-                newParameters['cutoffVoltage'                ] = '4500';
+                newParameters['cutoffVoltage'                ] = '4700';
                 newParameters['redischargeVoltage'           ] = '5000';
                 newParameters['solarEnergyPriority'          ] = '1';
                 newParameters['batteryType'                  ] = '1';
@@ -320,9 +376,6 @@ function finishSetup()
                 newParameters['allowGridFeedIn'              ] = '1';
                 newParameters['allowBatteryDischargeSolarOK' ] = '1';
                 newParameters['allowBatteryDischargeSolarNOK'] = '1';
-
-                console.log("newParameters");
-                console.log(newParameters);
 
                 // Get Old Parameters
                 $.get({
@@ -333,11 +386,7 @@ function finishSetup()
                             response = response['InverterParameters'];
                             deviceDatetime = response['0']['S1'];
                             oldParameters['maxGridFeedInPower'           ] = response['15']['S1'];
-                            oldParameters['maxChargingCurrent'           ] = response['30']['S1'];
                             oldParameters['maxChargingCurrentAC'         ] = response['31']['S1'];
-                            oldParameters['maxDischargingCurrentHybrid'  ] = response['34']['S1'];
-                            oldParameters['bulkChargingVoltage'          ] = response['32']['S1'].split(",")[0];
-                            oldParameters['floatChargingVoltage'         ] = response['32']['S1'].split(",")[1];
                             oldParameters['cutoffVoltageHybrid'          ] = response['33']['S1'].split(",")[0];
                             oldParameters['redischargeVoltageHybrid'     ] = response['33']['S1'].split(",")[1];
                             oldParameters['cutoffVoltage'                ] = response['33']['S1'].split(",")[2];
@@ -354,6 +403,9 @@ function finishSetup()
                     error: function() { alert("An error has occured. Please try again! _019"); }
                 });
 
+                console.log("newParameters");
+                console.log(newParameters);
+                
                 console.log("oldParameters");
                 console.log(oldParameters);
 
@@ -362,15 +414,9 @@ function finishSetup()
                 // Resend Not Set Commands
                 if(newParameters['maxGridFeedInPower'] != oldParameters['maxGridFeedInPower'])
                     { retry = true; sendCommand(24085, 0, "", newParameters['maxGridFeedInPower']); }
-                if(newParameters['maxChargingCurrent'] != oldParameters['maxChargingCurrent'])
-                    { retry = true; sendCommand(24112, 0, "", newParameters['maxChargingCurrent']); }
                 if(newParameters['maxChargingCurrentAC'] != oldParameters['maxChargingCurrentAC'])
                     { retry = true; sendCommand(24113, 0, "", newParameters['maxChargingCurrentAC']); }
-                if(newParameters['maxDischargingCurrentHybrid'] != oldParameters['maxDischargingCurrentHybrid'])
-                    { retry = true; sendCommand(24116, 0, "", newParameters['maxDischargingCurrentHybrid']); }
-                if(newParameters['bulkChargingVoltage'] != oldParameters['bulkChargingVoltage'] || newParameters['floatChargingVoltage'] != oldParameters['floatChargingVoltage'])
-                    { retry = true; sendCommand(24114, 0, "", newParameters['bulkChargingVoltage'] + "," + newParameters['floatChargingVoltage']); }
-                if(newParameters['cutoffVoltageHybrid'] != oldParameters['cutoffVoltageHybrid'] || newParameters['redischargeVoltageHybrid'] != oldParameters['redischargeVoltageHybrid'] || newParameters['cutoffVoltage'] != oldParameters['cutoffVoltage'] || newParameters['redischargeVoltage'] != oldParameters['redischargeVoltage'])
+                if(newParameters['cutoffVoltageHybrid'] != oldParameters['cutoffVoltageHybrid'] || newParameters['redischargeVoltageHybrid'] != oldParameters['redischargeVoltageHybrid'] || newParameters['redischargeVoltage'] != oldParameters['redischargeVoltage'])
                     { retry = true; sendCommand(24115, 0, "", newParameters['cutoffVoltageHybrid'] + "," + newParameters['redischargeVoltageHybrid'] + "," + newParameters['cutoffVoltage'] + "," + newParameters['redischargeVoltage']); }
                 if(newParameters['solarEnergyPriority'] != oldParameters['solarEnergyPriority'])
                     { retry = true; sendCommand(24070, 0, "", newParameters['solarEnergyPriority']); }
@@ -437,11 +483,7 @@ function checkParameters() {
 
                 // Check if All Commands Are Correct
                 oldParameters['maxGridFeedInPower'           ] = response['15']['S1'];
-                oldParameters['maxChargingCurrent'           ] = response['30']['S1'];
                 oldParameters['maxChargingCurrentAC'         ] = response['31']['S1'];
-                oldParameters['maxDischargingCurrentHybrid'  ] = response['34']['S1'];
-                oldParameters['bulkChargingVoltage'          ] = response['32']['S1'].split(",")[0];
-                oldParameters['floatChargingVoltage'         ] = response['32']['S1'].split(",")[1];
                 oldParameters['cutoffVoltageHybrid'          ] = response['33']['S1'].split(",")[0];
                 oldParameters['redischargeVoltageHybrid'     ] = response['33']['S1'].split(",")[1];
                 oldParameters['cutoffVoltage'                ] = response['33']['S1'].split(",")[2];
@@ -459,15 +501,9 @@ function checkParameters() {
                 // Resend Not Set Commands
                 if(newParameters['maxGridFeedInPower'] != oldParameters['maxGridFeedInPower'])
                     { retry = true; sendCommand(24085, 0, "", newParameters['maxGridFeedInPower']); }
-                if(newParameters['maxChargingCurrent'] != oldParameters['maxChargingCurrent'])
-                    { retry = true; sendCommand(24112, 0, "", newParameters['maxChargingCurrent']); }
                 if(newParameters['maxChargingCurrentAC'] != oldParameters['maxChargingCurrentAC'])
                     { retry = true; sendCommand(24113, 0, "", newParameters['maxChargingCurrentAC']); }
-                if(newParameters['maxDischargingCurrentHybrid'] != oldParameters['maxDischargingCurrentHybrid'])
-                    { retry = true; sendCommand(24116, 0, "", newParameters['maxDischargingCurrentHybrid']); }
-                if(newParameters['bulkChargingVoltage'] != oldParameters['bulkChargingVoltage'] || newParameters['floatChargingVoltage'] != oldParameters['floatChargingVoltage'])
-                    { retry = true; sendCommand(24114, 0, "", newParameters['bulkChargingVoltage'] + "," + newParameters['floatChargingVoltage']); }
-                if(newParameters['cutoffVoltageHybrid'] != oldParameters['cutoffVoltageHybrid'] || newParameters['redischargeVoltageHybrid'] != oldParameters['redischargeVoltageHybrid'] || newParameters['cutoffVoltage'] != oldParameters['cutoffVoltage'] || newParameters['redischargeVoltage'] != oldParameters['redischargeVoltage'])
+                if(newParameters['cutoffVoltageHybrid'] != oldParameters['cutoffVoltageHybrid'] || newParameters['redischargeVoltageHybrid'] != oldParameters['redischargeVoltageHybrid'] || newParameters['redischargeVoltage'] != oldParameters['redischargeVoltage'])
                     { retry = true; sendCommand(24115, 0, "", newParameters['cutoffVoltageHybrid'] + "," + newParameters['redischargeVoltageHybrid'] + "," + newParameters['cutoffVoltage'] + "," + newParameters['redischargeVoltage']); }
                 if(newParameters['solarEnergyPriority'] != oldParameters['solarEnergyPriority'])
                     { retry = true; sendCommand(24070, 0, "", newParameters['solarEnergyPriority']); }
@@ -483,6 +519,11 @@ function checkParameters() {
                     { retry = true; sendCommand(24066, 0, "", "D," + newParameters['allowbatteryDischargeSolarOK']); }
                 if(newParameters['allowbatteryDischargeSolarNOK'] != oldParameters['allowbatteryDischargeSolarNOK'])
                     { retry = true; sendCommand(24066, 0, "", "E," + newParameters['allowbatteryDischargeSolarNOK']); }
+
+                console.log("newParameters");
+                console.log(newParameters);
+                console.log("oldParameters");
+                console.log(oldParameters);
 
                 // Show Setting Success
                 if(!retry) {

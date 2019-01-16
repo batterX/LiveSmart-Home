@@ -25,7 +25,6 @@ $strings = json_decode($strings, true);
 if($lang == "de") $strings = $strings['tables'][1];
 else              $strings = $strings['tables'][0];
 
-
 // Check Step
 
 if(!isset($_SESSION['last_step'])) header("location: index.php");
@@ -67,10 +66,8 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div class="bullet-progress">
-			<div class="progress-bar">
-				<div class="progress"></div>
-			</div>
+		<div id="progress" class="progress m-3">
+			<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 		</div>
 
 
@@ -96,7 +93,6 @@ $_SESSION['last_step'] = $step;
 		<script src="js/dist/bundle.js"></script>
 		<script src="js/common.js"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>
-		<script>const softwareVersion = '<?php if(isset($_SESSION['software_version'])) echo $_SESSION['software_version'] ?>';</script>
 		<script src="js/software_update.js"></script>
 
 

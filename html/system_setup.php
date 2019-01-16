@@ -67,11 +67,9 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div class="bullet-progress">
-			<div class="progress-bar">
-				<div class="progress"></div>
-			</div>
-		</div>
+        <div id="progress" class="progress m-3">
+            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%"></div>
+        </div>
 
 
 
@@ -132,7 +130,7 @@ $_SESSION['last_step'] = $step;
                 </div>
 
                 <div class="text-center pt-5 mt-5 mb-5">
-                    <button id="btnSubmit" type="submit" class="btn btn-primary levitate ripple mb-3 px-5 py-3" disabled>CONFIRM</button>
+                    <button id="btnSubmit" type="submit" class="btn btn-success levitate ripple mb-3 px-5 py-3" disabled>CONFIRM</button>
                     <div class="setting-progress d-none">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="error"></div>

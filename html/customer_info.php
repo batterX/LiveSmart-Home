@@ -25,7 +25,6 @@ $strings = json_decode($strings, true);
 if($lang == "de") $strings = $strings['tables'][1];
 else              $strings = $strings['tables'][0];
 
-
 // Check Step
 
 if(!isset($_SESSION['last_step'])) header("location: index.php");
@@ -67,11 +66,9 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div class="bullet-progress">
-			<div class="progress-bar">
-				<div class="progress"></div>
-			</div>
-		</div>
+        <div id="progress" class="progress m-3">
+            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%"></div>
+        </div>
 
 
 
@@ -91,7 +88,7 @@ $_SESSION['last_step'] = $step;
                             <span id="errorMsg"><i><?php echo $strings[5][3]; ?></i></span>
                         </div>
                         <div class="modal-footer border-0 pt-0">
-                            <button type="submit" id="btnLogin" class="btn btn-primary levitate ripple"><?php echo $strings[5][2]; ?></button>
+                            <button type="submit" id="btnLogin" class="btn btn-success levitate ripple"><?php echo $strings[5][2]; ?></button>
                         </div>
                     </form>
                 </div>
@@ -107,7 +104,7 @@ $_SESSION['last_step'] = $step;
                     <h1 class="customer-informations"><?php echo $strings[6]; ?></h1>
                 </div>
                 <div class="col-6 p-0 d-flex align-items-center justify-content-end">
-                    <button id="existingCustomer" class="btn btn-info levitate ripple" data-toggle="modal" data-target="#modalExistingCustomer"><?php echo $strings[9]; ?></button>
+                    <button id="existingCustomer" class="btn btn-success levitate ripple" data-toggle="modal" data-target="#modalExistingCustomer"><?php echo $strings[9]; ?></button>
                 </div>
             </div>
 
@@ -189,7 +186,7 @@ $_SESSION['last_step'] = $step;
                 </div>
 
                 <div class="text-right pr-3">
-                    <button type="submit" id="btnSubmit" class="btn btn-primary levitate ripple mt-5 mb-3 px-5 py-3" disabled>ACCEPT &amp; SUBMIT</button>
+                    <button type="submit" id="btnSubmit" class="btn btn-success levitate ripple mt-5 mb-3 px-5 py-3" disabled>ACCEPT &amp; SUBMIT</button>
                 </div>
 
             </form>

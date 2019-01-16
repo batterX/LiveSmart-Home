@@ -54,46 +54,6 @@ $arrayDeviceModel = [
     'h10' => 'batterX h10'
 ];
 
-
-
-
-
-// ONLY FOR TESTING -> TODO: REMOVE
-
-//$_SESSION['software_version']       = 'v19.1.1';
-//$_SESSION['installer_gender']       = '0'; // 0=Male 1=Female
-//$_SESSION['installer_firstname']    = 'Alexander';
-//$_SESSION['installer_lastname']     = 'Hansen';
-//$_SESSION['installer_company']      = 'Vision UPS Systems';
-//$_SESSION['installer_email']        = 'info@batterx.io';
-//$_SESSION['installer_password']     = 'batterx';
-//
-//$_SESSION['customer_gender']        = '0'; // 0=Male 1=Female
-//$_SESSION['customer_firstname']     = 'Ivan';
-//$_SESSION['customer_lastname']      = 'Gavrilov';
-//$_SESSION['customer_email']         = 'ivan@visionups.com';
-//$_SESSION['customer_telephone']     = '+32 123 456 789';
-//$_SESSION['customer_country']       = 'be';
-//$_SESSION['customer_city']          = 'Sankt Vith';
-//$_SESSION['customer_zipcode']       = '4780';
-//$_SESSION['customer_address']       = 'Hubert Reulandt Strasse 4';
-//
-//$_SESSION['installation_country']   = 'be';
-//$_SESSION['installation_city']      = 'Sankt Vith';
-//$_SESSION['installation_zipcode']   = '4780';
-//$_SESSION['installation_address']   = 'Hubert Reulandt Strasse 4';
-//
-//$_SESSION['box_apikey']             = 'ffe8e099345213616caaa762e6bbaa907502db2e';
-//$_SESSION['box_serial']             = '1807XH0030';
-//$_SESSION['device_serial']          = '96161809100208';
-//$_SESSION['device_model']           = 'h10';
-//$_SESSION['system_serial']          = '220100EP190100';
-//$_SESSION['battery1_serial']        = 'PPTAH02138919115';
-//$_SESSION['battery2_serial']        = 'PPTAH02138919116';
-//
-//$_SESSION['solar_wattPeak']         = '5000';
-//$_SESSION['solar_feedInLimitation'] = '50';
-
 ?>
 
 
@@ -126,11 +86,9 @@ $arrayDeviceModel = [
 
 
 
-		<div class="bullet-progress">
-			<div class="progress-bar">
-				<div class="progress"></div>
-			</div>
-		</div>
+        <div id="progress" class="progress m-3">
+            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%"></div>
+        </div>
 
 
 
@@ -145,6 +103,10 @@ $arrayDeviceModel = [
             <div class="row">
                 <div class="col-6 col-lg-4">Installer Email</div>
                 <div class="col-6 col-lg-4"><b><?php echo $_SESSION['installer_email'] ?></b></div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-lg-4">Installer Telephone</div>
+                <div class="col-6 col-lg-4"><b><?php echo $_SESSION['installer_telephone'] ?></b></div>
             </div>
 
             <div class="p-3"></div>
@@ -205,7 +167,7 @@ $arrayDeviceModel = [
 
         <div class="container text-left">
             <button id="btnDownload" class="btn btn-secondary levitate ripple mr-2 mb-3 mt-4 px-5 py-3">DOWNLOAD PDF</button>
-            <button id="btnFinishInstallation" class="btn btn-primary levitate ripple mb-3 mt-4 px-5 py-3">FINISH INSTALLATION</button>
+            <button id="btnFinishInstallation" class="btn btn-success levitate ripple mb-3 mt-4 px-5 py-3">FINISH INSTALLATION</button>
         </div>
 		
 

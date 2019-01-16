@@ -129,37 +129,38 @@ button:focus {
 
 
 
-
 /*
-    Bullet Progress Bar
+    legitRipple Stuff
 */
 
-.bullet-progress {
-    margin: 2rem;
-    position: relative;
+.ripple-inverse .legitRipple-ripple,
+.btn-primary    .legitRipple-ripple,
+.btn-secondary  .legitRipple-ripple,
+.btn-success    .legitRipple-ripple,
+.btn-danger     .legitRipple-ripple,
+.btn-warning    .legitRipple-ripple,
+.btn-info       .legitRipple-ripple,
+.btn-dark       .legitRipple-ripple {
+    background: rgba(255, 255, 255, .25);
 }
 
-.bullet-progress .progress-bar {
-    background-color: #dddddd;
+
+
+
+
+
+
+
+
+
+body {
+    margin-bottom: 50px;
 }
-  
-.bullet-progress .progress-bar .progress {
-    background-color: #007bff;
-    width: 0%;
-    height: 0.25rem;
-}
-  
-.bullet-progress a {
-    position: absolute;
-    display: inline-block;
-    top: -0.4rem; left: 0;
-    margin-left: -0.5rem;
-    width: 1rem;
-    height: 1rem;
-    background: #dddddd;
-    border-radius: 50%;
-}
-  
-.bullet-progress a.active {
-    background: #007bff;
+
+#progress {
+    z-index: 10000;
+	position: fixed;
+    width: calc(100vw - 64px);
+	left: 16px;
+	top: calc(100vh - 48px);
 }

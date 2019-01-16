@@ -1,4 +1,75 @@
-$container.trigger('step', 3);
+$progress.trigger('step', 3);
+
+
+
+
+
+$.get({
+    url: 'cmd/apikey.php',
+    success: function(response) {
+        console.log(response);
+        if(response && response.length == 40) {
+            $.post({
+                url: "https://api.batterx.io/v2/installation.php",
+                data: {
+                    action: "retrieve_installation_info",
+                    apikey: response.toString()
+                },
+                success: function(json) {
+                    console.log(json);
+                    if(json != "")
+                    {
+                        // Set Installation Address
+                        if(json.hasOwnProperty('installation')) {
+                            if(json.installation.hasOwnProperty('country'))
+                                $("#installationAddress .location-country").val(json.installation.country);
+                            if(json.installation.hasOwnProperty('city'))
+                                $("#installationAddress .location-city").val(json.installation.city);
+                            if(json.installation.hasOwnProperty('zipcode'))
+                                $("#installationAddress .location-zip").val(json.installation.zipcode);
+                            if(json.installation.hasOwnProperty('address'))
+                                $("#installationAddress .location-address").val(json.installation.address);
+                        }
+                        // Set Customer Information
+                        if(json.hasOwnProperty('customer')) {
+                            if(
+                                json.customer.hasOwnProperty('gender'     ) && json.customer.gender      != "" &&
+                                json.customer.hasOwnProperty('firstname'  ) && json.customer.firstname   != "" &&
+                                json.customer.hasOwnProperty('lastname'   ) && json.customer.lastname    != "" &&
+                                json.customer.hasOwnProperty('email'      ) && json.customer.email       != "" &&
+                                json.customer.hasOwnProperty('telephone'  ) && json.customer.telephone   != "" &&
+                                json.customer.hasOwnProperty('country'    ) && json.customer.country     != "" &&
+                                json.customer.hasOwnProperty('city'       ) && json.customer.city        != "" &&
+                                json.customer.hasOwnProperty('zipcode'    ) && json.customer.zipcode     != "" &&
+                                json.customer.hasOwnProperty('address'    ) && json.customer.address     != ""
+                            ) {
+                                // Set Input Values
+                                $("#customerInformations .gender"          ).attr('disabled', 'disabled').val(json.customer.gender);
+                                $("#customerInformations .first-name"      ).attr('disabled', 'disabled').val(json.customer.firstname);
+                                $("#customerInformations .last-name"       ).attr('disabled', 'disabled').val(json.customer.lastname);
+                                $("#customerInformations .email"           ).attr('disabled', 'disabled').val(json.customer.email);
+                                $("#customerInformations .telephone"       ).attr('disabled', 'disabled').val(json.customer.telephone);
+                                $("#customerInformations .location-country").attr('disabled', 'disabled').val(json.customer.country);
+                                $("#customerInformations .location-city"   ).attr('disabled', 'disabled').val(json.customer.city);
+                                $("#customerInformations .location-zip"    ).attr('disabled', 'disabled').val(json.customer.zipcode);
+                                $("#customerInformations .location-address").attr('disabled', 'disabled').val(json.customer.address);
+                            }
+                        }
+                    }
+                },
+                error: function() { alert("An error has occured. Please refresh the page! _003"); }
+            });
+        } else alert("An error has occured. Please refresh the page! _002");
+    },
+    error: function() { alert("An error has occured. Please refresh the page! _001"); }
+});
+
+
+
+
+
+
+
 
 
 
@@ -44,12 +115,16 @@ $('#loginForm').on('submit', function(e) {
 
 
 
+
+
 $("#sameAddress").on('change', function() {
     if($(this).is(':checked'))
         $('#installationAddress').hide();
     else
         $('#installationAddress').show();
 });
+
+
 
 
 
@@ -95,6 +170,8 @@ setInterval(function() {
         }
     }
 }, 1000);
+
+
 
 
 

@@ -1,4 +1,32 @@
-$container.trigger('step', 1);
+$progress.trigger('step', 1);
+
+
+
+
+
+var softwareVersion = "";
+var newVersion      = "";
+
+var checkUpdateInterval;
+
+
+
+
+
+$.get({
+    url: 'api.php?get=settings',
+    success: function(json) {
+        if(json.hasOwnProperty('Version') && json['Version'].hasOwnProperty('0')) {
+            softwareVersion = `v${json['Version']['0']['V1']}.${json['Version']['0']['V2']}.${json['Version']['0']['V3']}`;
+            performUpdate();
+        }
+    },
+    error: function(err) {
+        performUpdate();
+    }
+})
+
+
 
 
 
@@ -20,15 +48,15 @@ function checkLatestVersion() {
 
 
 
-var checkUpdateInterval;
-var newVersion = softwareVersion;
 
-function performUpdate() {
+
+function performUpdate()
+{
     // Check Connection
     checkConnection().done(function() {
         // Search for Updates
         $("#loading").show();
-        $("error").hide();
+        $("#error").hide();
         $("#errorInfo").addClass('d-none');
         $('#message').html(lang[2][1]).css('color', 'black');
         checkLatestVersion().done(function(versionNum) {
@@ -72,7 +100,7 @@ function performUpdate() {
     });
 }
 
-performUpdate();
+
 
 
 

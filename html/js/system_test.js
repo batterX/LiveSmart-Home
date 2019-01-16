@@ -1,4 +1,4 @@
-$container.trigger('step', 6);
+$progress.trigger('step', 6);
 
 
 
