@@ -16,10 +16,9 @@ var checkUpdateInterval;
 $.get({
     url: 'api.php?get=settings',
     success: function(json) {
-        if(json.hasOwnProperty('Version') && json['Version'].hasOwnProperty('0')) {
+        if(json.hasOwnProperty('Version') && json['Version'].hasOwnProperty('0'))
             softwareVersion = `v${json['Version']['0']['V1']}.${json['Version']['0']['V2']}.${json['Version']['0']['V3']}`;
-            performUpdate();
-        }
+        performUpdate();
     },
     error: function(err) {
         performUpdate();
