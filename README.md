@@ -1,4 +1,4 @@
-# batterX Live&Smart Home (v19.1.2)
+# batterX Live&Smart Home (v19.1.3)
 
 This is just a test version of our new software. It is under development and not usable in any way right now.
 
