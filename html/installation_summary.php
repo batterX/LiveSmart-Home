@@ -163,11 +163,19 @@ $arrayDeviceModel = [
             </div>
 
         </div>
+
+
+        <div class="container pt-5 pb-3">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="checkboxAccept">
+                <label class="custom-control-label" for="checkboxAccept">I hereby confirm that the information above is true, complete and accurate.</label>
+            </div>
+        </div>
         
 
         <div class="container text-left">
-            <button id="btnDownload" class="btn btn-secondary levitate ripple mr-2 mb-3 mt-4 px-5 py-3">DOWNLOAD PDF</button>
-            <button id="btnFinishInstallation" class="btn btn-success levitate ripple mb-3 mt-4 px-5 py-3">FINISH INSTALLATION</button>
+            <button id="btnFinishInstallation" class="btn btn-success levitate ripple mb-3 mt-4 px-5 py-3 d-none">FINISH INSTALLATION</button>
+            <button id="btnDownload" class="btn btn-secondary levitate ripple mb-3 mt-4 px-5 py-3 ml-3 d-none">DOWNLOAD PDF</button>
         </div>
 		
 

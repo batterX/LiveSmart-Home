@@ -1,3 +1,7 @@
+body {
+    margin-bottom: 100px;
+}
+
 .loading {
     display: none;
     width: 2.25rem;

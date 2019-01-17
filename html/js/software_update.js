@@ -16,8 +16,10 @@ var checkUpdateInterval;
 $.get({
     url: 'api.php?get=settings',
     success: function(json) {
-        if(json.hasOwnProperty('Version') && json['Version'].hasOwnProperty('0'))
+        if(json.hasOwnProperty('Version') && json['Version'].hasOwnProperty('0')) {
             softwareVersion = `v${json['Version']['0']['V1']}.${json['Version']['0']['V2']}.${json['Version']['0']['V3']}`;
+            newVersion = softwareVersion;
+        }
         performUpdate();
     },
     error: function(err) {
@@ -79,7 +81,7 @@ function performUpdate()
                 $("#message").html(lang[2][5]).css('color', '#25ae88');
                 $("#success").show();
                 setTimeout(function() {
-                    window.location.href = "installer_login.php";
+                    window.location.href = "installer_login.php?software_version=" + newVersion;
                 }, 5000);
             }
         }).fail(function(jqXR, textStatus, errorThrown) {

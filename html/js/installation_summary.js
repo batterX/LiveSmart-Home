@@ -3,6 +3,13 @@ $progress.trigger('step', 7);
 
 
 
+$('#checkboxAccept').on('click', function() {
+    $('#btnFinishInstallation').removeClass('d-none');
+});
+
+
+
+
 
 function getImageDimensions(file) {
     return new Promise (function (resolved, rejected) {
@@ -86,12 +93,13 @@ $('#btnFinishInstallation').on('click', function() {
         url: "https://api.batterx.io/v2/installation.php",
         data: data,
         success: function(response) {
-            if(response === "1")
-                alert("Everything Created & Set-up Successfully\n\nHere we need one more page...");
-            else
+            if(response === "1") {
+                alert("Everything Created & Set-up Successfully");
+                $('#btnDownload').removeClass('d-none');
+            } else
                 alert("Error: " + response);
         },
-        error: function() { alert("An error has occured. Please refresh this page!"); }
+        error: function(err) { alert("An error has occured. Please refresh this page!"); }
     });
 
     //alert("Send Confirmation Email (with button to resend)");
