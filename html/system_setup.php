@@ -141,6 +141,8 @@ $_SESSION['last_step'] = $step;
                     </div>
                 </div>
 
+                <input id="installation_date" type="hidden" value="<?php echo date('Y-m-d'); ?>">
+
             </form>
 
 		</div>

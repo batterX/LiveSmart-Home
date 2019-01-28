@@ -97,6 +97,17 @@ $arrayDeviceModel = [
             <h1>Installation Summary</h1>
 
             <div class="row">
+                <div class="col-6 col-lg-4">Installation Date</div>
+                <div class="col-6 col-lg-4"><b><?php echo $_SESSION['installation_date']; ?></b></div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-lg-4">Latest Maintenance</div>
+                <div class="col-6 col-lg-4"><b id="latestMaintenanceDate"><?php echo date('Y-m-d'); ?></b></div>
+            </div>
+
+            <div class="p-3"></div>
+
+            <div class="row">
                 <div class="col-6 col-lg-4">Installer</div>
                 <div class="col-6 col-lg-4"><b><?php echo $arrayGender[$_SESSION['installer_gender']] . " " . $_SESSION['installer_firstname'] . " " . $_SESSION['installer_lastname'] . "<br>" . $_SESSION['installer_company'] ?></b></div>
             </div>

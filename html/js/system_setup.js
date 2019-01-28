@@ -51,6 +51,10 @@ $.get({
                             if(json.batteries.length > 3 && json.batteries[3].hasOwnProperty('serialnumber'))
                                 $('#battery_4').val(json.batteries[3].serialnumber);
                         }
+                        // Set Installation Date
+                        if(json.hasOwnProperty('installation_date')) {
+                            $('#installation_date').val(json.installation_date);
+                        }
                     }
                 },
                 error: function() { alert("An error has occured. Please refresh the page! _003"); }
@@ -155,7 +159,8 @@ setInterval(function() {
         $("#bx_box"                ).val() != "" &&
         $("#solar_wattPeak"        ).val() != "" &&
         $("#solar_feedInLimitation").val() != "" &&
-        $("#battery_1"             ).val() != ""
+        $("#battery_1"             ).val() != "" &&
+        $("#installation_date"     ).val() != ""
     )
     {
         $("#btnSubmit").removeAttr("disabled");
@@ -182,7 +187,8 @@ $('#mainForm').on('submit', function(e) {
         $("#bx_box"                ).val() != "" &&
         $("#solar_wattPeak"        ).val() != "" &&
         $("#solar_feedInLimitation").val() != "" &&
-        $("#battery_1"             ).val() != ""
+        $("#battery_1"             ).val() != "" &&
+        $("#installation_date"     ).val() != ""
     )
     {
 
@@ -332,7 +338,8 @@ function finishSetup()
     var tempData = {
         system_serial:          $('#bx_system'             ).val(),
         solar_wattPeak:         $('#solar_wattPeak'        ).val(),
-        solar_feedInLimitation: $('#solar_feedInLimitation').val()
+        solar_feedInLimitation: $('#solar_feedInLimitation').val(),
+        installation_date:      $('#installation_date'     ).val()
     };
     if($('#battery_1').val() != "") tempData["battery1_serial"] = $("#battery_1").val();
     if($('#battery_2').val() != "") tempData["battery2_serial"] = $("#battery_2").val();
