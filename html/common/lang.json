@@ -7,109 +7,242 @@
 
     "tables": [
 
-        [
-            "English",
 
-            "Software Update",
-            [
-                "Checking Internet Connection",
-                "Searching for Updates",
-                "Downloading Update",
-                "Rebooting",
-                "Finishing Update",
-                "Update completed",
-                "No Internet Connection",
-                "Make sure the network cable is connected"
-            ],
 
-            "Installer Login",
-            "Customer Login",
-            [
-                "Email",
-                "Password",
-                "Login",
-                "Wrong email or password. Please try again!"
-            ],
 
-            "Customer Informations",
-            "Installation Address",
-            [
-                [
-                    "Mr.",
-                    "Ms."
-                ],
-                "First name",
-                "Last name",
-                "Email",
-                "Telephone",
-                [
-                    "Belgium",
-                    "France",
-                    "Germany"
-                ],
-                "City",
-                "Zip Code",
-                "Address"
-            ],
-            "Existing customer",
-            "Same as customer address",
 
-            "Inverter Unknown",
-            "Please connect your Inverter to the Live & Smart",
-            "Continue"
-        ],
 
-        [
-            "Deutsch",
 
-            "Software-Aktualisierung",
-            [
-                "Überprüfung der internetverbindung",
-                "Es wird nach updates gesucht",
-                "Update wird heruntergeladen",
-                "Neustarten",
-                "Update abschließen",
-                "Update abgeschlossen",
-                "Keine Internetverbindung",
-                "Stellen Sie sicher, dass das Netzwerkkabel angeschlossen ist"
-            ],
 
-            "Installateur-Anmeldung",
-            "Kunden-Anmeldung",
-            [
-                "Email",
-                "Kennwort",
-                "Anmelden",
-                "Falsche Email oder Kennwort. Bitte versuchen Sie es noch einmal!"
-            ],
 
-            "Kundeninformationen",
-            "Installationsadresse",
-            [
-                [
-                    "Herr",
-                    "Frau"
-                ],
-                "Vorname",
-                "Nachname",
-                "Email",
-                "Telefon",
-                [
-                    "Belgien",
-                    "Frankreich",
-                    "Deutschland"
-                ],
-                "Stadt",
-                "Postleitzahl",
-                "Adresse"
-            ],
-            "Bestehender Kunde",
-            "Gleich Kundenadresse",
 
-            "Wechselrichter unbekannt",
-            "Bitte verbinden Sie Ihren Inverter mit dem Live & Smart",
-            "Weiter"
-        ]
+        {
+            "lang": "English",
+
+            "continue": "Continue",
+
+            "software_update":                "Software Update",
+            "checking_internet_connection":   "Checking Internet Connection",
+            "searching_for_updates":          "Searching for Updates",
+            "downlading_update":              "Downloading Update",
+            "rebooting":                      "Rebooting",
+            "finishing_update":               "Finishing Update",
+            "update_completed":               "Update Completed",
+            "no_internet_connection":         "No Internet Connection",
+            "check_network_cable_connection": "Make sure the network cable is connected",
+
+            "installer_login":         "Installer Login",
+            "customer_login":          "Customer Login",
+            "email":                   "Email",
+            "password":                "Password",
+            "login":                   "Login",
+            "wrong_email_or_password": "Wrong email or password. Please try again!",
+
+            "customer_informations":    "Customer Informations",
+            "installation_address":     "Installation Address",
+            "existing_customer":        "Existing customer",
+            "same_as_customer_address": "Same as customer address",
+            "first_name":               "First name",
+            "last_name":                "Last name",
+            "telephone":                "Telephone",
+            "city":                     "City",
+            "zip_code":                 "Zip Code",
+            "address":                  "Address",
+
+            "gender_male":   "Mr.",
+            "gender_female": "Ms.",
+
+            "be": "Belgium",
+            "de": "Germany",
+            "fr": "France",
+            "lu": "Luxembourg",
+
+            "inverter_unknown":        "Inverter Unknown",
+            "please_connect_inverter": "Please connect your Inverter to the LiveX",
+            "inverter_not_registered": "Your Inverter is not registered in our Database",
+
+            "serialnumber":                                      "Serial number",
+            "serialnumber_system":                               "Serial number of the System (Cabinet)",
+            "system_type_r":                                     "Complete Rack-mounted",
+            "system_type_w":                                     "Inverter Wall-mounted",
+            "serialnumber_inverter":                             "Serial number of the Inverter",
+            "serialnumber_box":                                  "Serial number of the LiveX",
+            "serialnumber_battery1":                             "Serial number of 1st Battery",
+            "serialnumber_battery2":                             "Serial number of 2nd Battery",
+            "serialnumber_battery3":                             "Serial number of 3rd Battery",
+            "serialnumber_battery4":                             "Serial number of 4st Battery",
+            "batteries":                                         "Batteries",
+            "batteries_serialnumber":                            "Please enter the S/N of each battery connected to the system.",
+            "pv_system":                                         "PV-System",
+            "pv_system_size":                                    "Size of the PV-System",
+            "watt_peak":                                         "Watt Peak",
+            "pv_system_feed_in_limitation":                      "How much percent of solar power can be fed to grid in terms of peak power?",
+            "setting_parameters":                                "Setting Parameters. Please Wait...",
+            "inverter_registered_with_other_system":             "Inverter already registered with another system!",
+            "battery_not_exist_or_registered_with_other_system": "Battery does not exist or is already registered with another system!",
+            "setting_success":                                   "Setting successful",
+
+            "system_test":                   "System Test",
+            "energy_meter":                  "Energy Meter",
+            "battery_charging":              "Battery Charging",
+            "battery_discharging":           "Battery Discharging",
+            "ups_mode":                      "UPS Mode",
+            "performing_test":               "Performing Test",
+            "enable_ac_charging":            "Enabling Battery Charging from AC",
+            "disable_ac_charging":           "Disabling Battery Charging from AC",
+            "wait_before_test":              "Waiting 1 minute before test",
+            "enable_discharging_to_grid":    "Enabling Battery Discharging to Grid",
+            "disable_discharging_to_grid":   "Disabling Battery Discharging to Grid",
+            "check_output_active":           "Checking if Output is Active",
+            "turn_input_breaker_off":        "Turn OFF the input breaker",
+            "please_turn_input_breaker_off": "Please turn OFF the input breaker",
+            "please_turn_output_on":         "Please turn ON the UPS Output",
+
+            "summary_installation_summary": "Installation Summary",
+            "summary_installation_date":    "Installation Date",
+            "summary_latest_maintenance":   "Latest Maintenance",
+            "summary_installer":            "Installer",
+            "summary_installer_email":      "Installer Email",
+            "summary_installer_telephone":  "Installer Telephone",
+            "summary_customer_name":        "Customer Name",
+            "summary_customer_email":       "Customer Email",
+            "summary_customer_telephone":   "Customer Telephone",
+            "summary_customer_address":     "Customer Address",
+            "summary_installation_address": "Installation Address",
+            "summary_system_model":         "System Name",
+            "summary_system":               "System S/N (Cabinet)",
+            "summary_inverter":             "Inverter",
+            "summary_livex":                "LiveX",
+            "summary_batteries":            "Batteries",
+            "summary_pv_system_size":       "PV-System Size",
+            "summary_feed_in_limitation":   "Grid Feed-in Limitation",
+            "summary_confirm_box":          "I hereby confirm that the information above is true, complete and accurate",
+            "summary_finish_installation":  "Finish Installation",
+            "summary_download_pdf":         "Download PDF"
+        },
+
+
+
+
+
+
+
+
+
+
+        {
+            "lang": "Deutsch",
+
+            "continue": "Weiter",
+
+            "software_update":                "Software-Aktualisierung",
+            "checking_internet_connection":   "Überprüfung der internetverbindung",
+            "searching_for_updates":          "Es wird nach updates gesucht",
+            "downlading_update":              "Update wird heruntergeladen",
+            "rebooting":                      "Neustarten",
+            "finishing_update":               "Update abschließen",
+            "update_completed":               "Update abgeschlossen",
+            "no_internet_connection":         "Keine Internetverbindung",
+            "check_network_cable_connection": "Stellen Sie sicher, dass das Netzwerkkabel angeschlossen ist",
+
+            "installer_login":         "Installateur-Anmeldung",
+            "customer_login":          "Kunden-Anmeldung",
+            "email":                   "Email",
+            "password":                "Kennwort",
+            "login":                   "Anmelden",
+            "wrong_email_or_password": "Falsche Email oder Kennwort. Bitte versuchen Sie es noch einmal!",
+
+            "customer_informations":    "Kundeninformationen",
+            "installation_address":     "Installationsadresse",
+            "existing_customer":        "Bestehender Kunde",
+            "same_as_customer_address": "Gleich Kundenadresse",
+            "first_name":               "Vorname",
+            "last_name":                "Nachname",
+            "telephone":                "Telefon",
+            "city":                     "Stadt",
+            "zip_code":                 "Postleitzahl",
+            "address":                  "Adresse",
+
+            "gender_male":   "Herr",
+            "gender_female": "Frau",
+
+            "be": "Belgien",
+            "de": "Deutschland",
+            "fr": "Frankreich",
+            "lu": "Luxembourg",
+
+            "inverter_unknown":        "Wechselrichter Unbekannt",
+            "please_connect_inverter": "Bitte verbinden Sie Ihren Wechselrichter mit dem LiveX.",
+            "inverter_not_registered": "Ihr Wechselrichter ist nicht in unserer Datenbank registriert.",
+
+            "serialnumber":                                      "Seriennummer",
+            "serialnumber_system":                               "Seriennummer des Systems (Schrank)",
+            "system_type_r":                                     "Gesamtschrank",
+            "system_type_w":                                     "WR-Wandmontage",
+            "serialnumber_inverter":                             "Seriennummer des Wechselrichters",
+            "serialnumber_box":                                  "Seriennummer des LiveX",
+            "serialnumber_battery1":                             "Seriennummer der 1. Batterie",
+            "serialnumber_battery2":                             "Seriennummer der 2. Batterie",
+            "serialnumber_battery3":                             "Seriennummer der 3. Batterie",
+            "serialnumber_battery4":                             "Seriennummer der 4. Batterie",
+            "batteries":                                         "Batterien",
+            "batteries_serialnumber":                            "Bitte geben Sie die S/N jeder angeschlossenen Batterie ein",
+            "pv_system":                                         "PV-System",
+            "pv_system_size":                                    "Größe der PV-Anlage",
+            "watt_peak":                                         "Watt Peak",
+            "pv_system_feed_in_limitation":                      "Wie viel Prozent PV-Leistung dürfen eingespeist werden, bezogen auf Spitzenleistung?",
+            "setting_parameters":                                "Wir setzen die Parameter. Bitte warten...",
+            "inverter_registered_with_other_system":             "Der Wechselrichter ist mit einem anderen System registriert!",
+            "battery_not_exist_or_registered_with_other_system": "Das Batteriemodul existiert nicht oder ist bereits mit einem anderen System registriert.",
+            "setting_success":                                   "Einstellung erfolgreich abgeschlossen",
+
+            "system_test":                   "Systemtest",
+            "energy_meter":                  "Energiezähler",
+            "battery_charging":              "Batterieladung",
+            "battery_discharging":           "Batterieentladung",
+            "ups_mode":                      "USV-Modus",
+            "performing_test":               "Test wird durchgeführt",
+            "enable_ac_charging":            "Aktivierung der AC-Batterieladung",
+            "disable_ac_charging":           "Deaktivierung der AC-Batterieladung",
+            "wait_before_test":              "Waiting 1 minute before test",
+            "enable_discharging_to_grid":    "Aktivieren der Batterieentladung zum Netz",
+            "disable_discharging_to_grid":   "Deaktivierung der Batterieentladung zum Netz",
+            "check_output_active":           "Prüfen, ob der Ausgang aktiv ist",
+            "turn_input_breaker_off":        "Schalten Sie den Eingangsschalter AUS",
+            "please_turn_input_breaker_off": "Bitte schalten Sie den Eingangsschalter AUS",
+            "please_turn_output_on":         "Bitte schalten Sie den USV-Ausgang EIN",
+
+            "summary_installation_summary": "Installationsbericht",
+            "summary_installation_date":    "Installationsdatum",
+            "summary_latest_maintenance":   "Letzte Wartung",
+            "summary_installer":            "Installateur",
+            "summary_installer_email":      "Installateur E-Mail",
+            "summary_installer_telephone":  "Installateur Telefon",
+            "summary_customer_name":        "Kundenname",
+            "summary_customer_email":       "Kunde E-Mail",
+            "summary_customer_telephone":   "Kunde Telefon",
+            "summary_customer_address":     "Kundenadresse",
+            "summary_installation_address": "Installationsadresse",
+            "summary_system_model":         "Systemname",
+            "summary_system":               "System-SN (Schrank)",
+            "summary_inverter":             "Wechselrichter",
+            "summary_livex":                "LiveX",
+            "summary_batteries":            "Batterien",
+            "summary_pv_system_size":       "Größe der PV-Anlage",
+            "summary_feed_in_limitation":   "Netzeinspeisebegrenzung",
+            "summary_confirm_box":          "Hiermit bestätige ich, dass die oben angegebenen Informationen wahr, vollständig und korrekt sind",
+            "summary_finish_installation":  "Installation abschließen",
+            "summary_download_pdf":         "PDF herunterladen"
+        }
+
+
+
+
+
+
+
+
+
 
     ]
 

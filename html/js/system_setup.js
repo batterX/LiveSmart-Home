@@ -4,6 +4,7 @@ $progress.trigger('step', 5);
 
 
 
+var systemModel = "";
 var deviceModel = "";
 var deviceDatetime = "";
 var newParameters = {};
@@ -32,6 +33,11 @@ $.get({
                         if(json.hasOwnProperty('system')) {
                             if(json.system.hasOwnProperty('serialnumber'))
                                 $("#bx_system").val(json.system.serialnumber);
+                            if(json.system.hasOwnProperty('model'))
+                                if(json.system.model.includes('W'))
+                                    $("#bx_system_type_w").click();
+                                else
+                                    $("#bx_system_type_r").click();
                         }
                         // Set Device Info
                         if(json.hasOwnProperty('device')) {
@@ -77,7 +83,7 @@ $.get({
 
 
 
-// Set Live&Smart Serial-Number
+// Set LiveX Serial-Number
 
 $.get({
     url: 'cmd/apikey.php',
@@ -193,7 +199,7 @@ $('#mainForm').on('submit', function(e) {
     {
 
         // DISABLE INPUTS
-        $("#bx_system, #bx_device, #bx_box, #solar_wattPeak, #solar_feedInLimitation, #battery_1, #battery_2, #battery_3, #battery_4").attr('disabled', 'disabled');
+        $("#bx_system, #bx_device, #bx_box, #solar_wattPeak, #solar_feedInLimitation, #battery_1, #battery_2, #battery_3, #battery_4, #bx_system_type_r, #bx_system_type_w").attr('disabled', 'disabled');
         
         // SHOW LOADING SCREEN
         $('#btnSubmit').hide();
@@ -225,7 +231,7 @@ $('#mainForm').on('submit', function(e) {
                     if(response === "1")
                         canContinue = true;
                     else
-                        alert("Inverter already registered with another system!");
+                        alert(lang['inverter_registered_with_other_system']);
                 },
                 error: function() { alert("An error has occured. Please refresh the page! _012"); }
             });
@@ -247,7 +253,7 @@ $('#mainForm').on('submit', function(e) {
                     if(response === "1")
                         canContinue = true;
                     else
-                        alert("Battery 1 does not exist or is already installed with another system!");
+                        alert(lang['battery_not_exist_or_registered_with_other_system']);
                 },
                 error: function() { alert("An error has occured. Please refresh the page! _013"); }
             });
@@ -269,7 +275,7 @@ $('#mainForm').on('submit', function(e) {
                     if(response === "1")
                         canContinue = true;
                     else
-                        alert("Battery 2 does not exist or is already installed with another system!");
+                        alert(lang['battery_not_exist_or_registered_with_other_system']);
                 },
                 error: function() { alert("An error has occured. Please refresh the page! _014"); }
             });
@@ -291,7 +297,7 @@ $('#mainForm').on('submit', function(e) {
                     if(response === "1")
                         canContinue = true;
                     else
-                        alert("Battery 3 does not exist or is already installed with another system!");
+                        alert(lang['battery_not_exist_or_registered_with_other_system']);
                 },
                 error: function() { alert("An error has occured. Please refresh the page! _015"); }
             });
@@ -313,7 +319,7 @@ $('#mainForm').on('submit', function(e) {
                     if(response === "1")
                         canContinue = true;
                     else
-                        alert("Battery 4 does not exist or is already installed with another system!");
+                        alert(lang['battery_not_exist_or_registered_with_other_system']);
                 },
                 error: function() { alert("An error has occured. Please refresh the page! _016"); }
             });
@@ -334,9 +340,21 @@ $('#mainForm').on('submit', function(e) {
 
 function finishSetup()
 {
-    // Save All Serial-Numbers (System+Solar+Batteries)
+    let countBat = 0;
+    if($('#battery_1').val() != "") countBat++;
+    if($('#battery_2').val() != "") countBat++;
+    if($('#battery_3').val() != "") countBat++;
+    if($('#battery_4').val() != "") countBat++;
+    countBat = (countBat > 3) ? "14" : (countBat > 2) ? "10,5" : (countBat > 1) ? "7" : "3,5";
+
+    var systemModel = "batterX " + deviceModel + ($('#bx_system_type_w').is(':checked') ? "W" : "R") + "-" + countBat;
+
+    console.log(systemModel);
+
+    // Save All Needed Data (System+Solar+Batteries)
     var tempData = {
         system_serial:          $('#bx_system'             ).val(),
+        system_model:           systemModel,
         solar_wattPeak:         $('#solar_wattPeak'        ).val(),
         solar_feedInLimitation: $('#solar_feedInLimitation').val(),
         installation_date:      $('#installation_date'     ).val()
@@ -442,7 +460,7 @@ function finishSetup()
 
                 // Show Setting Success
                 if(!retry) {
-                    $('.setting-progress span').html('Setting successful').css('color', '#25ae88');
+                    $('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
                     $('.loading').hide();
                     $('.success').show();
                     // Move to next step
@@ -534,7 +552,7 @@ function checkParameters() {
 
                 // Show Setting Success
                 if(!retry) {
-                    $('.setting-progress span').html('Setting successful').css('color', '#25ae88');
+                    $('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
                     $('.loading').hide();
                     $('.success').show();
                     // Move to next step

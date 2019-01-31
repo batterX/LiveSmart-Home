@@ -3,35 +3,24 @@
 session_start();
 $step = 1;
 
-// Language
-
-$lang = "en";
-
-if(isset($_GET['lang']))
-	$lang = $_GET['lang'];
-else if(isset($_SESSION['lang']))
-	$lang = $_SESSION['lang'];
-
-if($lang != "en" && $lang != "de")
-	$lang = "en";
-
+// Set Language
+$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
+if($lang != "en" && $lang != "de") $lang = "en";
 $_SESSION['lang'] = $lang;
 
-// Get Language Table
-
+// Get Language Strings
 $strings = file_get_contents('common/lang.json');
 $strings = json_decode($strings, true);
-
-if($lang == "de") $strings = $strings['tables'][1];
-else              $strings = $strings['tables'][0];
+$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
 
 if(!isset($_SESSION['last_step'])) header("location: index.php");
 
-if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1) header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
+if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
+	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
 
-$_SESSION['back_url']  = $_SERVER['REQUEST_URI'];
+$_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
 ?>
@@ -76,15 +65,15 @@ $_SESSION['last_step'] = $step;
 
 			<div class="w-100">
 
-				<h1><?php echo $strings[1] ?></h1>
+				<h1><?php echo $strings['software_update'] ?></h1>
 
                 <div class="d-flex align-items-center justify-content-center">
 					<div id="error"></div>
 					<div id="success"></div>
 					<div id="loading"></div>
-					<span id="message"><?php echo $strings[2][0] ?></span>
+					<span id="message"><?php echo $strings['checking_internet_connection'] ?></span>
 				</div>
-				<span id="errorInfo" class="d-none"><i><?php echo $strings[2][7]; ?></i></span>
+				<span id="errorInfo" class="d-none"><i><?php echo $strings['check_network_cable_connection']; ?></i></span>
 
 			</div>
 

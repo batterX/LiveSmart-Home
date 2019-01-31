@@ -3,42 +3,27 @@
 session_start();
 $step = 2;
 
-// Language
-
-$lang = "en";
-
-if(isset($_GET['lang']))
-	$lang = $_GET['lang'];
-else if(isset($_SESSION['lang']))
-	$lang = $_SESSION['lang'];
-
-if($lang != "en" && $lang != "de")
-	$lang = "en";
-
+// Set Language
+$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
+if($lang != "en" && $lang != "de") $lang = "en";
 $_SESSION['lang'] = $lang;
 
-// Get Language Table
-
+// Get Language Strings
 $strings = file_get_contents('common/lang.json');
 $strings = json_decode($strings, true);
+$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
-if($lang == "de") $strings = $strings['tables'][1];
-else              $strings = $strings['tables'][0];
+// Check Step
+if(!isset($_SESSION['last_step'])) header("location: index.php");
+if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
+	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
+$_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
+$_SESSION['last_step'] = $step;
+
 
 
 // Set Software Version from previous Step
-
 if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['software_version'];
-
-
-// Check Step
-
-if(!isset($_SESSION['last_step'])) header("location: index.php");
-
-if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1) header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
-
-$_SESSION['back_url']  = $_SERVER['REQUEST_URI'];
-$_SESSION['last_step'] = $step;
 
 ?>
 
@@ -82,21 +67,21 @@ $_SESSION['last_step'] = $step;
 
 			<div class="w-100">
 
-				<h1><?php echo $strings[3]; ?></h1>
+				<h1><?php echo $strings['installer_login']; ?></h1>
 				
 				<form id="loginForm">
 					
 					<div>
-						<input id="email" class="form-control" type="email" placeholder="<?php echo $strings[5][0]; ?>" required>
+						<input id="email" class="form-control" type="email" placeholder="<?php echo $strings['email']; ?>" required>
 					</div>
 					
 					<div>
-						<input id="password" class="form-control" type="password" placeholder="<?php echo $strings[5][1]; ?>" required>
+						<input id="password" class="form-control" type="password" placeholder="<?php echo $strings['password']; ?>" required>
 					</div>
 
-					<span id="errorMsg"><i><?php echo $strings[5][3]; ?></i></span>
+					<span id="errorMsg"><i><?php echo $strings['wrong_email_or_password']; ?></i></span>
 					
-					<button type="submit" id="btnLogin" class="btn btn-success levitate ripple"><?php echo $strings[5][2]; ?></button>
+					<button type="submit" id="btnLogin" class="btn btn-success levitate ripple"><?php echo $strings['login']; ?></button>
 				
 				</form>
 			

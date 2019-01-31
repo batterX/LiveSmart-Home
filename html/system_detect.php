@@ -3,36 +3,21 @@
 session_start();
 $step = 4;
 
-// Language
-
-$lang = "en";
-
-if(isset($_GET['lang']))
-	$lang = $_GET['lang'];
-else if(isset($_SESSION['lang']))
-	$lang = $_SESSION['lang'];
-
-if($lang != "en" && $lang != "de")
-	$lang = "en";
-
+// Set Language
+$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
+if($lang != "en" && $lang != "de") $lang = "en";
 $_SESSION['lang'] = $lang;
 
-// Get Language Table
-
+// Get Language Strings
 $strings = file_get_contents('common/lang.json');
 $strings = json_decode($strings, true);
-
-if($lang == "de") $strings = $strings['tables'][1];
-else              $strings = $strings['tables'][0];
-
+$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
-
 if(!isset($_SESSION['last_step'])) header("location: index.php");
-
-if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1) header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
-
-$_SESSION['back_url']  = $_SERVER['REQUEST_URI'];
+if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
+	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
+$_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
 ?>
@@ -76,12 +61,12 @@ $_SESSION['last_step'] = $step;
 		<div class="container text-center px-2 py-0">
 
 			<div id="inverterUnknown" class="w-100">
-				<h1>Inverter Unknown</h1>
+				<h1><?php echo $strings['inverter_unknown']; ?></h1>
                 <div class="d-flex align-items-center justify-content-center">
 					<div class="error"></div>
 					<div class="success"></div>
                     <div class="loading"></div>
-					<span class="message">Please connect your Inverter to the Live & Smart</span>
+					<span class="message"><?php echo $strings['please_connect_inverter']; ?></span>
 				</div>
             </div>
             
@@ -95,7 +80,7 @@ $_SESSION['last_step'] = $step;
                     <div class="loading"></div>
                     <span class="standard">VDE4105</span>
                 </div>
-                <button id="btnSubmit" class="btn btn-success levitate ripple d-none">Continue</button>
+                <button id="btnSubmit" class="btn btn-success levitate ripple d-none"><?php echo $strings['continue']; ?></button>
             </div>
 
 		</div>

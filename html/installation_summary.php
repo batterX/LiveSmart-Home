@@ -94,82 +94,87 @@ $arrayDeviceModel = [
 
 		<div id="summary" class="container px-3">
 
-            <h1>Installation Summary</h1>
+            <h1><?php echo $strings['summary_installation_summary']; ?></h1>
 
             <div class="row">
-                <div class="col-6 col-lg-4">Installation Date</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_installation_date']; ?></div>
                 <div class="col-6 col-lg-4"><b><?php echo $_SESSION['installation_date']; ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Latest Maintenance</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_latest_maintenance']; ?></div>
                 <div class="col-6 col-lg-4"><b id="latestMaintenanceDate"><?php echo date('Y-m-d'); ?></b></div>
             </div>
 
             <div class="p-3"></div>
 
             <div class="row">
-                <div class="col-6 col-lg-4">Installer</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_installer']; ?></div>
                 <div class="col-6 col-lg-4"><b><?php echo $arrayGender[$_SESSION['installer_gender']] . " " . $_SESSION['installer_firstname'] . " " . $_SESSION['installer_lastname'] . "<br>" . $_SESSION['installer_company'] ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Installer Email</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_installer_email']; ?></div>
                 <div class="col-6 col-lg-4"><b><?php echo $_SESSION['installer_email'] ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Installer Telephone</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_installer_telephone']; ?></div>
                 <div class="col-6 col-lg-4"><b><?php echo $_SESSION['installer_telephone'] ?></b></div>
             </div>
 
             <div class="p-3"></div>
 
             <div class="row">
-                <div class="col-6 col-lg-4">Customer Name</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_customer_name']; ?></div>
                 <div class="col-6 col-lg-4"><b><?php echo $arrayGender[$_SESSION['customer_gender']] . " " . $_SESSION['customer_firstname'] . " " . $_SESSION['customer_lastname'] ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Customer Email</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_customer_email']; ?></div>
                 <div class="col-6 col-lg-4"><b><?php echo $_SESSION['customer_email'] ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Customer Telephone</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_customer_telephone']; ?></div>
                 <div class="col-6 col-lg-4"><b><?php echo $_SESSION['customer_telephone'] ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Customer Address</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_customer_address']; ?></div>
                 <div class="col-6 col-lg-4"><b><?php echo $_SESSION['customer_address'] . "<br>" . $_SESSION['customer_zipcode'] . " " . $_SESSION['customer_city'] . ", " . $arrayCountry[$_SESSION['customer_country']] ?></b></div>
             </div>
 
             <div class="p-3"></div>
 
             <div class="row">
-                <div class="col-6 col-lg-4">Installation Address</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_installation_address']; ?></div>
                 <div class="col-6 col-lg-4"><b><?php echo $_SESSION['installation_address'] . "<br>" . $_SESSION['installation_zipcode'] . " " . $_SESSION['installation_city'] . ", " . $arrayCountry[$_SESSION['installation_country']] ?></b></div>
             </div>
 
             <div class="p-3"></div>
 
             <div class="row">
-                <div class="col-6 col-lg-4">System (Cabinet)</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_system_model']; ?></div>
+                <div class="col-6 col-lg-4"><b><?php echo $_SESSION['system_model']; ?></b></div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_system']; ?></div>
                 <div class="col-6 col-lg-8"><b><?php echo $_SESSION['system_serial'] ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Inverter</div>
-                <div class="col-6 col-lg-8"><b><?php echo $_SESSION['device_serial'] . "<br>" . $arrayDeviceModel[$_SESSION['device_model']] ?></b></div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_inverter']; ?></div>
+                <div class="col-6 col-lg-8"><b><?php echo $_SESSION['device_serial'] . " (" . $arrayDeviceModel[$_SESSION['device_model']] ?>)</b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Live&amp;Smart</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_livex']; ?></div>
                 <div class="col-6 col-lg-8"><b><?php echo $_SESSION['box_serial'] . " (" . $_SESSION['software_version'] . ")" ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Batteries</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_batteries']; ?></div>
                 <div class="col-6 col-lg-8"><b><?php echo ($_SESSION['battery1_serial']) . (isset($_SESSION['battery2_serial']) ? "<br>" . $_SESSION['battery2_serial'] : "") . (isset($_SESSION['battery3_serial']) ? "<br>" . $_SESSION['battery3_serial'] : "") . (isset($_SESSION['battery4_serial']) ? "<br>" . $_SESSION['battery4_serial'] : "") ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">PV-System Size</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_pv_system_size']; ?></div>
                 <div class="col-6 col-lg-8"><b><?php echo $_SESSION['solar_wattPeak'] . " Wp" ?></b></div>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">Grid Feed-in Limitation</div>
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_feed_in_limitation']; ?></div>
                 <div class="col-6 col-lg-8"><b><?php echo $_SESSION['solar_feedInLimitation'] . " %" ?></b></div>
             </div>
 
@@ -179,14 +184,14 @@ $arrayDeviceModel = [
         <div class="container pt-5 pb-3">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="checkboxAccept">
-                <label class="custom-control-label" for="checkboxAccept">I hereby confirm that the information above is true, complete and accurate.</label>
+                <label class="custom-control-label" for="checkboxAccept"><?php echo $strings['summary_confirm_box']; ?></label>
             </div>
         </div>
         
 
         <div class="container text-left">
-            <button id="btnFinishInstallation" class="btn btn-success levitate ripple mb-3 mt-4 px-5 py-3 d-none">FINISH INSTALLATION</button>
-            <button id="btnDownload" class="btn btn-secondary levitate ripple mb-3 mt-4 px-5 py-3 ml-3 d-none">DOWNLOAD PDF</button>
+            <button id="btnFinishInstallation" class="btn btn-success levitate ripple mb-3 mt-4 px-5 py-3 d-none"><?php echo $strings['summary_finish_installation']; ?></button>
+            <button id="btnDownload" class="btn btn-secondary levitate ripple mb-3 mt-4 px-5 py-3 ml-3 d-none"><?php echo $strings['summary_download_pdf']; ?></button>
         </div>
 		
 

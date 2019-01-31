@@ -91,7 +91,7 @@ function performStep()
                                         {
                                             $('.loading').hide();
                                             $('.error').show();
-                                            $('.message').html("Your Inverter is not registered in our Database!").css('color', 'red');
+                                            $('.message').html(lang['inverter_not_registered']).css('color', 'red');
                                         }
                                     }
                                 });

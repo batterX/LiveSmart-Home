@@ -3,35 +3,21 @@
 session_start();
 $step = 3;
 
-// Language
-
-$lang = "en";
-
-if(isset($_GET['lang']))
-	$lang = $_GET['lang'];
-else if(isset($_SESSION['lang']))
-	$lang = $_SESSION['lang'];
-
-if($lang != "en" && $lang != "de")
-	$lang = "en";
-
+// Set Language
+$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
+if($lang != "en" && $lang != "de") $lang = "en";
 $_SESSION['lang'] = $lang;
 
-// Get Language Table
-
+// Get Language Strings
 $strings = file_get_contents('common/lang.json');
 $strings = json_decode($strings, true);
-
-if($lang == "de") $strings = $strings['tables'][1];
-else              $strings = $strings['tables'][0];
+$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
-
 if(!isset($_SESSION['last_step'])) header("location: index.php");
-
-if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1) header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
-
-$_SESSION['back_url']  = $_SERVER['REQUEST_URI'];
+if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
+	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
+$_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
 ?>
@@ -77,18 +63,18 @@ $_SESSION['last_step'] = $step;
                 <div class="modal-content levitate">
                     <form id="loginForm">
                         <div class="modal-header border-0">
-                            <h5 class="modal-title"><?php echo $strings[4]; ?></h5>
+                            <h5 class="modal-title"><?php echo $strings['customer_login']; ?></h5>
                             <button type="button" class="close" data-dismiss="modal">
                                 <span>&times;</span>
                             </button>
                         </div>
                         <div class="modal-body py-0">
-                            <input id="email" class="form-control" type="email" placeholder="<?php echo $strings[5][0]; ?>">
-                            <input id="password" class="form-control" type="password" placeholder="<?php echo $strings[5][1]; ?>">
-                            <span id="errorMsg"><i><?php echo $strings[5][3]; ?></i></span>
+                            <input id="email" class="form-control" type="email" placeholder="<?php echo $strings['email']; ?>">
+                            <input id="password" class="form-control" type="password" placeholder="<?php echo $strings['password']; ?>">
+                            <span id="errorMsg"><i><?php echo $strings['wrong_email_or_password']; ?></i></span>
                         </div>
                         <div class="modal-footer border-0 pt-0">
-                            <button type="submit" id="btnLogin" class="btn btn-success levitate ripple"><?php echo $strings[5][2]; ?></button>
+                            <button type="submit" id="btnLogin" class="btn btn-success levitate ripple"><?php echo $strings['login']; ?></button>
                         </div>
                     </form>
                 </div>
@@ -101,10 +87,10 @@ $_SESSION['last_step'] = $step;
 
             <div class="row m-0 p-0">
                 <div class="col-6 p-0">
-                    <h1 class="customer-informations"><?php echo $strings[6]; ?></h1>
+                    <h1 class="customer-informations"><?php echo $strings['customer_informations']; ?></h1>
                 </div>
                 <div class="col-6 p-0 d-flex align-items-center justify-content-end">
-                    <button id="existingCustomer" class="btn btn-success levitate ripple" data-toggle="modal" data-target="#modalExistingCustomer"><?php echo $strings[9]; ?></button>
+                    <button id="existingCustomer" class="btn btn-success levitate ripple" data-toggle="modal" data-target="#modalExistingCustomer"><?php echo $strings['existing_customer']; ?></button>
                 </div>
             </div>
 
@@ -114,79 +100,81 @@ $_SESSION['last_step'] = $step;
                     
                     <div class="col-md-2 p-0 px-2 pt-3">
                         <select class="gender custom-select" required>
-                            <option value="0"><?php echo $strings[8][0][0]; ?></option>
-                            <option value="1"><?php echo $strings[8][0][1]; ?></option>
+                            <option value="0"><?php echo $strings['gender_male']; ?></option>
+                            <option value="1"><?php echo $strings['gender_female']; ?></option>
                         </select>
                     </div>
                     <div class="col-md-5 p-0 px-2 pt-3">
-                        <input class="first-name form-control" type="text" placeholder="<?php echo $strings[8][1]; ?>" required>
+                        <input class="first-name form-control" type="text" placeholder="<?php echo $strings['first_name']; ?>" required>
                     </div>
                     <div class="col-md-5 p-0 px-2 pt-3">
-                        <input class="last-name form-control" type="text" placeholder="<?php echo $strings[8][2]; ?>" required>
+                        <input class="last-name form-control" type="text" placeholder="<?php echo $strings['last_name']; ?>" required>
                     </div>
 
                     <div class="col-md-2 p-0"></div>
                     <div class="col-md-5 p-0 px-2 pt-3">
-                        <input class="email form-control" type="email" placeholder="<?php echo $strings[8][3]; ?>" required>
+                        <input class="email form-control" type="email" placeholder="<?php echo $strings['email']; ?>" required>
                     </div>
                     <div class="col-md-5 p-0 px-2 pt-3">
-                        <input class="telephone form-control" type="text" placeholder="<?php echo $strings[8][4]; ?>" required>
+                        <input class="telephone form-control" type="text" placeholder="<?php echo $strings['telephone']; ?>" required>
                     </div>
                     
                     <div class="w-100 p-3"></div>
 
                     <div class="col-md-4 p-0 px-2 pt-3">
                         <select class="location-country custom-select" required>
-                            <option value="be"><?php echo $strings[8][5][0]; ?></option>
-                            <option value="fr"><?php echo $strings[8][5][1]; ?></option>
-                            <option value="de" selected><?php echo $strings[8][5][2]; ?></option>
+                            <option value="be"><?php echo $strings['be']; ?></option>
+                            <option value="de" selected><?php echo $strings['de']; ?></option>
+                            <option value="fr"><?php echo $strings['fr']; ?></option>
+                            <option value="lu"><?php echo $strings['lu']; ?></option>
                         </select>
                     </div>
                     <div class="col-md-4 p-0 px-2 pt-3">
-                        <input class="location-city form-control" type="text" placeholder="<?php echo $strings[8][6]; ?>" required>
+                        <input class="location-city form-control" type="text" placeholder="<?php echo $strings['city']; ?>" required>
                     </div>
                     <div class="col-md-4 p-0 px-2 pt-3">
-                        <input class="location-zip form-control" type="text" placeholder="<?php echo $strings[8][7]; ?>" required>
+                        <input class="location-zip form-control" type="text" placeholder="<?php echo $strings['zip_code']; ?>" required>
                     </div>
                     
                     <div class="col-md-12 p-0 px-2 pt-3">
-                        <input class="location-address form-control" type="text" placeholder="<?php echo $strings[8][8]; ?>" required>
+                        <input class="location-address form-control" type="text" placeholder="<?php echo $strings['address']; ?>" required>
                     </div>
 
                 </div>
 
 
-                <h1 class="installation-address"><?php echo $strings[7]; ?></h1>
+                <h1 class="installation-address"><?php echo $strings['installation_address']; ?></h1>
 
                 <div class="custom-control custom-checkbox mx-3 my-3">
                     <input type="checkbox" class="custom-control-input" id="sameAddress">
-                    <label class="custom-control-label" for="sameAddress"><?php echo $strings[10]; ?></label>
+                    <label class="custom-control-label" for="sameAddress"><?php echo $strings['same_as_customer_address']; ?></label>
                 </div>
 
                 <div id="installationAddress" class="row m-0 px-2 py-0">
                     
                     <div class="col-md-4 p-0 px-2 pt-3">
                         <select class="location-country custom-select">
-                            <option value="be"><?php echo $strings[8][5][0]; ?></option>
-                            <option value="fr"><?php echo $strings[8][5][1]; ?></option>
-                            <option value="de" selected><?php echo $strings[8][5][2]; ?></option>
+                            <option value="be"><?php echo $strings['be']; ?></option>
+                            <option value="de" selected><?php echo $strings['de']; ?></option>
+                            <option value="fr"><?php echo $strings['fr']; ?></option>
+                            <option value="lu"><?php echo $strings['lu']; ?></option>
                         </select>
                     </div>
                     <div class="col-md-4 p-0 px-2 pt-3">
-                        <input class="location-city form-control" type="text" placeholder="<?php echo $strings[8][6]; ?>" required>
+                        <input class="location-city form-control" type="text" placeholder="<?php echo $strings['city']; ?>" required>
                     </div>
                     <div class="col-md-4 p-0 px-2 pt-3">
-                        <input class="location-zip form-control" type="text" placeholder="<?php echo $strings[8][7]; ?>" required>
+                        <input class="location-zip form-control" type="text" placeholder="<?php echo $strings['zip_code']; ?>" required>
                     </div>
                     
                     <div class="col-md-12 p-0 px-2 pt-3">
-                        <input class="location-address form-control" type="text" placeholder="<?php echo $strings[8][8]; ?>" required>
+                        <input class="location-address form-control" type="text" placeholder="<?php echo $strings['address']; ?>" required>
                     </div>
 
                 </div>
 
                 <div class="text-right pr-3">
-                    <button type="submit" id="btnSubmit" class="btn btn-success levitate ripple mt-5 mb-3 px-5 py-3" disabled>ACCEPT &amp; SUBMIT</button>
+                    <button type="submit" id="btnSubmit" class="btn btn-success levitate ripple mt-5 mb-3 px-5 py-3" disabled><?php echo $strings['continue']; ?></button>
                 </div>
 
             </form>

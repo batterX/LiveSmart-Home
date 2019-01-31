@@ -3,36 +3,21 @@
 session_start();
 $step = 6;
 
-// Language
-
-$lang = "en";
-
-if(isset($_GET['lang']))
-	$lang = $_GET['lang'];
-else if(isset($_SESSION['lang']))
-	$lang = $_SESSION['lang'];
-
-if($lang != "en" && $lang != "de")
-	$lang = "en";
-
+// Set Language
+$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
+if($lang != "en" && $lang != "de") $lang = "en";
 $_SESSION['lang'] = $lang;
 
-// Get Language Table
-
+// Get Language Strings
 $strings = file_get_contents('common/lang.json');
 $strings = json_decode($strings, true);
-
-if($lang == "de") $strings = $strings['tables'][1];
-else              $strings = $strings['tables'][0];
-
+$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
-
 if(!isset($_SESSION['last_step'])) header("location: index.php");
-
-if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1) header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
-
-$_SESSION['back_url']  = $_SERVER['REQUEST_URI'];
+if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
+	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
+$_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
 ?>
@@ -75,7 +60,7 @@ $_SESSION['last_step'] = $step;
 
 		<div class="container px-3">
 
-            <h1>System Test</h1>
+            <h1><?php echo $strings['system_test']; ?></h1>
 
             <div class="row m-0 p-0">
 
@@ -86,7 +71,7 @@ $_SESSION['last_step'] = $step;
                         <div class="loading"></div>
                         <div class="success"></div>
                         <div class="error"></div>
-                        <span>Energy Meter</span>
+                        <span><?php echo $strings['energy_meter']; ?></span>
                     </div>
 
                     <div id="testBatteryCharging" class="status d-flex align-items-center mt-4">
@@ -94,7 +79,7 @@ $_SESSION['last_step'] = $step;
                         <div class="loading"></div>
                         <div class="success"></div>
                         <div class="error"></div>
-                        <span>Battery Charging</span>
+                        <span><?php echo $strings['battery_charging']; ?></span>
                     </div>
 
                     <div id="testBatteryDischarging" class="status d-flex align-items-center mt-4">
@@ -102,7 +87,7 @@ $_SESSION['last_step'] = $step;
                         <div class="loading"></div>
                         <div class="success"></div>
                         <div class="error"></div>
-                        <span>Battery Discharging</span>
+                        <span><?php echo $strings['battery_discharging']; ?></span>
                     </div>
 
                     <div id="testUpsMode" class="status d-flex align-items-center mt-4">
@@ -110,11 +95,11 @@ $_SESSION['last_step'] = $step;
                         <div class="loading"></div>
                         <div class="success"></div>
                         <div class="error"></div>
-                        <span>UPS Mode<span></span></span>
+                        <span><?php echo $strings['ups_mode']; ?><span></span></span>
                     </div>
 
                     <div class="w-100 text-center">
-                        <button id="btnSubmit" class="btn btn-success levitate ripple my-5 px-5 py-3 d-none">Continue</button>
+                        <button id="btnSubmit" class="btn btn-success levitate ripple my-5 px-5 py-3 d-none"><?php echo $strings['continue'] ?></button>
                     </div>
 
                 </div>

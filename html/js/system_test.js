@@ -19,8 +19,8 @@ function testEnergyMeter()
     $('#testEnergyMeter .error'  ).hide();
     $('#testEnergyMeter .loading').show();
     if(energyMeter_firstRun)
-        $('#log').append(`<p class="head"><b>${"Energy Meter"}</b></p>`);
-    $('#log').append(`<p>${"Performing Test"}</p>`);
+        $('#log').append(`<p class="head"><b>${lang['energy_meter']}</b></p>`);
+    $('#log').append(`<p>${lang['performing_test']}</p>`);
     // Test
     $.get({
         url: "api.php?get=currentstate",
@@ -31,12 +31,12 @@ function testEnergyMeter()
                     $('#testEnergyMeter .loading').hide();
                     if(response.hasOwnProperty('2913') && response['2913'].hasOwnProperty('0')) {
                         $('#testEnergyMeter .success').show();
-                        $('#log p:last-child').html(`✓ ${"Performing Test"}`);
+                        $('#log p:last-child').html(`✓ ${lang['performing_test']}`);
                         setTimeout(testBattery, 2500);
                         //setTimeout(testBatteryCharging, 2500);
                     } else {
                         $('#testEnergyMeter .error').show();
-                        $('#log p:last-child').html(`✗ ${"Performing Test"}`);
+                        $('#log p:last-child').html(`✗ ${lang['performing_test']}`);
                         setTimeout(testEnergyMeter, 5000);
                     }
                 }, 2500);
@@ -102,8 +102,8 @@ function testBatteryCharging()
     $('#testBatteryCharging .error'  ).hide();
     $('#testBatteryCharging .loading').show();
     if(batteryCharging_firstRun)
-        $('#log').append(`<p class="head"><b>${"Battery Charging"}</b></p>`);
-    $('#log').append(`<p>${"Enabling Battery Charging from AC"}</p>`);
+        $('#log').append(`<p class="head"><b>${lang['battery_charging']}</b></p>`);
+    $('#log').append(`<p>${lang['enable_ac_charging']}</p>`);
     // Set BatteryChargingAC ON
     $.get({
         url: "api.php?set=command&type=24066&entity=0&text2=B,1",
@@ -140,11 +140,11 @@ function testBatteryCharging_waitUntilSet()
                 if(response["0"]["S1"] == batteryCharging_datetime)
                     setTimeout(testBatteryCharging_waitUntilSet, 2500);
                 else {
-                    $('#log p:last-child').html(`✓ ${"Enabling Battery Charging from AC"}`);
-                    $('#log').append('<p>Waiting 1 minute before test</p>');
+                    $('#log p:last-child').html(`✓ ${lang['enable_ac_charging']}`);
+                    $('#log').append(`<p>${lang['wait_before_test']}</p>`);
                     setTimeout(function() {
-                        $('#log p:last-child').html(`✓ ${"Waiting 1 minute before test"}`);
-                        $('#log').append(`<p>${"Performing Test"} (1 / 10)</p>`);
+                        $('#log p:last-child').html(`✓ ${lang['wait_before_test']}`);
+                        $('#log').append(`<p>${lang['performing_test']} (1 / 10)</p>`);
                         testBatteryCharging_part2();
                     }, 60000);
                 }
@@ -164,18 +164,18 @@ function testBatteryCharging_part2()
                 if(response.hasOwnProperty('1121') && response['1121'].hasOwnProperty('1')) {
                     var batteryPower = parseInt(response['1121']['1']);
                     batteryCharging_count += 1;
-                    $('#log p:last-child').html(`${"Performing Test"} (${batteryCharging_count} / 10)`);
+                    $('#log p:last-child').html(`${lang['performing_test']} (${batteryCharging_count} / 10)`);
                     if(batteryPower > 100) {
                         if(batteryCharging_count < 10) {
                             setTimeout(testBatteryCharging_part2, 5000);
                         } else {
-                            $('#log p:last-child').html(`✓ ${"Performing Test"} (${batteryCharging_count} / 10)`);
+                            $('#log p:last-child').html(`✓ ${lang['performing_test']} (${batteryCharging_count} / 10)`);
                             $.get({
                                 url: "api.php?set=command&type=24066&entity=0&text2=B,0",
                                 success: function(response) {
                                     console.log(response);
                                     if(response === "1") {
-                                        $('#log').append(`<p>${"Disabling Battery Charging from AC"}</p>`);
+                                        $('#log').append(`<p>${lang['disable_ac_charging']}</p>`);
                                         $.get({
                                             url: "api.php?get=settings",
                                             success: function(response) {
@@ -195,7 +195,7 @@ function testBatteryCharging_part2()
                     } else {
                         $("#testBatteryCharging .loading").hide();
                         $("#testBatteryCharging .error").show();
-                        $('#log p:last-child').html(`✗ ${"Performing Test"} (${batteryCharging_count} / 10)`);
+                        $('#log p:last-child').html(`✗ ${lang['performing_test']} (${batteryCharging_count} / 10)`);
                         setTimeout(testBatteryCharging, 5000);
                     }
                 } else alert("An error has occured. Please refresh the page! _011");
@@ -218,7 +218,7 @@ function testBatteryCharging_waitUntilReset()
                 else if(response["2"]["S1"].split(",")[1] === "0") {
                     $("#testBatteryCharging .loading").hide();
                     $("#testBatteryCharging .success").show();
-                    $('#log p:last-child').html(`✓ ${"Disabling Battery Charging from AC"}`);
+                    $('#log p:last-child').html(`✓ ${lang['disable_ac_charging']}`);
                     if(batteryChargingIsFirst)
                         setTimeout(testBatteryDischarging, 2500);
                     else
@@ -251,7 +251,7 @@ function testBatteryDischarging()
     $('#testBatteryDischarging .error'  ).hide();
     $('#testBatteryDischarging .loading').show();
     if(batteryDischarging_firstRun)
-        $('#log').append(`<p class="head"><b>${"Battery Discharging"}</b></p>`);
+        $('#log').append(`<p class="head"><b>${lang['battery_discharging']}</b></p>`);
     $('#log').append(`<p>${"Enabling Battery Discharging to Grid"}</p>`);
     // Set BatteryDischargingToGrid ON (when PV is available)
     $.get({
@@ -289,11 +289,11 @@ function testBatteryDischarging_waitUntilSet()
                 if(response["0"]["S1"] == batteryDischarging_datetime)
                     setTimeout(testBatteryDischarging_waitUntilSet, 5000);
                 else {
-                    $('#log p:last-child').html(`✓ ${"Enabling Battery Discharging to Grid"}`);
-                    $('#log').append(`<p>${"Waiting 1 minute before test"}</p>`);
+                    $('#log p:last-child').html(`✓ ${lang['enable_discharging_to_grid']}`);
+                    $('#log').append(`<p>${lang['wait_before_test']}</p>`);
                     setTimeout(function() {
-                        $('#log p:last-child').html(`✓ ${"Waiting 1 minute before test"}`);
-                        $('#log').append(`<p>${"Performing Test"} (1 / 10)</p>`);
+                        $('#log p:last-child').html(`✓ ${lang['wait_before_test']}`);
+                        $('#log').append(`<p>${lang['performing_test']} (1 / 10)</p>`);
                         testBatteryDischarging_part2();
                     }, 60000);
                 }
@@ -313,18 +313,18 @@ function testBatteryDischarging_part2()
                 if(response.hasOwnProperty('1121') && response['1121'].hasOwnProperty('1')) {
                     var batteryPower = parseInt(response['1121']['1']);
                     batteryDischarging_count += 1;
-                    $('#log p:last-child').html(`${"Performing Test"} (${batteryDischarging_count} / 10)`);
+                    $('#log p:last-child').html(`${lang['performing_test']} (${batteryDischarging_count} / 10)`);
                     if(batteryPower < -100) {
                         if(batteryDischarging_count < 10) {
                             setTimeout(testBatteryDischarging_part2, 5000);
                         } else {
-                            $('#log p:last-child').html(`✓ ${"Performing Test"} (${batteryDischarging_count} / 10)`);
+                            $('#log p:last-child').html(`✓ ${lang['performing_test']} (${batteryDischarging_count} / 10)`);
                             $.get({
                                 url: "api.php?set=command&type=24066&entity=0&text2=F,0",
                                 success: function(response) {
                                     console.log(response);
                                     if(response === "1") {
-                                        $('#log').append(`<p>${"Disabling Battery Discharging to Grid"}</p>`);
+                                        $('#log').append(`<p>${lang['disable_discharging_to_grid']}</p>`);
                                         $.get({
                                             url: "api.php?get=settings",
                                             success: function(response) {
@@ -344,7 +344,7 @@ function testBatteryDischarging_part2()
                     } else {
                         $("#testBatteryDischarging .loading").hide();
                         $("#testBatteryDischarging .error").show();
-                        $('#log p:last-child').html(`✗ ${"Performing Test"} (${batteryDischarging_count} / 10)`);
+                        $('#log p:last-child').html(`✗ ${lang['performing_test']} (${batteryDischarging_count} / 10)`);
                         setTimeout(testBatteryDischarging, 5000);
                     }
                 } else alert("An error has occured. Please refresh the page! _027");
@@ -367,7 +367,7 @@ function testBatteryDischarging_waitUntilReset()
                 } else if(response["2"]["S1"].split(",")[1] === "0") {
                     $("#testBatteryDischarging .loading").hide();
                     $("#testBatteryDischarging .success").show();
-                    $('#log p:last-child').html(`✓ ${"Disabling Battery Discharging to Grid"}`);
+                    $('#log p:last-child').html(`✓ ${lang['disable_discharging_to_grid']}`);
                     if(batteryChargingIsFirst == false)
                         setTimeout(testBatteryCharging, 2500);
                     else
@@ -399,8 +399,8 @@ function testUpsMode()
     $('#testUpsMode .error'  ).hide();
     $('#testUpsMode .loading').show();
     if(upsMode_firstRun)
-        $('#log').append(`<p class="head"><b>${"UPS Mode"}</b></p>`);
-    $('#log').append(`<p>${"Checking if Output is Active"}</p>`);
+        $('#log').append(`<p class="head"><b>${lang['ups_mode']}</b></p>`);
+    $('#log').append(`<p>${lang['check_output_active']}</p>`);
     // Check Output Voltage
     $.get({
         url: "api.php?get=currentstate",
@@ -436,14 +436,14 @@ function testUpsMode()
                     
                     if(outputIsActive == true) {
                         // CONTINUE WITH TEST
-                        $('#log p:last-child').html(`✓ ${"Checking if Output is Active"}`);
-                        $('#log').append(`<p>${"Turn OFF the input breaker"}</p>`);
-                        $('#testUpsMode span span').html("Please turn OFF the input breaker");
+                        $('#log p:last-child').html(`✓ ${lang['check_output_active']}`);
+                        $('#log').append(`<p>${lang['turn_input_breaker_off']}</p>`);
+                        $('#testUpsMode span span').html('please_turn_input_breaker_off');
                         setTimeout(testUpsMode_waitingForInput, 5000);
                     } else if(outputIsActive != undefined) {
                         // SHOW ERROR
-                        $('#log p:last-child').html(`✗ ${"Checking if Output is Active"}`);
-                        $('#testUpsMode span span').html("Please turn ON the UPS Output");
+                        $('#log p:last-child').html(`✗ ${lang['check_output_active']}`);
+                        $('#testUpsMode span span').html(lang['please_turn_output_on']);
                         setTimeout(testUpsMode, 5000);
                     }
 
@@ -490,8 +490,8 @@ function testUpsMode_waitingForInput()
 
                     if(inputIsActive == false) {
                         // CONTINUE WITH TEST
-                        $('#log p:last-child').html(`✓ ${"Turn OFF the input breaker"}`);
-                        $('#log').append(`<p>${"Performing Test"} (1 / 10)</p>`);
+                        $('#log p:last-child').html(`✓ ${lang['turn_input_breaker_off']}`);
+                        $('#log').append(`<p>${lang['performing_test']} (1 / 10)</p>`);
                         $('#testUpsMode span span').html("");
                         setTimeout(testUpsMode_part2, 5000);
                     } else if(outputIsActive != undefined) {
@@ -516,7 +516,7 @@ function testUpsMode_part2()
                 if(response.hasOwnProperty('1297') && response['1297'].hasOwnProperty('1')) {
 
                     upsMode_count += 1;
-                    $('#log p:last-child').html(`${"Performing Test"} (${upsMode_count} / 10)`);
+                    $('#log p:last-child').html(`${lang['performing_test']} (${upsMode_count} / 10)`);
                     
                     let voltage1 = undefined;
                     let voltage2 = undefined;
@@ -547,7 +547,7 @@ function testUpsMode_part2()
                         if(upsMode_count < 10) {
                             setTimeout(testUpsMode_part2, 5000);
                         } else {
-                            $('#log p:last-child').html(`✓ ${"Performing Test"} (${upsMode_count} / 10)`);
+                            $('#log p:last-child').html(`✓ ${lang['performing_test']} (${upsMode_count} / 10)`);
                             $("#testUpsMode .loading").hide();
                             $("#testUpsMode .success").show();
                             finishStep();
@@ -555,7 +555,7 @@ function testUpsMode_part2()
                     } else if(outputIsActive != undefined) {
                         $("#testUpsMode .loading").hide();
                         $("#testUpsMode .error").show();
-                        $('#log p:last-child').html(`✗ ${"Performing Test"} (${upsMode_count} / 10)`);
+                        $('#log p:last-child').html(`✗ ${lang['performing_test']} (${upsMode_count} / 10)`);
                     }
 
                 } else alert("An error has occured. Please refresh the page! _045");

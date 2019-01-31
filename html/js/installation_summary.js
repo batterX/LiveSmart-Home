@@ -36,7 +36,7 @@ $('#btnDownload').on('click', function() {
         var ratio = dimensions.w / dimensions.h;
         var pdf = new jsPDF("portrait", "mm", "a4");
         pdf.addImage(img, 'JPEG', 20, 20, 120, 120 / ratio);
-        pdf.save("Installation Summary.pdf");
+        pdf.save(lang['summary_installation_summary'] + ".pdf");
     });
 });
 
@@ -45,6 +45,13 @@ $('#btnDownload').on('click', function() {
 
 
 $('#btnFinishInstallation').on('click', function() {
+
+    deviceModel = {
+        'h3'  : 'batterX h3',
+        'h5'  : 'batterX h5',
+        'h5e' : 'batterX h5-eco',
+        'h10' : 'batterX h10'
+    };
 
     var data = new FormData();
 
@@ -75,10 +82,11 @@ $('#btnFinishInstallation').on('click', function() {
     if(dataObj.hasOwnProperty('installation_zipcode'  ) && dataObj['installation_zipcode'  ] != "") data.append('installation_zipcode'  , dataObj['installation_zipcode'  ]);
     if(dataObj.hasOwnProperty('installation_address'  ) && dataObj['installation_address'  ] != "") data.append('installation_address'  , dataObj['installation_address'  ]);
 
+    if(dataObj.hasOwnProperty('system_model'          ) && dataObj['system_model'          ] != "") data.append('system_model'          , dataObj['system_model'          ]);
     if(dataObj.hasOwnProperty('system_serial'         ) && dataObj['system_serial'         ] != "") data.append('system_serial'         , dataObj['system_serial'         ]);
 
     if(dataObj.hasOwnProperty('device_serial'         ) && dataObj['device_serial'         ] != "") data.append('device_serial'         , dataObj['device_serial'         ]);
-    if(dataObj.hasOwnProperty('device_model'          ) && dataObj['device_model'          ] != "") data.append('device_model'          , dataObj['device_model'          ]);
+    if(dataObj.hasOwnProperty('device_model'          ) && dataObj['device_model'          ] != "") data.append('device_model'          , deviceModel[dataObj['device_model']]);
     if(dataObj.hasOwnProperty('solar_wattPeak'        ) && dataObj['solar_wattPeak'        ] != "") data.append('solar_wattPeak'        , dataObj['solar_wattPeak'        ]);
     if(dataObj.hasOwnProperty('solar_feedInLimitation') && dataObj['solar_feedInLimitation'] != "") data.append('solar_feedInLimitation', dataObj['solar_feedInLimitation']);
         
@@ -108,7 +116,7 @@ $('#btnFinishInstallation').on('click', function() {
         
         // USE BLOB TO SAVE TO CLOUD
         
-        data.append('pdf_file', pdfBlob, "Installation Summary");
+        data.append('pdf_file', pdfBlob, lang['summary_installation_summary']);
 
         $.post({
             url: "https://api.batterx.io/v2/installation.php",

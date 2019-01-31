@@ -59,7 +59,7 @@ function performUpdate()
         $("#loading").show();
         $("#error").hide();
         $("#errorInfo").addClass('d-none');
-        $('#message').html(lang[2][1]).css('color', 'black');
+        $('#message').html(lang['searching_for_updates']).css('color', 'black');
         checkLatestVersion().done(function(versionNum) {
             // Compare Versions
             if(softwareVersion != versionNum) {
@@ -71,14 +71,14 @@ function performUpdate()
                     success: function() {}
                 });
                 // Downloading Update...
-                $('#message').html(lang[2][2]);
+                $('#message').html(lang['downloading_update']);
                 clearInterval(checkUpdateInterval);
                 checkUpdateInterval = undefined;
                 checkUpdateInterval = setInterval(checkUpdate_waitForError, 5000);
             } else {
                 // Update Completed
                 $("#loading").hide();
-                $("#message").html(lang[2][5]).css('color', '#25ae88');
+                $("#message").html(lang['update_completed']).css('color', '#25ae88');
                 $("#success").show();
                 setTimeout(function() {
                     window.location.href = "installer_login.php?software_version=" + newVersion;
@@ -86,7 +86,7 @@ function performUpdate()
             }
         }).fail(function(jqXR, textStatus, errorThrown) {
             $("#loading").hide();
-            $("#message").html(lang[2][6]).css('color', 'red');
+            $("#message").html(lang['no_internet_connection']).css('color', 'red');
             $("#error").show();
             $("#errorInfo").removeClass('d-none');
             setTimeout(performUpdate, 2500);
@@ -94,7 +94,7 @@ function performUpdate()
     }).fail(function(jqXR, textStatus, errorThrown) {
         // Connection LOST
         $("#loading").hide();
-        $("#message").html(lang[2][6]).css('color', 'red');
+        $("#message").html(lang['no_internet_connection']).css('color', 'red');
         $("#error").show();
         $("#errorInfo").removeClass('d-none');
         setTimeout(performUpdate, 2500);
@@ -115,7 +115,7 @@ function checkUpdate_waitForError() {
                 // don't care, just ignore
             } else {
                 // Rebooting...
-                $('#message').html(lang[2][3]);
+                $('#message').html(lang['rebooting']);
                 clearInterval(checkUpdateInterval);
                 checkUpdateInterval = undefined;
                 checkUpdateInterval = setInterval(checkUpdate_waitForSuccess, 5000);
@@ -123,7 +123,7 @@ function checkUpdate_waitForError() {
         },
         error: function() {
             // Rebooting...
-            $('#message').html(lang[2][3]);
+            $('#message').html(lang['rebooting']);
             clearInterval(checkUpdateInterval);
             checkUpdateInterval = undefined;
             checkUpdateInterval = setInterval(checkUpdate_waitForSuccess, 5000);
@@ -139,13 +139,13 @@ function checkUpdate_waitForSuccess() {
         success: function(response) {
             if(response) {
                 // Finishing Update...
-                $('#message').html(lang[2][4]);
+                $('#message').html(lang['finishing_update']);
                 clearInterval(checkUpdateInterval);
                 checkUpdateInterval = undefined;
                 setTimeout(function() {
                     // Update Completed
                     $("#loading").hide();
-                    $('#message').html(lang[2][5]).css('color', '#25ae88');
+                    $('#message').html(lang['update_completed']).css('color', '#25ae88');
                     $("#success").show();
                     setTimeout(function() {
                         window.location.href = "installer_login.php?software_version=" + newVersion;
