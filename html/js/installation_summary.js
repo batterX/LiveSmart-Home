@@ -35,7 +35,7 @@ $('#btnDownload').on('click', function() {
         console.log(dimensions);
         var ratio = dimensions.w / dimensions.h;
         var pdf = new jsPDF("portrait", "mm", "a4");
-        pdf.addImage(img, 'JPEG', 20, 20, 120, 120 / ratio);
+        pdf.addImage(img, 'JPEG', 20, 20, 110, 110 / ratio);
         pdf.save(lang['summary_installation_summary'] + ".pdf");
     });
 });
@@ -89,6 +89,7 @@ $('#btnFinishInstallation').on('click', function() {
     if(dataObj.hasOwnProperty('device_model'          ) && dataObj['device_model'          ] != "") data.append('device_model'          , deviceModel[dataObj['device_model']]);
     if(dataObj.hasOwnProperty('solar_wattPeak'        ) && dataObj['solar_wattPeak'        ] != "") data.append('solar_wattPeak'        , dataObj['solar_wattPeak'        ]);
     if(dataObj.hasOwnProperty('solar_feedInLimitation') && dataObj['solar_feedInLimitation'] != "") data.append('solar_feedInLimitation', dataObj['solar_feedInLimitation']);
+    if(dataObj.hasOwnProperty('solar_info'            )                                           ) data.append('solar_info'            , dataObj['solar_info'            ]);
         
     if(dataObj.hasOwnProperty('box_apikey'            ) && dataObj['box_apikey'            ] != "") data.append('box_apikey'            , dataObj['box_apikey'            ]);
     if(dataObj.hasOwnProperty('box_serial'            ) && dataObj['box_serial'            ] != "") data.append('box_serial'            , dataObj['box_serial'            ]);
@@ -111,7 +112,7 @@ $('#btnFinishInstallation').on('click', function() {
         console.log(dimensions);
         var ratio = dimensions.w / dimensions.h;
         var pdf = new jsPDF("portrait", "mm", "a4");
-        pdf.addImage(img, 'JPEG', 20, 20, 120, 120 / ratio);
+        pdf.addImage(img, 'JPEG', 20, 20, 110, 110 / ratio);
         var pdfBlob = pdf.output('blob');
         
         // USE BLOB TO SAVE TO CLOUD

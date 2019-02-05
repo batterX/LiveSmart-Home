@@ -106,6 +106,18 @@ $_SESSION['last_step'] = $step;
                             <span class="pl-3">%</span>
                         </div>
 
+                        <label class="mt-5" for="solar_info"><?php echo $strings['pv_installation_info']; ?></label>
+                        <div>
+                        <textarea id="solar_info" class="w-100 p-1" rows="8" placeholder="Paneltyp: ...
+
+MPPT 1
+    String 1: ...
+    String 2: ...
+MPPT 2
+    String 1: ...
+    String 2: ..."></textarea>
+                        </div>
+                        
                     </div>
 
                     <!-- Batteries -->

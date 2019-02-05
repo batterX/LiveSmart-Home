@@ -62,3 +62,8 @@ h1 {
 .setting-progress span {
     font-size: 1.25rem;
 }
+
+
+textarea {
+    font-size: 14px;
+}

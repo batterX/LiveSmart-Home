@@ -75,6 +75,7 @@
             "batteries_serialnumber":                            "Please enter the S/N of each battery connected to the system.",
             "pv_system":                                         "PV-System",
             "pv_system_size":                                    "Size of the PV-System",
+            "pv_installation_info":                              "PV-Installation Info",
             "watt_peak":                                         "Watt Peak",
             "pv_system_feed_in_limitation":                      "How much percent of solar power can be fed to grid in terms of peak power?",
             "setting_parameters":                                "Setting Parameters. Please Wait...",
@@ -111,14 +112,15 @@
             "summary_installation_address": "Installation Address",
             "summary_system_model":         "System Name",
             "summary_system":               "System S/N (Cabinet)",
-            "summary_inverter":             "Inverter",
-            "summary_livex":                "LiveX",
-            "summary_batteries":            "Batteries",
+            "summary_inverter":             "Inverter S/N",
+            "summary_livex":                "LiveX S/N",
+            "summary_batteries":            "Batteries S/N",
             "summary_pv_system_size":       "PV-System Size",
             "summary_feed_in_limitation":   "Grid Feed-in Limitation",
             "summary_confirm_box":          "I hereby confirm that the information above is true, complete and accurate",
             "summary_finish_installation":  "Finish Installation",
-            "summary_download_pdf":         "Download PDF"
+            "summary_download_pdf":         "Download PDF",
+            "summary_pv_installation_info": "PV-Installation Info"
         },
 
 
@@ -189,6 +191,7 @@
             "batteries_serialnumber":                            "Bitte geben Sie die S/N jeder angeschlossenen Batterie ein",
             "pv_system":                                         "PV-System",
             "pv_system_size":                                    "Größe der PV-Anlage",
+            "pv_installation_info":                              "PV-Installation Info",
             "watt_peak":                                         "Watt Peak",
             "pv_system_feed_in_limitation":                      "Wie viel Prozent PV-Leistung dürfen eingespeist werden, bezogen auf Spitzenleistung?",
             "setting_parameters":                                "Wir setzen die Parameter. Bitte warten...",
@@ -225,14 +228,15 @@
             "summary_installation_address": "Installationsadresse",
             "summary_system_model":         "Systemname",
             "summary_system":               "System-SN (Schrank)",
-            "summary_inverter":             "Wechselrichter",
-            "summary_livex":                "LiveX",
-            "summary_batteries":            "Batterien",
+            "summary_inverter":             "Wechselrichter-SN",
+            "summary_livex":                "LiveX-SN",
+            "summary_batteries":            "Batterien-SN",
             "summary_pv_system_size":       "Größe der PV-Anlage",
             "summary_feed_in_limitation":   "Netzeinspeisebegrenzung",
             "summary_confirm_box":          "Hiermit bestätige ich, dass die oben angegebenen Informationen wahr, vollständig und korrekt sind",
             "summary_finish_installation":  "Installation abschließen",
-            "summary_download_pdf":         "PDF herunterladen"
+            "summary_download_pdf":         "PDF herunterladen",
+            "summary_pv_installation_info": "PV-Installation Info"
         }
 
 

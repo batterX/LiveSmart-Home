@@ -39,13 +39,14 @@ $_SESSION['last_step'] = $step;
 // Value Arrays
 
 $arrayGender = [
-    '0' => 'Mr.',
-    '1' => 'Ms.'
+    '0' => $strings['gender_male'],
+    '1' => $strings['gender_female']
 ];
 $arrayCountry = [
-    'be' => 'Belgium',
-    'de' => 'Germany',
-    'fr' => 'France'
+    'be' => $strings['be'],
+    'de' => $strings['de'],
+    'fr' => $strings['fr'],
+    'lu' => $strings['lu']
 ];
 $arrayDeviceModel = [
     'h3'  => 'batterX h3',
@@ -177,6 +178,14 @@ $arrayDeviceModel = [
                 <div class="col-6 col-lg-4"><?php echo $strings['summary_feed_in_limitation']; ?></div>
                 <div class="col-6 col-lg-8"><b><?php echo $_SESSION['solar_feedInLimitation'] . " %" ?></b></div>
             </div>
+
+            <?php if(!empty($_SESSION['solar_info'])): ?>
+            <div class="p-3"></div>
+            <div class="row">
+                <div class="col-6 col-lg-4"><?php echo $strings['summary_pv_installation_info']; ?></div>
+                <div class="col-6 col-lg-8 solar_info"><b><?php echo $_SESSION['solar_info'] ?></b></div>
+            </div>
+            <?php endif; ?>
 
         </div>
 
