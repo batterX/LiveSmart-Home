@@ -259,17 +259,26 @@ function testBatteryDischarging()
         success: function(response) {
             console.log(response);
             if(response === "1") {
-                batteryDischarging_count = 0;
                 $.get({
-                    url: "api.php?get=settings",
+                    url: "api.php?set=command&type=24066&entity=0&text2=G,1",
                     success: function(response) {
-                        if(response && typeof response === "object" && response.hasOwnProperty('InverterParameters')) {
-                            response = response['InverterParameters'];
-                            batteryDischarging_datetime = response["0"]["S1"];
-                            setTimeout(testBatteryDischarging_waitUntilSet, 5000);
-                        } else alert("An error has occured. Please refresh the page! _022");
+                        console.log(response);
+                        if(response == "1") {
+                            batteryDischarging_count = 0;
+                            $.get({
+                                url: "api.php?get=settings",
+                                success: function(response) {
+                                    if(response && typeof response === "object" && response.hasOwnProperty('InverterParameters')) {
+                                        response = response['InverterParameters'];
+                                        batteryDischarging_datetime = response["0"]["S1"];
+                                        setTimeout(testBatteryDischarging_waitUntilSet, 5000);
+                                    } else alert("An error has occured. Please refresh the page! _022");
+                                },
+                                error: function() { alert("An error has occured. Please refresh the page! _021"); }
+                            });
+                        }
                     },
-                    error: function() { alert("An error has occured. Please refresh the page! _021"); }
+                    error: function() { alert("An error has occured. Please refresh the page! _123"); }
                 });
             } else alert("An error has occured. Please refresh the page! _020");
             batteryDischarging_firstRun = false;
@@ -324,17 +333,23 @@ function testBatteryDischarging_part2()
                                 success: function(response) {
                                     console.log(response);
                                     if(response === "1") {
-                                        $('#log').append(`<p>${lang['disable_discharging_to_grid']}</p>`);
                                         $.get({
-                                            url: "api.php?get=settings",
+                                            url: "api.php?set=command&type=24066&entity=0&text2=G,0",
                                             success: function(response) {
-                                                if(response && typeof response === "object" && response.hasOwnProperty('InverterParameters')) {
-                                                    response = response['InverterParameters'];
-                                                    batteryDischarging_datetime = response["0"]["S1"];
-                                                    testBatteryDischarging_waitUntilReset();
-                                                } else alert("An error has occured. Please refresh the page! _031");
+                                                $('#log').append(`<p>${lang['disable_discharging_to_grid']}</p>`);
+                                                $.get({
+                                                    url: "api.php?get=settings",
+                                                    success: function(response) {
+                                                        if(response && typeof response === "object" && response.hasOwnProperty('InverterParameters')) {
+                                                            response = response['InverterParameters'];
+                                                            batteryDischarging_datetime = response["0"]["S1"];
+                                                            testBatteryDischarging_waitUntilReset();
+                                                        } else alert("An error has occured. Please refresh the page! _031");
+                                                    },
+                                                    error: function() { alert("An error has occured. Please refresh the page! _030"); }
+                                                });
                                             },
-                                            error: function() { alert("An error has occured. Please refresh the page! _030"); }
+                                            error: function() { alert("An error has occured. Please refresh the page! _124"); }
                                         });
                                     } else alert("An error has occured. Please refresh the page! _029");
                                 },
@@ -364,7 +379,10 @@ function testBatteryDischarging_waitUntilReset()
                 response = response['InverterParameters'];
                 if(response["0"]["S1"] == batteryDischarging_datetime) {
                     setTimeout(testBatteryDischarging_waitUntilReset, 5000);
-                } else if(response["2"]["S1"].split(",")[1] === "0") {
+                } else if(
+                    response["2"]["S1"].split(",")[5] === "0" &&
+                    response["2"]["S1"].split(",")[6] === "0"
+                ) {
                     $("#testBatteryDischarging .loading").hide();
                     $("#testBatteryDischarging .success").show();
                     $('#log p:last-child').html(`✓ ${lang['disable_discharging_to_grid']}`);
