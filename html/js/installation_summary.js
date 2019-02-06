@@ -27,15 +27,18 @@ function getImageDimensions(file) {
 
 $('#btnDownload').on('click', function() {
     html2canvas(document.querySelector('#summary'), {
-        windowWidth: 750,
+        windowWidth: 800,
         scale: 2
     }).then(async canvas => {
         var img = canvas.toDataURL('image/jpeg');
         var dimensions = await getImageDimensions(img);
         console.log(dimensions);
         var ratio = dimensions.w / dimensions.h;
+        var w = 150, h = 150 / ratio;
+        if(ratio < 0.5618) { h = 267; w = 267 * ratio; }
+
         var pdf = new jsPDF("portrait", "mm", "a4");
-        pdf.addImage(img, 'JPEG', 20, 20, 110, 110 / ratio);
+        pdf.addImage(img, 'JPEG', 20, 15, w, h); // img, type, x, y, width, height
         pdf.save(lang['summary_installation_summary'] + ".pdf");
     });
 });
@@ -103,7 +106,7 @@ $('#btnFinishInstallation').on('click', function() {
 
 
     html2canvas(document.querySelector('#summary'), {
-        windowWidth: 750,
+        windowWidth: 800,
         scale: 2
     }).then(async canvas => {
         
@@ -111,8 +114,11 @@ $('#btnFinishInstallation').on('click', function() {
         var dimensions = await getImageDimensions(img);
         console.log(dimensions);
         var ratio = dimensions.w / dimensions.h;
+        var w = 150, h = 150 / ratio;
+        if(ratio < 0.5618) { h = 267; w = 267 * ratio; }
+
         var pdf = new jsPDF("portrait", "mm", "a4");
-        pdf.addImage(img, 'JPEG', 20, 20, 110, 110 / ratio);
+        pdf.addImage(img, 'JPEG', 20, 15, w, h); // img, type, x, y, width, height
         var pdfBlob = pdf.output('blob');
         
         // USE BLOB TO SAVE TO CLOUD

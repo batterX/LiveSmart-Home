@@ -33,7 +33,6 @@ function testEnergyMeter()
                         $('#testEnergyMeter .success').show();
                         $('#log p:last-child').html(`✓ ${lang['performing_test']}`);
                         setTimeout(testBattery, 2500);
-                        //setTimeout(testBatteryCharging, 2500);
                     } else {
                         $('#testEnergyMeter .error').show();
                         $('#log p:last-child').html(`✗ ${lang['performing_test']}`);
@@ -252,7 +251,7 @@ function testBatteryDischarging()
     $('#testBatteryDischarging .loading').show();
     if(batteryDischarging_firstRun)
         $('#log').append(`<p class="head"><b>${lang['battery_discharging']}</b></p>`);
-    $('#log').append(`<p>${"Enabling Battery Discharging to Grid"}</p>`);
+    $('#log').append(`<p>${lang['enable_discharging_to_grid']}</p>`);
     // Set BatteryDischargingToGrid ON (when PV is available)
     $.get({
         url: "api.php?set=command&type=24066&entity=0&text2=F,1",
@@ -456,7 +455,7 @@ function testUpsMode()
                         // CONTINUE WITH TEST
                         $('#log p:last-child').html(`✓ ${lang['check_output_active']}`);
                         $('#log').append(`<p>${lang['turn_input_breaker_off']}</p>`);
-                        $('#testUpsMode span span').html('please_turn_input_breaker_off');
+                        $('#testUpsMode span span').html(lang['please_turn_input_breaker_off']);
                         setTimeout(testUpsMode_waitingForInput, 5000);
                     } else if(outputIsActive != undefined) {
                         // SHOW ERROR
@@ -566,8 +565,6 @@ function testUpsMode_part2()
                             setTimeout(testUpsMode_part2, 5000);
                         } else {
                             $('#log p:last-child').html(`✓ ${lang['performing_test']} (${upsMode_count} / 10)`);
-                            $("#testUpsMode .loading").hide();
-                            $("#testUpsMode .success").show();
                             finishStep();
                         }
                     } else if(outputIsActive != undefined) {
@@ -592,24 +589,72 @@ function testUpsMode_part2()
 
 
 
-// Begin Testing
-
-testEnergyMeter();
-
-
-
-
-
-
-
-
-
-
 // Finish Step
 
 function finishStep()
 {
-    setTimeout(function() { $('#btnSubmit').removeClass('d-none'); }, 2500);
-    
-    $('#btnSubmit').on('click', function() { window.location.href = "installation_summary.php"; });
+    // Check Input Voltage
+    $.get({
+        url: "api.php?get=currentstate",
+        success: function(response) {
+            console.log(response);
+            if(response && typeof response === "object") {
+                if(response.hasOwnProperty('273') && response['273'].hasOwnProperty('1')) {
+
+                    let voltage1 = undefined;
+                    let voltage2 = undefined;
+                    let voltage3 = undefined;
+                    
+                    if(response.hasOwnProperty('273') && response['273'].hasOwnProperty('1'))
+                        voltage1 = response['273']['1'];
+                    if(response.hasOwnProperty('274') && response['274'].hasOwnProperty('1'))
+                        voltage2 = response['274']['1'];
+                    if(response.hasOwnProperty('275') && response['275'].hasOwnProperty('1'))
+                        voltage3 = response['275']['1'];
+                    
+                    inputIsActive = undefined;
+
+                    if(voltage1 != undefined && voltage2 == undefined && voltage3 == undefined) {
+                        if(voltage1 > 10000)
+                            inputIsActive = true;
+                        else
+                            inputIsActive = false;
+                    } else if(voltage1 != undefined && voltage2 != undefined && voltage3 != undefined) {
+                        if(voltage1 > 10000 && voltage2 > 10000 && voltage3 > 10000)
+                            inputIsActive = true;
+                        else
+                            inputIsActive = false;
+                    } else alert("An error has occured. Please refresh the page! _125");
+                    
+                    if(inputIsActive == true) {
+                        // FINISH STEP
+                        $("#testUpsMode .loading").hide();
+                        $("#testUpsMode .success").show();
+                        $('#testUpsMode span span').html("");
+                        setTimeout(function() { $('#btnSubmit').removeClass('d-none'); }, 2500);
+                        $('#btnSubmit').on('click', function() { window.location.href = "installation_summary.php"; });
+                    } else if(inputIsActive != undefined) {
+                        // RETRY
+                        $('#testUpsMode span span').html(lang['please_turn_input_breaker_on']);
+                        setTimeout(finishStep, 5000);
+                    }
+
+                } else alert("An error has occured. Please refresh the page! _126");
+            } else alert("An error has occured. Please refresh the page! _127");
+        },
+        error: function() { alert("An error has occured. Please refresh the page! _128"); }
+    });
 }
+
+
+
+
+
+
+
+
+
+
+// Begin Testing
+
+testEnergyMeter();

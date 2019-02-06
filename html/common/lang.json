@@ -97,6 +97,7 @@
             "check_output_active":           "Checking if Output is Active",
             "turn_input_breaker_off":        "Turn OFF the input breaker",
             "please_turn_input_breaker_off": "Please turn OFF the input breaker",
+            "please_turn_input_breaker_on":  "Please turn ON the input breaker",
             "please_turn_output_on":         "Please turn ON the UPS Output",
 
             "summary_installation_summary": "Installation Summary",
@@ -207,12 +208,13 @@
             "performing_test":               "Test wird durchgeführt",
             "enable_ac_charging":            "Aktivierung der AC-Batterieladung",
             "disable_ac_charging":           "Deaktivierung der AC-Batterieladung",
-            "wait_before_test":              "Waiting 1 minute before test",
-            "enable_discharging_to_grid":    "Aktivieren der Batterieentladung zum Netz",
+            "wait_before_test":              "Warten 1 Minute vor dem Test",
+            "enable_discharging_to_grid":    "Aktivierung der Batterieentladung zum Netz",
             "disable_discharging_to_grid":   "Deaktivierung der Batterieentladung zum Netz",
             "check_output_active":           "Prüfen, ob der Ausgang aktiv ist",
             "turn_input_breaker_off":        "Schalten Sie den Eingangsschalter AUS",
             "please_turn_input_breaker_off": "Bitte schalten Sie den Eingangsschalter AUS",
+            "please_turn_input_breaker_on":  "Bitte schalten Sie den Eingangsschalter EIN",
             "please_turn_output_on":         "Bitte schalten Sie den USV-Ausgang EIN",
 
             "summary_installation_summary": "Installationsbericht",
