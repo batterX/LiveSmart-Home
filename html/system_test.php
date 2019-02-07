@@ -100,6 +100,7 @@ $_SESSION['last_step'] = $step;
 
                     <div class="w-100 text-center">
                         <button id="btnSubmit" class="btn btn-success levitate ripple my-5 px-5 py-3 d-none"><?php echo $strings['continue'] ?></button>
+                        <button id="btnSkip" class="btn btn-secondary levitate ripple my-5 px-5 py-3 d-none"><?php echo $strings['skip'] ?></button>
                     </div>
 
                 </div>

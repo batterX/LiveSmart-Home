@@ -16,7 +16,7 @@ $.ripple({
     Bullet Progress Bar
 */
 
-var stepsSum = 7;
+var stepsSum = 8;
 
 var $progress = $('#progress .progress-bar');
   

@@ -20,6 +20,7 @@
             "lang": "English",
 
             "continue": "Continue",
+            "skip":     "Skip",
 
             "software_update":                "Software Update",
             "checking_internet_connection":   "Checking Internet Connection",
@@ -118,10 +119,11 @@
             "summary_batteries":            "Batteries S/N",
             "summary_pv_system_size":       "PV-System Size",
             "summary_feed_in_limitation":   "Grid Feed-in Limitation",
+            "summary_pv_installation_info": "PV-Installation Info",
             "summary_confirm_box":          "I hereby confirm that the information above is true, complete and accurate",
             "summary_finish_installation":  "Finish Installation",
             "summary_download_pdf":         "Download PDF",
-            "summary_pv_installation_info": "PV-Installation Info"
+            "summary_reboot_livex":         "Reboot LiveX"
         },
 
 
@@ -137,6 +139,7 @@
             "lang": "Deutsch",
 
             "continue": "Weiter",
+            "skip":     "Überspringen",
 
             "software_update":                "Software-Aktualisierung",
             "checking_internet_connection":   "Überprüfung der internetverbindung",
@@ -235,10 +238,11 @@
             "summary_batteries":            "Batterien-SN",
             "summary_pv_system_size":       "Größe der PV-Anlage",
             "summary_feed_in_limitation":   "Netzeinspeisebegrenzung",
+            "summary_pv_installation_info": "PV-Installation Info",
             "summary_confirm_box":          "Hiermit bestätige ich, dass die oben angegebenen Informationen wahr, vollständig und korrekt sind",
             "summary_finish_installation":  "Installation abschließen",
             "summary_download_pdf":         "PDF herunterladen",
-            "summary_pv_installation_info": "PV-Installation Info"
+            "summary_reboot_livex":         "LiveX Neustarten"
         }
 
 

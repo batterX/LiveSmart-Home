@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-$step = 7;
+$step = 8;
 
 // Language
 
@@ -95,7 +95,7 @@ $arrayDeviceModel = [
 
 		<div id="summary" class="container px-3">
 
-            <h1><?php echo $strings['summary_installation_summary']; ?></h1>
+            <h1><b><?php echo $strings['summary_installation_summary']; ?></b></h1>
 
             <div class="row">
                 <div class="col-6 col-md-4"><?php echo $strings['summary_installation_date']; ?></div>
@@ -190,7 +190,7 @@ $arrayDeviceModel = [
         </div>
 
 
-        <div class="container pt-5 pb-3">
+        <div id="confirm" class="container pt-5 pb-3">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="checkboxAccept">
                 <label class="custom-control-label" for="checkboxAccept"><?php echo $strings['summary_confirm_box']; ?></label>
@@ -198,9 +198,34 @@ $arrayDeviceModel = [
         </div>
         
 
-        <div class="container text-left">
+        <div id="btnFinish" class="container text-left">
             <button id="btnFinishInstallation" class="btn btn-success levitate ripple mb-3 mt-4 px-5 py-3 d-none"><?php echo $strings['summary_finish_installation']; ?></button>
-            <button id="btnDownload" class="btn btn-secondary levitate ripple mb-3 mt-4 px-5 py-3 ml-3 d-none"><?php echo $strings['summary_download_pdf']; ?></button>
+        </div>
+
+
+
+        <div id="successBox" class="container" style="display: none">
+
+            <h1><b class="text-success">Success!</b></h1>
+
+            <p>The setup of the batterX Home has been successfully completed and an email with confirmation link has been sent to the customer.</p>
+
+            <p>By clicking the received link, the customer will be able to start using the batterX Portal to remotely monitor and control his batterX Home.</p>
+
+            <p>As Installer of the System, you are granted full access to this batterX Home from your own account as well, so that you can provide remote support to your customer, if ever necessary.</p>
+
+            <p class="mt-5">We have automatically uploaded the Installation Summary to the batterX Cloud,<br>but we also recommend you to download the file and store it locally using the button below.</p>
+
+            <button id="btnDownload" class="btn btn-success levitate ripple mb-3 py-3 px-5" style="width:250px"><?php echo $strings['summary_download_pdf']; ?></button>
+
+            <p class="mt-5">We also recommend you to reboot the LiveX once, by clicking the button below.</p>
+
+            <div class="d-flex align-items-center mb-3">
+                <button id="btnReboot" class="btn btn-primary levitate ripple py-3 px-5" style="width:250px"><?php echo $strings['summary_reboot_livex']; ?></button>
+                <div id="loading" class="d-none"></div>
+                <div id="success" class="d-none"></div>
+            </div>
+
         </div>
 		
 

@@ -1,4 +1,5 @@
-$progress.trigger('step', 7);
+$progress.trigger('step', 8);
+
 
 
 
@@ -20,28 +21,6 @@ function getImageDimensions(file) {
         i.src = file
     })
 }
-
-
-
-
-
-$('#btnDownload').on('click', function() {
-    html2canvas(document.querySelector('#summary'), {
-        windowWidth: 800,
-        scale: 2
-    }).then(async canvas => {
-        var img = canvas.toDataURL('image/jpeg');
-        var dimensions = await getImageDimensions(img);
-        console.log(dimensions);
-        var ratio = dimensions.w / dimensions.h;
-        var w = 150, h = 150 / ratio;
-        if(ratio < 0.5618) { h = 267; w = 267 * ratio; }
-
-        var pdf = new jsPDF("portrait", "mm", "a4");
-        pdf.addImage(img, 'JPEG', 20, 15, w, h); // img, type, x, y, width, height
-        pdf.save(lang['summary_installation_summary'] + ".pdf");
-    });
-});
 
 
 
@@ -132,10 +111,9 @@ $('#btnFinishInstallation').on('click', function() {
             contentType: false,
             cache: false,
             success: function(response) {
-                if(response === "1") {
-                    alert("Everything Created & Set-up Successfully");
-                    $('#btnDownload').removeClass('d-none');
-                } else
+                if(response === "1")
+                    showSuccess();
+                else
                     alert("Error: " + response);
             },
             error: function(err) { console.log(err); alert("An error has occured. Please refresh this page!"); }
@@ -150,3 +128,101 @@ $('#btnFinishInstallation').on('click', function() {
     //alert("On Click -> Open Login Page -> Login User -> Activate Stuff");
 
 });
+
+
+
+
+
+function showSuccess()
+{
+    $('#summary').hide();
+    $('#confirm').hide();
+    $('#btnFinish').hide();
+    $('#successBox').show();
+}
+
+
+
+
+
+$('#btnDownload').on('click', function() {
+    html2canvas(document.querySelector('#summary'), {
+        windowWidth: 800,
+        scale: 2,
+        onclone: function(clonedDoc) { clonedDoc.getElementById('summary').style.display = 'block'; }
+    }).then(async canvas => {
+        var img = canvas.toDataURL('image/jpeg');
+        var dimensions = await getImageDimensions(img);
+        console.log(dimensions);
+        var ratio = dimensions.w / dimensions.h;
+        var w = 150, h = 150 / ratio;
+        if(ratio < 0.5618) { h = 267; w = 267 * ratio; }
+
+        var pdf = new jsPDF("portrait", "mm", "a4");
+        pdf.addImage(img, 'JPEG', 20, 15, w, h); // img, type, x, y, width, height
+        pdf.save(lang['summary_installation_summary'] + ".pdf");
+    });
+});
+
+
+
+
+
+var checkRebootInterval;
+
+$('#btnReboot').on('click', function() {
+
+    $.post({
+        url: "cmd/reboot.php",
+        success: function(response) { console.log(response); },
+        error  : function(response) { console.log(response); }
+    });
+
+    setTimeout(function() { checkRebootInterval = setInterval(checkReboot_waitForError, 5000); }, 2500);
+    
+    // DISABLE BUTTON
+    $('#btnReboot').attr('disabled', 'disabled');
+    // SHOW SPINNER
+    $('#loading').removeClass('d-none');
+});
+
+function checkReboot_waitForError() {
+    $.ajax({
+        type: 'GET',
+        url: 'cmd/working.txt',
+        cache: false,
+        timeout: 2500,
+        success: function(response) {
+            if(!response) {
+                clearInterval(checkRebootInterval);
+                checkRebootInterval = undefined;
+                checkRebootInterval = setInterval(checkReboot_waitForSuccess, 5000);
+            }
+        },
+        error: function() {
+            clearInterval(checkRebootInterval);
+            checkRebootInterval = undefined;
+            checkRebootInterval = setInterval(checkReboot_waitForSuccess, 5000);
+        }
+    });
+}
+
+function checkReboot_waitForSuccess() {
+    $.ajax({
+        type: 'GET',
+        url: 'cmd/working.txt',
+        cache: false,
+        timeout: 2500,
+        success: function(response) {
+            if(response) {
+                clearInterval(checkRebootInterval);
+                checkRebootInterval = undefined;
+
+                // HIDE SPINNER
+                $('#loading').addClass('d-none');
+                // SHOW SUCCESS
+                $('#success').removeClass('d-none');
+            }
+        }
+    });
+}

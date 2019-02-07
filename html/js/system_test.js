@@ -418,6 +418,11 @@ function testUpsMode()
     if(upsMode_firstRun)
         $('#log').append(`<p class="head"><b>${lang['ups_mode']}</b></p>`);
     $('#log').append(`<p>${lang['check_output_active']}</p>`);
+
+    // Show Skip Button
+    $('#btnSkip').removeClass('d-none');
+    $('#btnSkip').on('click', function() { window.location.href = "accept_terms.php"; });
+
     // Check Output Voltage
     $.get({
         url: "api.php?get=currentstate",
@@ -565,7 +570,7 @@ function testUpsMode_part2()
                             setTimeout(testUpsMode_part2, 5000);
                         } else {
                             $('#log p:last-child').html(`✓ ${lang['performing_test']} (${upsMode_count} / 10)`);
-                            finishStep();
+                            testUpsMode_finish();
                         }
                     } else if(outputIsActive != undefined) {
                         $("#testUpsMode .loading").hide();
@@ -591,7 +596,7 @@ function testUpsMode_part2()
 
 // Finish Step
 
-function finishStep()
+function testUpsMode_finish()
 {
     // Check Input Voltage
     $.get({
@@ -631,12 +636,11 @@ function finishStep()
                         $("#testUpsMode .loading").hide();
                         $("#testUpsMode .success").show();
                         $('#testUpsMode span span').html("");
-                        setTimeout(function() { $('#btnSubmit').removeClass('d-none'); }, 2500);
-                        $('#btnSubmit').on('click', function() { window.location.href = "installation_summary.php"; });
+                        finishStep();
                     } else if(inputIsActive != undefined) {
                         // RETRY
                         $('#testUpsMode span span').html(lang['please_turn_input_breaker_on']);
-                        setTimeout(finishStep, 5000);
+                        setTimeout(testUpsMode_finish, 5000);
                     }
 
                 } else alert("An error has occured. Please refresh the page! _126");
@@ -644,6 +648,24 @@ function finishStep()
         },
         error: function() { alert("An error has occured. Please refresh the page! _128"); }
     });
+}
+
+
+
+
+
+
+
+
+
+
+// Finish Step
+
+function finishStep()
+{
+    $('#btnSkip').addClass('d-none');
+    setTimeout(function() { $('#btnSubmit').removeClass('d-none'); }, 2500);
+    $('#btnSubmit').on('click', function() { window.location.href = "accept_terms.php"; });
 }
 
 
