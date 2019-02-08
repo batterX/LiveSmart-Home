@@ -17,7 +17,7 @@ function performStep()
                 if(isWorking) {
                     // Set SerialNumber
                     $.get({
-                        url: 'api.php?get=device_info',
+                        url: 'api.php?get=deviceinfo',
                         success: function(response) {
                             console.log(response);
                             if(response && typeof response == 'object' && response.hasOwnProperty('device_model') && response.hasOwnProperty('device_serial_number')) {

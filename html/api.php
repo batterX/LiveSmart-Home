@@ -183,16 +183,16 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'settings') {
 	
 }
 
-// GET device_info
+// GET DeviceInfo
 
-else if(isset($_GET['get']) && strtolower($_GET['get']) == 'device_info') {
+else if(isset($_GET['get']) && strtolower($_GET['get']) == 'deviceinfo') {
 	
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/usv.db3');
 	
 	// Returns the full Settings table
-	// ?get=device_info
-	$result = $db->query("SELECT setting, value FROM device_info", PDO::FETCH_ASSOC);
+	// ?get=deviceinfo
+	$result = $db->query("SELECT setting, value FROM DeviceInfo", PDO::FETCH_ASSOC);
 	$dbh = new stdClass();
 	foreach($result as $row) {
 		$setting = (string) $row['setting'];
