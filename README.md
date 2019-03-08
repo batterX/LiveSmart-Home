@@ -1,8 +1,8 @@
-# batterX Live&Smart Home (v19.1.10)
+# batterX Live&Smart Home (v19.2.2)
 
-This is just a test version of our new software. It is under development and not usable in any way right now.
+This is the official software for the batterX LiveX.
 
-**Note:** Starting with v19.1.1 the RS232 converter must be connected to the Top-Left USB Port of the Live&Smart
+**Note:** Starting with v19.1.1 the RS232 converter must be connected to the Top-Left USB Port of the LiveX
 ```
 ╔═════════╗╔═══════╦═══════╗
 ║ NETWORK ║║ RS232 ║  USB  ║
