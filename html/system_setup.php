@@ -34,11 +34,10 @@ $_SESSION['last_step'] = $step;
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<meta name="description" content="The „Live&amp;Smart“ monitoring and controlling tool designed by batterX® is a sophisticated energy management system for optimizing production and consumption.">
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX Live&Smart</title>
+		<title>batterX LiveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css">
 		<link rel="stylesheet" href="css/common.css">
@@ -125,11 +124,27 @@ MPPT 2
                         
                         <h1><?php echo $strings['batteries']; ?></h1>
 
-                        <p><?php echo $strings['batteries_serialnumber']; ?></p>
-                        <input id="battery_1" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery1']; ?>" required>
-                        <input id="battery_2" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery2']; ?>">
-                        <input id="battery_3" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery3']; ?>">
-                        <input id="battery_4" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery4']; ?>">
+                        <div class="mb-4">
+                            <div class="custom-control custom-radio d-inline-block">
+                                <input type="radio" id="bx_battery_type_0" name="bx_battery_type" class="custom-control-input" value="0" checked>
+                                <label class="custom-control-label" for="bx_battery_type_0">LiFePO</label>
+                            </div>
+                            <div class="custom-control custom-radio d-inline-block ml-4">
+                                <input type="radio" id="bx_battery_type_1" name="bx_battery_type" class="custom-control-input" value="1">
+                                <label class="custom-control-label" for="bx_battery_type_1">Carbon</label>
+                            </div>
+                        </div>
+
+                        <div id="battery_section_0">
+                            <p><?php echo $strings['batteries_serialnumber']; ?></p>
+                            <input id="battery_1" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery1']; ?>">
+                            <input id="battery_2" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery2']; ?>">
+                            <input id="battery_3" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery3']; ?>">
+                            <input id="battery_4" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery4']; ?>">
+                        </div>
+                        <div id="battery_section_1" style="display: none">
+                            ...
+                        </div>
 
                     </div>
 

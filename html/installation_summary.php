@@ -69,11 +69,10 @@ $arrayDeviceModel = [
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<meta name="description" content="The „Live&amp;Smart“ monitoring and controlling tool designed by batterX® is a sophisticated energy management system for optimizing production and consumption.">
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX Live&Smart</title>
+		<title>batterX LiveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css">
 		<link rel="stylesheet" href="css/common.css">
@@ -149,10 +148,12 @@ $arrayDeviceModel = [
 
             <div class="p-3"></div>
 
+            <?php if(!empty($_SESSION['system_model'])): ?>
             <div class="row">
                 <div class="col-6 col-md-4"><?php echo $strings['summary_system_model']; ?></div>
                 <div class="col-6 col-md-8"><b><?php echo $_SESSION['system_model']; ?></b></div>
             </div>
+            <?php endif; ?>
 
             <div class="row">
                 <div class="col-6 col-md-4"><?php echo $strings['summary_system']; ?></div>
@@ -166,10 +167,15 @@ $arrayDeviceModel = [
                 <div class="col-6 col-md-4"><?php echo $strings['summary_livex']; ?></div>
                 <div class="col-6 col-md-8"><b><?php echo $_SESSION['box_serial'] . " (" . $_SESSION['software_version'] . ")" ?></b></div>
             </div>
+
+            <?php if(!empty($_SESSION['system_model']) && $_SESSION['battery1_serial'] != $_SESSION['device_serial']): ?>
             <div class="row">
                 <div class="col-6 col-md-4"><?php echo $strings['summary_batteries']; ?></div>
                 <div class="col-6 col-md-8"><b><?php echo ($_SESSION['battery1_serial']) . (isset($_SESSION['battery2_serial']) ? "<br>" . $_SESSION['battery2_serial'] : "") . (isset($_SESSION['battery3_serial']) ? "<br>" . $_SESSION['battery3_serial'] : "") . (isset($_SESSION['battery4_serial']) ? "<br>" . $_SESSION['battery4_serial'] : "") ?></b></div>
             </div>
+            <?php endif; ?>
+            
+            
             <div class="row">
                 <div class="col-6 col-md-4"><?php echo $strings['summary_pv_system_size']; ?></div>
                 <div class="col-6 col-md-8"><b><?php echo $_SESSION['solar_wattPeak'] . " Wp" ?></b></div>

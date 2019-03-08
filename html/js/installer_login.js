@@ -16,11 +16,18 @@ $('#loginForm').on('submit', function(e) {
                 email: $('#email').val(),
                 password: $('#password').val()
             },
+            error: function() {
+                alert("E001. Please refresh the page!");
+            },
             success: function(response) {
+
                 console.log(response);
-                if(response && typeof response === "object") {
+                
+                if(response && typeof response === "object")
+                {
                     // Hide ErrorMsg
                     $("#errorMsg").css('visibility', 'hidden');
+                    
                     // Set to Session
                     $.post({
                         url: "cmd/session.php",
@@ -33,20 +40,21 @@ $('#loginForm').on('submit', function(e) {
                             installer_company:   response.hasOwnProperty('info_company') ? response['info_company'] : "",
                             installer_telephone: response.hasOwnProperty('info_telephone') ? response['info_telephone'] : ""
                         },
+                        error: function() {
+                            alert("E002. Please refresh the page!");
+                        },
                         success: function(response) {
                             console.log(response);
-                            if(response === '1')
+                            if(response == '1')
                                 window.location.href = "customer_info.php";
                             else
-                                alert("An error has occured. Please try again! _003");
-                        },
-                        error: function() { alert("An error has occured. Please try again! _002"); }
+                                alert("E003. Please refresh the page!");
+                        }
                     });
-                } else {
-                    $("#errorMsg").css('visibility', 'visible');
                 }
-            },
-            error: function() { alert("An error has occured. Please try again! _001"); }
+                else $("#errorMsg").css('visibility', 'visible');
+
+            }
         });
     }
 
