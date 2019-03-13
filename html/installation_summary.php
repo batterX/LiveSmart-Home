@@ -241,7 +241,7 @@ $arrayDeviceModel = [
         <script src="js/dist/html2canvas.js"></script>
 		<script src="js/common.js"></script>
         <script>const lang = <?php echo json_encode($strings); ?>;</script>
-        <script>const dataObj = <?php echo json_encode($_SESSION); ?></script>
+        <script>const dataObj = <?php echo json_encode($_SESSION); ?>;</script>
 		<script src="js/installation_summary.js"></script>
 
 

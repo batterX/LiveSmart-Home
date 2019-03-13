@@ -501,7 +501,7 @@ function finishSetup()
             newParameters['maxGridFeedInPower'           ] = Math.min(Math.max(parseInt($('#solar_wattPeak').val()) * parseInt($('#solar_feedInLimitation').val()) / 100, 50), maxGridFeedInPower);
             newParameters['solarEnergyPriority'          ] = '1';
             newParameters['allowBatteryCharging'         ] = '1';
-            newParameters['allowBatteryChargingAC'       ] = '1'; // TODO: This is a test. It will be set to 0 in the System Test!
+            newParameters['allowBatteryChargingAC'       ] = '0';
             newParameters['allowGridFeedIn'              ] = '1';
             newParameters['allowBatteryDischargeSolarOK' ] = '1';
             newParameters['allowBatteryDischargeSolarNOK'] = '1';

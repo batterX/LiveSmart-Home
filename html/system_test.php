@@ -15,8 +15,8 @@ $strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
 if(!isset($_SESSION['last_step'])) header("location: index.php");
-if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
-	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
+//if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
+//	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
 $_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
@@ -115,6 +115,7 @@ $_SESSION['last_step'] = $step;
 		<script src="js/dist/bundle.js"></script>
 		<script src="js/common.js"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>
+        <script>const dataObj = <?php echo json_encode($_SESSION); ?>;</script>
 		<script src="js/system_test.js"></script>
 
 
