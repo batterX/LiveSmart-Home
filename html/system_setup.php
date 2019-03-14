@@ -143,7 +143,7 @@ MPPT 2
                             <input id="battery_4" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery4']; ?>">
                         </div>
                         <div id="battery_section_1" style="display: none">
-                            ...
+                            <!-- WRITE SOMETHING ABOUT THE CARBON BATTERIES ??? -->
                         </div>
 
                     </div>
