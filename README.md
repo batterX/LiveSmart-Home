@@ -1,4 +1,4 @@
-# batterX Live&Smart Home (v19.2.3)
+# batterX Live&Smart Home (v19.2.4)
 
 This is the official software for the batterX LiveX.
 
