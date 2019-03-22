@@ -15,8 +15,8 @@ $strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
 if(!isset($_SESSION['last_step'])) header("location: index.php");
-//if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
-//	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
+if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
+	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
 $_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
@@ -79,14 +79,6 @@ $_SESSION['last_step'] = $step;
                         <div class="success"></div>
                         <div class="error"></div>
                         <span><?php echo $strings['battery_charging']; ?></span>
-                    </div>
-
-                    <div id="testBatteryDischarging" class="status d-flex align-items-center mt-4">
-                        <div class="waiting"></div>
-                        <div class="loading"></div>
-                        <div class="success"></div>
-                        <div class="error"></div>
-                        <span><?php echo $strings['battery_discharging']; ?></span>
                     </div>
 
                     <div id="testUpsMode" class="status d-flex align-items-center mt-4">

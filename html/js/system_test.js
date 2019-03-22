@@ -49,17 +49,6 @@ function showLoading_batteryCharging()
     scrollToBottom();
 }
 
-function showLoading_batteryDischarging()
-{
-    $('#testBatteryDischarging .waiting').hide();
-    $('#testBatteryDischarging .success').hide();
-    $('#testBatteryDischarging .error'  ).hide();
-    $('#testBatteryDischarging .loading').show();
-    $('#log').append(`<p class="head"><b>${lang['battery_discharging']}</b></p>`);
-    $('#log').append(`<p>${lang['performing_test']}</p>`);
-    scrollToBottom();
-}
-
 function showLoading_upsMode()
 {
     $('#testUpsMode .waiting').hide();
@@ -245,7 +234,7 @@ function testBatteryCharging_waitUntilReset()
                         $("#testBatteryCharging .loading").hide();
                         $("#testBatteryCharging .success").show();
                         $('#log p:last-child').html(`✓ ${lang['disable_ac_charging']}`);
-                        setTimeout(testBatteryDischarging, 5000);
+                        setTimeout(testUpsMode, 2500);
                     }
                 });
             }
@@ -272,74 +261,12 @@ function testBatteryCharging_waitUntilReset()
 
 
 
-function testBatteryDischarging()
-{
-    showLoading_batteryDischarging();
-
-    // Check if Battery is Discharging
-    $.get({
-        url: "api.php?get=currentstate",
-        error: function() { alert("E011. Please refresh the page!") },
-        success: function(response) {
-            
-            if(!response || typeof response != "object" || !response.hasOwnProperty('1121') || !response['1121'].hasOwnProperty('1'))
-                return alert("E012. Please refresh the page!");
-            
-            var batteryPower = parseInt(response['1121']['1']);
-
-            if(batteryPower < -100) { // Discharging with over 100W
-                setTimeout(function() {
-                    $('#log p:last-child').html(`✓ ${lang['performing_test']}`);
-                    scrollToBottom();
-                    $("#testBatteryDischarging .loading").hide();
-                    $("#testBatteryDischarging .success").show();
-                    testUpsMode();
-                }, 2500);
-            } else {
-                setTimeout(function() {
-                    $('#log p:last-child').html(`✗ ${lang['performing_test']}`);
-                    scrollToBottom();
-                    $("#testBatteryDischarging .loading").hide();
-                    $("#testBatteryDischarging .waiting").show();
-                    testUpsMode(true); // Hide Skip Button
-                }, 2500);
-            }
-
-        }
-    });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var upsMode_firstRun = true;
 var upsMode_count = 0; // run 5 times (5sec delay), then finish
 
-function testUpsMode(hideSkip)
+function testUpsMode()
 {
     showLoading_upsMode();
-
-    // Show Skip Button
-    if(hideSkip != true) {
-        $('#btnSkip').removeClass('d-none');
-        $('#btnSkip').on('click', function() { window.location.href = "accept_terms.php"; });
-    }
 
     // Check Output Voltage
     $.get({
@@ -470,10 +397,6 @@ function testUpsMode_test()
                 $("#testUpsMode .error").show();
                 $('#log p:last-child').html(`✗ ${lang['performing_test']} (${upsMode_count} / 5)`);
                 scrollToBottom();
-                $("#testBatteryDischarging .waiting").hide();
-                $("#testBatteryDischarging .loading").hide();
-                $("#testBatteryDischarging .success").hide();
-                $("#testBatteryDischarging .error").show();
             }
 
         }
@@ -512,10 +435,6 @@ function testUpsMode_finish()
                 $("#testUpsMode .loading").hide();
                 $("#testUpsMode .success").show();
                 $("#testUpsMode span span").html("");
-                $("#testBatteryDischarging .waiting").hide();
-                $("#testBatteryDischarging .loading").hide();
-                $("#testBatteryDischarging .error").hide();
-                $("#testBatteryDischarging .success").show();
                 finishStep();
             } else if(inputIsActive != undefined) {
                 // RETRY
