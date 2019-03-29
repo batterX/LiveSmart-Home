@@ -71,11 +71,11 @@ if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['soft
 				<form id="loginForm">
 					
 					<div>
-						<input id="email" class="form-control" type="email" placeholder="<?php echo $strings['email']; ?>" required>
+						<input id="email" class="form-control form-control-outline" type="email" placeholder="<?php echo $strings['email']; ?>" required>
 					</div>
 					
 					<div>
-						<input id="password" class="form-control" type="password" placeholder="<?php echo $strings['password']; ?>" required>
+						<input id="password" class="form-control form-control-outline" type="password" placeholder="<?php echo $strings['password']; ?>" required>
 					</div>
 
 					<span id="errorMsg"><i><?php echo $strings['wrong_email_or_password']; ?></i></span>

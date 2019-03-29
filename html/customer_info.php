@@ -122,10 +122,17 @@ $_SESSION['last_step'] = $step;
 
                     <div class="col-md-4 p-0 px-2 pt-3">
                         <select class="location-country custom-select" required>
-                            <option value="be"><?php echo $strings['be']; ?></option>
-                            <option value="de" selected><?php echo $strings['de']; ?></option>
-                            <option value="fr"><?php echo $strings['fr']; ?></option>
-                            <option value="lu"><?php echo $strings['lu']; ?></option>
+                            <option value="de" selected><?php echo $strings['c_de'] ?></option>
+                            <option value="at"><?php echo $strings['c_at'] ?></option>
+                            <option value="be"><?php echo $strings['c_be'] ?></option>
+                            <optgroup label="Europe">
+                                <option value="ch"><?php echo $strings['c_ch'] ?></option>
+                                <option value="es"><?php echo $strings['c_es'] ?></option>
+                                <option value="lt"><?php echo $strings['c_lt'] ?></option>
+                                <option value="lu"><?php echo $strings['c_lu'] ?></option>
+                                <option value="nl"><?php echo $strings['c_nl'] ?></option>
+                                <option value="se"><?php echo $strings['c_se'] ?></option>
+                            </optgroup>
                         </select>
                     </div>
                     <div class="col-md-4 p-0 px-2 pt-3">
@@ -153,10 +160,17 @@ $_SESSION['last_step'] = $step;
                     
                     <div class="col-md-4 p-0 px-2 pt-3">
                         <select class="location-country custom-select">
-                            <option value="be"><?php echo $strings['be']; ?></option>
-                            <option value="de" selected><?php echo $strings['de']; ?></option>
-                            <option value="fr"><?php echo $strings['fr']; ?></option>
-                            <option value="lu"><?php echo $strings['lu']; ?></option>
+                            <option value="de" selected><?php echo $strings['c_de'] ?></option>
+                            <option value="at"><?php echo $strings['c_at'] ?></option>
+                            <option value="be"><?php echo $strings['c_be'] ?></option>
+                            <optgroup label="Europe">
+                                <option value="ch"><?php echo $strings['c_ch'] ?></option>
+                                <option value="es"><?php echo $strings['c_es'] ?></option>
+                                <option value="lt"><?php echo $strings['c_lt'] ?></option>
+                                <option value="lu"><?php echo $strings['c_lu'] ?></option>
+                                <option value="nl"><?php echo $strings['c_nl'] ?></option>
+                                <option value="se"><?php echo $strings['c_se'] ?></option>
+                            </optgroup>
                         </select>
                     </div>
                     <div class="col-md-4 p-0 px-2 pt-3">
