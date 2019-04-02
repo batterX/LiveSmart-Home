@@ -31,7 +31,7 @@ sudo apt-get install rng-tools -y
 
 
 sudo kill $(pgrep "BatterX")
-sudo kill $(pgrem "CloudStream")
+sudo kill $(pgrep "CloudStream")
 
 
 
