@@ -1,5 +1,5 @@
 #!/bin/sh
-# updater.sh
+# update.sh
 
 sudo cp /home/pi/livesmart-home/html /var/www -r
 sudo chmod 777 /var/www -R
@@ -30,8 +30,11 @@ sudo apt-get install rng-tools -y
 
 
 
+sudo kill $(pgrep "BatterX")
+sudo kill $(pgrem "CloudStream")
+
+
+
 sudo rm /home/pi/livesmart-home -r
 
 sudo rm /home/pi/update.sh
-
-sudo reboot
