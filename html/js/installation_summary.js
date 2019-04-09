@@ -5,7 +5,10 @@ $progress.trigger('step', 8);
 
 
 $('#checkboxAccept').on('click', function() {
-    $('#btnFinishInstallation').removeClass('d-none');
+    if($(this).is(':checked'))
+        $('#btnFinishInstallation').removeClass('d-none');
+    else
+        $('#btnFinishInstallation').addClass('d-none');
 });
 
 

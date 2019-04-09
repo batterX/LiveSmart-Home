@@ -1,47 +1,74 @@
+* {	user-select: none }
+
 body {
-    margin: 0;
+	margin: 0;
+}
+
+.container {
+	text-align: center;
+	padding: 0;
 }
 
 .container > div {
-    height: 100vh;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.container > div > div {
+	width: 100%;
 }
 
 .logo {
-    background-image: url(../img/logo_livesmart.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 20vmin;
+	background-image: url(../img/logo_livesmart.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 20vmin;
 }
 
 h1 {
-    font-size: 6vmin;
-    margin-top: 7.5vmin;
+	margin: 0;
+	font-size: 6vmin;
+	margin-top: 7.5vmin;
+}
+
+.lang {
+	margin: 0;
+	padding: 0;
+}
+
+.com {
+	margin: 0;
+	padding: 0;
 }
 
 #langEn, #langDe {
-    margin-top: 5vmin !important;
-    cursor: pointer;
-    border-radius: 0.25rem;
-    padding-top: 5vmin !important;
-    padding-bottom: 5vmin !important;
+	margin-top: 5vmin !important;
+	cursor: pointer;
+	border-radius: 1vmin;
+	padding-top: 5vmin !important;
+	padding-bottom: 5vmin !important;
+}
+#langEn:hover, #langDe:hover {
+	background: rgba(0, 0, 0, 0.1);
+}
+#langEn:active, #langDe:active {
+	background: rgba(0, 0, 0, 0.15);
 }
 
 #langEn > div, #langDe > div {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 12.5vmin;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 12.5vmin;
 }
-#langEn > div {
-    background-image: url(../img/lang_en.png);
-}
-#langDe > div {
-    background-image: url(../img/lang_de.png);
-}
+#langEn > div { background-image: url(../img/lang_en.png) }
+#langDe > div { background-image: url(../img/lang_de.png) }
 
 .lang span {
-    display: block;
-    font-size: 3vmin;
-    margin-top: 2.5vmin;
+	display: block;
+	font-size: 3vmin;
+	margin-top: 2.5vmin;
 }

@@ -1,6 +1,22 @@
+* { user-select: none }
+
+
+
+.container {
+    text-align: center;
+    padding: 0;
+}
+
+
+.container > div {
+    width: 100%;
+}
+
+
+
 #inverterUnknown h1 {
     font-size: 6vmin;
-    margin-top: 30vmin;
+    margin-top: 32.5vmin;
     margin-bottom: 15vmin;
 }
 
@@ -24,12 +40,7 @@
     margin-right: 1.5vmin;
 }
 
-@keyframes spin {
-  to { -webkit-transform: rotate(360deg); }
-}
-@-webkit-keyframes spin {
-  to { -webkit-transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg) } }
 
 .error, .success {
     display: none;
@@ -40,12 +51,8 @@
     background-repeat: no-repeat;
     background-size: contain;
 }
-.error {
-    background-image: url(../img/ic_error.png);
-}
-.success {
-    background-image: url(../img/ic_success.png);
-}
+.error   { background-image: url(../img/ic_error.png) }
+.success { background-image: url(../img/ic_success.png) }
 
 
 
@@ -55,7 +62,7 @@
 
 #inverterDetected h1 {
     font-size: 6vmin;
-    margin-top: 12.5vmin;
+    margin-top: 10vmin;
     margin-bottom: 7.5vmin;
 }
 #inverterDetected img {

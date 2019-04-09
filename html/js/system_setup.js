@@ -78,17 +78,12 @@ var oldParameters = {};
 
 $.get({
     url: 'cmd/apikey.php',
-    error: function() {
-        alert("E001. Please refresh the page!");
-    },
+    error: function() { alert("E001. Please refresh the page!") },
     success: function(response) {
 
         console.log(response);
 
-        if(!response || response.length != 40) {
-            alert("E002. Please refresh the page!");
-            return;
-        }
+        if(!response || response.length != 40) return alert("E002. Please refresh the page!");
         
         $.post({
             url: "https://api.batterx.io/v2/installation.php",
@@ -96,9 +91,7 @@ $.get({
                 action: "retrieve_installation_info",
                 apikey: response.toString()
             },
-            error: function() {
-                alert("E003. Please refresh the page!");
-            },
+            error: function() { alert("E003. Please refresh the page!") },
             success: function(json) {
 
                 console.log(json);
@@ -177,17 +170,12 @@ $.get({
 
 $.get({
     url: 'cmd/apikey.php',
-    error: function() {
-        alert("E004. Please refresh the page!");
-    },
+    error: function() { alert("E004. Please refresh the page!") },
     success: function(response) {
 
         console.log(response);
 
-        if(!response || response.length != 40) {
-            alert("E005. Please refresh the page!");
-            return;
-        }
+        if(!response || response.length != 40) return alert("E005. Please refresh the page!");
         
         $.post({
             url: "https://api.batterx.io/v2/installation.php",
@@ -195,9 +183,7 @@ $.get({
                 action: "retrieve_box_serial",
                 apikey: response.toString()
             },
-            error: function() {
-                alert("E006. Please refresh the page!");
-            },
+            error: function() { alert("E006. Please refresh the page!") },
             success: function(response) {
                 console.log(response);
                 var box_serial = response;
@@ -205,7 +191,7 @@ $.get({
                 $.post({
                     url: "cmd/session.php",
                     data: { box_serial: box_serial },
-                    error: function() { alert("E007. Please refresh the page!"); },
+                    error: function() { alert("E007. Please refresh the page!") },
                     success: function(response) {
                         console.log(response);
                         if(response === '1') $('#bx_box').val(box_serial);
@@ -226,17 +212,13 @@ $.get({
 
 $.get({
     url: 'api.php?get=deviceinfo',
-    error: function() {
-        alert("E009. Please refresh the page!");
-    },
+    error: function() { alert("E009. Please refresh the page!") },
     success: function(response) {
 
         console.log(response);
         
-        if(!response || typeof response != 'object' || !response.hasOwnProperty('device_serial_number') || !response.hasOwnProperty('device_model')) {
-            alert("E010. Please refresh the page!");
-            return;
-        }
+        if(!response || typeof response != 'object' || !response.hasOwnProperty('device_serial_number') || !response.hasOwnProperty('device_model'))
+            return alert("E010. Please refresh the page!");
 
         var device_serial_number = response['device_serial_number'];
         var device_model = response['device_model'].toLowerCase();
@@ -250,9 +232,7 @@ $.get({
                 device_serial: device_serial_number,
                 device_model: device_model
             },
-            error: function() {
-                alert("E011. Please refresh the page!");
-            },
+            error: function() { alert("E011. Please refresh the page!") },
             success: function(response) {
                 console.log(response);
                 if(response === '1') $('#bx_device').val(device_serial_number);
@@ -331,7 +311,7 @@ $('#mainForm').on('submit', function(e) {
                 serialnumber: device_serial,
                 system:       system_serial
             },
-            error: function() { alert("E013. Please refresh the page!"); },
+            error: function() { alert("E013. Please refresh the page!") },
             success: function(response) {
                 console.log(response);
                 if(response === "1") canContinue = true;
@@ -351,7 +331,7 @@ $('#mainForm').on('submit', function(e) {
                 serialnumber: battery1_serial,
                 system:       system_serial
             },
-            error: function() { alert("E014. Please refresh the page!"); },
+            error: function() { alert("E014. Please refresh the page!") },
             success: function(response) {
                 console.log(response);
                 if(response === "1") canContinue = true;
@@ -371,7 +351,7 @@ $('#mainForm').on('submit', function(e) {
                 serialnumber: battery2_serial,
                 system:       system_serial
             },
-            error: function() { alert("E015. Please refresh the page!"); },
+            error: function() { alert("E015. Please refresh the page!") },
             success: function(response) {
                 console.log(response);
                 if(response === "1") canContinue = true;
@@ -391,7 +371,7 @@ $('#mainForm').on('submit', function(e) {
                 serialnumber: battery3_serial,
                 system:       system_serial
             },
-            error: function() { alert("E016. Please refresh the page!"); },
+            error: function() { alert("E016. Please refresh the page!") },
             success: function(response) {
                 console.log(response);
                 if(response === "1") canContinue = true;
@@ -411,7 +391,7 @@ $('#mainForm').on('submit', function(e) {
                 serialnumber: battery4_serial,
                 system:       system_serial
             },
-            error: function() { alert("E017. Please refresh the page!"); },
+            error: function() { alert("E017. Please refresh the page!") },
             success: function(response) {
                 console.log(response);
                 if(response === "1") canContinue = true;
@@ -466,17 +446,12 @@ function finishSetup()
     $.post({
         url: "cmd/session.php",
         data: tempData,
-        error: function() {
-            alert("E018. Please refresh the page!");
-        },
+        error: function() { alert("E018. Please refresh the page!") },
         success: function(response) {
 
             console.log(response);
 
-            if(response != '1') {
-                alert("E019. Please refresh the page!");
-                return;
-            }
+            if(response != '1') return alert("E019. Please refresh the page!");
             
             // Apply Parameters to Inverter
             let numberOfModules = 0;
@@ -510,12 +485,11 @@ function finishSetup()
             $.get({
                 url: "api.php?get=settings",
                 async: false,
-                error: function() { alert("E020. Please refresh the page!"); },
+                error: function() { alert("E020. Please refresh the page!") },
                 success: function(response) {
-                    if(!response || typeof response != "object" || !response.hasOwnProperty('InverterParameters')) {
-                        alert("E021. Please refresh the page!");
-                        return;
-                    }
+                    if(!response || typeof response != "object" || !response.hasOwnProperty('InverterParameters'))
+                        return alert("E021. Please refresh the page!");
+                        
                     response = response['InverterParameters'];
                     deviceDatetime = response['0']['S1'];
                     if(!isCarbon()) oldParameters['maxChargingCurrentAC'         ] = response['31']['S1'];
@@ -588,10 +562,7 @@ function sendCommand(type, entity, text1, text2)
         url: `api.php?set=command&type=${type}&entity=${entity}&text1=${text1}&text2=${text2}`,
         error: function() { alert("E022. Please refresh the page!") },
         success: function(response) {
-            if(response != '1') {
-                alert("E023. Please refresh the page!");
-                return;
-            }
+            if(response != '1') return alert("E023. Please refresh the page!");
             if(checkParametersInterval == undefined)
                 checkParametersInterval = setInterval(checkParameters, 5000);
         }
@@ -606,15 +577,11 @@ function checkParameters()
 {
     $.get({
         url: "api.php?get=settings",
-        error: function() {
-            alert("E024. Please refresh the page!");
-        },
+        error: function() { alert("E024. Please refresh the page!") },
         success: function(response) {
 
-            if(!response || typeof response != "object" || !response.hasOwnProperty('InverterParameters')) {
-                alert("E025. Please refresh the page!");
-                return;
-            }
+            if(!response || typeof response != "object" || !response.hasOwnProperty('InverterParameters'))
+                return alert("E025. Please refresh the page!");
             
             response = response['InverterParameters'];
             if(response["0"]["S1"] == deviceDatetime) return false;

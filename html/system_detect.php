@@ -1,17 +1,7 @@
 <?php
 
-session_start();
+include_once "common/base.php";
 $step = 4;
-
-// Set Language
-$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
-if($lang != "en" && $lang != "de") $lang = "en";
-$_SESSION['lang'] = $lang;
-
-// Get Language Strings
-$strings = file_get_contents('common/lang.json');
-$strings = json_decode($strings, true);
-$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
 if(!isset($_SESSION['last_step'])) header("location: index.php");
@@ -39,9 +29,9 @@ $_SESSION['last_step'] = $step;
 
 		<title>batterX LiveX</title>
 
-		<link rel="stylesheet" href="css/dist/bundle.css">
-		<link rel="stylesheet" href="css/common.css">
-		<link rel="stylesheet" href="css/system_detect.css">
+		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/system_detect.css?v=<?php echo $versionHash ?>">
         
 	</head>
 
@@ -51,15 +41,13 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div id="progress" class="progress m-3">
-			<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%"></div>
-		</div>
+		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
 
 
 
-		<div class="container text-center px-2 py-0">
+        <div class="container">
 
-			<div id="inverterUnknown" class="w-100">
+			<div id="inverterUnknown">
 				<h1><?php echo $strings['inverter_unknown']; ?></h1>
                 <div class="d-flex align-items-center justify-content-center">
 					<div class="error"></div>
@@ -69,7 +57,7 @@ $_SESSION['last_step'] = $step;
 				</div>
             </div>
             
-            <div id="inverterDetected" class="w-100">
+            <div id="inverterDetected">
                 <h1>batter<span>X</span> <b></b></h1>
                 <img src="">
                 <span class="serialnumber">S/N: <b></b></span>
@@ -79,18 +67,18 @@ $_SESSION['last_step'] = $step;
                     <div class="loading"></div>
                     <span class="standard">VDE4105</span>
                 </div>
-                <button id="btnSubmit" class="btn btn-success levitate ripple d-none"><?php echo $strings['continue']; ?></button>
+                <button id="btnSubmit" class="btn btn-success ripple d-none"><?php echo $strings['continue']; ?></button>
             </div>
 
 		</div>
 		
 
 		
-		<script src="js/dist/bundle.js"></script>
-		<script src="js/dist/moment.js"></script>
-		<script src="js/common.js"></script>
+		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
+		<script src="js/dist/moment.js?v=<?php echo $versionHash ?>"></script>
+		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>
-		<script src="js/system_detect.js"></script>
+		<script src="js/system_detect.js?v=<?php echo $versionHash ?>"></script>
 
 
 

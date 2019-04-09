@@ -1,17 +1,7 @@
 <?php
 
-session_start();
+include_once "common/base.php";
 $step = 2;
-
-// Set Language
-$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
-if($lang != "en" && $lang != "de") $lang = "en";
-$_SESSION['lang'] = $lang;
-
-// Get Language Strings
-$strings = file_get_contents('common/lang.json');
-$strings = json_decode($strings, true);
-$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
 if(!isset($_SESSION['last_step'])) header("location: index.php");
@@ -19,8 +9,6 @@ if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
 	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
 $_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
-
-
 
 // Set Software Version from previous Step
 if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['software_version'];
@@ -44,9 +32,9 @@ if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['soft
 
 		<title>batterX LiveX</title>
 
-		<link rel="stylesheet" href="css/dist/bundle.css">
-		<link rel="stylesheet" href="css/common.css">
-		<link rel="stylesheet" href="css/installer_login.css">
+		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/installer_login.css?v=<?php echo $versionHash ?>">
         
 	</head>
 
@@ -56,44 +44,40 @@ if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['soft
 
 
 
-		<div id="progress" class="progress m-3">
-			<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%"></div>
-		</div>
+		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
 
 
 
-		<div class="container text-center px-2 py-0">
-
-			<div class="w-100">
+		<div class="container">
+			<div>
 
 				<h1><?php echo $strings['installer_login']; ?></h1>
 				
 				<form id="loginForm">
 					
 					<div>
-						<input id="email" class="form-control form-control-outline" type="email" placeholder="<?php echo $strings['email']; ?>" required>
+						<input id="email" class="form-control form-control-outline rounded-pill" type="email" placeholder="<?php echo $strings['email']; ?>" required>
 					</div>
 					
 					<div>
-						<input id="password" class="form-control form-control-outline" type="password" placeholder="<?php echo $strings['password']; ?>" required>
+						<input id="password" class="form-control form-control-outline rounded-pill" type="password" placeholder="<?php echo $strings['password']; ?>" required>
 					</div>
 
-					<span id="errorMsg"><i><?php echo $strings['wrong_email_or_password']; ?></i></span>
+					<span id="errorMsg"><?php echo $strings['wrong_email_or_password']; ?></span>
 					
-					<button type="submit" id="btnLogin" class="btn btn-success levitate ripple"><?php echo $strings['login']; ?></button>
+					<button type="submit" id="btnLogin" class="btn btn-success rounded-pill ripple"><?php echo $strings['login']; ?></button>
 				
 				</form>
 			
 			</div>
-
 		</div>
 		
 
 		
-		<script src="js/dist/bundle.js"></script>
-		<script src="js/common.js"></script>
+		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
+		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>
-		<script src="js/installer_login.js"></script>
+		<script src="js/installer_login.js?v=<?php echo $versionHash ?>"></script>
 
 
 

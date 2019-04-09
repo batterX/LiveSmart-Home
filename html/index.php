@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+include_once "common/base.php";
 $step = 0;
 
 $_SESSION['back_url']  = $_SERVER['REQUEST_URI'];
@@ -25,9 +25,9 @@ $_SESSION['last_step'] = $step;
 
 		<title>batterX LiveX</title>
 
-		<link rel="stylesheet" href="css/dist/bundle.css">
-		<link rel="stylesheet" href="css/common.css">
-		<link rel="stylesheet" href="css/index.css">
+		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/index.css?v=<?php echo $versionHash ?>">
 
 	</head>
 
@@ -37,24 +37,22 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div class="container text-center px-2 py-0">
-
-			<div class="d-flex align-items-center justify-content-center">
-
-				<div class="w-100">
+		<div class="container">
+			<div>
+				<div>
 
 					<div class="logo"></div>
 
 					<h1>Select Language</h1>
 
-					<div class="row m-0 p-0 lang">
+					<div class="row lang">
 						<div class="col"></div>
-						<div id="langEn" class="col m-0 p-0">
+						<div id="langEn" class="col">
 							<div class="lang-en"></div>
 							<span>English</span>
 						</div>
 						<div class="col-2"></div>
-						<div id="langDe" class="col m-0 p-0">
+						<div id="langDe" class="col">
 							<div class="lang-de"></div>
 							<span>Deutsch</span>
 						</div>
@@ -62,16 +60,14 @@ $_SESSION['last_step'] = $step;
 					</div>
 
 				</div>
-
 			</div>
-
 		</div>
 		
 
 		
-		<script src="js/dist/bundle.js"></script>
-		<script src="js/common.js"></script>
-		<script src="js/index.js"></script>
+		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
+		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
+		<script src="js/index.js?v=<?php echo $versionHash ?>"></script>
 
 
 

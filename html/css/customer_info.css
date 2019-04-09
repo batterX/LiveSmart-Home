@@ -1,3 +1,40 @@
+* { user-select: none }
+
+
+
+.container {
+    padding: 0;
+}
+
+
+
+.container > .row {
+    margin: 0;
+    padding: 0;
+}
+.container > .row > .col-6 {
+    padding: 0;
+}
+.container > .row > .col-6:last-child {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+
+#customerInformations,
+#installationAddress {
+    margin: 0;
+    padding: 0 .5rem;
+}
+
+.input-padding {
+    padding: 1rem .5rem 0 .5rem;
+}
+
+
+
 h1 {
     font-size: 1.5rem;
     margin-top: 5rem;
@@ -30,8 +67,8 @@ h1 img {
 
 #modalExistingCustomer .btn {
     font-size: 0.9rem;
-	padding: 0.75rem 3rem;
-	letter-spacing: 0.2rem;
+	padding: .5rem;
+	letter-spacing: 0.1rem;
 }
 
 #modalExistingCustomer input {
@@ -43,8 +80,9 @@ h1 img {
 
 #errorMsg {
     display: none;
-    font-size: .9rem;
+    font-size: .8rem;
     margin-bottom: 1rem;
+    font-weight: 600;
 }
 #errorMsg * {
     color: red !important;

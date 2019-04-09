@@ -1,17 +1,7 @@
 <?php
 
-session_start();
+include_once "common/base.php";
 $step = 7;
-
-// Set Language
-$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
-if($lang != "en" && $lang != "de") $lang = "en";
-$_SESSION['lang'] = $lang;
-
-// Get Language Strings
-$strings = file_get_contents('common/lang.json');
-$strings = json_decode($strings, true);
-$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
 if(!isset($_SESSION['last_step'])) header("location: index.php");
@@ -39,9 +29,9 @@ $_SESSION['last_step'] = $step;
 
 		<title>batterX LiveX</title>
 
-		<link rel="stylesheet" href="css/dist/bundle.css">
-		<link rel="stylesheet" href="css/common.css">
-		<link rel="stylesheet" href="css/accept_terms.css">
+		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/accept_terms.css?v=<?php echo $versionHash ?>">
         
 	</head>
 
@@ -51,24 +41,55 @@ $_SESSION['last_step'] = $step;
 
 
 
-        <div id="progress" class="progress m-3">
-            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%"></div>
-        </div>
+        <div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
 
 
 
-		<div class="container px-3 d-flex justify-content-center align-items-center">
+        <div class="container">
 
-            <button id="btnAccept" class="btn btn-success levitate ripple my-5 px-5 py-3">I accept all terms &amp; conditions</button>
+			<h1>Terms & Conditions</h1>
+
+			<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. </p>
+
+			<h2>1. Section A</h2>
+			<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+
+			<h2>2. Section B</h2>
+			<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. </p>
+
+			<h2>3. Section C</h2>
+			<p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
+
+			<h2>4. Section D</h2>
+			<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. </p>
+
+			<h2>5. Section E</h2>
+			<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. </p>
+
+			<h2>6. Section F</h2>
+			<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+
+			<h2>7. Section G</h2>
+			<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. </p>
+
+			<h2>8. Section H</h2>
+			<p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
+
+			<h2>9. Section I</h2>
+			<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. </p>
+
+			<div class="text-right">
+				<a class="btn btn-success ripple" href="installation_summary.php">I accept all terms & conditions</a>
+			</div>
 
 		</div>
 		
 
 		
-		<script src="js/dist/bundle.js"></script>
-		<script src="js/common.js"></script>
+		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
+		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>
-		<script src="js/accept_terms.js"></script>
+		<script src="js/accept_terms.js?v=<?php echo $versionHash ?>"></script>
 
 
 

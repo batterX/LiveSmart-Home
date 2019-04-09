@@ -304,7 +304,7 @@ function testUpsMode()
                 // SHOW ERROR
                 $('#log p:last-child').html(`✗ ${lang['check_output_active']}`);
                 $('#testUpsMode span span').html(lang['please_turn_output_on']);
-                setTimeout(function() { testUpsMode(hideSkip); }, 5000);
+                setTimeout(function() { testUpsMode(); }, 5000);
             }
 
         }
@@ -469,7 +469,6 @@ function testUpsMode_finish()
 
 function finishStep()
 {
-    $('#btnSkip').addClass('d-none');
     setTimeout(function() { $('#btnSubmit').removeClass('d-none'); }, 1000);
     $('#btnSubmit').on('click', function() { window.location.href = "accept_terms.php"; });
 }

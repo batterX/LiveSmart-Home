@@ -1,17 +1,7 @@
 <?php
 
-session_start();
+include_once "common/base.php";
 $step = 5;
-
-// Set Language
-$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
-if($lang != "en" && $lang != "de") $lang = "en";
-$_SESSION['lang'] = $lang;
-
-// Get Language Strings
-$strings = file_get_contents('common/lang.json');
-$strings = json_decode($strings, true);
-$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
 
 // Check Step
 if(!isset($_SESSION['last_step'])) header("location: index.php");
@@ -39,9 +29,9 @@ $_SESSION['last_step'] = $step;
 
 		<title>batterX LiveX</title>
 
-		<link rel="stylesheet" href="css/dist/bundle.css">
-		<link rel="stylesheet" href="css/common.css">
-		<link rel="stylesheet" href="css/system_setup.css">
+		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
+		<link rel="stylesheet" href="css/system_setup.css?v=<?php echo $versionHash ?>">
         
 	</head>
 
@@ -51,13 +41,11 @@ $_SESSION['last_step'] = $step;
 
 
 
-        <div id="progress" class="progress m-3">
-            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 0%"></div>
-        </div>
+        <div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
 
 
 
-		<div class="container px-3">
+        <div class="container px-3">
 
             <form id="mainForm">
 
@@ -69,7 +57,7 @@ $_SESSION['last_step'] = $step;
                         <h1>batterX Home</h1>
 
                         <label for="bx_system"><?php echo $strings['serialnumber_system']; ?></label>
-                        <input id="bx_system" class="form-control" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" required>
+                        <input id="bx_system" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" required>
 
                         <div class="custom-control custom-radio mt-4">
                             <input type="radio" id="bx_system_type_r" name="bx_system_type" class="custom-control-input" checked>
@@ -81,10 +69,10 @@ $_SESSION['last_step'] = $step;
                         </div>
                         
                         <label class="mt-5" for="bx_device"><?php echo $strings['serialnumber_inverter']; ?></label>
-                        <input id="bx_device" class="form-control" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
+                        <input id="bx_device" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
 
                         <label class="mt-5" for="bx_box"><?php echo $strings['serialnumber_box']; ?></label>
-                        <input id="bx_box" class="form-control" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
+                        <input id="bx_box" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
 
                     </div>
 
@@ -95,19 +83,20 @@ $_SESSION['last_step'] = $step;
 
                         <label for="solar_wattPeak"><?php echo $strings['pv_system_size']; ?></label>
                         <div>
-                            <input id="solar_wattPeak" class="form-control d-inline-block w-65" type="number" step="1" min="0" required>
+                            <input id="solar_wattPeak" class="form-control form-control-outline d-inline-block w-65" type="number" step="1" min="0" required>
                             <span class="pl-3"><?php echo $strings['watt_peak']; ?></span>
                         </div>
 
                         <label class="mt-5" for="solar_feedInLimitation"><?php echo $strings['pv_system_feed_in_limitation']; ?></label>
                         <div>
-                            <input id="solar_feedInLimitation" class="form-control d-inline-block w-65" type="number" step="1" min="0" max="100" value="100" required>
+                            <input id="solar_feedInLimitation" class="form-control form-control-outline d-inline-block w-65" type="number" step="1" min="0" max="100" value="100" required>
                             <span class="pl-3">%</span>
                         </div>
 
                         <label class="mt-5" for="solar_info"><?php echo $strings['pv_installation_info']; ?></label>
+                        
                         <div>
-                        <textarea id="solar_info" class="w-100 p-1" rows="8" placeholder="Paneltyp: ...
+                            <textarea id="solar_info" class="form-control form-control-outline w-100" placeholder="Paneltyp: ...
 
 MPPT 1
     String 1: ...
@@ -137,10 +126,10 @@ MPPT 2
 
                         <div id="battery_section_0">
                             <p><?php echo $strings['batteries_serialnumber']; ?></p>
-                            <input id="battery_1" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery1']; ?>">
-                            <input id="battery_2" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery2']; ?>">
-                            <input id="battery_3" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery3']; ?>">
-                            <input id="battery_4" type="text" class="form-control mt-3" placeholder="<?php echo $strings['serialnumber_battery4']; ?>">
+                            <input id="battery_1" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery1']; ?>">
+                            <input id="battery_2" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery2']; ?>">
+                            <input id="battery_3" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery3']; ?>">
+                            <input id="battery_4" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery4']; ?>">
                         </div>
                         <div id="battery_section_1" style="display: none">
                             <!-- WRITE SOMETHING ABOUT THE CARBON BATTERIES ??? -->
@@ -150,7 +139,7 @@ MPPT 2
 
                 </div>
 
-                <div class="text-center pt-5 mt-5 mb-5">
+                <div class="text-center mt-5 mb-5">
                     <button id="btnSubmit" type="submit" class="btn btn-success levitate ripple mb-3 px-5 py-3" disabled><?php echo $strings['continue']; ?></button>
                     <div class="setting-progress d-none">
                         <div class="d-flex align-items-center justify-content-center">
@@ -170,10 +159,10 @@ MPPT 2
 		
 
 		
-		<script src="js/dist/bundle.js"></script>
-		<script src="js/common.js"></script>
+		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
+		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>
-		<script src="js/system_setup.js"></script>
+		<script src="js/system_setup.js?v=<?php echo $versionHash ?>"></script>
 
 
 

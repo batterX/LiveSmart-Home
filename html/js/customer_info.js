@@ -216,6 +216,9 @@ $('#mainForm').on('submit', function(e) {
         )
     )
     {
+        if($("#customerInformations .email").val().trim() == installerEmail.trim())
+            return alert("The email of the customer can not be the same as the installer email. Please choose another email!");
+
         // Save Inputs to Session
         $.post({
             url: "cmd/session.php",
