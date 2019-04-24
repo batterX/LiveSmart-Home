@@ -1,6 +1,8 @@
 #!/bin/sh
 # launcher.sh
 
+sleep 2
+
 sudo touch /srv/bx/usv.db3
 sudo touch /srv/bx/ram/currentD.db3
 sudo touch /srv/bx/ram/currentC.db3
