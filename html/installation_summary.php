@@ -203,29 +203,29 @@ $arrayDeviceModel = [
 		
 
 		<div id="btnFinish" class="container text-left">
-			<button id="btnFinishInstallation" class="btn btn-success levitate ripple mb-3 mt-4 px-5 py-3 d-none"><?php echo $strings['summary_finish_installation']; ?></button>
+			<button id="btnFinishInstallation" class="btn btn-success ripple mb-3 mt-4 px-5 py-3 d-none"><?php echo $strings['summary_finish_installation']; ?></button>
 		</div>
 
 
 
 		<div id="successBox" class="container" style="display: none">
 
-			<h1><b class="text-success">Success!</b></h1>
+			<h1><b class="text-success">Herzlichen Glückwunsch!</b></h1>
 
-			<p>The setup of the batterX Home has been successfully completed and an email with confirmation link has been sent to the customer.</p>
+			<p>Die Installation des batterX Home Systems wurde erfolgreich abgeschlossen und eine E-Mail mit Bestätigungslink an den Kunden gesendet.</p>
 
-			<p>By clicking the received link, the customer will be able to start using the batterX Portal to remotely monitor and control his batterX Home.</p>
+			<p>Durch Anklicken des Bestätigungslinks kann der Kunde mit der Nutzung des batterX Portals zur Fernüberwachung und -steuerung seines batterX Home System beginnen.</p>
 
-			<p>As Installer of the System, you are granted full access to this batterX Home from your own account as well, so that you can provide remote support to your customer, if ever necessary.</p>
+			<p>Als Installateur des Systems erhalten Sie vollen Zugriff auf dieses batterX Home auch von Ihrem eigenen Konto aus, so dass Sie Ihren Kunden bei Bedarf Fernwartung anbieten können.</p>
 
-			<p class="mt-5">We have automatically uploaded the Installation Summary to the batterX Cloud,<br>but we also recommend you to download the file and store it locally using the button below.</p>
+			<p class="mt-5">Wir haben der Installationsbericht automatisch in der batterX Cloud hochgeladen, aber wir empfehlen Ihnen auch, die PDF Datei herunterzuladen und lokal zu speichern.</p>
 
-			<button id="btnDownload" class="btn btn-success levitate ripple mb-3 py-3 px-5" style="width:250px"><?php echo $strings['summary_download_pdf']; ?></button>
+			<button id="btnDownload" class="btn btn-success ripple mb-3 py-3 px-5" style="width:300px"><?php echo $strings['summary_download_pdf']; ?></button>
 
-			<p class="mt-5">We also recommend you to reboot the LiveX once, by clicking the button below.</p>
+			<p class="mt-5">Wir empfehlen Ihnen auch, den liveX einmal neu zu starten, indem Sie auf die untenstehende Taste drücken.</p>
 
 			<div class="d-flex align-items-center mb-3">
-				<button id="btnReboot" class="btn btn-primary levitate ripple py-3 px-5" style="width:250px"><?php echo $strings['summary_reboot_livex']; ?></button>
+				<button id="btnReboot" class="btn btn-primary ripple py-3 px-5" style="width:300px"><?php echo $strings['summary_reboot_livex']; ?></button>
 				<div id="loading" class="d-none"></div>
 				<div id="success" class="d-none"></div>
 			</div>
