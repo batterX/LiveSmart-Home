@@ -11,6 +11,13 @@
 */
 
 
+
+// Set Encoding to UTF-8
+mb_internal_encoding('UTF-8');
+mb_http_output('UTF-8');
+
+
+
 // Secure Session Cookie
 $secure = false; // Set to true if using https.
 $httponly = true; // This stops javascript from being able to access the session id.
