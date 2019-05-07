@@ -210,19 +210,19 @@ $arrayDeviceModel = [
 
 		<div id="successBox" class="container" style="display: none">
 
-			<h1><b class="text-success">Herzlichen Glückwunsch!</b></h1>
+			<h1><b class="text-success"><?php echo $strings['final_congratulations'] ?></b></h1>
 
-			<p>Die Installation des batterX Home Systems wurde erfolgreich abgeschlossen und eine E-Mail mit Bestätigungslink an den Kunden gesendet.</p>
+			<p><?php echo $strings['final_p1'] ?></p>
 
-			<p>Durch Anklicken des Bestätigungslinks kann der Kunde mit der Nutzung des batterX Portals zur Fernüberwachung und -steuerung seines batterX Home System beginnen.</p>
+			<p><?php echo $strings['final_p2'] ?></p>
 
-			<p>Als Installateur des Systems erhalten Sie vollen Zugriff auf dieses batterX Home auch von Ihrem eigenen Konto aus, so dass Sie Ihren Kunden bei Bedarf Fernwartung anbieten können.</p>
+			<p><?php echo $strings['final_p3'] ?></p>
 
-			<p class="mt-5">Wir haben der Installationsbericht automatisch in der batterX Cloud hochgeladen, aber wir empfehlen Ihnen auch, die PDF Datei herunterzuladen und lokal zu speichern.</p>
+			<p class="mt-5"><?php echo $strings['final_p4'] ?></p>
 
 			<button id="btnDownload" class="btn btn-success ripple mb-3 py-3 px-5" style="width:300px"><?php echo $strings['summary_download_pdf']; ?></button>
 
-			<p class="mt-5">Wir empfehlen Ihnen auch, den liveX einmal neu zu starten, indem Sie auf die untenstehende Taste drücken.</p>
+			<p class="mt-5"><?php echo $strings['final_p5'] ?></p>
 
 			<div class="d-flex align-items-center mb-3">
 				<button id="btnReboot" class="btn btn-primary ripple py-3 px-5" style="width:300px"><?php echo $strings['summary_reboot_livex']; ?></button>

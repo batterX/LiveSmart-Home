@@ -148,7 +148,15 @@
             "summary_confirm_box":          "I hereby confirm that the information above is true, complete and accurate",
             "summary_finish_installation":  "Finish Installation",
             "summary_download_pdf":         "Download PDF",
-            "summary_reboot_livex":         "Reboot LiveX"
+            "summary_reboot_livex":         "Reboot LiveX",
+
+            "final_congratulations": "Congratulations!",
+            "final_p1": "The installation of the batterX Home System was successfully completed and an e-mail with a confirmation link was sent to the customer.",
+            "final_p2": "By clicking the confirmation link the customer can start using the batterX Portal for remote monitoring and control of his batterX Home System.",
+            "final_p3": "As the installer of the System you get full access to this batterX Home from your own account as well, so that you can offer remote support to your customer if necessary.",
+            "final_p4": "We automatically uploaded the Installation-Report to the batterX Cloud, but we also recommend that you download the PDF File and store it locally.",
+            "final_p5": "We also recommend that you restart the liveX once, by pressing the button below."
+
         },
 
 
@@ -292,7 +300,14 @@
             "summary_confirm_box":          "Hiermit bestätige ich, dass die oben angegebenen Informationen wahr, vollständig und korrekt sind",
             "summary_finish_installation":  "Installation abschließen",
             "summary_download_pdf":         "PDF herunterladen",
-            "summary_reboot_livex":         "LiveX Neustarten"
+            "summary_reboot_livex":         "LiveX Neustarten",
+            
+            "final_congratulations": "Herzlichen Glückwunsch!",
+            "final_p1": "Die Installation des batterX Home Systems wurde erfolgreich abgeschlossen und eine E-Mail mit Bestätigungslink an den Kunden gesendet.",
+            "final_p2": "Durch Anklicken des Bestätigungslinks kann der Kunde mit der Nutzung des batterX Portals zur Fernüberwachung und -steuerung seines batterX Home System beginnen.",
+            "final_p3": "Als Installateur des Systems erhalten Sie vollen Zugriff auf dieses batterX Home auch von Ihrem eigenen Konto aus, so dass Sie Ihren Kunden bei Bedarf Fernwartung anbieten können.",
+            "final_p4": "Wir haben der Installationsbericht automatisch in der batterX Cloud hochgeladen, aber wir empfehlen Ihnen auch, die PDF Datei herunterzuladen und lokal zu speichern.",
+            "final_p5": "Wir empfehlen Ihnen auch, den liveX einmal neu zu starten, indem Sie auf die untenstehende Taste drücken."
         }
 
 
