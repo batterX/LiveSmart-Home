@@ -45,6 +45,24 @@ $_SESSION['last_step'] = $step;
 
 
 
+        <div id="modalInstallerMemo" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <h4 class="modal-header mb-0">
+                        <?php echo $strings['installer_memo']; ?>
+                    </h4>
+                    <div class="modal-body">
+                        <textarea id="installer_memo" class="form-control form-control-outline w-100"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm px-5 py-2 btn-success" data-dismiss="modal">SAVE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <div class="container px-3">
 
             <form id="mainForm">
@@ -59,7 +77,7 @@ $_SESSION['last_step'] = $step;
                         <label for="bx_system"><?php echo $strings['serialnumber_system']; ?></label>
                         <input id="bx_system" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" required>
 
-                        <div class="custom-control custom-radio mt-4">
+                        <div class="custom-control custom-radio mt-3">
                             <input type="radio" id="bx_system_type_r" name="bx_system_type" class="custom-control-input" checked>
                             <label class="custom-control-label" for="bx_system_type_r"><?php echo $strings['system_type_r']; ?></label>
                         </div>
@@ -68,11 +86,15 @@ $_SESSION['last_step'] = $step;
                             <label class="custom-control-label" for="bx_system_type_w"><?php echo $strings['system_type_w']; ?></label>
                         </div>
                         
-                        <label class="mt-5" for="bx_device"><?php echo $strings['serialnumber_inverter']; ?></label>
+                        <label class="mt-4" for="bx_device"><?php echo $strings['serialnumber_inverter']; ?></label>
                         <input id="bx_device" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
 
-                        <label class="mt-5" for="bx_box"><?php echo $strings['serialnumber_box']; ?></label>
+                        <label class="mt-4" for="bx_box"><?php echo $strings['serialnumber_box']; ?></label>
                         <input id="bx_box" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
+
+                        <div class="pt-3">
+                            <button type="button" class="w-100 btn btn-sm btn-info ripple py-2 mt-3" data-toggle="modal" data-target="#modalInstallerMemo"><?php echo $strings['installer_memo']; ?></button>
+                        </div>
 
                     </div>
 

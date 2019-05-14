@@ -118,6 +118,14 @@ $arrayDeviceModel = [
 				<div class="col-6 col-md-8"><b><?php echo $_SESSION['installer_telephone'] ?></b></div>
 			</div>
 
+			<?php if(!empty($_SESSION['note'])): ?>
+			<div class="p-3"></div>
+			<div class="row">
+				<div class="col-6 col-md-4"><?php echo $strings['installer_memo']; ?></div>
+				<div class="col-6 col-md-8 note" style="white-space: pre-wrap"><b><?php echo $_SESSION['note'] ?></b></div>
+			</div>
+			<?php endif; ?>
+
 			<div class="p-3"></div>
 
 			<div class="row">

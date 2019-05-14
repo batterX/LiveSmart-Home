@@ -73,6 +73,7 @@ $('#btnFinishInstallation').on('click', function() {
     if(dataObj.hasOwnProperty('solar_wattPeak'        ) && dataObj['solar_wattPeak'        ] != "") data.append('solar_wattPeak'        , dataObj['solar_wattPeak'          ]);
     if(dataObj.hasOwnProperty('solar_feedInLimitation') && dataObj['solar_feedInLimitation'] != "") data.append('solar_feedInLimitation', dataObj['solar_feedInLimitation'  ]);
     if(dataObj.hasOwnProperty('solar_info'            )                                           ) data.append('solar_info'            , dataObj['solar_info'              ]);
+    if(dataObj.hasOwnProperty('note'                  )                                           ) data.append('note'                  , dataObj['note'                    ]);
 
     if(dataObj.hasOwnProperty('box_apikey'            ) && dataObj['box_apikey'            ] != "") data.append('box_apikey'            , dataObj['box_apikey'              ]);
     if(dataObj.hasOwnProperty('box_serial'            ) && dataObj['box_serial'            ] != "") data.append('box_serial'            , dataObj['box_serial'              ]);

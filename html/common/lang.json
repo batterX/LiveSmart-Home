@@ -110,6 +110,7 @@
             "inverter_registered_with_other_system":             "Inverter already registered with another system!",
             "battery_not_exist_or_registered_with_other_system": "Battery does not exist or is already registered with another system!",
             "setting_success":                                   "Setting successful",
+            "installer_memo":                                    "Installer Memo",
 
             "system_test":                   "System Test",
             "energy_meter":                  "Energy Meter",
@@ -262,6 +263,7 @@
             "inverter_registered_with_other_system":             "Der Wechselrichter ist mit einem anderen System registriert!",
             "battery_not_exist_or_registered_with_other_system": "Das Batteriemodul existiert nicht oder ist bereits mit einem anderen System registriert.",
             "setting_success":                                   "Einstellung erfolgreich abgeschlossen",
+            "installer_memo":                                    "Installateur-Memo",
 
             "system_test":                   "Systemtest",
             "energy_meter":                  "Energiezähler",

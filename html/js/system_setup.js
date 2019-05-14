@@ -127,6 +127,11 @@ $.get({
                     $('#solar_info').val(json.solar_info);
                 }
 
+                // Set Inverter Memo
+                if(json.hasOwnProperty('note')) {
+                    $('#installer_memo').val(json.note);
+                }
+
                 // Set Batteries Info
                 if(json.hasOwnProperty('batteries')) {
                     if(json.batteries.length > 1) {
@@ -284,7 +289,8 @@ $('#mainForm').on('submit', function(e) {
         #battery_4,
         #bx_system_type_r,
         #bx_system_type_w,
-        #solar_info
+        #solar_info,
+        #installer_memo
     `).attr('disabled', 'disabled');
     
     // SHOW LOADING SCREEN
@@ -428,6 +434,7 @@ function finishSetup()
         solar_wattPeak:         $('#solar_wattPeak'        ).val(),
         solar_feedInLimitation: $('#solar_feedInLimitation').val(),
         solar_info:             $('#solar_info'            ).val(),
+        note:                   $('#installer_memo'        ).val(),
         installation_date:      $('#installation_date'     ).val(),
     };
     if(!isCarbon()) tempData["system_model"] = systemModel;
