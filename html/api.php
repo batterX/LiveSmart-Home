@@ -38,102 +38,6 @@ if(isset($_GET['get']) && strtolower($_GET['get']) == 'currentstate') {
 	
 }
 
-// GET EnergyData
-
-else if(isset($_GET['get']) && strtolower($_GET['get']) == 'energydata') {
-	
-	if(isset($_GET['entity']))
-	{
-		// Connect to Database
-		$db = new PDO('sqlite:/srv/bx/usv.db3');
-		
-		// Returns the Total Energy (since first day) in Wh for selected entity
-		// ?get=energydata&entity=10
-		if(!isset($_GET['type'])) 
-		{
-			$result = $db->query('SELECT IFNULL(SUM(entityvalue), 0) FROM EnergyData WHERE entity=' . $_GET['entity']);
-			$res = $result->fetchColumn();
-			echo strval($res);
-		} 
-		else 
-		{
-			// Create Array With IDs (Keys)
-			$keys = explode(",", $_GET["type"]);
-			
-			// Returns the Energy in Wh for selected day/s with entity
-			// ?get=energydata&entity=10&type=20180128,20180129
-			if(strlen($keys[0]) == 8) {
-				$values = array_fill(0, count($keys), 0);
-				$resultArray = array_combine($keys, $values);
-				$sql = "SELECT type, entityvalue FROM EnergyData WHERE entity=" . $_GET['entity'] . " AND type IN(" . implode(',', $keys) . ") LIMIT " . count($keys);
-				$result = $db->query($sql);
-				foreach($result as $row) { $resultArray[$row["type"]] = $row["entityvalue"]; }
-				echo implode(',', $resultArray);
-			}
-			// Returns the Energy in Wh for selected month/s with entity
-			// ?get=energydata&entity=10&type=201801,201802
-			else if(strlen($keys[0]) == 6) {
-				$resultStr = "";
-				foreach($keys as $key) {
-					$result = $db->query('SELECT IFNULL(SUM(entityvalue), 0) FROM EnergyData WHERE entity=' . $_GET['entity'] . ' AND type>' . $key . '00 AND type<' . $key . '99');
-					$res = $result->fetchColumn();
-					if(strlen($resultStr) == 0) $resultStr .= $res;
-					else $resultStr .= "," . $res;
-				}
-				echo strval($resultStr);
-			}
-			// Returns the Energy in Wh for selected year/s with entity
-			// ?get=energydata&entity=10&type=2017,2018
-			else if(strlen($keys[0]) == 4) {
-				$resultStr = "";
-				foreach($keys as $key) {
-					$result = $db->query('SELECT IFNULL(SUM(entityvalue), 0) FROM EnergyData WHERE entity=' . $_GET['entity'] . ' AND type>' . $key . '0000 AND type<' . $key . '9999');
-					$res = $result->fetchColumn();
-					if(strlen($resultStr) == 0) $resultStr .= $res;
-					else $resultStr .= "," . $res;
-				}
-				echo strval($resultStr);
-			}
-		}
-	}
-	else echo "0";
-	
-}
-
-// GET PowerData
-
-else if(isset($_GET['get']) && strtolower($_GET['get']) == 'powerdata') {
-	
-	// Returns String with power data for each 15 min. for selected day/s with entity
-	// ?get=powerdata&entity=10&type=20180121,20180122
-	if(isset($_GET['type']) && isset($_GET['entity'])) 
-	{
-		// Connect to Database
-		$db = new PDO('sqlite:/srv/bx/usv.db3');
-		
-		// Create Array With IDs (Keys)
-		$keys = explode(",", $_GET["type"]);
-		
-		// Create Array Full with Zeros (Values)
-		$values = array_fill(0, count($keys), 0);
-		
-		// Build the Array -> array(type=>entityvalue, type=>entityvalue, ...)
-		$resultArray = array_combine($keys, $values);
-		
-		// Build SQL String
-		$sql = "SELECT type, entityvalue FROM PowerData WHERE entity=" . $_GET['entity'] . " AND type IN(" . implode(',', $keys) . ") LIMIT " . count($keys);
-		
-		// Fetch All Rows That Exist
-		$result = $db->query($sql);
-		
-		foreach($result as $row) { $resultArray[$row["type"]] = $row["entityvalue"]; }
-		
-		echo implode(',', $resultArray);
-	}
-	else echo "0";
-	
-}
-
 // GET WarningsData
 
 else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warningsdata') {
@@ -232,6 +136,6 @@ else if(isset($_GET['set']) && strtolower($_GET['set']) == 'command') {
 	
 }
 
-// SET Commands
+// SET Multiple Commands
 
 // NOT POSSIBLE YET
