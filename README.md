@@ -1,6 +1,6 @@
 # batterX LiveX Home (v19.5.1)
 
-This is the official software for the batterX LiveX.
+The official batterX liveX software.
 
 **Note:** Starting with v19.1.1 the RS232 converter must be connected to the Top-Left USB Port of the LiveX
 ```
