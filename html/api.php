@@ -52,7 +52,7 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warningsdata') {
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/usv.db3');
 	
-	$result = $db->query("SELECT * FROM (SELECT id, type, entity, entityvalue, logtime FROM WarningsData ORDER BY id DESC LIMIT " . $count . ") ORDER BY id ASC", PDO::FETCH_ASSOC);
+	$result = $db->query("SELECT * FROM (SELECT id, value, logtime FROM WarningsData ORDER BY id DESC LIMIT " . $count . ") ORDER BY id ASC", PDO::FETCH_ASSOC);
 	
 	$dbh = array();
 	foreach($result as $r) { $dbh[] = $r; }
