@@ -136,6 +136,44 @@ else if(isset($_GET['set']) && strtolower($_GET['set']) == 'command') {
 	
 }
 
-// SET Multiple Commands
+// GET History
 
-// NOT POSSIBLE YET
+else if(isset($_GET['get']) && strtolower($_GET['get']) == 'historydata') {
+
+	if(isset($_GET['from']) && isset($_GET['to']) && strlen($_GET['from']) == 8 && strlen($_GET['to']) == 8)
+	{
+		$from = substr($_GET['from'], 0, 4) . '-' . substr($_GET['from'], 4, 2) . '-' . substr($_GET['from'], 6, 2);
+		$to   = substr($_GET['to'  ], 0, 4) . '-' . substr($_GET['to'  ], 4, 2) . '-' . substr($_GET['to'  ], 6, 2);
+
+		// Connect to Database
+		$db = new PDO('sqlite:/srv/bx/usv.db3');
+		
+		// Returns HistoryData for Selected Range
+		// ?get=historydata&from=YYYYMMDD&to=YYYYMMDD
+		$result = $db->query('SELECT * FROM History WHERE logtime > "' . $from . ' 00:00:00" AND logtime < "' . $to . ' 23:59:59"', PDO::FETCH_ASSOC);
+		$arr = (array) [];
+		foreach($result as $row) {
+			$arr[] = [
+				$row['logtime'],
+				$row['battery_voltage_minus'],
+				$row['battery_voltage_plus'],
+				$row['battery_level_minus'],
+				$row['battery_level_plus'],
+				$row['battery_power_from'],
+				$row['battery_power_to'],
+				$row['input_power_from'],
+				$row['input_power_to'],
+				$row['grid_power_from'],
+				$row['grid_power_to'],
+				$row['load_power'],
+				$row['house_power'],
+				$row['solar_power'],
+				$row['extsol_power']
+			];
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($arr);
+	}
+
+}
