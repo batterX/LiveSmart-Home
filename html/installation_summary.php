@@ -157,7 +157,7 @@ $arrayDeviceModel = [
 			<?php if(!empty($_SESSION['system_model'])): ?>
 			<div class="row">
 				<div class="col-6 col-md-4"><?php echo $strings['summary_system_model']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['system_model']; ?></b></div>
+				<div class="col-6 col-md-8"><b><?php echo ($_SESSION['system_model']) . ($_SESSION['vde4105'] == '1' ? "<br>(" . $strings['summary_vde4105'] . ")" : ""); ?></b></div>
 			</div>
 			<?php endif; ?>
 

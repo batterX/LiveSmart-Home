@@ -41,6 +41,21 @@ $_SESSION['last_step'] = $step;
 
 
 
+        <div id="warningsModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger text-center w-100"><?php echo $strings['warning'] ?></h5>
+                    </div>
+                    <div class="modal-body">
+                        <p class="m-0 text-center"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
 
 

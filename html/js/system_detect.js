@@ -99,27 +99,37 @@ function performStep()
                                     }
 
                                     var deviceStandard = response['InverterParameters']['35']['S1'];
+                                    var isVde4105 = '0';
                                     if(deviceStandard != '058' && deviceStandard != '108') {
                                         $('.standard').css('color', 'red');
                                         $('.loading').hide();
                                         $('.error').show();
-                                        return;
+                                    } else {
+                                        $('.standard').css('color', '#25ae88');
+                                        $('.loading').hide();
+                                        $('.success').show();
+                                        isVde4105 = '1';
                                     }
-
-                                    $('.standard').css('color', '#25ae88');
-                                    $('.loading').hide();
-                                    $('.success').show();
                                     
                                     $.get({
                                         url: 'api.php?set=command&type=24065&entity=0&text2=A,1',
                                         error: function() {
                                             alert("E005. Please refresh the page!");
                                         },
-                                        success: function(response) {
-                                            if(!response || response != '1') return;
-                                            $('#btnSubmit').removeClass('d-none');
-                                            $('#btnSubmit').on('click', function() {
-                                                window.location.href = "system_setup.php";
+                                        success: function() {
+                                            $.post({
+                                                url: "cmd/session.php",
+                                                data: { vde4105: isVde4105 },
+                                                error: function() { alert("E006. Please refresh the page!") },
+                                                success: function(response) {
+                                                    console.log(response);
+                                                    if(response === '1') {
+                                                        $('#btnSubmit').removeClass('d-none');
+                                                        $('#btnSubmit').on('click', function() {
+                                                            window.location.href = "system_setup.php";
+                                                        });
+                                                    } else alert("E007. Please refresh the page!");
+                                                }
                                             });
                                         }
                                     });
