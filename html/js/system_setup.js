@@ -480,7 +480,7 @@ function finishSetup()
             if(!isCarbon()) newParameters['cutoffVoltage'                ] = '4700';
             if(!isCarbon()) newParameters['redischargeVoltage'           ] = '5000';
             if(!isCarbon()) newParameters['batteryType'                  ] = '1';
-            newParameters['maxGridFeedInPower'           ] = Math.min(Math.max(parseInt($('#solar_wattPeak').val()) * parseInt($('#solar_feedInLimitation').val()) / 100, 50), maxGridFeedInPower);
+            newParameters['maxGridFeedInPower'           ] = Math.round(Math.min(Math.max(parseInt($('#solar_wattPeak').val()) * parseInt($('#solar_feedInLimitation').val()) / 100, 50), maxGridFeedInPower));
             newParameters['solarEnergyPriority'          ] = '1';
             newParameters['allowBatteryCharging'         ] = '1';
             newParameters['allowBatteryChargingAC'       ] = '0';
