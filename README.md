@@ -1,4 +1,4 @@
-# batterX liveX Home (v19.6.1)
+# batterX liveX Home (v19.6.2)
 
 The official batterX LiveX Software.
 
