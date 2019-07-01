@@ -539,10 +539,10 @@ function finishSetup()
                 { retry = true; sendCommand(24066, 0, "", "B," + newParameters['allowBatteryChargingAC']); }
             if(newParameters['allowGridFeedIn'] != oldParameters['allowGridFeedIn'])
                 { retry = true; sendCommand(24066, 0, "", "C," + newParameters['allowGridFeedIn']); }
-            if(newParameters['allowbatteryDischargeSolarOK'] != oldParameters['allowbatteryDischargeSolarOK'])
-                { retry = true; sendCommand(24066, 0, "", "D," + newParameters['allowbatteryDischargeSolarOK']); }
-            if(newParameters['allowbatteryDischargeSolarNOK'] != oldParameters['allowbatteryDischargeSolarNOK'])
-                { retry = true; sendCommand(24066, 0, "", "E," + newParameters['allowbatteryDischargeSolarNOK']); }
+            if(newParameters['allowBatteryDischargeSolarOK'] != oldParameters['allowBatteryDischargeSolarOK'])
+                { retry = true; sendCommand(24066, 0, "", "D," + newParameters['allowBatteryDischargeSolarOK']); }
+            if(newParameters['allowBatteryDischargeSolarNOK'] != oldParameters['allowBatteryDischargeSolarNOK'])
+                { retry = true; sendCommand(24066, 0, "", "E," + newParameters['allowBatteryDischargeSolarNOK']); }
 
             // Show Setting Success
             if(!retry) {
@@ -631,10 +631,10 @@ function checkParameters()
                 { retry = true; sendCommand(24066, 0, "", "B," + newParameters['allowBatteryChargingAC']); }
             if(newParameters['allowGridFeedIn'] != oldParameters['allowGridFeedIn'])
                 { retry = true; sendCommand(24066, 0, "", "C," + newParameters['allowGridFeedIn']); }
-            if(newParameters['allowbatteryDischargeSolarOK'] != oldParameters['allowbatteryDischargeSolarOK'])
-                { retry = true; sendCommand(24066, 0, "", "D," + newParameters['allowbatteryDischargeSolarOK']); }
-            if(newParameters['allowbatteryDischargeSolarNOK'] != oldParameters['allowbatteryDischargeSolarNOK'])
-                { retry = true; sendCommand(24066, 0, "", "E," + newParameters['allowbatteryDischargeSolarNOK']); }
+            if(newParameters['allowBatteryDischargeSolarOK'] != oldParameters['allowBatteryDischargeSolarOK'])
+                { retry = true; sendCommand(24066, 0, "", "D," + newParameters['allowBatteryDischargeSolarOK']); }
+            if(newParameters['allowBatteryDischargeSolarNOK'] != oldParameters['allowBatteryDischargeSolarNOK'])
+                { retry = true; sendCommand(24066, 0, "", "E," + newParameters['allowBatteryDischargeSolarNOK']); }
 
             console.log("newParameters"); console.log(newParameters);
             console.log("oldParameters"); console.log(oldParameters);
