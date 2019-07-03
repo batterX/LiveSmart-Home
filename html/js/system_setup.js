@@ -27,13 +27,13 @@ $('input[name=bx_battery_type').on('change', function() {
         $('#system_type').hide();
         $('#bx_system').val($('#bx_device').val());
         $('#bx_system_type_w').prop('checked', true);
-
     }
     else
     {
         // SET LiFePO
         $('#battery_section_0').show();
         $('#battery_section_1').hide();
+        $('#system_type').show();
     }
 
 });
