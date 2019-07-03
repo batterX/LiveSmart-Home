@@ -74,19 +74,20 @@ $_SESSION['last_step'] = $step;
                         
                         <h1>batterX Home</h1>
 
-                        <label for="bx_system"><?php echo $strings['serialnumber_system']; ?></label>
-                        <input id="bx_system" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" required>
-
-                        <div class="custom-control custom-radio mt-3">
-                            <input type="radio" id="bx_system_type_r" name="bx_system_type" class="custom-control-input" checked>
-                            <label class="custom-control-label" for="bx_system_type_r"><?php echo $strings['system_type_r']; ?></label>
-                        </div>
-                        <div class="custom-control custom-radio mt-2">
-                            <input type="radio" id="bx_system_type_w" name="bx_system_type" class="custom-control-input">
-                            <label class="custom-control-label" for="bx_system_type_w"><?php echo $strings['system_type_w']; ?></label>
+                        <div id="system_type" class="mb-4">
+                            <label for="bx_system"><?php echo $strings['serialnumber_system']; ?></label>
+                            <input id="bx_system" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" required>
+                            <div class="custom-control custom-radio mt-3">
+                                <input type="radio" id="bx_system_type_r" name="bx_system_type" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="bx_system_type_r"><?php echo $strings['system_type_r']; ?></label>
+                            </div>
+                            <div class="custom-control custom-radio mt-2">
+                                <input type="radio" id="bx_system_type_w" name="bx_system_type" class="custom-control-input">
+                                <label class="custom-control-label" for="bx_system_type_w"><?php echo $strings['system_type_w']; ?></label>
+                            </div>
                         </div>
                         
-                        <label class="mt-4" for="bx_device"><?php echo $strings['serialnumber_inverter']; ?></label>
+                        <label for="bx_device"><?php echo $strings['serialnumber_inverter']; ?></label>
                         <input id="bx_device" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
 
                         <label class="mt-4" for="bx_box"><?php echo $strings['serialnumber_box']; ?></label>

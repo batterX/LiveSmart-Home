@@ -24,6 +24,10 @@ $('input[name=bx_battery_type').on('change', function() {
         // SET Carbon
         $('#battery_section_0').hide();
         $('#battery_section_1').show();
+        $('#system_type').hide();
+        $('#bx_system').val($('#bx_device').val());
+        $('#bx_system_type_w').prop('checked', true);
+
     }
     else
     {
