@@ -72,7 +72,7 @@ function performStep()
                         },
                         success: function(response) {
 
-                            if(response != '1') {
+                            if(response != '1' && device_serial_number != "00000000000000") {
                                 $('.loading').hide();
                                 $('.error').show();
                                 $('.message').html(lang['inverter_not_registered']).css('color', 'red');

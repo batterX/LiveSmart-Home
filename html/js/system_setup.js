@@ -234,7 +234,7 @@ $.get({
         device_model = (device_model == 'batterx h3') ? 'h3' : (device_model == 'batterx h5') ? 'h5' : (device_model == 'batterx h5-eco') ? 'h5e' : (device_model == 'batterx h10') ? 'h10' : '';
         deviceModel = device_model;
 
-        // Sava Serial-Number & Model to Session
+        // Save Serial-Number & Model to Session
         $.post({
             url: "cmd/session.php",
             data: {
@@ -244,8 +244,12 @@ $.get({
             error: function() { alert("E011. Please refresh the page!") },
             success: function(response) {
                 console.log(response);
-                if(response === '1') $('#bx_device').val(device_serial_number);
-                else alert("E012. Please refresh the page!");
+                if(response === '1') {
+                    if(device_serial_number == "00000000000000")
+                        $('#bx_device').prop("disabled", false);
+                    else
+                        $('#bx_device').val(device_serial_number);
+                } else alert("E012. Please refresh the page!");
             }
         });
 
@@ -435,6 +439,7 @@ function finishSetup()
     // Save All Needed Data (System+Solar+Batteries)
     var tempData = {
         system_serial:          $('#bx_system'             ).val(),
+        device_serial:          $('#bx_device'             ).val(),
         solar_wattPeak:         $('#solar_wattPeak'        ).val(),
         solar_feedInLimitation: $('#solar_feedInLimitation').val(),
         solar_info:             $('#solar_info'            ).val(),
