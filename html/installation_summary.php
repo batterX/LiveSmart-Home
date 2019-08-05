@@ -239,6 +239,8 @@ $arrayDeviceModel = [
 			</div>
 
 		</div>
+
+		<input id="lang" type="hidden" value="<?php echo $_SESSION['lang']; ?>">
 		
 
 		
