@@ -35,7 +35,7 @@ if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['soft
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/installer_login.css?v=<?php echo $versionHash ?>">
-        
+
 	</head>
 
 
@@ -52,28 +52,28 @@ if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['soft
 			<div>
 
 				<h1><?php echo $strings['installer_login']; ?></h1>
-				
+
 				<form id="loginForm">
-					
+
 					<div>
 						<input id="email" class="form-control form-control-outline rounded-pill" type="email" placeholder="<?php echo $strings['email']; ?>" required>
 					</div>
-					
+
 					<div>
 						<input id="password" class="form-control form-control-outline rounded-pill" type="password" placeholder="<?php echo $strings['password']; ?>" required>
 					</div>
 
 					<span id="errorMsg"><?php echo $strings['wrong_email_or_password']; ?></span>
-					
+
 					<button type="submit" id="btnLogin" class="btn btn-success rounded-pill ripple"><?php echo $strings['login']; ?></button>
-				
+
 				</form>
-			
+
 			</div>
 		</div>
-		
 
-		
+
+
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>

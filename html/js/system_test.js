@@ -120,6 +120,7 @@ function checkWarnings()
 
 
 var energyMeter_firstRun = true;
+var skipEnergyMeteryTest = false;
 
 function testEnergyMeter()
 {
@@ -140,7 +141,16 @@ function testEnergyMeter()
 				} else {
 					$('#testEnergyMeter .error').show();
 					$('#log p:last-child').html(`✗ ${lang['performing_test']}`);
-					setTimeout(testEnergyMeter, 5000);
+					if(skipEnergyMeteryTest) {
+						if(confirm("Continue without Energy Meter?")) {
+							setTimeout(testBatteryCharging, 2500);
+						} else {
+							skipEnergyMeteryTest = false;
+							setTimeout(testEnergyMeter, 5000);
+						}
+					} else {
+						setTimeout(testEnergyMeter, 5000);
+					}
 				}
 			}, 2500);
 			energyMeter_firstRun = false;
@@ -173,6 +183,8 @@ var batteryCharging_datetime = "";
 
 function testBatteryCharging()
 {
+	if(battery_type == "none") { finishStep(); return; }
+
 	showLoading_batteryCharging();
 
 	// Set BatteryChargingAC ON
@@ -216,7 +228,7 @@ function testBatteryCharging_test()
 		url: "api.php?get=currentstate",
 		error: function() { alert("E011. Please refresh the page!") },
 		success: function(response) {
-			
+
 			if(!response || typeof response != "object" || !response.hasOwnProperty('1121') || !response['1121'].hasOwnProperty('1'))
 				return alert("E012. Please refresh the page!");
 
@@ -312,18 +324,18 @@ function testUpsMode()
 		url: "api.php?get=currentstate",
 		error: function() { alert("E038. Please refresh the page!"); },
 		success: function(response) {
-			
+
 			if(!response || typeof response != "object" || !response.hasOwnProperty('1297') || !response['1297'].hasOwnProperty('1'))
 				return alert("E039. Please refresh the page!");
-			
+
 			let voltage1 = undefined;
 			let voltage2 = undefined;
 			let voltage3 = undefined;
-			
+
 			if(response.hasOwnProperty('1297') && response['1297'].hasOwnProperty('1')) voltage1 = response['1297']['1'];
 			if(response.hasOwnProperty('1298') && response['1298'].hasOwnProperty('1')) voltage2 = response['1298']['1'];
 			if(response.hasOwnProperty('1299') && response['1299'].hasOwnProperty('1')) voltage3 = response['1299']['1'];
-			
+
 			outputIsActive = undefined;
 
 			if(voltage1 != undefined && voltage2 == undefined && voltage3 == undefined)
@@ -331,7 +343,7 @@ function testUpsMode()
 			else if(voltage1 != undefined && voltage2 != undefined && voltage3 != undefined)
 				outputIsActive = (voltage1 > 10000 && voltage2 > 10000 && voltage3 > 10000);
 			else alert("E040. Please refresh the page!");
-			
+
 			if(outputIsActive == true) {
 				// CONTINUE WITH TEST
 				$('#log p:last-child').html(`✓ ${lang['check_output_active']}`);
@@ -356,7 +368,7 @@ function testUpsMode_waitingForInput()
 		url: "api.php?get=currentstate",
 		error: function() { alert("E041. Please refresh the page!"); },
 		success: function(response) {
-			
+
 			if(!response || typeof response != "object" || !response.hasOwnProperty('273') || !response['273'].hasOwnProperty('1') || !response.hasOwnProperty('1634') || !response['1634'].hasOwnProperty('0'))
 				return alert("E042. Please refresh the page!");
 
@@ -364,12 +376,12 @@ function testUpsMode_waitingForInput()
 			let voltage2 = undefined;
 			let voltage3 = undefined;
 			let solPower = undefined;
-			
+
 			if(response.hasOwnProperty('273') && response['273'].hasOwnProperty('1')) voltage1 = response['273']['1'];
 			if(response.hasOwnProperty('274') && response['274'].hasOwnProperty('1')) voltage2 = response['274']['1'];
 			if(response.hasOwnProperty('275') && response['275'].hasOwnProperty('1')) voltage3 = response['275']['1'];
 			solPower = response['1634']['0'];
-			
+
 			inputIsActive = undefined;
 			solarIsActive = (solPower > 1);
 
@@ -407,15 +419,15 @@ function testUpsMode_test()
 
 			upsMode_count += 1;
 			$('#log p:last-child').html(`${lang['performing_test']} (${upsMode_count} / 5)`);
-			
+
 			let voltage1 = undefined;
 			let voltage2 = undefined;
 			let voltage3 = undefined;
-			
+
 			if(response.hasOwnProperty('1297') && response['1297'].hasOwnProperty('1')) voltage1 = response['1297']['1'];
 			if(response.hasOwnProperty('1298') && response['1298'].hasOwnProperty('1')) voltage2 = response['1298']['1'];
 			if(response.hasOwnProperty('1299') && response['1299'].hasOwnProperty('1')) voltage3 = response['1299']['1'];
-			
+
 			outputIsActive = undefined;
 
 			if(voltage1 != undefined && voltage2 == undefined && voltage3 == undefined)
@@ -456,11 +468,11 @@ function testUpsMode_finish()
 			let voltage1 = undefined;
 			let voltage2 = undefined;
 			let voltage3 = undefined;
-			
+
 			if(response.hasOwnProperty('273') && response['273'].hasOwnProperty('1')) voltage1 = response['273']['1'];
 			if(response.hasOwnProperty('274') && response['274'].hasOwnProperty('1')) voltage2 = response['274']['1'];
 			if(response.hasOwnProperty('275') && response['275'].hasOwnProperty('1')) voltage3 = response['275']['1'];
-			
+
 			inputIsActive = undefined;
 
 			if(voltage1 != undefined && voltage2 == undefined && voltage3 == undefined)
@@ -468,7 +480,7 @@ function testUpsMode_finish()
 			else if(voltage1 != undefined && voltage2 != undefined && voltage3 != undefined)
 				inputIsActive = (voltage1 > 10000 && voltage2 > 10000 && voltage3 > 10000);
 			else alert("E049. Please refresh the page!");
-			
+
 			if(inputIsActive == true) {
 				// FINISH STEP
 				$("#testUpsMode .loading").hide();

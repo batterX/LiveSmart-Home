@@ -46,25 +46,28 @@ $_SESSION['last_step'] = $step;
 					<h1>Select Language</h1>
 
 					<div class="row lang">
-						<div class="col"></div>
+						<div class="col-2"></div>
 						<div id="langEn" class="col">
 							<div class="lang-en"></div>
 							<span>English</span>
 						</div>
-						<div class="col-2"></div>
 						<div id="langDe" class="col">
 							<div class="lang-de"></div>
 							<span>Deutsch</span>
 						</div>
-						<div class="col"></div>
+						<div id="langFr" class="col">
+							<div class="lang-fr"></div>
+							<span>Français</span>
+						</div>
+						<div class="col-2"></div>
 					</div>
 
 				</div>
 			</div>
 		</div>
-		
 
-		
+
+
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/index.js?v=<?php echo $versionHash ?>"></script>

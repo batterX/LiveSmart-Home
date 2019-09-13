@@ -32,7 +32,7 @@ $_SESSION['last_step'] = $step;
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/software_update.css?v=<?php echo $versionHash ?>">
-        
+
 	</head>
 
 
@@ -48,7 +48,7 @@ $_SESSION['last_step'] = $step;
 		<div class="container">
 			<div>
 				<h1><?php echo $strings['software_update'] ?></h1>
-                <div>
+				<div>
 					<div id="error"></div>
 					<div id="success"></div>
 					<div id="loading"></div>
@@ -59,7 +59,7 @@ $_SESSION['last_step'] = $step;
 		</div>
 
 
-		
+
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>

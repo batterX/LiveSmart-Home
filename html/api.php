@@ -7,10 +7,10 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 // GET CurrentState
 
 if(isset($_GET['get']) && strtolower($_GET['get']) == 'currentstate') {
-	
+
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/ram/currentD.db3');
-	
+
 	// Returns the value with the selected type and entity
 	// ?get=currentstate&type=273&entity=1
 	if(isset($_GET['type']) && isset($_GET['entity'])) {
@@ -18,7 +18,7 @@ if(isset($_GET['get']) && strtolower($_GET['get']) == 'currentstate') {
 		$res = $result->fetchColumn();
 		echo strval($res);
 	}
-	
+
 	// Returns the full CurrentState table
 	// ?get=currentstate
 	else {
@@ -35,41 +35,41 @@ if(isset($_GET['get']) && strtolower($_GET['get']) == 'currentstate') {
 		header('Content-Type: application/json');
 		echo json_encode($dbh, JSON_FORCE_OBJECT);
 	}
-	
+
 }
 
 // GET WarningsData
 
 else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warningsdata') {
-	
+
 	// Returns JSON Object with the latest X entries from the Warnings Table
 	// ?get=warningsdata&count=5
-	
+
 	// Get Count
 	$count = "1";
 	if(isset($_GET['count'])) $count = $_GET['count'];
-	
+
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/usv.db3');
-	
+
 	$result = $db->query("SELECT * FROM (SELECT id, value, logtime FROM WarningsData ORDER BY id DESC LIMIT " . $count . ") ORDER BY id ASC", PDO::FETCH_ASSOC);
-	
+
 	$dbh = array();
 	foreach($result as $r) { $dbh[] = $r; }
-	
+
 	header('Content-Type: application/json');
 	echo json_encode($dbh);
-	
-	
+
+
 }
 
 // GET Settings
 
 else if(isset($_GET['get']) && strtolower($_GET['get']) == 'settings') {
-	
+
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/usv.db3');
-	
+
 	// Returns the full Settings table
 	// ?get=settings
 	$result = $db->query('SELECT VarName, entity, Name, InUse, Mode, V1, V2, V3, V4, V5, V6, S1, S2, UpDateTime FROM Settings', PDO::FETCH_ASSOC);
@@ -81,19 +81,19 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'settings') {
 			$dbh->$VarName = new stdClass();
 		$dbh->$VarName->$entity = $row;
 	}
-	
+
 	header('Content-Type: application/json');
 	echo json_encode($dbh, JSON_FORCE_OBJECT);
-	
+
 }
 
 // GET DeviceInfo
 
 else if(isset($_GET['get']) && strtolower($_GET['get']) == 'deviceinfo') {
-	
+
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/usv.db3');
-	
+
 	// Returns the full Settings table
 	// ?get=deviceinfo
 	$result = $db->query("SELECT setting, value FROM DeviceInfo", PDO::FETCH_ASSOC);
@@ -103,26 +103,26 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'deviceinfo') {
 		$value = (string) $row['value'];
 		$dbh->$setting = $value;
 	}
-	
+
 	header('Content-Type: application/json');
 	echo json_encode($dbh, JSON_FORCE_OBJECT);
-	
+
 }
 
 // SET Command
 
 else if(isset($_GET['set']) && strtolower($_GET['set']) == 'command') {
-	
+
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/ram/currentC.db3');
-	
+
 	// Build Command
 	$type = ""; $entity = "0"; $text1 = ""; $text2 = "";
 	if(isset($_GET['type']))   $type   = $_GET['type'];
 	if(isset($_GET['entity'])) $entity = $_GET['entity'];
 	if(isset($_GET['text1']))  $text1  = $_GET['text1'];
 	if(isset($_GET['text2']))  $text2  = $_GET['text2'];
-	
+
 	// Send Command to Database
 	if($type != "" && $entity != "") {
 		$sql = "INSERT INTO `CommandsIn` (`type`, `entity`, `text1`, `text2`) VALUES(".$type.", ".$entity.", '".$text1."', '".$text2."')";
@@ -133,7 +133,7 @@ else if(isset($_GET['set']) && strtolower($_GET['set']) == 'command') {
 			$stmt->closeCursor();
 		} catch(PDOException $e) {}
 	}
-	
+
 }
 
 // GET History
@@ -147,7 +147,7 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'historydata') {
 
 		// Connect to Database
 		$db = new PDO('sqlite:/srv/bx/usv.db3');
-		
+
 		// Returns HistoryData for Selected Range
 		// ?get=historydata&from=YYYYMMDD&to=YYYYMMDD
 		$result = $db->query('SELECT * FROM History WHERE logtime > "' . $from . ' 00:00:00" AND logtime < "' . $to . ' 23:59:59"', PDO::FETCH_ASSOC);
@@ -171,7 +171,7 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'historydata') {
 				$row['extsol_power']
 			];
 		}
-		
+
 		header('Content-Type: application/json');
 		echo json_encode($arr);
 	}

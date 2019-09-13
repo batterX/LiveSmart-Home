@@ -32,7 +32,7 @@ $_SESSION['last_step'] = $step;
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/system_detect.css?v=<?php echo $versionHash ?>">
-        
+
 	</head>
 
 
@@ -45,35 +45,39 @@ $_SESSION['last_step'] = $step;
 
 
 
-        <div class="container">
+		<div class="container">
 
 			<div id="inverterUnknown">
 				<h1><?php echo $strings['inverter_unknown']; ?></h1>
-                <div class="d-flex align-items-center justify-content-center">
+				<div class="d-flex align-items-center justify-content-center">
 					<div class="error"></div>
 					<div class="success"></div>
-                    <div class="loading"></div>
+					<div class="loading"></div>
 					<span class="message"><?php echo $strings['please_connect_inverter']; ?></span>
 				</div>
-            </div>
-            
-            <div id="inverterDetected">
-                <h1>batter<span>X</span> <b></b></h1>
-                <img src="">
-                <span class="serialnumber">S/N: <b></b></span>
-                <div class="d-flex align-items-center justify-content-center">
+			</div>
+
+			<div id="inverterDetected">
+				<h1>batter<span>X</span> <b></b></h1>
+				<img src="">
+				<span class="serialnumber">S/N: <b></b></span>
+				<div class="d-flex align-items-center justify-content-center">
 					<div class="error"></div>
 					<div class="success"></div>
-                    <div class="loading"></div>
-                    <span class="standard">VDE4105</span>
-                </div>
-                <button id="btnSubmit" class="btn btn-success ripple d-none"><?php echo $strings['continue']; ?></button>
-            </div>
+					<div class="loading"></div>
+					<span class="standard">VDE4105</span>
+				</div>
+				<div>
+					<button id="btnApplyVDE4105" class="btn btn-outline-danger ripple invisible"><?php echo $strings['switch_to_vde4105']; ?></button>
+				</div>
+				<div><div class="vde-loading loading"></div></div>
+				<button id="btnSubmit" class="btn btn-success ripple d-none"><?php echo $strings['continue']; ?></button>
+			</div>
 
 		</div>
-		
 
-		
+
+
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/dist/moment.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>

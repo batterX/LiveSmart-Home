@@ -17,36 +17,51 @@ $arrayGender = [
 	'1' => $strings['gender_female']
 ];
 $arrayCountry = [
-	'de' => $strings['c_de'],
 	'at' => $strings['c_at'],
+	'by' => $strings['c_by'],
 	'be' => $strings['c_be'],
-	'bg' => $strings['c_bg'],
-	'ch' => $strings['c_ch'],
 	'cy' => $strings['c_cy'],
 	'cz' => $strings['c_cz'],
 	'dk' => $strings['c_dk'],
 	'ee' => $strings['c_ee'],
-	'es' => $strings['c_es'],
 	'fi' => $strings['c_fi'],
 	'fr' => $strings['c_fr'],
+	'ge' => $strings['c_ge'],
+	'de' => $strings['c_de'],
 	'gr' => $strings['c_gr'],
-	'hr' => $strings['c_hr'],
 	'hu' => $strings['c_hu'],
+	'is' => $strings['c_is'],
 	'ie' => $strings['c_ie'],
 	'it' => $strings['c_it'],
+	'lv' => $strings['c_lv'],
 	'lt' => $strings['c_lt'],
 	'lu' => $strings['c_lu'],
-	'lv' => $strings['c_lv'],
+	'mt' => $strings['c_mt'],
+	'md' => $strings['c_md'],
 	'nl' => $strings['c_nl'],
 	'no' => $strings['c_no'],
 	'pl' => $strings['c_pl'],
 	'pt' => $strings['c_pt'],
 	'ro' => $strings['c_ro'],
 	'ru' => $strings['c_ru'],
-	'si' => $strings['c_si'],
 	'sk' => $strings['c_sk'],
+	'si' => $strings['c_si'],
+	'es' => $strings['c_es'],
 	'se' => $strings['c_se'],
-	'uk' => $strings['c_uk']
+	'ch' => $strings['c_ch'],
+	'tr' => $strings['c_tr'],
+	'ua' => $strings['c_ua'],
+	'gb' => $strings['c_gb'],
+	'sn' => $strings['c_sn'],
+	'ci' => $strings['c_ci'],
+	'gh' => $strings['c_gh'],
+	'ng' => $strings['c_ng'],
+	'tg' => $strings['c_tg'],
+	'cd' => $strings['c_cd'],
+	'ug' => $strings['c_ug'],
+	'ke' => $strings['c_ke'],
+	'za' => $strings['c_za'],
+	're' => $strings['c_re']
 ];
 $arrayDeviceModel = [
 	'h3'  => 'batterX h3',
@@ -77,7 +92,7 @@ $arrayDeviceModel = [
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/installation_summary.css?v=<?php echo $versionHash ?>">
-		
+
 	</head>
 
 
@@ -180,8 +195,8 @@ $arrayDeviceModel = [
 				<div class="col-6 col-md-8"><b><?php echo ($_SESSION['battery1_serial']) . (isset($_SESSION['battery2_serial']) ? "<br>" . $_SESSION['battery2_serial'] : "") . (isset($_SESSION['battery3_serial']) ? "<br>" . $_SESSION['battery3_serial'] : "") . (isset($_SESSION['battery4_serial']) ? "<br>" . $_SESSION['battery4_serial'] : "") ?></b></div>
 			</div>
 			<?php endif; ?>
-			
-			
+
+
 			<div class="row">
 				<div class="col-6 col-md-4"><?php echo $strings['summary_pv_system_size']; ?></div>
 				<div class="col-6 col-md-8"><b><?php echo $_SESSION['solar_wattPeak'] . " Wp" ?></b></div>
@@ -208,7 +223,7 @@ $arrayDeviceModel = [
 				<label class="custom-control-label" for="checkboxAccept"><?php echo $strings['summary_confirm_box']; ?></label>
 			</div>
 		</div>
-		
+
 
 		<div id="btnFinish" class="container text-left">
 			<button id="btnFinishInstallation" class="btn btn-success ripple mb-3 mt-4 px-5 py-3 d-none"><?php echo $strings['summary_finish_installation']; ?></button>
@@ -228,12 +243,12 @@ $arrayDeviceModel = [
 
 			<p class="mt-5"><?php echo $strings['final_p4'] ?></p>
 
-			<button id="btnDownload" class="btn btn-success ripple mb-3 py-3 px-5" style="width:300px"><?php echo $strings['summary_download_pdf']; ?></button>
+			<button id="btnDownload" class="btn btn-success ripple mb-3 py-3 px-5" style="width:320px"><?php echo $strings['summary_download_pdf']; ?></button>
 
 			<p class="mt-5"><?php echo $strings['final_p5'] ?></p>
 
 			<div class="d-flex align-items-center mb-3">
-				<button id="btnReboot" class="btn btn-primary ripple py-3 px-5" style="width:300px"><?php echo $strings['summary_reboot_livex']; ?></button>
+				<button id="btnReboot" class="btn btn-primary ripple py-3 px-5" style="width:320px"><?php echo $strings['summary_reboot_livex']; ?></button>
 				<div id="loading" class="d-none"></div>
 				<div id="success" class="d-none"></div>
 			</div>
@@ -241,9 +256,9 @@ $arrayDeviceModel = [
 		</div>
 
 		<input id="lang" type="hidden" value="<?php echo $_SESSION['lang']; ?>">
-		
 
-		
+
+
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/dist/jspdf.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/dist/html2canvas.js?v=<?php echo $versionHash ?>"></script>

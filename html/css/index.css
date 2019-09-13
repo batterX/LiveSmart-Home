@@ -44,21 +44,21 @@ h1 {
 	padding: 0;
 }
 
-#langEn, #langDe {
+#langEn, #langDe, #langFr {
 	margin-top: 5vmin !important;
 	cursor: pointer;
 	border-radius: 1vmin;
 	padding-top: 5vmin !important;
 	padding-bottom: 5vmin !important;
 }
-#langEn:hover, #langDe:hover {
+#langEn:hover, #langDe:hover, #langFr:hover {
 	background: rgba(0, 0, 0, 0.1);
 }
-#langEn:active, #langDe:active {
+#langEn:active, #langDe:active, #langFr:active {
 	background: rgba(0, 0, 0, 0.15);
 }
 
-#langEn > div, #langDe > div {
+#langEn > div, #langDe > div, #langFr > div {
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -66,6 +66,7 @@ h1 {
 }
 #langEn > div { background-image: url(../img/lang_en.png) }
 #langDe > div { background-image: url(../img/lang_de.png) }
+#langFr > div { background-image: url(../img/lang_fr.png) }
 
 .lang span {
 	display: block;

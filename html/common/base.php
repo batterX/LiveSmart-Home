@@ -1,13 +1,13 @@
 <?php
 
 /*
-    Included on begin of every .php file
+	Included on begin of every .php file
 
-    Handles:
-    * Session Start
-    * Language Setup
+	Handles:
+	* Session Start
+	* Language Setup
 
-    @author Ivan Gavrilov
+	@author Ivan Gavrilov
 */
 
 
@@ -26,13 +26,15 @@ session_regenerate_id();
 
 // Set Language
 $lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
-if($lang != "en" && $lang != "de") $lang = "en";
+if($lang != "en" && $lang != "de" && $lang != "fr") $lang = "en";
 $_SESSION['lang'] = $lang;
 
 // Get Language Strings
 $strings = file_get_contents('common/lang.json');
 $strings = json_decode($strings, true);
-$strings = ($lang == "de") ? $strings['tables'][1] : $strings['tables'][0];
+	 if($lang == "fr") $strings = $strings['tables'][2];
+else if($lang == "de") $strings = $strings['tables'][1];
+else                   $strings = $strings['tables'][0];
 
 
 

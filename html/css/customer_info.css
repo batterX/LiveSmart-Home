@@ -3,70 +3,70 @@
 
 
 .container {
-    padding: 0;
+	padding: 0;
 }
 
 
 
 .container > .row {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 .container > .row > .col-6 {
-    padding: 0;
+	padding: 0;
 }
 .container > .row > .col-6:last-child {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 }
 
 
 
 #customerInformations,
 #installationAddress {
-    margin: 0;
-    padding: 0 .5rem;
+	margin: 0;
+	padding: 0 .5rem;
 }
 
 .input-padding {
-    padding: 1rem .5rem 0 .5rem;
+	padding: 1rem .5rem 0 .5rem;
 }
 
 
 
 h1 {
-    font-size: 1.5rem;
-    margin-top: 5rem;
-    padding: 1rem 2rem 1rem 4rem;
-    margin-bottom: 1rem;
-    background-repeat: no-repeat;
-    background-position: 1rem center;
-    background-size: 2rem;
+	font-size: 1.5rem;
+	margin-top: 5rem;
+	padding: 1rem 2rem 1rem 4rem;
+	margin-bottom: 1rem;
+	background-repeat: no-repeat;
+	background-position: 1rem center;
+	background-size: 2rem;
 }
 
 #existingCustomer {
-    font-size: 0.8rem;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    margin-right: 1rem;
-    text-transform: uppercase;
+	font-size: 0.8rem;
+	padding: 0.5rem 1rem 0.5rem 1rem;
+	margin-right: 1rem;
+	text-transform: uppercase;
 }
 
 .customer-informations {
-    background-image: url(../img/ic_user.png);
+	background-image: url(../img/ic_user.png);
 }
 .installation-address {
-    background-image: url(../img/ic_home.png);
+	background-image: url(../img/ic_home.png);
 }
 
 h1 img {
-    width: 2rem;
-    height: 2rem;
-    margin-right: 1rem;
+	width: 2rem;
+	height: 2rem;
+	margin-right: 1rem;
 }
 
 #modalExistingCustomer .btn {
-    font-size: 0.9rem;
+	font-size: 0.9rem;
 	padding: .5rem;
 	letter-spacing: 0.1rem;
 }
@@ -79,11 +79,11 @@ h1 img {
 }
 
 #errorMsg {
-    display: none;
-    font-size: .8rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
+	display: none;
+	font-size: .8rem;
+	margin-bottom: 1rem;
+	font-weight: 600;
 }
 #errorMsg * {
-    color: red !important;
+	color: red !important;
 }

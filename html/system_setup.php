@@ -32,7 +32,7 @@ $_SESSION['last_step'] = $step;
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/system_setup.css?v=<?php echo $versionHash ?>">
-        
+
 	</head>
 
 
@@ -41,147 +41,151 @@ $_SESSION['last_step'] = $step;
 
 
 
-        <div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
 
 
 
-        <div id="modalInstallerMemo" class="modal fade">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <h4 class="modal-header mb-0">
-                        <?php echo $strings['installer_memo']; ?>
-                    </h4>
-                    <div class="modal-body">
-                        <textarea id="installer_memo" class="form-control form-control-outline w-100"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm px-5 py-2 btn-success" data-dismiss="modal">SAVE</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<div id="modalInstallerMemo" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<h4 class="modal-header mb-0">
+						<?php echo $strings['installer_memo']; ?>
+					</h4>
+					<div class="modal-body">
+						<textarea id="installer_memo" class="form-control form-control-outline w-100"></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm px-5 py-2 btn-success" data-dismiss="modal">SAVE</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 
-        <div class="container px-3">
+		<div class="container px-3">
 
-            <form id="mainForm">
+			<form id="mainForm">
 
-                <div class="row m-0 p-0">
+				<div class="row m-0 p-0">
 
-                    <!-- batterX Home -->
-                    <div id="bxHome" class="col-xl-4 px-3">
-                        
-                        <h1>batterX Home</h1>
+					<!-- batterX Home -->
+					<div id="bxHome" class="col-xl-4 px-3">
 
-                        <div id="system_type" class="mb-4">
-                            <label for="bx_system"><?php echo $strings['serialnumber_system']; ?></label>
-                            <input id="bx_system" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" required>
-                            <div class="custom-control custom-radio mt-3">
-                                <input type="radio" id="bx_system_type_r" name="bx_system_type" class="custom-control-input" checked>
-                                <label class="custom-control-label" for="bx_system_type_r"><?php echo $strings['system_type_r']; ?></label>
-                            </div>
-                            <div class="custom-control custom-radio mt-2">
-                                <input type="radio" id="bx_system_type_w" name="bx_system_type" class="custom-control-input">
-                                <label class="custom-control-label" for="bx_system_type_w"><?php echo $strings['system_type_w']; ?></label>
-                            </div>
-                        </div>
-                        
-                        <label for="bx_device"><?php echo $strings['serialnumber_inverter']; ?></label>
-                        <input id="bx_device" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
+						<h1>batterX Home</h1>
 
-                        <label class="mt-4" for="bx_box"><?php echo $strings['serialnumber_box']; ?></label>
-                        <input id="bx_box" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
+						<div id="system_type" class="mb-4">
+							<label for="bx_system"><?php echo $strings['serialnumber_system']; ?></label>
+							<input id="bx_system" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" required>
+							<div class="custom-control custom-radio mt-3">
+								<input type="radio" id="bx_system_type_r" name="bx_system_type" class="custom-control-input" checked>
+								<label class="custom-control-label" for="bx_system_type_r"><?php echo $strings['system_type_r']; ?></label>
+							</div>
+							<div class="custom-control custom-radio mt-2">
+								<input type="radio" id="bx_system_type_w" name="bx_system_type" class="custom-control-input">
+								<label class="custom-control-label" for="bx_system_type_w"><?php echo $strings['system_type_w']; ?></label>
+							</div>
+						</div>
 
-                        <div class="pt-3">
-                            <button type="button" class="w-100 btn btn-sm btn-info ripple py-2 mt-3" data-toggle="modal" data-target="#modalInstallerMemo"><?php echo $strings['installer_memo']; ?></button>
-                        </div>
+						<label for="bx_device"><?php echo $strings['serialnumber_inverter']; ?></label>
+						<input id="bx_device" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
 
-                    </div>
+						<label class="mt-4" for="bx_box"><?php echo $strings['serialnumber_box']; ?></label>
+						<input id="bx_box" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
 
-                    <!-- Solar Panels -->
-                    <div id="solar" class="col-lg-6 col-xl-4 px-3">
-                        
-                        <h1><?php echo $strings['pv_system'] ?></h1>
+						<div class="pt-3">
+							<button type="button" class="w-100 btn btn-sm btn-info ripple py-2 mt-3" data-toggle="modal" data-target="#modalInstallerMemo"><?php echo $strings['installer_memo']; ?></button>
+						</div>
 
-                        <label for="solar_wattPeak"><?php echo $strings['pv_system_size']; ?></label>
-                        <div>
-                            <input id="solar_wattPeak" class="form-control form-control-outline d-inline-block w-65" type="number" step="1" min="0" required>
-                            <span class="pl-3"><?php echo $strings['watt_peak']; ?></span>
-                        </div>
+					</div>
 
-                        <label class="mt-5" for="solar_feedInLimitation"><?php echo $strings['pv_system_feed_in_limitation']; ?></label>
-                        <div>
-                            <input id="solar_feedInLimitation" class="form-control form-control-outline d-inline-block w-65" type="number" step="1" min="0" max="100" value="100" required>
-                            <span class="pl-3">%</span>
-                        </div>
+					<!-- Solar Panels -->
+					<div id="solar" class="col-lg-6 col-xl-4 px-3">
 
-                        <label class="mt-5" for="solar_info"><?php echo $strings['pv_installation_info']; ?></label>
-                        
-                        <div>
-                            <textarea id="solar_info" class="form-control form-control-outline w-100" placeholder="Paneltyp: ...
+						<h1><?php echo $strings['pv_system'] ?></h1>
+
+						<label for="solar_wattPeak"><?php echo $strings['pv_system_size']; ?></label>
+						<div>
+							<input id="solar_wattPeak" class="form-control form-control-outline d-inline-block w-65" type="number" step="1" min="0" required>
+							<span class="pl-3"><?php echo $strings['watt_peak']; ?></span>
+						</div>
+
+						<label class="mt-5" for="solar_feedInLimitation"><?php echo $strings['pv_system_feed_in_limitation']; ?></label>
+						<div>
+							<input id="solar_feedInLimitation" class="form-control form-control-outline d-inline-block w-65" type="number" step="1" min="0" max="100" value="100" required>
+							<span class="pl-3">%</span>
+						</div>
+
+						<label class="mt-5" for="solar_info"><?php echo $strings['pv_installation_info']; ?></label>
+
+						<div>
+							<textarea id="solar_info" class="form-control form-control-outline w-100" placeholder="Paneltyp: ...
 
 MPPT 1
-    String 1: ...
-    String 2: ...
+	String 1: ...
+	String 2: ...
 MPPT 2
-    String 1: ...
-    String 2: ..."></textarea>
-                        </div>
-                        
-                    </div>
+	String 1: ...
+	String 2: ..."></textarea>
+						</div>
 
-                    <!-- Batteries -->
-                    <div id="battery" class="col-lg-6 col-xl-4 px-3">
-                        
-                        <h1><?php echo $strings['batteries']; ?></h1>
+					</div>
 
-                        <div class="mb-4">
-                            <div class="custom-control custom-radio d-inline-block">
-                                <input type="radio" id="bx_battery_type_0" name="bx_battery_type" class="custom-control-input" value="0" checked>
-                                <label class="custom-control-label" for="bx_battery_type_0">LiFePO</label>
-                            </div>
-                            <div class="custom-control custom-radio d-inline-block ml-4">
-                                <input type="radio" id="bx_battery_type_1" name="bx_battery_type" class="custom-control-input" value="1">
-                                <label class="custom-control-label" for="bx_battery_type_1">Carbon</label>
-                            </div>
-                        </div>
+					<!-- Batteries -->
+					<div id="battery" class="col-lg-6 col-xl-4 px-3">
 
-                        <div id="battery_section_0">
-                            <p><?php echo $strings['batteries_serialnumber']; ?></p>
-                            <input id="battery_1" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery1']; ?>">
-                            <input id="battery_2" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery2']; ?>">
-                            <input id="battery_3" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery3']; ?>">
-                            <input id="battery_4" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery4']; ?>">
-                        </div>
-                        <div id="battery_section_1" style="display: none">
-                            <!-- WRITE SOMETHING ABOUT THE CARBON BATTERIES ??? -->
-                        </div>
+						<h1><?php echo $strings['batteries']; ?></h1>
 
-                    </div>
+						<div class="mb-4">
+							<div class="custom-control custom-radio d-inline-block">
+								<input type="radio" id="bx_battery_type_0" name="bx_battery_type" class="custom-control-input" value="0" checked>
+								<label class="custom-control-label" for="bx_battery_type_0">LiFePO</label>
+							</div>
+							<div class="custom-control custom-radio d-inline-block ml-4">
+								<input type="radio" id="bx_battery_type_1" name="bx_battery_type" class="custom-control-input" value="1">
+								<label class="custom-control-label" for="bx_battery_type_1">Carbon</label>
+							</div>
+							<div class="custom-control custom-radio d-inline-block ml-4">
+								<input type="radio" id="bx_battery_type_2" name="bx_battery_type" class="custom-control-input" value="1">
+								<label class="custom-control-label" for="bx_battery_type_2"><?php echo $strings['no_batteries']; ?></label>
+							</div>
+						</div>
 
-                </div>
+						<div id="battery_section_0">
+							<p><?php echo $strings['batteries_serialnumber']; ?></p>
+							<input id="battery_1" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery1']; ?>">
+							<input id="battery_2" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery2']; ?>">
+							<input id="battery_3" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery3']; ?>">
+							<input id="battery_4" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery4']; ?>">
+						</div>
+						<div id="battery_section_1" style="display: none">
+							<!-- WRITE SOMETHING ABOUT THE CARBON BATTERIES ??? -->
+						</div>
 
-                <div class="text-center mt-5 mb-5">
-                    <button id="btnSubmit" type="submit" class="btn btn-success levitate ripple mb-3 px-5 py-3" disabled><?php echo $strings['continue']; ?></button>
-                    <div class="setting-progress d-none">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <div class="error"></div>
-                            <div class="success"></div>
-                            <div class="loading"></div>
-                            <span><?php echo $strings['setting_parameters']; ?></span>
-                        </div>
-                    </div>
-                </div>
+					</div>
 
-                <input id="installation_date" type="hidden" value="<?php echo date('Y-m-d'); ?>">
+				</div>
 
-            </form>
+				<div class="text-center mt-5 mb-5">
+					<button id="btnSubmit" type="submit" class="btn btn-success levitate ripple mb-3 px-5 py-3" disabled><?php echo $strings['continue']; ?></button>
+					<div class="setting-progress d-none">
+						<div class="d-flex align-items-center justify-content-center">
+							<div class="error"></div>
+							<div class="success"></div>
+							<div class="loading"></div>
+							<span><?php echo $strings['setting_parameters']; ?></span>
+						</div>
+					</div>
+				</div>
+
+				<input id="installation_date" type="hidden" value="<?php echo date('Y-m-d'); ?>">
+
+			</form>
 
 		</div>
-		
 
-		
+
+
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>

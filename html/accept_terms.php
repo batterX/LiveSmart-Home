@@ -32,7 +32,7 @@ $_SESSION['last_step'] = $step;
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/accept_terms.css?v=<?php echo $versionHash ?>">
-        
+
 	</head>
 
 
@@ -41,11 +41,11 @@ $_SESSION['last_step'] = $step;
 
 
 
-        <div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
 
 
 
-        <div class="container">
+		<div class="container">
 
 			<!-- INVERTER WARRANTY -->
 
@@ -158,9 +158,9 @@ $_SESSION['last_step'] = $step;
 		<div id="btnFinish" class="container text-left my-5 pb-5">
 			<a class="btn btn-success ripple px-5 py-3" href="installation_summary.php"><?php echo $strings['continue']; ?></a>
 		</div>
-		
 
-		
+
+
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>

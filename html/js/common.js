@@ -1,11 +1,11 @@
 /*
-    Ripple Script
+	Ripple Script
 */
 
 $.ripple({
-    ".ripple": {
-        touchDelay: 300
-    }
+	".ripple": {
+		touchDelay: 300
+	}
 });
 
 
@@ -13,7 +13,7 @@ $.ripple({
 
 
 /*
-    Bullet Progress Bar
+	Bullet Progress Bar
 */
 
 var stepsSum = 8;
@@ -22,7 +22,7 @@ var $progress = $('#progress .progress-bar');
   
 // Attach 'step' event on container.
 $progress.on('step', function(e, stepIndex) {
-    $progress.css('width', (stepIndex / stepsSum * 100) + '%');
+	$progress.css('width', (stepIndex / stepsSum * 100) + '%');
 });
   
 // Trigger first bullet
