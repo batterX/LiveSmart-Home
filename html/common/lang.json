@@ -488,7 +488,7 @@
 			"energy_meter":                  "Compteur d'énergie",
 			"battery_charging":              "Chargement de la batterie",
 			"battery_discharging":           "Déchargement de la batterie",
-			"ups_mode":                      "Mode ASI",
+			"ups_mode":                      "Mode UPS",
 			"performing_test":               "Test du système en cours",
 			"enable_ac_charging":            "Activation du chargement des batteries par le réseau",
 			"disable_ac_charging":           "Désactivation du chargement des batteries par le réseau",
