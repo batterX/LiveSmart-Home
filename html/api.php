@@ -1,8 +1,16 @@
 <?php
 
+
+
+
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
+
+
+
 
 // GET CurrentState
 
@@ -14,9 +22,11 @@ if(isset($_GET['get']) && strtolower($_GET['get']) == 'currentstate') {
 	// Returns the value with the selected type and entity
 	// ?get=currentstate&type=273&entity=1
 	if(isset($_GET['type']) && isset($_GET['entity'])) {
-		$result = $db->query('SELECT entityvalue FROM CurrentState WHERE type=' . $_GET['type'] . ' AND entity=' . $_GET['entity'] . ' LIMIT 1');
-		$res = $result->fetchColumn();
-		echo strval($res);
+		if(ctype_digit($_GET['type']) && ctype_digit($_GET['entity'])) {
+			$result = $db->query('SELECT entityvalue FROM CurrentState WHERE type=' . $_GET['type'] . ' AND entity=' . $_GET['entity'] . ' LIMIT 1');
+			$res = $result->fetchColumn();
+			echo strval($res);
+		}
 	}
 
 	// Returns the full CurrentState table
@@ -38,30 +48,117 @@ if(isset($_GET['get']) && strtolower($_GET['get']) == 'currentstate') {
 
 }
 
+
+
+
+
 // GET WarningsData
 
 else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warningsdata') {
 
+	// Connect to Database
+	$db = new PDO('sqlite:/srv/bx/usv.db3');
+
+	// Return JSON Object with all warnings since YYYYMMDD
+	// ?get=warningsdata&from=YYYYMMDD
+	if(isset($_GET['from']))
+	{
+		if(strlen($_GET['from']) != 8) exit();
+
+		$from = substr($_GET['from'], 0, 4) . "-" . substr($_GET['from'], 4, 2) . "-" . substr($_GET['from'], 6, 2) . " 00:00:00";
+
+		$sql = "SELECT * FROM (SELECT id, value, logtime FROM WarningsData WHERE logtime > :logtime ORDER BY id DESC) ORDER BY id ASC";
+
+		if($stmt = $db->prepare($sql)) {
+			$stmt->bindParam(':logtime', $from, PDO::PARAM_STR);
+			$stmt->execute();
+			$array = (array) [];
+			foreach($stmt as $row) {
+				$value   = (string) $row['value'];
+				$logtime = (string) $row['logtime'];
+				$array[] = array($logtime, $value);
+			}
+			header('Content-Type: application/json');
+			echo json_encode($array);
+		}
+	}
+
 	// Returns JSON Object with the latest X entries from the Warnings Table
 	// ?get=warningsdata&count=5
+	else
+	{
+		$count = "1";
+		if(isset($_GET['count']) && ctype_digit($_GET['count'])) $count = $_GET['count'];
 
-	// Get Count
-	$count = "1";
-	if(isset($_GET['count'])) $count = $_GET['count'];
+		$result = $db->query("SELECT * FROM (SELECT id, value, logtime FROM WarningsData ORDER BY id DESC LIMIT " . $count . ") ORDER BY id ASC", PDO::FETCH_ASSOC);
+
+		$array = (array) [];
+		foreach($result as $row) {
+			$value   = (string) $row['value'];
+			$logtime = (string) $row['logtime'];
+			$array[] = array($logtime, $value);
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($array);
+	}
+
+}
+
+
+
+
+
+// GET HistoryData
+
+else if(isset($_GET['get']) && strtolower($_GET['get']) == 'historydata') {
 
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/usv.db3');
 
-	$result = $db->query("SELECT * FROM (SELECT id, value, logtime FROM WarningsData ORDER BY id DESC LIMIT " . $count . ") ORDER BY id ASC", PDO::FETCH_ASSOC);
+	// Returns HistoryData for Selected Range
+	// ?get=historydata&from=YYYYMMDD&to=YYYYMMDD
+	if(isset($_GET['from']) && isset($_GET['to']) && strlen($_GET['from']) == 8 && strlen($_GET['to']) == 8)
+	{
+		$from = substr($_GET['from'], 0, 4) . '-' . substr($_GET['from'], 4, 2) . '-' . substr($_GET['from'], 6, 2);
+		$to   = substr($_GET['to'  ], 0, 4) . '-' . substr($_GET['to'  ], 4, 2) . '-' . substr($_GET['to'  ], 6, 2);
 
-	$dbh = array();
-	foreach($result as $r) { $dbh[] = $r; }
+		$result = $db->query('SELECT * FROM History WHERE logtime > "' . $from . ' 00:00:00" AND logtime < "' . $to . ' 23:59:59"', PDO::FETCH_ASSOC);
+		$arr = (array) [];
+		foreach($result as $row) {
+			$arr[] = [
+				$row['logtime'],
+				$row['battery_voltage_minus'],
+				$row['battery_voltage_plus'],
+				$row['battery_level_minus'],
+				$row['battery_level_plus'],
+				$row['battery_power_from'],
+				$row['battery_power_to'],
+				$row['input_power_from'],
+				$row['input_power_to'],
+				$row['grid_power_from'],
+				$row['grid_power_to'],
+				$row['load_power'],
+				$row['house_power'],
+				$row['solar_power'],
+				$row['extsol_power']
+			];
+		}
 
-	header('Content-Type: application/json');
-	echo json_encode($dbh);
-
+		header('Content-Type: application/json');
+		echo json_encode($arr);
+	}
 
 }
+
+
+
+
+
+
+
+
+
 
 // GET Settings
 
@@ -132,48 +229,6 @@ else if(isset($_GET['set']) && strtolower($_GET['set']) == 'command') {
 			if($stmt->rowCount() == 1) echo '1';
 			$stmt->closeCursor();
 		} catch(PDOException $e) {}
-	}
-
-}
-
-// GET History
-
-else if(isset($_GET['get']) && strtolower($_GET['get']) == 'historydata') {
-
-	if(isset($_GET['from']) && isset($_GET['to']) && strlen($_GET['from']) == 8 && strlen($_GET['to']) == 8)
-	{
-		$from = substr($_GET['from'], 0, 4) . '-' . substr($_GET['from'], 4, 2) . '-' . substr($_GET['from'], 6, 2);
-		$to   = substr($_GET['to'  ], 0, 4) . '-' . substr($_GET['to'  ], 4, 2) . '-' . substr($_GET['to'  ], 6, 2);
-
-		// Connect to Database
-		$db = new PDO('sqlite:/srv/bx/usv.db3');
-
-		// Returns HistoryData for Selected Range
-		// ?get=historydata&from=YYYYMMDD&to=YYYYMMDD
-		$result = $db->query('SELECT * FROM History WHERE logtime > "' . $from . ' 00:00:00" AND logtime < "' . $to . ' 23:59:59"', PDO::FETCH_ASSOC);
-		$arr = (array) [];
-		foreach($result as $row) {
-			$arr[] = [
-				$row['logtime'],
-				$row['battery_voltage_minus'],
-				$row['battery_voltage_plus'],
-				$row['battery_level_minus'],
-				$row['battery_level_plus'],
-				$row['battery_power_from'],
-				$row['battery_power_to'],
-				$row['input_power_from'],
-				$row['input_power_to'],
-				$row['grid_power_from'],
-				$row['grid_power_to'],
-				$row['load_power'],
-				$row['house_power'],
-				$row['solar_power'],
-				$row['extsol_power']
-			];
-		}
-
-		header('Content-Type: application/json');
-		echo json_encode($arr);
 	}
 
 }

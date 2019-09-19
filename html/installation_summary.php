@@ -241,6 +241,8 @@ $arrayDeviceModel = [
 
 			<p><?php echo $strings['final_p3'] ?></p>
 
+			<p class="mt-5"><?php echo $strings['final_p6'] ?>: <br><a href="https://my.batterx.io" target="_blank" style="color: var(--color-link) !important;">my.batterx.io</a></p>
+
 			<p class="mt-5"><?php echo $strings['final_p4'] ?></p>
 
 			<button id="btnDownload" class="btn btn-success ripple mb-3 py-3 px-5" style="width:320px"><?php echo $strings['summary_download_pdf']; ?></button>

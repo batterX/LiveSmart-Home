@@ -1,19 +1,3 @@
-<?php
-
-include_once "common/base.php";
-$step = 7;
-
-// Check Step
-if(!isset($_SESSION['last_step'])) header("location: index.php");
-if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
-	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
-$_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
-$_SESSION['last_step'] = $step;
-
-?>
-
-
-
 <!DOCTYPE html>
 
 <html>
@@ -38,10 +22,6 @@ $_SESSION['last_step'] = $step;
 
 
 	<body>
-
-
-
-		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
 
 
 
@@ -143,29 +123,6 @@ $_SESSION['last_step'] = $step;
 			<p>Ihre gesetzlichen Rechte, insbesondere Gewährleistungsrechte, gelten für Sie weiterhin und werden durch diese Garantie nicht beschränkt.</p>
 
 		</div>
-
-		<div class="mt-5 pt-5"><hr></div>
-
-		<!-- ACCEPT BUTTON -->
-
-		<div id="confirm" class="container pt-5 mt-5 pb-3">
-			<div class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input" id="checkboxAccept">
-				<label class="custom-control-label" for="checkboxAccept">Ich bestätige, dass ich alle Garantiebestimmungen gelesen habe und sie vollständig verstanden und akzeptiert habe.</label>
-			</div>
-		</div>
-
-		<div id="btnFinish" class="container text-left my-5 pb-5">
-			<a class="btn btn-success ripple px-5 py-3" href="installation_summary.php"><?php echo $strings['continue']; ?></a>
-			<a class="btn btn-info ripple px-5 py-3 ml-3" target="_blank" href="print_accept_terms.php"><?php echo $strings['print']; ?></a>
-		</div>
-
-
-
-		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
-		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
-		<script>const lang = <?php echo json_encode($strings); ?>;</script>
-		<script src="js/accept_terms.js?v=<?php echo $versionHash ?>"></script>
 
 
 

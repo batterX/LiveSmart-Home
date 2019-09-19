@@ -22,6 +22,7 @@
 
 			"continue": "Continue",
 			"skip":     "Skip",
+			"print":    "Print",
 
 			"software_update":                "Software Update",
 			"checking_internet_connection":   "Checking Internet Connection",
@@ -177,6 +178,7 @@
 			"final_p3": "As the installer of the System you get full access to this batterX Home from your own account as well, so that you can offer remote support to your customer if necessary.",
 			"final_p4": "We automatically uploaded the Installation-Report to the batterX Cloud, but we also recommend that you download the PDF File and store it locally.",
 			"final_p5": "We also recommend that you restart the liveX once, by pressing the button below.",
+			"final_p6": "The batterX Portal can be found at the following link",
 
 			"warning": "Warning",
 			"warning_16642": "AC Input Phase Dislocation"
@@ -196,6 +198,7 @@
 
 			"continue": "Weiter",
 			"skip":     "Überspringen",
+			"print":    "Drucken",
 
 			"software_update":                "Software-Aktualisierung",
 			"checking_internet_connection":   "Überprüfung der Internetverbindung",
@@ -351,6 +354,7 @@
 			"final_p3": "Als Installateur des Systems erhalten Sie vollen Zugriff auf dieses batterX Home auch von Ihrem eigenen Konto aus, so dass Sie Ihren Kunden bei Bedarf Fernwartung anbieten können.",
 			"final_p4": "Wir haben der Installationsbericht automatisch in der batterX Cloud hochgeladen, aber wir empfehlen Ihnen auch, die PDF Datei herunterzuladen und lokal zu speichern.",
 			"final_p5": "Wir empfehlen Ihnen auch, den liveX einmal neu zu starten, indem Sie auf die untenstehende Taste drücken.",
+			"final_p6": "Das batterX Portal finden Sie unter folgender Adresse",
 
 			"warning": "Warnung",
 			"warning_16642": "AC-Eingangsphasenvertauschung"
@@ -370,6 +374,7 @@
 
 			"continue": "Continuer",
 			"skip":     "Sauter",
+			"print":    "Imprimer",
 
 			"software_update":                "Mise à jour du liveX",
 			"checking_internet_connection":   "Vérification de la connexion internet",
@@ -525,6 +530,7 @@
 			"final_p3": "En tant qu'installateur du système il sera également disponible dans votre compte. Cela vous donne la possibilité d'offrir une assistance à distance à votre client au cas il serait nécessaire.",
 			"final_p4": "Nous avons enregistré automatiquement le rapport d'installation sur le cloud batterX. Il est conseiller de le télécharger et de le stocker localement.",
 			"final_p5": "Il est fortement conseiller de redémarrer le liveX maintenant, en appuyant sur le bouton ci-dessous.",
+			"final_p6": "Le portail batterX est accessible sous l'adresse suivante",
 
 			"warning": "Alarme",
 			"warning_16642": "Inversion des phases d'entrées"
