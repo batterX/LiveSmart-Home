@@ -87,7 +87,7 @@ function checkWarnings()
 		error: function() { alert("E051. Please refresh the page!"); },
 		success: function(response) {
 			if(!response || !Array.isArray(response)) return alert("E052. Please refresh the page!");
-			var warnings = response[0].value.split(" ");
+			var warnings = response[0][1].split(" ");
 			if(warnings.includes('16642')) {
 				// Warning - AC Phase Dislocation
 				$('.container').hide();
