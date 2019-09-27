@@ -1,11 +1,3 @@
-// Ripple Effect
-
-$.ripple({ ".ripple": { touchDelay: 300 } });
-
-
-
-
-
 mainLoop();
 function mainLoop()
 {
@@ -15,6 +7,8 @@ function mainLoop()
 			setTimeout(mainLoop, 5000);
 		},
 		success: function(json) {
+
+
 
 
 
@@ -38,6 +32,8 @@ function mainLoop()
 
 
 
+
+
 			if(json.hasOwnProperty('logtime')) {
 				var logDate = new Date(json['logtime'].split(' ').join('T') + "Z");
 				var nowDate = new Date();
@@ -47,6 +43,8 @@ function mainLoop()
 				console.log(dif);
 				$('#timestamp').text(json['logtime']).css('color', (dif > 60) ? 'red' : 'black');
 			}
+
+
 
 
 
@@ -66,6 +64,8 @@ function mainLoop()
 
 
 
+
+
 			if(json_has('2833', '0')) $('#2833_0').html(round(json_get('2833', '0') * 0.01, 1));
 			if(json_has('2834', '0')) $('#2834_0').html(round(json_get('2834', '0') * 0.01, 1));
 			if(json_has('2835', '0')) $('#2835_0').html(round(json_get('2835', '0') * 0.01, 1));
@@ -79,6 +79,8 @@ function mainLoop()
 			if(json_has('2899', '0')) $('#2899_0').html(round(json_get('2899', '0') * 1   , 1));
 
 			if(json_has('2913', '0')) $('#2913_0').html(round(json_get('2913', '0') * 1   , 1));
+
+
 
 
 
@@ -98,6 +100,8 @@ function mainLoop()
 
 
 
+
+
 			if(json_has('2833', '2')) $('#2833_2').html(round(json_get('2833', '2') * 0.01, 1));
 			if(json_has('2834', '2')) $('#2834_2').html(round(json_get('2834', '2') * 0.01, 1));
 			if(json_has('2835', '2')) $('#2835_2').html(round(json_get('2835', '2') * 0.01, 1));
@@ -111,6 +115,8 @@ function mainLoop()
 			if(json_has('2899', '2')) $('#2899_2').html(round(json_get('2899', '2') * 1   , 1));
 
 			if(json_has('2913', '2')) $('#2913_2').html(round(json_get('2913', '2') * 1   , 1));
+
+
 
 
 
@@ -130,6 +136,8 @@ function mainLoop()
 
 
 
+
+
 			if(json_has('1553', '1')) $('#1553_1').html(round(json_get('1553', '1') * 0.01, 1));
 			if(json_has('1554', '1')) $('#1554_1').html(round(json_get('1554', '1') * 0.01, 1));
 
@@ -143,6 +151,8 @@ function mainLoop()
 
 
 
+
+
 			if(json_has('1042', '1')) $('#1042_1').html(round(json_get('1042', '1') * 0.01, 1));
 			if(json_has('1058', '1')) $('#1058_1').html(round(json_get('1058', '1') * 0.01, 1));
 			if(json_has('1121', '1')) $('#1121_1').html(round(json_get('1121', '1') * 1   , 1));
@@ -150,8 +160,12 @@ function mainLoop()
 
 
 
+
+
 			if(json_has(  '369', '1')) $(  '#369_1').html(round(json_get(  '369', '1') * 1   , 1));
 			if(json_has('24582', '1')) $('#24582_1').html(round(json_get('24582', '1') * 1   , 1));
+
+
 
 
 
@@ -200,6 +214,8 @@ function mainLoop()
 
 
 
+
+
 			if(json_has('2465')) {
 				if(json_has('2465', '1')) {
 					var isOn = (json_get('2465', '1').toString().slice(-1) == "1");
@@ -245,6 +261,8 @@ function mainLoop()
 
 
 
+
+
 			if(json_has('2321')) {
 				if(json_has('2321', '1')) {
 					var isOn = (json_get('2321', '1') == "1");
@@ -266,9 +284,13 @@ function mainLoop()
 
 
 
+
+
 		}
 	});
 }
+
+
 
 
 
@@ -290,6 +312,8 @@ $('.out4 .off ').on('click', function() { $.get({ url: "api.php?set=command&type
 
 
 
+
+
 $('.cmd1 .auto').on('click', function() { $.get({ url: "api.php?set=command&type=20738&text1=1&text2=2", success: function(response) { console.log(response); } }); });
 $('.cmd1 .on  ').on('click', function() { $.get({ url: "api.php?set=command&type=20738&text1=1&text2=1", success: function(response) { console.log(response); } }); });
 $('.cmd1 .off ').on('click', function() { $.get({ url: "api.php?set=command&type=20738&text1=1&text2=0", success: function(response) { console.log(response); } }); });
@@ -305,3 +329,41 @@ $('.cmd3 .off ').on('click', function() { $.get({ url: "api.php?set=command&type
 $('.cmd4 .auto').on('click', function() { $.get({ url: "api.php?set=command&type=20738&text1=4&text2=2", success: function(response) { console.log(response); } }); });
 $('.cmd4 .on  ').on('click', function() { $.get({ url: "api.php?set=command&type=20738&text1=4&text2=1", success: function(response) { console.log(response); } }); });
 $('.cmd4 .off ').on('click', function() { $.get({ url: "api.php?set=command&type=20738&text1=4&text2=0", success: function(response) { console.log(response); } }); });
+
+
+
+
+
+$.get({
+	url: "cmd/apikey.php",
+	success: function(apikey) {
+		$('#apikey').html(apikey);
+	}
+});
+
+
+
+
+
+
+$('#btnReboot').on('click', function() {
+	if(!confirm("Are you sure you want to REBOOT the liveX?")) return false;
+	$.get({
+		url: "cmd/reboot.php",
+		complete: function(res) {
+			setTimeout(function() { location.reload(1) }, 5000);
+		}
+	});
+	$('#btnReboot').attr('disabled', true);
+});
+
+$('#btnShutdown').on('click', function() {
+	if(!confirm("Are you sure you want to SHUTDOWN the liveX?")) return false;
+	$.get({
+		url: "cmd/shutdown.php",
+		complete: function(res) {
+			setTimeout(function() { location.reload(1) }, 5000);
+		}
+	});
+	$('#btnShutdown').attr('disabled', true);
+});

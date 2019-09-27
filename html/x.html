@@ -4,6 +4,8 @@
 
 
 
+
+
 	<head>
 
 		<meta charset="utf-8">
@@ -21,7 +23,11 @@
 
 
 
+
+
 	<body>
+
+
 
 
 
@@ -29,12 +35,12 @@
 
 			<div class="row m-0 p-1 p-lg-2">
 
-				<div class="col-12 m-0 p-0 text-center">
-					<h1 class="m-3">Live Data</h1>
-					<p>Latest UTC Timestamp: <b id="timestamp" style="white-space: nowrap;">-</b></p>
+				<div class="col-12 p-0 text-center">
+					<h1 class="mb-3 mt-5">LIVE</h1>
+					<p>Latest UTC Timestamp: <b id="timestamp">-</b></p>
 				</div>
 
-				<div class="col-lg-6 m-0 p-1 p-lg-2">
+				<div class="live col-lg-6 m-0 p-1 p-lg-2">
 					<div class="card levitate">
 						<div class="table-responsive">
 							<table class="table m-0">
@@ -75,12 +81,12 @@
 					</div>
 				</div>
 
-				<div class="col-lg-6 m-0 p-1 p-lg-2">
+				<div class="live col-lg-6 m-0 p-1 p-lg-2">
 					<div class="card levitate">
 						<div class="table-responsive">
 							<table class="table m-0">
 								<tr>
-									<th colspan="5">External Solar (Energy Meter)</th>
+									<th colspan="5">External Solar</th>
 								</tr>
 								<tr class="text-right">
 									<td></td>
@@ -125,7 +131,7 @@
 						<div class="table-responsive">
 							<table class="table m-0">
 								<tr>
-									<th colspan="5">Protected Load</th>
+									<th colspan="5">UPS Output</th>
 								</tr>
 								<tr class="text-right">
 									<td></td>
@@ -215,7 +221,7 @@
 						<div class="table-responsive">
 							<table class="table m-0">
 								<tr>
-									<th colspan="5">Input Inverter</th>
+									<th colspan="5">UPS Input</th>
 								</tr>
 								<tr class="text-right">
 									<td></td>
@@ -260,7 +266,7 @@
 						<div class="table-responsive">
 							<table class="table m-0">
 								<tr>
-									<th colspan="5">Grid (Energy Meter)</th>
+									<th colspan="5">Grid (E.Meter)</th>
 								</tr>
 								<tr class="text-right">
 									<td></td>
@@ -359,114 +365,150 @@
 
 
 
+
+
+				<div class="col-12 p-5"><hr class="w-75"></div>
+
+				
+
+
+
 				<div class="col-12 m-0 p-0 text-center">
-					<h1 class="m-3">GPIO</h1>
+					<h1 class="mb-3">GPIO</h1>
 				</div>
 
-				<div class="col-lg-4 m-0 p-1 p-lg-2">
+				<div class="cmd col-lg-4 m-0 p-1 p-lg-2">
 					<div class="cmd1 card levitate">
 						<p>GridInjection: <span>OFF</span></p>
 						<div class="d-flex">
-							<button class="auto btn ripple btn-primary" disabled>AUTO</button>
-							<button class="on btn ripple btn-success">ON</button>
-							<button class="off btn ripple btn-danger">OFF</button>
+							<button class="auto btn btn-primary" disabled>AUTO</button>
+							<button class="on btn btn-success">ON</button>
+							<button class="off btn btn-danger">OFF</button>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-lg-4 m-0 p-1 p-lg-2">
+				<div class="cmd col-lg-4 m-0 p-1 p-lg-2">
 					<div class="cmd3 card levitate">
 						<p>BatteryChargingAC: <span>OFF</span></p>
 						<div class="d-flex">
-							<button class="auto btn ripple btn-primary" disabled>AUTO</button>
-							<button class="on btn ripple btn-success">ON</button>
-							<button class="off btn ripple btn-danger">OFF</button>
+							<button class="auto btn btn-primary" disabled>AUTO</button>
+							<button class="on btn btn-success">ON</button>
+							<button class="off btn btn-danger">OFF</button>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-lg-4 m-0 p-1 p-lg-2">
+				<div class="cmd col-lg-4 m-0 p-1 p-lg-2">
 					<div class="cmd4 card levitate">
 						<p>BatteryDischarging: <span>OFF</span></p>
 						<div class="d-flex">
-							<button class="auto btn ripple btn-primary" disabled>AUTO</button>
-							<button class="on btn ripple btn-success">ON</button>
-							<button class="off btn ripple btn-danger">OFF</button>
+							<button class="auto btn btn-primary" disabled>AUTO</button>
+							<button class="on btn btn-success">ON</button>
+							<button class="off btn btn-danger">OFF</button>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
+				<div class="out col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
 					<div class="out1 card levitate">
 						<p>Output 1: <span>OFF</span></p>
 						<div class="d-flex">
-							<button class="auto btn ripple btn-primary" disabled>AUTO</button>
-							<button class="on btn ripple btn-success">ON</button>
-							<button class="off btn ripple btn-danger">OFF</button>
+							<button class="auto btn btn-primary" disabled>AUTO</button>
+							<button class="on btn btn-success">ON</button>
+							<button class="off btn btn-danger">OFF</button>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
+				<div class="out col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
 					<div class="out2 card levitate">
 						<p>Output 2: <span>OFF</span></p>
 						<div class="d-flex">
-							<button class="auto btn ripple btn-primary" disabled>AUTO</button>
-							<button class="on btn ripple btn-success">ON</button>
-							<button class="off btn ripple btn-danger">OFF</button>
+							<button class="auto btn btn-primary" disabled>AUTO</button>
+							<button class="on btn btn-success">ON</button>
+							<button class="off btn btn-danger">OFF</button>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
+				<div class="out col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
 					<div class="out3 card levitate">
 						<p>Output 3: <span>OFF</span></p>
 						<div class="d-flex">
-							<button class="auto btn ripple btn-primary" disabled>AUTO</button>
-							<button class="on btn ripple btn-success">ON</button>
-							<button class="off btn ripple btn-danger">OFF</button>
+							<button class="auto btn btn-primary" disabled>AUTO</button>
+							<button class="on btn btn-success">ON</button>
+							<button class="off btn btn-danger">OFF</button>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
+				<div class="out col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
 					<div class="out4 card levitate">
 						<p>Output 4: <span>OFF</span></p>
 						<div class="d-flex">
-							<button class="auto btn ripple btn-primary" disabled>AUTO</button>
-							<button class="on btn ripple btn-success">ON</button>
-							<button class="off btn ripple btn-danger">OFF</button>
+							<button class="auto btn btn-primary" disabled>AUTO</button>
+							<button class="on btn btn-success">ON</button>
+							<button class="off btn btn-danger">OFF</button>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
+				<div class="in col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
 					<div class="in1 card levitate">
 						<p>Input 1: <span>OFF</span></p>
 					</div>
 				</div>
 
-				<div class="col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
+				<div class="in col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
 					<div class="in2 card levitate">
 						<p>Input 2: <span>OFF</span></p>
 					</div>
 				</div>
 
-				<div class="col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
+				<div class="in col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
 					<div class="in3 card levitate">
 						<p>Input 3: <span>OFF</span></p>
 					</div>
 				</div>
 
-				<div class="col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
+				<div class="in col-sm-6 col-xl-3 m-0 p-1 p-lg-2">
 					<div class="in4 card levitate">
 						<p>Input 4: <span>OFF</span></p>
 					</div>
 				</div>
 
 				<div class="col-12 m-0 p-0 text-center font-italic">
-					<p class="m-3" style="font-size: .8rem; color: gray">* There can be a delay of up to 10 seconds when sending GPIO commands *</p>
+					<p class="gpio-note mt-3 mb-0">There can be a delay of up to 10 seconds when sending GPIO commands</p>
 				</div>
+
+
+
+				
+
+				<div class="col-12 p-5"><hr class="w-75"></div>
+
+
+
+
+
+				<div class="col-12 mx-0 p-0 text-center">
+					<h4 class="mb-3">APIKEY</h4>
+					<p id="apikey" class="mb-5"><b>-</b></p>
+					<h4 class="mb-3">LIVEX CONTROL</h4>
+				</div>
+
+				<div class="col-sm-3"></div>
+				<div class="livex col-6 col-sm-3 mb-5 pl-3 pr-2 m-0">
+					<button id="btnReboot" class="btn btn-block btn-primary">Reboot</button>
+				</div>
+				<div class="livex col-6 col-sm-3 mb-5 pr-3 pl-2 m-0">
+					<button id="btnShutdown" class="btn btn-block btn-danger">Shutdown</button>
+				</div>
+
+
+
+
 
 			</div>
 
@@ -474,8 +516,12 @@
 
 
 
+
+
 		<script src="js/dist/bundle.js"></script>
 		<script src="js/x.js"></script>
+
+
 
 
 
