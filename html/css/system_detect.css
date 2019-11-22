@@ -7,9 +7,16 @@
 	padding: 0;
 }
 
-
 .container > div {
 	width: 100%;
+}
+
+
+
+.notif {
+	display: inline-block;
+	width: 4.5vmin;
+	height: 4.5vmin;
 }
 
 
@@ -20,39 +27,20 @@
 	margin-bottom: 15vmin;
 }
 
-.message, .serialnumber, .standard {
+#inverterUnknown  .message,
+#inverterDetected .standard {
 	display: block;
 	font-size: 3vmin;
+	margin-left: 2vmin;
 }
+
+
+
 .serialnumber {
+	display: block;
+	font-size: 3vmin;
 	margin-bottom: 5vmin;
 }
-
-.loading {
-	display: inline-block;
-	width: 4.5vmin;
-	height: 4.5vmin;
-	border: 0.5vmin solid #b2b2b2;
-	border-radius: 50%;
-	border-top-color: #000000;
-	animation: spin 1s ease-in-out infinite;
-	-webkit-animation: spin 1s ease-in-out infinite;
-	margin-right: 1.5vmin;
-}
-
-@keyframes spin { to { transform: rotate(360deg) } }
-
-.error, .success {
-	display: none;
-	width: 4.5vmin;
-	height: 4.5vmin;
-	margin-right: 1.5vmin;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: contain;
-}
-.error   { background-image: url(../img/ic_error.png) }
-.success { background-image: url(../img/ic_success.png) }
 
 
 
@@ -62,27 +50,21 @@
 
 #inverterDetected h1 {
 	font-size: 6vmin;
-	margin-top: 10vmin;
+	margin-top: 15vmin;
 	margin-bottom: 7.5vmin;
 }
+
 #inverterDetected img {
 	width: 25vmin;
 	height: 25vmin;
 	margin-bottom: 7.5vmin;
 }
 
-#btnSubmit {
-	font-size: 2vmin;
-	padding: 1.5vmin 6vmin;
-	letter-spacing: 0.3vmin;
-	margin-top: 3vmin;
-}
-
 #btnApplyVDE4105 {
-	font-size: 1.25vmin;
+	font-size: 1.5vmin;
 	padding: 1vmin 2vmin;
 	letter-spacing: 0.2vmin;
-	margin-top: 1vmin;
+	margin-top: 2vmin;
 	font-weight: bold;
 }
 
@@ -91,5 +73,7 @@
 }
 
 .vde-loading {
-	margin-top: 10vmin;
+	width: 4.5vmin;
+	height: 4.5vmin;
+	margin-top: 5vmin;
 }

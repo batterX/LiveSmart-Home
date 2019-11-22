@@ -1,3 +1,3 @@
-$('#langEn').on('click', function() { window.location.href = "software_update.php?lang=en"; });
-$('#langDe').on('click', function() { window.location.href = "software_update.php?lang=de"; });
-$('#langFr').on('click', function() { window.location.href = "software_update.php?lang=fr"; });
+$('#lang_en').on('click', () => { window.location.href = "software_update.php?lang=en"; });
+$('#lang_de').on('click', () => { window.location.href = "software_update.php?lang=de"; });
+$('#lang_fr').on('click', () => { window.location.href = "software_update.php?lang=fr"; });

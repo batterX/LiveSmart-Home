@@ -52,15 +52,15 @@ if(isset($_GET['get']) && strtolower($_GET['get']) == 'currentstate') {
 
 
 
-// GET WarningsData
+// GET Warnings
 
-else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warningsdata') {
+else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warnings') {
 
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/usv.db3');
 
 	// Return JSON Object with all warnings since YYYYMMDD
-	// ?get=warningsdata&from=YYYYMMDD
+	// ?get=warnings&from=YYYYMMDD
 	if(isset($_GET['from']))
 	{
 		if(strlen($_GET['from']) != 8) exit();
@@ -74,9 +74,11 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warningsdata') {
 			$stmt->execute();
 			$array = (array) [];
 			foreach($stmt as $row) {
-				$value   = (string) $row['value'];
+				$values = (array) [];
+				if(trim($row['value']))
+					$values = array_map("intval", explode(' ', str_replace('  ', ' ', trim($row['value']))));
 				$logtime = (string) $row['logtime'];
-				$array[] = array($logtime, $value);
+				$array[] = array($logtime, $values);
 			}
 			header('Content-Type: application/json');
 			echo json_encode($array);
@@ -84,7 +86,7 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warningsdata') {
 	}
 
 	// Returns JSON Object with the latest X entries from the Warnings Table
-	// ?get=warningsdata&count=5
+	// ?get=warnings&count=5
 	else
 	{
 		$count = "1";
@@ -94,9 +96,11 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warningsdata') {
 
 		$array = (array) [];
 		foreach($result as $row) {
-			$value   = (string) $row['value'];
+			$values = (array) [];
+			if(trim($row['value']))
+				$values = array_map("intval", explode(' ', str_replace('  ', ' ', trim($row['value']))));
 			$logtime = (string) $row['logtime'];
-			$array[] = array($logtime, $value);
+			$array[] = array($logtime, $values);
 		}
 
 		header('Content-Type: application/json');
@@ -109,15 +113,15 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'warningsdata') {
 
 
 
-// GET HistoryData
+// GET History
 
-else if(isset($_GET['get']) && strtolower($_GET['get']) == 'historydata') {
+else if(isset($_GET['get']) && strtolower($_GET['get']) == 'history') {
 
 	// Connect to Database
 	$db = new PDO('sqlite:/srv/bx/usv.db3');
 
-	// Returns HistoryData for Selected Range
-	// ?get=historydata&from=YYYYMMDD&to=YYYYMMDD
+	// Returns History for Selected Range
+	// ?get=history&from=YYYYMMDD&to=YYYYMMDD
 	if(isset($_GET['from']) && isset($_GET['to']) && strlen($_GET['from']) == 8 && strlen($_GET['to']) == 8)
 	{
 		$from = substr($_GET['from'], 0, 4) . '-' . substr($_GET['from'], 4, 2) . '-' . substr($_GET['from'], 6, 2);
@@ -128,20 +132,20 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'historydata') {
 		foreach($result as $row) {
 			$arr[] = [
 				$row['logtime'],
-				$row['battery_voltage_minus'],
-				$row['battery_voltage_plus'],
-				$row['battery_level_minus'],
-				$row['battery_level_plus'],
-				$row['battery_power_from'],
-				$row['battery_power_to'],
-				$row['input_power_from'],
-				$row['input_power_to'],
-				$row['grid_power_from'],
-				$row['grid_power_to'],
-				$row['load_power'],
-				$row['house_power'],
-				$row['solar_power'],
-				$row['extsol_power']
+				$row['battery_voltage_minus'] === null ? null : intval($row['battery_voltage_minus']),
+				$row['battery_voltage_plus' ] === null ? null : intval($row['battery_voltage_plus' ]),
+				$row['battery_level_minus'  ] === null ? null : intval($row['battery_level_minus'  ]),
+				$row['battery_level_plus'   ] === null ? null : intval($row['battery_level_plus'   ]),
+				$row['battery_power_from'   ] === null ? null : intval($row['battery_power_from'   ]),
+				$row['battery_power_to'     ] === null ? null : intval($row['battery_power_to'     ]),
+				$row['input_power_from'     ] === null ? null : intval($row['input_power_from'     ]),
+				$row['input_power_to'       ] === null ? null : intval($row['input_power_to'       ]),
+				$row['grid_power_from'      ] === null ? null : intval($row['grid_power_from'      ]),
+				$row['grid_power_to'        ] === null ? null : intval($row['grid_power_to'        ]),
+				$row['load_power'           ] === null ? null : intval($row['load_power'           ]),
+				$row['house_power'          ] === null ? null : intval($row['house_power'          ]),
+				$row['solar_power'          ] === null ? null : intval($row['solar_power'          ]),
+				$row['extsol_power'         ] === null ? null : intval($row['extsol_power'         ])
 			];
 		}
 
@@ -150,11 +154,6 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'historydata') {
 	}
 
 }
-
-
-
-
-
 
 
 
@@ -174,15 +173,79 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'settings') {
 	foreach($result as $row) {
 		$VarName = (string) $row['VarName'];
 		$entity = (string) $row['entity'];
-		if(!isset($dbh->$VarName)) 
-			$dbh->$VarName = new stdClass();
-		$dbh->$VarName->$entity = $row;
+		if(!isset($dbh->$VarName)) $dbh->$VarName = new stdClass();
+		$dbh->$VarName->$entity = (array) [
+			'varname'    => $row['VarName'   ],
+			'entity'     => $row['entity'    ] === null ? null : intval($row['entity']),
+			'name'       => $row['Name'      ] === null ? null :        $row['Name'  ] ,
+			'inuse'      => $row['InUse'     ] === null ? null : intval($row['InUse' ]),
+			'mode'       => $row['Mode'      ] === null ? null : intval($row['Mode'  ]),
+			'v1'         => $row['V1'        ] === null ? null : intval($row['V1'    ]),
+			'v2'         => $row['V2'        ] === null ? null : intval($row['V2'    ]),
+			'v3'         => $row['V3'        ] === null ? null : intval($row['V3'    ]),
+			'v4'         => $row['V4'        ] === null ? null : intval($row['V4'    ]),
+			'v5'         => $row['V5'        ] === null ? null : intval($row['V5'    ]),
+			'v6'         => $row['V6'        ] === null ? null : intval($row['V6'    ]),
+			's1'         => $row['S1'        ] === null ? null :        $row['S1'    ] ,
+			's2'         => $row['S2'        ] === null ? null :        $row['S2'    ] ,
+			'updatetime' => $row['UpDateTime']
+		];
 	}
 
 	header('Content-Type: application/json');
 	echo json_encode($dbh, JSON_FORCE_OBJECT);
 
 }
+
+
+
+
+
+// SET Command
+
+else if(isset($_GET['set']) && strtolower($_GET['set']) == 'command') {
+
+	// Connect to Database
+	$db = new PDO('sqlite:/srv/bx/ram/currentC.db3');
+
+	// Build Command
+	$type = ""; $entity = "0"; $text1 = ""; $text2 = "";
+	if(isset($_GET['type'  ])) $type   = $_GET['type'  ];
+	if(isset($_GET['entity'])) $entity = $_GET['entity'];
+	if(isset($_GET['text1' ])) $text1  = $_GET['text1' ];
+	if(isset($_GET['text2' ])) $text2  = $_GET['text2' ];
+
+	// Send Command to Database
+	if($type != "" && $entity != "") {
+		$sql = "INSERT INTO `CommandsIn` (`type`, `entity`, `text1`, `text2`) VALUES (".$type.", ".$entity.", '".$text1."', '".$text2."')";
+		try {
+			$stmt = $db->prepare($sql);
+			$stmt->execute();
+			if($stmt->rowCount() == 1) echo '1';
+			$stmt->closeCursor();
+		} catch(PDOException $e) {}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // GET DeviceInfo
 
@@ -206,29 +269,21 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'deviceinfo') {
 
 }
 
-// SET Command
 
-else if(isset($_GET['set']) && strtolower($_GET['set']) == 'command') {
+
+
+
+// CLEAR DATABASE
+
+else if(isset($_GET['cleardb']) && $_GET['cleardb'] == '1') {
 
 	// Connect to Database
-	$db = new PDO('sqlite:/srv/bx/ram/currentC.db3');
-
-	// Build Command
-	$type = ""; $entity = "0"; $text1 = ""; $text2 = "";
-	if(isset($_GET['type']))   $type   = $_GET['type'];
-	if(isset($_GET['entity'])) $entity = $_GET['entity'];
-	if(isset($_GET['text1']))  $text1  = $_GET['text1'];
-	if(isset($_GET['text2']))  $text2  = $_GET['text2'];
+	$db = new PDO('sqlite:/srv/bx/usv.db3');
 
 	// Send Command to Database
-	if($type != "" && $entity != "") {
-		$sql = "INSERT INTO `CommandsIn` (`type`, `entity`, `text1`, `text2`) VALUES(".$type.", ".$entity.", '".$text1."', '".$text2."')";
-		try {
-			$stmt = $db->prepare($sql);
-			$stmt->execute();
-			if($stmt->rowCount() == 1) echo '1';
-			$stmt->closeCursor();
-		} catch(PDOException $e) {}
-	}
+	$db->query("DELETE FROM TempState ");
+	$db->query("DELETE FROM DeviceInfo");
+	$db->query("DELETE FROM Settings  ");
+	echo "1";
 
 }

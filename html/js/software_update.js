@@ -13,13 +13,13 @@ var checkUpdateInterval;
 
 
 
-// Get Installed Current Version
+// Get Current Version (Installed)
 $.get({
 	url: 'api.php?get=settings',
-	error: function() { performUpdate(); },
-	success: function(json) {
+	error: () => { performUpdate(); },
+	success: (json) => {
 		if(json.hasOwnProperty('Version') && json['Version'].hasOwnProperty('0')) {
-			softwareVersion = `v${json['Version']['0']['V1']}.${json['Version']['0']['V2']}.${json['Version']['0']['V3']}`;
+			softwareVersion = `v${json['Version']['0']['v1']}.${json['Version']['0']['v2']}.${json['Version']['0']['v3']}`;
 			newVersion = softwareVersion;
 		}
 		performUpdate();
@@ -37,37 +37,36 @@ function performUpdate()
 		url: "https://api.batterx.io",
 		dataType: 'text',
 		cache: false,
-		error: function() {
+		error: () => {
 			// Connection LOST
-			$("#loading").hide();
+			$("#notif").removeClass("loading error success").addClass("error");
 			$("#message").html(lang['no_internet_connection']).css('color', 'red');
-			$("#error").show();
 			$("#errorInfo").removeClass('d-none');
-			setTimeout(performUpdate, 5000);
+			setTimeout(performUpdate, 5000); // Retry after 5 minutes
 		},
-		success: function() {
+		success: () => {
 
 			// Search for Updates
-			$("#loading").show();
-			$("#error").hide();
-			$("#errorInfo").addClass('d-none');
+			$("#notif").removeClass("loading error success").addClass("loading");
 			$('#message').html(lang['searching_for_updates']).css('color', 'black');
+			$("#errorInfo").addClass('d-none');
 
 			// Get Latest Version Number
 			$.get({
 				url: "https://raw.githubusercontent.com/batterX/LiveSmart-Home/master/version.txt",
 				dataType: 'text',
 				cache: false,
-				error: function() {
-					$("#loading").hide();
+				error: () => {
+					$("#notif").removeClass("loading error success").addClass("error");
 					$("#message").html(lang['no_internet_connection']).css('color', 'red');
-					$("#error").show();
 					$("#errorInfo").removeClass('d-none');
-					setTimeout(performUpdate, 2500);
+					setTimeout(performUpdate, 5000);
 				},
-				success: function(versionNum) {
+				success: (versionNum) => {
+
 					// Compare Versions
-					if(softwareVersion != versionNum) {
+					if(softwareVersion != versionNum)
+					{
 						newVersion = versionNum;
 						// Download Update
 						$.post('cmd/update.php');
@@ -76,15 +75,16 @@ function performUpdate()
 						clearInterval(checkUpdateInterval);
 						checkUpdateInterval = undefined;
 						checkUpdateInterval = setInterval(checkUpdate_waitForError, 5000);
-					} else {
-						// Update Completed
-						$("#loading").hide();
-						$("#message").html(lang['update_completed']).css('color', '#25ae88');
-						$("#success").show();
-						setTimeout(function() {
-							window.location.href = "installer_login.php?software_version=" + newVersion;
-						}, 5000);
 					}
+					else
+					{
+						// Update Completed
+						$("#notif").removeClass("loading error success").addClass("success");
+						$("#message").html(lang['update_completed']).css('color', '#25ae88');
+						$("#btn_next").attr("disabled", false);
+						setTimeout(() => { window.location.href = "installer_login.php?software_version=" + newVersion; }, 5000);
+					}
+
 				}
 			});
 
@@ -100,14 +100,14 @@ function checkUpdate_waitForError() {
 	$.get({
 		url: 'cmd/working.txt',
 		cache: false,
-		error: function() {
+		error: () => {
 			// Rebooting...
 			$('#message').html(lang['rebooting']);
 			clearInterval(checkUpdateInterval);
 			checkUpdateInterval = undefined;
 			checkUpdateInterval = setInterval(checkUpdate_waitForSuccess, 5000);
 		},
-		success: function(response) {
+		success: (response) => {
 			if(response) return;
 			// Rebooting...
 			$('#message').html(lang['rebooting']);
@@ -122,21 +122,25 @@ function checkUpdate_waitForSuccess() {
 	$.get({
 		url: 'cmd/working.txt',
 		cache: false,
-		success: function(response) {
+		success: (response) => {
 			if(!response) return;
 			// Finishing Update...
 			$('#message').html(lang['finishing_update']);
 			clearInterval(checkUpdateInterval);
 			checkUpdateInterval = undefined;
-			setTimeout(function() {
+			setTimeout(() => {
 				// Update Completed
-				$("#loading").hide();
+				$("#notif").removeClass("loading error success").addClass("success");
 				$('#message').html(lang['update_completed']).css('color', '#25ae88');
-				$("#success").show();
-				setTimeout(function() {
-					window.location.href = "installer_login.php?software_version=" + newVersion;
-				}, 5000);
+				$("#btn_next").attr("disabled", false);
+				setTimeout(() => { window.location.href = "installer_login.php?software_version=" + newVersion; }, 5000);
 			}, 60000);
 		}
 	});
 }
+
+
+
+
+
+$('#btn_next').on('click', () => { window.location.href = "installer_login.php?software_version=" + newVersion; });

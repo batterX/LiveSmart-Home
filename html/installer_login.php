@@ -30,7 +30,7 @@ if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['soft
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX LiveX</title>
+		<title>batterX liveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
@@ -44,7 +44,10 @@ if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['soft
 
 
 
-		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+		<div id="progress" class="shadow-lg">
+			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+			<div><button id="btn_next" class="btn btn-success ripple" type="submit" form="loginForm" disabled><?php echo $strings['login']; ?></button></div>
+		</div>
 
 
 
@@ -55,17 +58,10 @@ if(isset($_GET['software_version'])) $_SESSION['software_version'] = $_GET['soft
 
 				<form id="loginForm">
 
-					<div>
-						<input id="email" class="form-control form-control-outline rounded-pill" type="email" placeholder="<?php echo $strings['email']; ?>" required>
-					</div>
-
-					<div>
-						<input id="password" class="form-control form-control-outline rounded-pill" type="password" placeholder="<?php echo $strings['password']; ?>" required>
-					</div>
+					<div><input id="email"    class="form-control form-control-outline rounded-pill" type="email"    placeholder="<?php echo $strings['email'   ]; ?>" required></div>
+					<div><input id="password" class="form-control form-control-outline rounded-pill" type="password" placeholder="<?php echo $strings['password']; ?>" required></div>
 
 					<span id="errorMsg"><?php echo $strings['wrong_email_or_password']; ?></span>
-
-					<button type="submit" id="btnLogin" class="btn btn-success rounded-pill ripple"><?php echo $strings['login']; ?></button>
 
 				</form>
 

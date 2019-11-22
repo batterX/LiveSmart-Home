@@ -23,7 +23,7 @@ $_SESSION['last_step'] = $step;
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX LiveX</title>
+		<title>batterX liveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
@@ -46,20 +46,18 @@ $_SESSION['last_step'] = $step;
 					<h1>Select Language</h1>
 
 					<div class="row lang">
-						<div class="col-2"></div>
-						<div id="langEn" class="col">
+						<div id="lang_en" class="col">
 							<div class="lang-en"></div>
 							<span>English</span>
 						</div>
-						<div id="langDe" class="col">
+						<div id="lang_de" class="col">
 							<div class="lang-de"></div>
 							<span>Deutsch</span>
 						</div>
-						<div id="langFr" class="col">
+						<div id="lang_fr" class="col">
 							<div class="lang-fr"></div>
 							<span>Français</span>
 						</div>
-						<div class="col-2"></div>
 					</div>
 
 				</div>

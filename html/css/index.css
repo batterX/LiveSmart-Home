@@ -1,12 +1,13 @@
 * {	user-select: none }
 
+
+
 body {
 	margin: 0;
 }
 
 .container {
-	text-align: center;
-	padding: 0;
+	max-width: 600px !important;
 }
 
 .container > div {
@@ -18,10 +19,11 @@ body {
 
 .container > div > div {
 	width: 100%;
+	text-align: center;
 }
 
 .logo {
-	background-image: url(../img/logo_livesmart.png);
+	background-image: url(../img/logo_livesmart.svg);
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -30,46 +32,42 @@ body {
 
 h1 {
 	margin: 0;
-	font-size: 6vmin;
+	font-size: 5vmin;
 	margin-top: 7.5vmin;
 }
 
-.lang {
+
+
+.row, .col {
 	margin: 0;
 	padding: 0;
 }
 
-.com {
-	margin: 0;
-	padding: 0;
-}
-
-#langEn, #langDe, #langFr {
-	margin-top: 5vmin !important;
+.col {
+	margin-top: 2.5vmin !important;
 	cursor: pointer;
 	border-radius: 1vmin;
-	padding-top: 5vmin !important;
-	padding-bottom: 5vmin !important;
+	padding-top: 3.75vmin !important;
+	padding-bottom: 3.75vmin !important;
 }
-#langEn:hover, #langDe:hover, #langFr:hover {
-	background: rgba(0, 0, 0, 0.1);
-}
-#langEn:active, #langDe:active, #langFr:active {
-	background: rgba(0, 0, 0, 0.15);
-}
+.col:hover  { background: rgba(0, 0, 0, 0.10); }
+.col:active { background: rgba(0, 0, 0, 0.15); }
 
-#langEn > div, #langDe > div, #langFr > div {
+.col > div {
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
-	height: 12.5vmin;
+	height: 10vmin;
 }
-#langEn > div { background-image: url(../img/lang_en.png) }
-#langDe > div { background-image: url(../img/lang_de.png) }
-#langFr > div { background-image: url(../img/lang_fr.png) }
 
-.lang span {
+.col span {
 	display: block;
-	font-size: 3vmin;
-	margin-top: 2.5vmin;
+	font-size: 2.5vmin;
+	margin-top: 1.5vmin;
 }
+
+
+
+#lang_en > div { background-image: url(../img/lang_en.png) }
+#lang_de > div { background-image: url(../img/lang_de.png) }
+#lang_fr > div { background-image: url(../img/lang_fr.png) }

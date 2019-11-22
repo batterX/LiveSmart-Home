@@ -42,6 +42,12 @@ function mainLoop()
 				console.log(nowDate);
 				console.log(dif);
 				$('#timestamp').text(json['logtime']).css('color', (dif > 60) ? 'red' : 'black');
+				// Show|Hide ClearDatabase
+				if(dif > 60) $('.clear-db').removeClass('d-none');
+				else         $('.clear-db').addClass   ('d-none');
+			} else {
+				// Show ClearDatabase
+				$('.clear-db').removeClass('d-none');
 			}
 
 
@@ -345,7 +351,6 @@ $.get({
 
 
 
-
 $('#btnReboot').on('click', function() {
 	if(!confirm("Are you sure you want to REBOOT the liveX?")) return false;
 	$.get({
@@ -366,4 +371,15 @@ $('#btnShutdown').on('click', function() {
 		}
 	});
 	$('#btnShutdown').attr('disabled', true);
+});
+
+$('#btnClearDatabase').on('click', function() {
+	if(!confirm("Are you sure you want to CLEAR the Database?")) return false;
+	$.get({
+		url: "api.php?cleardb=1",
+		success: function(response) {
+			console.log(response);
+			if(response == 1) alert("SUCCESS");
+		}
+	});
 });

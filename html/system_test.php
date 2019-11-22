@@ -27,7 +27,7 @@ $_SESSION['last_step'] = $step;
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX LiveX</title>
+		<title>batterX liveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
@@ -56,7 +56,10 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+		<div id="progress" class="shadow-lg">
+			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+			<div><button id="btn_next" class="btn btn-success ripple" disabled><?php echo $strings['continue']; ?></button></div>
+		</div>
 
 
 
@@ -69,26 +72,17 @@ $_SESSION['last_step'] = $step;
 				<div class="col-lg-6 m-0 pr-lg-2">
 
 					<div id="testEnergyMeter" class="status d-flex align-items-center">
-						<div class="waiting"></div>
-						<div class="loading"></div>
-						<div class="success"></div>
-						<div class="error"></div>
+						<div class="notif"></div>
 						<span><?php echo $strings['energy_meter']; ?></span>
 					</div>
 
 					<div id="testBatteryCharging" class="status d-flex align-items-center mt-4">
-						<div class="waiting"></div>
-						<div class="loading"></div>
-						<div class="success"></div>
-						<div class="error"></div>
+						<div class="notif"></div>
 						<span><?php echo $strings['battery_charging']; ?></span>
 					</div>
 
 					<div id="testUpsMode" class="status d-flex align-items-center mt-4">
-						<div class="waiting"></div>
-						<div class="loading"></div>
-						<div class="success"></div>
-						<div class="error"></div>
+						<div class="notif"></div>
 						<span><?php echo $strings['ups_mode']; ?><span></span></span>
 					</div>
 
@@ -98,7 +92,7 @@ $_SESSION['last_step'] = $step;
 
 				</div>
 
-				<div id="log" class="col-lg-6 m-0 pl-lg-2 mt-5 mt-lg-0"></div>
+				<div id="log" class="col-lg-6 m-0 pl-lg-3 mt-5 mt-lg-0 rounded"></div>
 
 			</div>
 

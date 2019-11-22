@@ -27,7 +27,7 @@ $_SESSION['last_step'] = $step;
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX LiveX</title>
+		<title>batterX liveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
@@ -41,7 +41,10 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+		<div id="progress" class="shadow-lg">
+			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+			<div><button id="btn_next" class="btn btn-success ripple" disabled><?php echo $strings['continue']; ?></button></div>
+		</div>
 
 
 
@@ -49,9 +52,7 @@ $_SESSION['last_step'] = $step;
 			<div>
 				<h1><?php echo $strings['software_update'] ?></h1>
 				<div>
-					<div id="error"></div>
-					<div id="success"></div>
-					<div id="loading"></div>
+					<div id="notif" class="loading"></div>
 					<span id="message"><?php echo $strings['checking_internet_connection'] ?></span>
 				</div>
 				<span id="errorInfo" class="d-none"><i><?php echo $strings['check_network_cable_connection']; ?></i></span>

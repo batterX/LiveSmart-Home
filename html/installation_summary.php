@@ -69,6 +69,12 @@ $arrayDeviceModel = [
 	'h5e' => 'batterX h5-eco',
 	'h10' => 'batterX h10'
 ];
+$arrayNominalPower = [
+	'h3'  =>  '3000',
+	'h5'  =>  '5000',
+	'h5e' =>  '5500',
+	'h10' => '10000'
+]
 
 ?>
 
@@ -87,7 +93,7 @@ $arrayDeviceModel = [
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX LiveX</title>
+		<title>batterX liveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
@@ -101,158 +107,192 @@ $arrayDeviceModel = [
 
 
 
-		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
-
-
-
-		<div id="summary" class="container px-3">
-
-			<h1><?php echo $strings['summary_installation_summary']; ?></h1>
-
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_installation_date']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['installation_date']; ?></b></div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_latest_maintenance']; ?></div>
-				<div class="col-6 col-md-8"><b id="latestMaintenanceDate"><?php echo date('Y-m-d'); ?></b></div>
-			</div>
-
-			<div class="p-3"></div>
-
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_installer']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $arrayGender[$_SESSION['installer_gender']] . " " . $_SESSION['installer_firstname'] . " " . $_SESSION['installer_lastname'] . "<br>" . $_SESSION['installer_company'] ?></b></div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_installer_email']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['installer_email'] ?></b></div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_installer_telephone']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['installer_telephone'] ?></b></div>
-			</div>
-
-			<?php if(!empty($_SESSION['note'])): ?>
-			<div class="p-3"></div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['installer_memo']; ?></div>
-				<div class="col-6 col-md-8 note" style="white-space: pre-wrap"><b><?php echo $_SESSION['note'] ?></b></div>
-			</div>
-			<?php endif; ?>
-
-			<div class="p-3"></div>
-
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_customer_name']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $arrayGender[$_SESSION['customer_gender']] . " " . $_SESSION['customer_firstname'] . " " . $_SESSION['customer_lastname'] ?></b></div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_customer_email']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['customer_email'] ?></b></div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_customer_telephone']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['customer_telephone'] ?></b></div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_customer_address']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['customer_address'] . "<br>" . $_SESSION['customer_zipcode'] . " " . $_SESSION['customer_city'] . ", " . $arrayCountry[$_SESSION['customer_country']] ?></b></div>
-			</div>
-
-			<div class="p-3"></div>
-
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_installation_address']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['installation_address'] . "<br>" . $_SESSION['installation_zipcode'] . " " . $_SESSION['installation_city'] . ", " . $arrayCountry[$_SESSION['installation_country']] ?></b></div>
-			</div>
-
-			<div class="p-3"></div>
-
-			<?php if(!empty($_SESSION['system_model'])): ?>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_system_model']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo ($_SESSION['system_model']) . ($_SESSION['vde4105'] == '1' ? "<br>(" . $strings['summary_vde4105'] . ")" : ""); ?></b></div>
-			</div>
-			<?php endif; ?>
-
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_system']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['system_serial'] ?></b></div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_inverter']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['device_serial'] . " (" . $arrayDeviceModel[$_SESSION['device_model']] ?>)</b></div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_livex']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['box_serial'] . " (" . $_SESSION['software_version'] . ")" ?></b></div>
-			</div>
-
-			<?php if(!empty($_SESSION['system_model']) && $_SESSION['battery1_serial'] != $_SESSION['device_serial']): ?>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_batteries']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo ($_SESSION['battery1_serial']) . (isset($_SESSION['battery2_serial']) ? "<br>" . $_SESSION['battery2_serial'] : "") . (isset($_SESSION['battery3_serial']) ? "<br>" . $_SESSION['battery3_serial'] : "") . (isset($_SESSION['battery4_serial']) ? "<br>" . $_SESSION['battery4_serial'] : "") ?></b></div>
-			</div>
-			<?php endif; ?>
-
-
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_pv_system_size']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['solar_wattPeak'] . " Wp" ?></b></div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_feed_in_limitation']; ?></div>
-				<div class="col-6 col-md-8"><b><?php echo $_SESSION['solar_feedInLimitation'] . " %" ?></b></div>
-			</div>
-
-			<?php if(!empty($_SESSION['solar_info'])): ?>
-			<div class="p-3"></div>
-			<div class="row">
-				<div class="col-6 col-md-4"><?php echo $strings['summary_pv_installation_info']; ?></div>
-				<div class="col-6 col-md-8 solar_info"><b><?php echo $_SESSION['solar_info'] ?></b></div>
-			</div>
-			<?php endif; ?>
-
+		<div id="progress" class="shadow-lg">
+			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
 		</div>
 
 
-		<div id="confirm" class="container pt-5 pb-3">
+
+		<div id="summary" class="mt-5 mx-auto">
+
+			<div class="head border box-margin">
+				<div class="title br">
+					<span><?php echo $strings['summary_installation_summary']; ?></span>
+				</div>
+				<div class="logo">
+					<img src="img/batterx_logo.png">
+				</div>
+			</div>
+
+			<div class="installation-date border box-margin">
+				<div class="box-row bb">
+					<span class="br"><?php echo $strings['summary_installation_date']; ?></span>
+					<span><?php echo $_SESSION['installation_date']; ?></span>
+				</div>
+				<div class="box-row">
+					<span class="br"><?php echo $strings['summary_latest_maintenance']; ?></span>
+					<span><?php echo date('Y-m-d'); ?></span>
+				</div>
+			</div>
+			
+			<div class="installer-info border box-margin">
+				<div class="box-head">
+					<span><?php echo $strings['summary_installer']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_name']; ?></span>
+					<span><?php echo $arrayGender[$_SESSION['installer_gender']] . " " . $_SESSION['installer_firstname'] . " " . $_SESSION['installer_lastname']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_company']; ?></span>
+					<span><?php echo $_SESSION['installer_company']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_email']; ?></span>
+					<span><?php echo $_SESSION['installer_email']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_telephone']; ?></span>
+					<span><?php echo $_SESSION['installer_telephone']; ?></span>
+				</div>
+				<?php if(!empty($_SESSION['note'])): ?>
+					<div class="box-row bt">
+						<span class="br"><?php echo $strings['installer_memo']; ?></span>
+						<span style="white-space: pre-wrap"><?php echo $_SESSION['note']; ?></span>
+					</div>
+				<?php endif; ?>
+			</div>
+			
+			<div class="customer-info border box-margin">
+				<div class="box-head">
+					<span><?php echo $strings['summary_customer']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_name']; ?></span>
+					<span><?php echo $arrayGender[$_SESSION['customer_gender']] . " " . $_SESSION['customer_firstname'] . " " . $_SESSION['customer_lastname']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_email']; ?></span>
+					<span><?php echo $_SESSION['customer_email']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_telephone']; ?></span>
+					<span><?php echo $_SESSION['customer_telephone']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_customer_address']; ?></span>
+					<span><?php echo $_SESSION['customer_address'] . "<br>" . $_SESSION['customer_zipcode'] . " " . $_SESSION['customer_city'] . ", " . $arrayCountry[$_SESSION['customer_country']]; ?></span>
+				</div>
+			</div>
+
+			<div class="system-info border box-margin">
+				<div class="box-head">
+					<span><?php echo $strings['summary_installation']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_system_model']; ?></span>
+					<span><?php echo ($_SESSION['system_model']) . ($_SESSION['vde4105'] == '1' ? "<br>(" . $strings['summary_vde4105'] . ")" : ""); ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_system']; ?></span>
+					<span><?php echo $_SESSION['system_serial']; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_inverter']; ?></span>
+					<span><?php echo $_SESSION['device_serial'] . " (" . $arrayDeviceModel[$_SESSION['device_model']] . ")"; ?></b></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_nominal_power']; ?></span>
+					<span><?php echo $arrayNominalPower[$_SESSION['device_model']]; ?> W</span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_power_factor']; ?></span>
+					<span>0.9</span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_livex']; ?></span>
+					<span><?php echo $_SESSION['box_serial'] . " (" . $_SESSION['software_version'] . ")"; ?></span>
+				</div>
+				<?php if(!empty($_SESSION['system_model']) && $_SESSION['battery1_serial'] != $_SESSION['device_serial']): ?>
+					<div class="box-row bt">
+						<span class="br"><?php echo $strings['summary_batteries']; ?></span>
+						<span><?php echo ($_SESSION['battery1_serial']) . (isset($_SESSION['battery2_serial']) ? "<br>" . $_SESSION['battery2_serial'] : "") . (isset($_SESSION['battery3_serial']) ? "<br>" . $_SESSION['battery3_serial'] : "") . (isset($_SESSION['battery4_serial']) ? "<br>" . $_SESSION['battery4_serial'] : ""); ?></span>
+					</div>
+				<?php endif; ?>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_pv_system_size']; ?></span>
+					<span><?php echo $_SESSION['solar_wattPeak'] . " Wp"; ?></span>
+				</div>
+				<?php if(!empty($_SESSION['solar_info'])): ?>
+					<div class="box-row bt">
+						<span class="br"><?php echo $strings['summary_pv_installation_info']; ?></span>
+						<span style="white-space: pre-wrap"><?php echo $_SESSION['solar_info']; ?></span>
+					</div>
+				<?php endif; ?>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_feed_in_limitation']; ?></span>
+					<span><?php echo $_SESSION['solar_feedInLimitation'] . " %"; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="br"><?php echo $strings['summary_installation_address']; ?></span>
+					<span><?php echo $_SESSION['installation_address'] . "<br>" . $_SESSION['installation_zipcode'] . " " . $_SESSION['installation_city'] . ", " . $arrayCountry[$_SESSION['installation_country']]; ?></span>
+				</div>
+			</div>
+
+			<!--
+			<div id="confirmLoadCorrect" class="installer-accept border d-none">
+				<div class="box-row">
+					<span class="w-100 text-justify"><?php // echo $strings['summary_confirm_load_final']; ?></span>
+				</div>
+			</div>
+			-->
+
+		</div>
+		
+
+
+		<div id="confirm" class="pt-5 pb-3 mx-auto">
 			<div class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input" id="checkboxAccept">
-				<label class="custom-control-label" for="checkboxAccept"><?php echo $strings['summary_confirm_box']; ?></label>
+				<input type="checkbox" class="custom-control-input" id="checkboxAccept2">
+				<label class="custom-control-label" for="checkboxAccept2"><?php echo $strings['summary_confirm_box']; ?></label>
 			</div>
+			<!--
+			<div class="custom-control custom-checkbox mt-5">
+				<input type="checkbox" class="custom-control-input" id="checkboxAccept1">
+				<label class="custom-control-label" for="checkboxAccept1"><?php // echo $strings['summary_confirm_load_box']; ?></label>
+			</div>
+			-->
 		</div>
 
+		
 
-		<div id="btnFinish" class="container text-left">
-			<button id="btnFinishInstallation" class="btn btn-success ripple mb-3 mt-4 px-5 py-3 d-none"><?php echo $strings['summary_finish_installation']; ?></button>
+		<div id="btnFinish" class="text-left mx-auto">
+			<button id="btnFinishInstallation" class="btn btn-success ripple mb-3 mt-4 px-5 py-3"><?php echo $strings['summary_finish_installation']; ?></button>
 		</div>
 
 
 
 		<div id="successBox" class="container" style="display: none">
 
-			<h1><b class="text-success"><?php echo $strings['final_congratulations'] ?></b></h1>
+			<h1><b class="text-success"><?php echo $strings['final_congratulations']; ?></b></h1>
 
-			<p><?php echo $strings['final_p1'] ?></p>
+			<p><?php echo $strings['final_p1']; ?></p>
 
-			<p><?php echo $strings['final_p2'] ?></p>
+			<p><?php echo $strings['final_p2']; ?></p>
 
-			<p><?php echo $strings['final_p3'] ?></p>
+			<p><?php echo $strings['final_p3']; ?></p>
 
-			<p class="mt-5"><?php echo $strings['final_p6'] ?>: <br><a href="https://my.batterx.io" target="_blank" style="color: var(--color-link) !important;">my.batterx.io</a></p>
+			<p class="mt-5"><?php echo $strings['final_p6']; ?>: <br><a href="https://my.batterx.io" target="_blank" style="color: var(--color-link) !important;">my.batterx.io</a></p>
 
-			<p class="mt-5"><?php echo $strings['final_p4'] ?></p>
+			<p class="mt-5"><?php echo $strings['final_p4']; ?></p>
 
 			<button id="btnDownload" class="btn btn-success ripple mb-3 py-3 px-5" style="width:320px"><?php echo $strings['summary_download_pdf']; ?></button>
 
-			<p class="mt-5"><?php echo $strings['final_p5'] ?></p>
+			<p class="mt-5"><?php echo $strings['final_p5']; ?></p>
 
 			<div class="d-flex align-items-center mb-3">
 				<button id="btnReboot" class="btn btn-primary ripple py-3 px-5" style="width:320px"><?php echo $strings['summary_reboot_livex']; ?></button>
-				<div id="loading" class="d-none"></div>
-				<div id="success" class="d-none"></div>
+				<div class="notif ml-3"></div>
 			</div>
 
 		</div>

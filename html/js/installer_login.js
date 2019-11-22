@@ -2,56 +2,73 @@ $progress.trigger('step', 2);
 
 
 
-$('#loginForm').on('submit', function(e) {
+
+
+function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
+
+function enableLogin() {
+	var e = $('#email').val().trim();
+	var p = $('#password').val().trim();
+	if(e != "" && p != "" && validateEmail(e))
+		$('#btn_next').attr('disabled', false);
+	else
+		$('#btn_next').attr('disabled', true);
+}
+
+$(document).ready(() => { enableLogin(); });
+$('#email, #password').on('input change', () => { enableLogin(); });
+
+
+
+
+
+$('#loginForm').on('submit', (e) => {
 
 	e.preventDefault();
 
-	if($("#email").val() != "" && $("#password").val() != "")
+	if($("#email").val() != "" && $("#password").val() != "" && validateEmail($("#email").val()))
 	{
 		// Verify Email + Password & Return Installer Informations
 		$.post({
-			url: "https://api.batterx.io/v2/installation.php",
+			url: "https://api.batterx.io/v2/commissioning.php",
 			data: {
 				action   : "retrieve_installer_info",
 				email    : $('#email').val(),
 				password : $('#password').val()
 			},
-			error: function() {
-				alert("E001. Please refresh the page!");
-			},
-			success: function(response) {
+			error: () => { alert("E001. Please refresh the page!"); },
+			success: (response) => {
 
 				console.log(response);
 
-				if(response && typeof response === "object")
-				{
-					// Hide ErrorMsg
-					$("#errorMsg").css('visibility', 'hidden');
+				// Hide ErrorMsg
+				$("#errorMsg").css('visibility', 'hidden');
 
-					// Set to Session
+				// Set to Session
+				if(response && typeof response === "object") {
 					$.post({
 						url: "cmd/session.php",
 						data: {
 							installer_email:     $('#email'   ).val(),
 							installer_password:  $('#password').val(),
-							installer_gender:    response.hasOwnProperty('info_gender'   ) ? response['info_gender'   ] : "0",
-							installer_firstname: response.hasOwnProperty('info_firstname') ? response['info_firstname'] : "",
-							installer_lastname:  response.hasOwnProperty('info_lastname' ) ? response['info_lastname' ] : "",
-							installer_company:   response.hasOwnProperty('info_company'  ) ? response['info_company'  ] : "",
-							installer_telephone: response.hasOwnProperty('info_telephone') ? response['info_telephone'] : ""
+							installer_gender:    response.hasOwnProperty('gender'   ) ? response['gender'   ] : "0",
+							installer_firstname: response.hasOwnProperty('firstname') ? response['firstname'] : "",
+							installer_lastname:  response.hasOwnProperty('lastname' ) ? response['lastname' ] : "",
+							installer_company:   response.hasOwnProperty('company'  ) ? response['company'  ] : "",
+							installer_telephone: response.hasOwnProperty('telephone') ? response['telephone'] : ""
 						},
-						error: function() {
-							alert("E002. Please refresh the page!");
-						},
-						success: function(response) {
+						error: () => { alert("E002. Please refresh the page!"); },
+						success: (response) => {
 							console.log(response);
-							if(response == '1')
-								window.location.href = "customer_info.php";
-							else
-								alert("E003. Please refresh the page!");
+							if(response == '1') window.location.href = "customer_info.php";
+							else alert("E003. Please refresh the page!");
 						}
 					});
 				}
+				// Show Error
 				else $("#errorMsg").css('visibility', 'visible');
 
 			}

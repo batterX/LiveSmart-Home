@@ -10,6 +10,8 @@ if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
 $_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
+$installationCountry = isset($_SESSION['installation_country']) ? $_SESSION['installation_country'] : "de";
+
 ?>
 
 
@@ -27,7 +29,7 @@ $_SESSION['last_step'] = $step;
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX LiveX</title>
+		<title>batterX liveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
@@ -41,7 +43,10 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+		<div id="progress" class="shadow-lg">
+			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+			<div><button id="btn_next" class="btn btn-success ripple" disabled><?php echo $strings['continue']; ?></button></div>
+		</div>
 
 
 
@@ -50,9 +55,7 @@ $_SESSION['last_step'] = $step;
 			<div id="inverterUnknown">
 				<h1><?php echo $strings['inverter_unknown']; ?></h1>
 				<div class="d-flex align-items-center justify-content-center">
-					<div class="error"></div>
-					<div class="success"></div>
-					<div class="loading"></div>
+					<div class="notif loading"></div>
 					<span class="message"><?php echo $strings['please_connect_inverter']; ?></span>
 				</div>
 			</div>
@@ -62,16 +65,13 @@ $_SESSION['last_step'] = $step;
 				<img src="">
 				<span class="serialnumber">S/N: <b></b></span>
 				<div class="d-flex align-items-center justify-content-center">
-					<div class="error"></div>
-					<div class="success"></div>
-					<div class="loading"></div>
-					<span class="standard">VDE4105</span>
+					<div class="vde-status notif loading"></div>
+					<span class="standard"><b>VDE4105</b></span>
 				</div>
 				<div>
 					<button id="btnApplyVDE4105" class="btn btn-outline-danger ripple invisible"><?php echo $strings['switch_to_vde4105']; ?></button>
 				</div>
 				<div><div class="vde-loading loading"></div></div>
-				<button id="btnSubmit" class="btn btn-success ripple d-none"><?php echo $strings['continue']; ?></button>
 			</div>
 
 		</div>
@@ -82,6 +82,7 @@ $_SESSION['last_step'] = $step;
 		<script src="js/dist/moment.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>
+		<script>const installationCountry = <?php echo json_encode($installationCountry); ?>;</script>
 		<script src="js/system_detect.js?v=<?php echo $versionHash ?>"></script>
 
 

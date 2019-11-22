@@ -1,4 +1,6 @@
-* { user-select: none }
+*:not(input):not(select):not(textarea) { user-select: none }
+
+
 
 .container {
 	text-align: center;
@@ -9,11 +11,15 @@
 	width: 100%;
 }
 
+
+
 h1 {
 	font-size: 6vmin;
-	margin-top: 26.5vmin;
+	margin-top: 30vmin;
 	margin-bottom: 7.5vmin;
 }
+
+
 
 input {
 	width: 50vmin !important;
@@ -25,19 +31,13 @@ input {
 	text-align: center;
 }
 
-#btnLogin {
-	font-size: 2vmin;
-	padding: 1.5vmin 10vmin;
-	letter-spacing: 0.3vmin;
-}
+
 
 #errorMsg {
 	display: block;
 	height: 5vmin;
 	font-size: 2vmin;
 	visibility: hidden;
-}
-#errorMsg {
 	color: red !important;
 	font-weight: 600;
 }

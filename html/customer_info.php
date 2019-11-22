@@ -27,7 +27,7 @@ $_SESSION['last_step'] = $step;
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX LiveX</title>
+		<title>batterX liveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
@@ -41,50 +41,28 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
-
-
-
-		<div id="modalExistingCustomer" class="modal fade">
-			<div class="modal-dialog modal-dialog-centered modal-sm">
-				<div class="modal-content">
-					<form id="loginForm">
-						<div class="modal-header border-0">
-							<h5 class="modal-title w-100 text-center"><?php echo $strings['customer_login']; ?></h5>
-						</div>
-						<div class="modal-body py-0">
-							<input id="email" class="form-control form-control-outline rounded-pill text-center" type="email" placeholder="<?php echo $strings['email']; ?>">
-							<input id="password" class="form-control form-control-outline rounded-pill text-center" type="password" placeholder="<?php echo $strings['password']; ?>">
-							<span id="errorMsg" class="text-center"><i><?php echo $strings['wrong_email_or_password']; ?></i></span>
-						</div>
-						<div class="modal-footer border-0 pt-0">
-							<button type="submit" id="btnLogin" class="btn btn-block mx-5 btn-success rounded-pill ripple"><?php echo $strings['login']; ?></button>
-						</div>
-					</form>
-				</div>
-			</div>
+		<div id="progress" class="shadow-lg">
+			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+			<div><button id="btn_next" class="btn btn-success ripple" type="submit" form="mainForm" disabled><?php echo $strings['continue']; ?></button></div>
 		</div>
 
 
 
 		<div class="container">
 
-			<div class="row">
-				<div class="col-6">
-					<h1 class="customer-informations"><?php echo $strings['customer_informations']; ?></h1>
-				</div>
-				<div class="col-6">
-					<button id="existingCustomer" class="btn btn-success ripple" data-toggle="modal" data-target="#modalExistingCustomer"><?php echo $strings['existing_customer']; ?></button>
-				</div>
-			</div>
-
 			<form id="mainForm">
+
+
+
+				<h1 class="customer-informations"><?php echo $strings['customer_informations']; ?></h1>
+
+
 
 				<div id="customerInformations" class="row">
 
 					<div class="col-md-2 input-padding">
 						<select class="gender custom-select custom-select-outline" required>
-							<option value="0"><?php echo $strings['gender_male']; ?></option>
+							<option value="0"><?php echo $strings['gender_male'  ]; ?></option>
 							<option value="1"><?php echo $strings['gender_female']; ?></option>
 						</select>
 					</div>
@@ -175,7 +153,10 @@ $_SESSION['last_step'] = $step;
 				</div>
 
 
+
 				<h1 class="installation-address"><?php echo $strings['installation_address']; ?></h1>
+
+
 
 				<div class="custom-control custom-checkbox mx-3 my-3">
 					<input type="checkbox" class="custom-control-input" id="sameAddress">
@@ -186,7 +167,7 @@ $_SESSION['last_step'] = $step;
 
 					<div class="col-md-4 input-padding">
 						<select class="location-country custom-select custom-select-outline">
-						<option value="de"><?php echo $strings['c_de'] ?></option>
+							<option value="de"><?php echo $strings['c_de'] ?></option>
 							<option value="at"><?php echo $strings['c_at'] ?></option>
 							<option value="be"><?php echo $strings['c_be'] ?></option>
 							<optgroup label="<?php echo $strings['europe'] ?>">
@@ -246,16 +227,14 @@ $_SESSION['last_step'] = $step;
 					<div class="col-md-4 input-padding">
 						<input class="location-zip form-control form-control-outline" type="text" placeholder="<?php echo $strings['zip_code']; ?>" required>
 					</div>
-
+					
 					<div class="col-md-12 input-padding">
 						<input class="location-address form-control form-control-outline" type="text" placeholder="<?php echo $strings['address']; ?>" required>
 					</div>
 
 				</div>
 
-				<div class="text-right pr-3">
-					<button type="submit" id="btnSubmit" class="btn btn-success ripple mt-5 mb-3 px-5 py-3" disabled><?php echo $strings['continue']; ?></button>
-				</div>
+
 
 			</form>
 

@@ -4,47 +4,59 @@ $progress.trigger('step', 3);
 
 
 
+
+
+
+
+
+function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
+
+$("#sameAddress").on('change', function() {
+	if($(this).is(':checked'))
+		$('#installationAddress').hide();
+	else
+		$('#installationAddress').show();
+});
+
+
+
+
+
+
+
+
+
+
 $.get({
 	url: 'cmd/apikey.php',
-	error: function() {
-		alert("E001. Please refresh the page!");
-	},
-	success: function(response) {
+	error: () => { alert("E001. Please refresh the page!"); },
+	success: (response) => {
+
+
 
 		console.log(response);
+		
+		if(!response || response.length != 40)
+			return alert("E002. Please refresh the page!");
 
-		if(!response || response.length != 40) {
-			alert("E002. Please refresh the page!");
-			return;
-		}
+
 
 		$.post({
-			url: "https://api.batterx.io/v2/installation.php",
+			url: "https://api.batterx.io/v2/commissioning.php",
 			data: {
 				action: "retrieve_installation_info",
 				apikey: response.toString()
 			},
-			error: function(error) {
-				console.log(error);
-				alert("E003. Please refresh the page!");
-			},
-			success: function(json) {
+			error: () => { alert("E003. Please refresh the page!"); },
+			success: (json) => {
 
 				console.log(json);
 
 				if(json != "")
 				{
-					// Set Installation Address
-					if(json.hasOwnProperty('installation')) {
-						if(json.installation.hasOwnProperty('country'))
-							$("#installationAddress .location-country").val(json.installation.country);
-						if(json.installation.hasOwnProperty('city'))
-							$("#installationAddress .location-city").val(json.installation.city);
-						if(json.installation.hasOwnProperty('zipcode'))
-							$("#installationAddress .location-zip").val(json.installation.zipcode);
-						if(json.installation.hasOwnProperty('address'))
-							$("#installationAddress .location-address").val(json.installation.address);
-					}
 					// Set Customer Information
 					if(json.hasOwnProperty('customer')) {
 						if(
@@ -59,22 +71,41 @@ $.get({
 							json.customer.hasOwnProperty('address'     ) && json.customer.address     != ""
 						) {
 							// Set Input Values
-							$("#customerInformations .gender"          ).attr('disabled', 'disabled').val(json.customer.gender);
-							$("#customerInformations .first-name"      ).attr('disabled', 'disabled').val(json.customer.firstname);
-							$("#customerInformations .last-name"       ).attr('disabled', 'disabled').val(json.customer.lastname);
-							$("#customerInformations .email"           ).attr('disabled', 'disabled').val(json.customer.email);
-							$("#customerInformations .telephone"       ).attr('disabled', 'disabled').val(json.customer.telephone);
-							$("#customerInformations .location-country").attr('disabled', 'disabled').val(json.customer.country);
-							$("#customerInformations .location-city"   ).attr('disabled', 'disabled').val(json.customer.city);
-							$("#customerInformations .location-zip"    ).attr('disabled', 'disabled').val(json.customer.zipcode);
-							$("#customerInformations .location-address").attr('disabled', 'disabled').val(json.customer.address);
+							$("#customerInformations .gender"          ).attr('disabled', true).val(json.customer.gender);
+							$("#customerInformations .first-name"      ).attr('disabled', true).val(json.customer.firstname);
+							$("#customerInformations .last-name"       ).attr('disabled', true).val(json.customer.lastname);
+							$("#customerInformations .email"           ).attr('disabled', true).val(json.customer.email);
+							$("#customerInformations .telephone"       ).attr('disabled', true).val(json.customer.telephone);
+							$("#customerInformations .location-country").attr('disabled', true).val(json.customer.country);
+							$("#customerInformations .location-city"   ).attr('disabled', true).val(json.customer.city);
+							$("#customerInformations .location-zip"    ).attr('disabled', true).val(json.customer.zipcode);
+							$("#customerInformations .location-address").attr('disabled', true).val(json.customer.address);
 						}
+					}
+					// Set Installation Address
+					if(json.hasOwnProperty('installation')) {
+						if(json.installation.hasOwnProperty('country'))
+							$("#installationAddress .location-country").val(json.installation.country);
+						if(json.installation.hasOwnProperty('city'))
+							$("#installationAddress .location-city").val(json.installation.city);
+						if(json.installation.hasOwnProperty('zipcode'))
+							$("#installationAddress .location-zip").val(json.installation.zipcode);
+						if(json.installation.hasOwnProperty('address'))
+							$("#installationAddress .location-address").val(json.installation.address);
+						// Same as customer address
+						if( $("#installationAddress .location-country").val() == $("#customerInformations .location-country").val() &&
+							$("#installationAddress .location-city"   ).val() == $("#customerInformations .location-city"   ).val() &&
+							$("#installationAddress .location-zip"    ).val() == $("#customerInformations .location-zip"    ).val() &&
+							$("#installationAddress .location-address").val() == $("#customerInformations .location-address").val()
+						) $("#sameAddress").attr("checked", true).trigger("change");
 					}
 				}
 
 			}
 		});
 
+
+
 	}
 });
 
@@ -87,45 +118,52 @@ $.get({
 
 
 
-$('#loginForm').on('submit', function(e) {
+$("#customerInformations .email").on('change', function() {
+	
+	var email = $(this).val().trim();
+	
+	if(!validateEmail(email)) return;
 
-	e.preventDefault();
+	// Email can't be same as installer mail
+	if(email == installerEmail.trim())
+		return alert(lang.customer_same_as_installer);
+	
+	$.post({
+		url: "https://api.batterx.io/v2/commissioning.php",
+		data: {
+			action    : "retrieve_customer_info",
+			customer  : email,
+			installer : installerEmail
+		},
+		error: () => { alert("E004. Please refresh the page!"); },
+		success: (json) => {
 
-	if($('#email').val() != "" && $('#password').val() != "")
-	{
-		// Retrieve Customer Informations
-		$.post({
-			url: "https://api.batterx.io/v2/installation.php",
-			data: {
-				action: "retrieve_customer_info",
-				email: $('#email').val(),
-				password: $('#password').val()
-			},
-			error: function() {
-				alert("E004. Please refresh the page!");
-			},
-			success: function(response) {
-				console.log(response);
-				if(!response || typeof response !== "object") {
-					$("#errorMsg").css('display', 'block');
-					return;
-				}
-				// Hide ErrorMsg & Modal
-				$("#errorMsg").css('display', 'none');
-				$("#modalExistingCustomer").modal('hide');
+			console.log(json);
+
+			if(
+				json.hasOwnProperty('gender'      ) && json.gender      != "" &&
+				json.hasOwnProperty('firstname'   ) && json.firstname   != "" &&
+				json.hasOwnProperty('lastname'    ) && json.lastname    != "" &&
+				json.hasOwnProperty('telephone'   ) && json.telephone   != "" &&
+				json.hasOwnProperty('country'     ) && json.country     != "" &&
+				json.hasOwnProperty('city'        ) && json.city        != "" &&
+				json.hasOwnProperty('zipcode'     ) && json.zipcode     != "" &&
+				json.hasOwnProperty('address'     ) && json.address     != ""
+			) {
 				// Set Input Values
-				$("#customerInformations .gender"          ).attr('disabled', 'disabled').val(response['info_gender']); // 0=Male 1=Female
-				$("#customerInformations .first-name"      ).attr('disabled', 'disabled').val(response['info_firstname']);
-				$("#customerInformations .last-name"       ).attr('disabled', 'disabled').val(response['info_lastname']);
-				$("#customerInformations .email"           ).attr('disabled', 'disabled').val($('#email').val());
-				$("#customerInformations .telephone"       ).attr('disabled', 'disabled').val(response['info_telephone']);
-				$("#customerInformations .location-country").attr('disabled', 'disabled').val(response['info_country']);
-				$("#customerInformations .location-city"   ).attr('disabled', 'disabled').val(response['info_city']);
-				$("#customerInformations .location-zip"    ).attr('disabled', 'disabled').val(response['info_zipcode']);
-				$("#customerInformations .location-address").attr('disabled', 'disabled').val(response['info_address']);
+				$("#customerInformations .gender"          ).attr('disabled', true).val(json.gender);
+				$("#customerInformations .first-name"      ).attr('disabled', true).val(json.firstname);
+				$("#customerInformations .last-name"       ).attr('disabled', true).val(json.lastname);
+				$("#customerInformations .email"           ).attr('disabled', true);
+				$("#customerInformations .telephone"       ).attr('disabled', true).val(json.telephone);
+				$("#customerInformations .location-country").attr('disabled', true).val(json.country);
+				$("#customerInformations .location-city"   ).attr('disabled', true).val(json.city);
+				$("#customerInformations .location-zip"    ).attr('disabled', true).val(json.zipcode);
+				$("#customerInformations .location-address").attr('disabled', true).val(json.address);
 			}
-		});
-	}
+
+		}
+	})
 
 });
 
@@ -133,55 +171,49 @@ $('#loginForm').on('submit', function(e) {
 
 
 
-$("#sameAddress").on('change', function() {
-	if($(this).is(':checked'))
-		$('#installationAddress').hide();
-	else
-		$('#installationAddress').show();
-});
 
 
 
 
 
-setInterval(function() {
+setInterval(() => {
 	if(
-		$("#customerInformations .gender").val() == "" ||
-		$("#customerInformations .first-name").val() == "" ||
-		$("#customerInformations .last-name").val() == "" ||
-		$("#customerInformations .email").val() == "" ||
-		$("#customerInformations .telephone").val() == "" ||
+		$("#customerInformations .gender          ").val() == "" ||
+		$("#customerInformations .first-name      ").val() == "" ||
+		$("#customerInformations .last-name       ").val() == "" ||
+		$("#customerInformations .email           ").val() == "" ||
+		$("#customerInformations .telephone       ").val() == "" ||
 		$("#customerInformations .location-country").val() == "" ||
-		$("#customerInformations .location-city").val() == "" ||
-		$("#customerInformations .location-zip").val() == "" ||
+		$("#customerInformations .location-city   ").val() == "" ||
+		$("#customerInformations .location-zip    ").val() == "" ||
 		$("#customerInformations .location-address").val() == ""
 	) {
-		$('#btnSubmit').attr('disabled', 'disabled');
+		$('#btn_next').attr('disabled', true);
 	}
 	else
 	{
 		if($("#sameAddress").is(':checked')) {
-			$('#installationAddress .location-country').removeAttr('required');
-			$('#installationAddress .location-city').removeAttr('required');
-			$('#installationAddress .location-zip').removeAttr('required');
-			$('#installationAddress .location-address').removeAttr('required');
-			$('#btnSubmit').removeAttr('disabled');
+			$('#installationAddress .location-country').attr('required', false);
+			$('#installationAddress .location-city   ').attr('required', false);
+			$('#installationAddress .location-zip    ').attr('required', false);
+			$('#installationAddress .location-address').attr('required', false);
+			$('#btn_next').attr('disabled', false);
 		} else {
-			$('#installationAddress .location-country').attr('required', 'required');
-			$('#installationAddress .location-city').attr('required', 'required');
-			$('#installationAddress .location-zip').attr('required', 'required');
-			$('#installationAddress .location-address').attr('required', 'required');
+			$('#installationAddress .location-country').attr('required', true);
+			$('#installationAddress .location-city   ').attr('required', true);
+			$('#installationAddress .location-zip    ').attr('required', true);
+			$('#installationAddress .location-address').attr('required', true);
 			if(
-				$("#installationAddress .location-country").val() == "" ||
-				$("#installationAddress .location-city").val() == "" ||
-				$("#installationAddress .location-zip").val() == "" ||
-				$("#installationAddress .location-address").val() == ""
+				$('#installationAddress .location-country').val() == "" ||
+				$('#installationAddress .location-city   ').val() == "" ||
+				$('#installationAddress .location-zip    ').val() == "" ||
+				$('#installationAddress .location-address').val() == ""
 			) {
-				$('#btnSubmit').attr('disabled', 'disabled');
+				$('#btn_next').attr('disabled', true);
 			}
 			else
 			{
-				$("#btnSubmit").removeAttr("disabled");
+				$('#btn_next').attr('disabled', false);
 			}
 		}
 	}
@@ -191,61 +223,64 @@ setInterval(function() {
 
 
 
-$('#mainForm').on('submit', function(e) {
+
+
+
+
+
+$('#mainForm').on('submit', (e) => {
 
 	e.preventDefault();
 
 	if(
-		$("#customerInformations .gender").val() != "" &&
-		$("#customerInformations .first-name").val() != "" &&
-		$("#customerInformations .last-name").val() != "" &&
-		$("#customerInformations .email").val() != "" &&
-		$("#customerInformations .telephone").val() != "" &&
+		$("#customerInformations .gender          ").val() != "" &&
+		$("#customerInformations .first-name      ").val() != "" &&
+		$("#customerInformations .last-name       ").val() != "" &&
+		$("#customerInformations .email           ").val() != "" &&
+		$("#customerInformations .telephone       ").val() != "" &&
 		$("#customerInformations .location-country").val() != "" &&
-		$("#customerInformations .location-city").val() != "" &&
-		$("#customerInformations .location-zip").val() != "" &&
+		$("#customerInformations .location-city   ").val() != "" &&
+		$("#customerInformations .location-zip    ").val() != "" &&
 		$("#customerInformations .location-address").val() != "" &&
 		(
 			$("#sameAddress").is(":checked") ||
 			(
 				$("#installationAddress .location-country").val() != "" &&
-				$("#installationAddress .location-city").val() != "" &&
-				$("#installationAddress .location-zip").val() != "" &&
+				$("#installationAddress .location-city   ").val() != "" &&
+				$("#installationAddress .location-zip    ").val() != "" &&
 				$("#installationAddress .location-address").val() != ""
 			)
 		)
 	)
 	{
 		if($("#customerInformations .email").val().trim() == installerEmail.trim())
-			return alert("The email of the customer can not be the same as the installer email. Please choose another email!");
+			return alert(lang.customer_same_as_installer);
 
 		// Save Inputs to Session
 		$.post({
 			url: "cmd/session.php",
 			data: {
-				customer_gender:      $("#customerInformations .gender").val(),
-				customer_firstname:   $("#customerInformations .first-name").val(),
-				customer_lastname:    $("#customerInformations .last-name").val(),
-				customer_email:       $("#customerInformations .email").val(),
-				customer_telephone:   $("#customerInformations .telephone").val(),
+				customer_gender:      $("#customerInformations .gender          ").val(),
+				customer_firstname:   $("#customerInformations .first-name      ").val(),
+				customer_lastname:    $("#customerInformations .last-name       ").val(),
+				customer_email:       $("#customerInformations .email           ").val(),
+				customer_telephone:   $("#customerInformations .telephone       ").val(),
 				customer_country:     $("#customerInformations .location-country").val(),
-				customer_city:        $("#customerInformations .location-city").val(),
-				customer_zipcode:     $("#customerInformations .location-zip").val(),
+				customer_city:        $("#customerInformations .location-city   ").val(),
+				customer_zipcode:     $("#customerInformations .location-zip    ").val(),
 				customer_address:     $("#customerInformations .location-address").val(),
 				installation_country: $("#sameAddress").is(":checked") ? $("#customerInformations .location-country").val() : $("#installationAddress  .location-country").val(),
-				installation_city:    $("#sameAddress").is(":checked") ? $("#customerInformations .location-city").val() : $("#installationAddress  .location-city").val(),
-				installation_zipcode: $("#sameAddress").is(":checked") ? $("#customerInformations .location-zip").val() : $("#installationAddress  .location-zip").val(),
+				installation_city:    $("#sameAddress").is(":checked") ? $("#customerInformations .location-city   ").val() : $("#installationAddress  .location-city   ").val(),
+				installation_zipcode: $("#sameAddress").is(":checked") ? $("#customerInformations .location-zip    ").val() : $("#installationAddress  .location-zip    ").val(),
 				installation_address: $("#sameAddress").is(":checked") ? $("#customerInformations .location-address").val() : $("#installationAddress  .location-address").val()
 			},
-			error: function() {
-				alert("E005. Please refresh the page!");
-			},
-			success: function(response) {
+			error: () => { alert("E005. Please refresh the page!"); },
+			success: (response) => {
 				console.log(response);
 				if(response == '1')
 					window.location.href = "system_detect.php";
 				else
-					alert("E006. Please refreh the page!");
+					alert("E006. Please refresh the page!");
 			}
 		});
 	}

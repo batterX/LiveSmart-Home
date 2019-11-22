@@ -27,7 +27,7 @@ $_SESSION['last_step'] = $step;
 		<meta name="author" content="Ivan Gavrilov">
 		<link rel="icon" href="img/favicon.png">
 
-		<title>batterX LiveX</title>
+		<title>batterX liveX</title>
 
 		<link rel="stylesheet" href="css/dist/bundle.css?v=<?php echo $versionHash ?>">
 		<link rel="stylesheet" href="css/common.css?v=<?php echo $versionHash ?>">
@@ -41,7 +41,10 @@ $_SESSION['last_step'] = $step;
 
 
 
-		<div id="progress" class="shadow-lg"><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+		<div id="progress" class="shadow-lg">
+			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+			<div><button id="btn_next" class="btn btn-success ripple" type="submit" form="mainForm" disabled><?php echo $strings['continue']; ?></button></div>
+		</div>
 
 
 
@@ -94,7 +97,7 @@ $_SESSION['last_step'] = $step;
 						<input id="bx_box" class="form-control form-control-outline" type="text" placeholder="<?php echo $strings['serialnumber']; ?>" value="" disabled required>
 
 						<div class="pt-3">
-							<button type="button" class="w-100 btn btn-sm btn-info ripple py-2 mt-3" data-toggle="modal" data-target="#modalInstallerMemo"><?php echo $strings['installer_memo']; ?></button>
+							<button id="btnInstallerMemo" type="button" class="btn-block btn btn-sm btn-outline-secondary ripple px-5 py-2 mt-3" data-toggle="modal" data-target="#modalInstallerMemo"><b><?php echo $strings['installer_memo']; ?></b></button>
 						</div>
 
 					</div>
@@ -110,14 +113,13 @@ $_SESSION['last_step'] = $step;
 							<span class="pl-3"><?php echo $strings['watt_peak']; ?></span>
 						</div>
 
-						<label class="mt-5" for="solar_feedInLimitation"><?php echo $strings['pv_system_feed_in_limitation']; ?></label>
+						<label class="mt-4" for="solar_feedInLimitation"><?php echo $strings['pv_system_feed_in_limitation']; ?></label>
 						<div>
 							<input id="solar_feedInLimitation" class="form-control form-control-outline d-inline-block w-65" type="number" step="1" min="0" max="100" value="100" required>
 							<span class="pl-3">%</span>
 						</div>
 
-						<label class="mt-5" for="solar_info"><?php echo $strings['pv_installation_info']; ?></label>
-
+						<label class="mt-4" for="solar_info"><?php echo $strings['pv_installation_info']; ?></label>
 						<div>
 							<textarea id="solar_info" class="form-control form-control-outline w-100" placeholder="Paneltyp: ...
 
@@ -127,6 +129,17 @@ MPPT 1
 MPPT 2
 	String 1: ...
 	String 2: ..."></textarea>
+						</div>
+
+						<div id="box_emeter_phase" class="d-none">
+							<label class="mt-4"><?php echo $strings['emeter_phase_connected']; ?></label>
+							<div>
+								<select id="bx_emeter_phase" class="form-control custom-select-outline custom-select">
+									<option value="1">Phase 1</option>
+									<option value="2">Phase 2</option>
+									<option value="3">Phase 3</option>
+								</select>
+							</div>
 						</div>
 
 					</div>
@@ -166,14 +179,11 @@ MPPT 2
 
 				</div>
 
-				<div class="text-center mt-5 mb-5">
-					<button id="btnSubmit" type="submit" class="btn btn-success levitate ripple mb-3 px-5 py-3" disabled><?php echo $strings['continue']; ?></button>
-					<div class="setting-progress d-none">
+				<div class="text-center">
+					<div class="setting-progress d-none pt-4 mt-5">
 						<div class="d-flex align-items-center justify-content-center">
-							<div class="error"></div>
-							<div class="success"></div>
-							<div class="loading"></div>
-							<span><?php echo $strings['setting_parameters']; ?></span>
+							<div id="notif" class="loading d-inline-block"></div>
+							<span id="message"><?php echo $strings['setting_parameters']; ?></span>
 						</div>
 					</div>
 				</div>

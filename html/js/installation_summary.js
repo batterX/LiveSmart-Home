@@ -4,11 +4,11 @@ $progress.trigger('step', 8);
 
 
 
-$('#checkboxAccept').on('click', function() {
-	if($(this).is(':checked'))
-		$('#btnFinishInstallation').removeClass('d-none');
+$('#checkboxAccept1, #checkboxAccept2').on('click', () => {
+	if(/*$('#checkboxAccept1').is(':checked') &&*/ $('#checkboxAccept2').is(':checked'))
+		$('#btnFinish').css('visibility', 'visible');
 	else
-		$('#btnFinishInstallation').addClass('d-none');
+		$('#btnFinish').css('visibility', 'hidden');
 });
 
 
@@ -17,10 +17,10 @@ $('#checkboxAccept').on('click', function() {
 
 function getImageDimensions(file) {
 	return new Promise (function (resolved, rejected) {
-		var i = new Image()
+		var i = new Image();
 		i.onload = function() { resolved({ w: i.width, h: i.height }) };
-		i.src = file
-	})
+		i.src = file;
+	});
 }
 
 
@@ -85,10 +85,10 @@ $('#btnFinishInstallation').on('click', function() {
 	if(dataObj.hasOwnProperty('battery3_serial'       ) && dataObj['battery3_serial'       ] != "") data.append('battery3_serial'       , dataObj['battery3_serial'         ]);
 	if(dataObj.hasOwnProperty('battery4_serial'       ) && dataObj['battery4_serial'       ] != "") data.append('battery4_serial'       , dataObj['battery4_serial'         ]);
 
-
+	$('#confirmLoadCorrect').removeClass('d-none');
 
 	html2canvas(document.querySelector('#summary'), {
-		windowWidth: 800,
+		windowWidth: 1200,
 		scale: 2
 	}).then(async canvas => {
 
@@ -96,26 +96,33 @@ $('#btnFinishInstallation').on('click', function() {
 		var dimensions = await getImageDimensions(img);
 		console.log(dimensions);
 		var ratio = dimensions.w / dimensions.h;
-		var w = 150, h = 150 / ratio;
-		if(ratio < 0.5618) { h = 267; w = 267 * ratio; }
+		var w = 190, h = 190 / ratio;
+		if(ratio < 0.68) { h = 277; w = 277 * ratio; }
 
 		var pdf = new jsPDF("portrait", "mm", "a4");
-		pdf.addImage(img, 'JPEG', 20, 15, w, h); // img, type, x, y, width, height
+		pdf.addImage(img, 'JPEG', (210 - w) / 2, (297 - h) / 2, w, h); // img, type, x, y, width, height
 		var pdfBlob = pdf.output('blob');
+
+		// HIDE FIELD AFTER CREATION
+
+		$('#confirmLoadCorrect').addClass('d-none');
 
 		// USE BLOB TO SAVE PDF-FILE TO CLOUD
 
 		data.append('pdf_file', pdfBlob, lang['summary_installation_summary']);
 
 		$.post({
-			url: "https://api.batterx.io/v2/installation.php",
+			url: "https://api.batterx.io/v2/commissioning.php",
 			data: data,
 			processData: false,
 			contentType: false,
 			cache: false,
 			error: function() { alert("E001. Please refresh the page!"); },
 			success: function(response) {
-				if(response == '1') showSuccess();
+				if(response == '1') {
+					showSuccess();
+					$('#confirmLoadCorrect').removeClass('d-none');
+				}
 				else alert("Error: " + response);
 			}
 		});
@@ -142,7 +149,7 @@ function showSuccess()
 
 $('#btnDownload').on('click', function() {
 	html2canvas(document.querySelector('#summary'), {
-		windowWidth: 800,
+		windowWidth: 1200,
 		scale: 2,
 		onclone: function(clonedDoc) { clonedDoc.getElementById('summary').style.display = 'block'; }
 	}).then(async canvas => {
@@ -150,11 +157,11 @@ $('#btnDownload').on('click', function() {
 		var dimensions = await getImageDimensions(img);
 		console.log(dimensions);
 		var ratio = dimensions.w / dimensions.h;
-		var w = 150, h = 150 / ratio;
-		if(ratio < 0.5618) { h = 267; w = 267 * ratio; }
+		var w = 190, h = 190 / ratio;
+		if(ratio < 0.68) { h = 277; w = 277 * ratio; }
 
 		var pdf = new jsPDF("portrait", "mm", "a4");
-		pdf.addImage(img, 'JPEG', 20, 15, w, h); // img, type, x, y, width, height
+		pdf.addImage(img, 'JPEG', (210 - w) / 2, (297 - h) / 2, w, h); // img, type, x, y, width, height
 		pdf.save(lang['summary_installation_summary'] + ".pdf");
 	});
 });
@@ -177,8 +184,8 @@ $('#btnReboot').on('click', function() {
 
 	// DISABLE BUTTON
 	$('#btnReboot').attr('disabled', 'disabled');
-	// SHOW SPINNER
-	$('#loading').removeClass('d-none');
+	// SHOW LOADING
+	$('.notif').removeClass('loading error success').addClass('loading');
 });
 
 function checkReboot_waitForError() {
@@ -212,10 +219,8 @@ function checkReboot_waitForSuccess() {
 			if(response) {
 				clearInterval(checkRebootInterval);
 				checkRebootInterval = undefined;
-				// HIDE SPINNER
-				$('#loading').addClass('d-none');
 				// SHOW SUCCESS
-				$('#success').removeClass('d-none');
+				$('.notif').removeClass('loading error success').addClass('success');
 			}
 		}
 	});
