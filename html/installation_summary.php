@@ -189,10 +189,12 @@ $arrayNominalPower = [
 				<div class="box-head">
 					<span><?php echo $strings['summary_installation']; ?></span>
 				</div>
+				<?php if(!empty($_SESSION['system_model'])): ?>
 				<div class="box-row bt">
 					<span class="br"><?php echo $strings['summary_system_model']; ?></span>
 					<span><?php echo ($_SESSION['system_model']) . ($_SESSION['vde4105'] == '1' ? "<br>(" . $strings['summary_vde4105'] . ")" : ""); ?></span>
 				</div>
+				<?php endif; ?>
 				<div class="box-row bt">
 					<span class="br"><?php echo $strings['summary_system']; ?></span>
 					<span><?php echo $_SESSION['system_serial']; ?></span>
