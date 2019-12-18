@@ -309,10 +309,12 @@ function step5()
 			error: () => { alert("E101. Please refresh the page!"); },
 			success: (response) => {
 				console.log(response);
-				if(!response || typeof response != "object" || !response.hasOwnProperty('InjectionMode'))
+				if(!response || typeof response != "object")
 					return alert("E102. Please refresh the page!");
-				response = response['InjectionMode'];
-				if(response['0']['v6'] !== 0) $('#bx_emeter_phase').val(response['0']['v6'])
+				if(response.hasOwnProperty('InjectionMode')) {
+					response = response['InjectionMode'];
+					if(response['0']['v6'] !== 0) $('#bx_emeter_phase').val(response['0']['v6']);
+				}
 			}
 		});
 	}
