@@ -3,6 +3,8 @@
 include_once "common/base.php";
 $step = 0;
 
+session_unset();
+
 $_SESSION['back_url']  = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
@@ -57,6 +59,10 @@ $_SESSION['last_step'] = $step;
 						<div id="lang_fr" class="col">
 							<div class="lang-fr"></div>
 							<span>Français</span>
+						</div>
+						<div id="lang_cs" class="col">
+							<div class="lang-cs"></div>
+							<span>Čeština</span>
 						</div>
 					</div>
 

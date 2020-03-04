@@ -103,7 +103,7 @@ $_SESSION['last_step'] = $step;
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($strings); ?>;</script>
-		<script>const battery_type = <?php echo json_encode($_SESSION['battery_type']); ?>;</script>
+		<script>const noBattery = <?php echo ($_SESSION['battery_type'] == 'other' && $_SESSION['battery_capacity'] == '0') ? 'true' : 'false' ?>;</script>
 		<script src="js/system_test.js?v=<?php echo $versionHash ?>"></script>
 
 

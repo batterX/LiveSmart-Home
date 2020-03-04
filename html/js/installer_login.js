@@ -33,7 +33,7 @@ $('#loginForm').on('submit', (e) => {
 	{
 		// Verify Email + Password & Return Installer Informations
 		$.post({
-			url: "https://api.batterx.io/v2/commissioning.php",
+			url: "https://api.batterx.io/v2/commissioning_v2.php",
 			data: {
 				action   : "retrieve_installer_info",
 				email    : $('#email').val(),

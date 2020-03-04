@@ -18,6 +18,8 @@ var batteryCharging_datetime = "";
 var batteryMinLevel = 20;
 var batteryMaxLevel = 95;
 
+var battery_waitCounter = 0;
+
 var upsMode_firstRun = true;
 var upsMode_count = 0; // run 5 times (5sec delay), then finish
 
@@ -197,7 +199,7 @@ function testEnergyMeter()
 
 function testBatteryCharging()
 {
-	if(battery_type == "none") { finishStep(); return; }
+	if(noBattery) return finishStep(); // IF battery_type == other AND battery_capacity == 0
 
 	showLoading_batteryCharging();
 	batteryCharging_firstRun = false;
@@ -227,6 +229,7 @@ function testBatteryCharging()
 					success: (response) => {
 						if(response != '1') return alert("E105. Please refresh the page!");
 						batteryCharging_count = 0;
+						battery_waitCounter = 25;
 						setTimeout(testBatteryCharging_waitUntilCharged, 15000);
 					}
 				});
@@ -242,6 +245,7 @@ function testBatteryCharging()
 					success: (response) => {
 						if(response != '1') return alert("E107. Please refresh the page!");
 						batteryCharging_count = 0;
+						battery_waitCounter = 25;
 						setTimeout(testBatteryCharging_waitUntilDischarged, 15000);
 					}
 				});
@@ -288,10 +292,11 @@ function testBatteryCharging_waitUntilCharged()
 
 			if(response['2465']['3'] != 11) return alert("E117. Please refresh the page!");
 
-			if(response['1074']['1'] >= batteryMinLevel) {
+			if(battery_waitCounter < 1 && response['1074']['1'] >= batteryMinLevel) {
 				$('#log p:last-child').html(`✓ ${lang['charging_battery_to']} ${batteryMinLevel}%`);
 				testBatteryCharging();
 			} else {
+				battery_waitCounter -= 1;
 				$('#log p:last-child').html(`${lang['charging_battery_to']} ${batteryMinLevel}%<br>${lang['current_status']}: ${response['1074']['1']}% / ${response['1121']['1']}W`);
 				setTimeout(testBatteryCharging_waitUntilCharged, 5000);
 			}
@@ -318,10 +323,11 @@ function testBatteryCharging_waitUntilDischarged()
 
 			if(response['2465']['5'] != 11) return alert("E123. Please refresh the page!");
 
-			if(response['1074']['1'] <= batteryMaxLevel) {
+			if(battery_waitCounter < 1 && response['1074']['1'] <= batteryMaxLevel) {
 				$('#log p:last-child').html(`✓ ${lang['discharging_battery_to']} ${batteryMaxLevel}%`);
 				testBatteryCharging();
 			} else {
+				battery_waitCounter -= 1;
 				$('#log p:last-child').html(`${lang['discharging_battery_to']} ${batteryMaxLevel}%<br>${lang['current_status']}: ${response['1074']['1']}% / ${response['1121']['1']}W`);
 				setTimeout(testBatteryCharging_waitUntilDischarged, 5000);
 			}

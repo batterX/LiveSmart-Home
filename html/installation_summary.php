@@ -10,7 +10,6 @@ if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
 $_SESSION['back_url']  = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
-
 // Value Arrays
 $arrayGender = [
 	'0' => $strings['gender_male'],
@@ -74,7 +73,9 @@ $arrayNominalPower = [
 	'h5'  =>  '5000',
 	'h5e' =>  '5500',
 	'h10' => '10000'
-]
+];
+
+$batteryType = isset($_SESSION['battery_type']) ? $_SESSION['battery_type'] : '';
 
 ?>
 
@@ -185,15 +186,19 @@ $arrayNominalPower = [
 				</div>
 			</div>
 
+			<!--                      -->
+			<!-- Installation Details -->
+			<!--                      -->
+
 			<div class="system-info border box-margin">
 				<div class="box-head">
 					<span><?php echo $strings['summary_installation']; ?></span>
 				</div>
-				<?php if(!empty($_SESSION['system_model'])): ?>
-				<div class="box-row bt">
-					<span class="br"><?php echo $strings['summary_system_model']; ?></span>
-					<span><?php echo ($_SESSION['system_model']) . ($_SESSION['vde4105'] == '1' ? "<br>(" . $strings['summary_vde4105'] . ")" : ""); ?></span>
-				</div>
+				<?php if($batteryType == 'lifepo' && !empty($_SESSION['system_model'])): ?>
+					<div class="box-row bt">
+						<span class="br"><?php echo $strings['summary_system_model']; ?></span>
+						<span><?php echo ($_SESSION['system_model']) . ($_SESSION['vde4105'] == '1' ? "<br>(" . $strings['summary_vde4105'] . ")" : ""); ?></span>
+					</div>
 				<?php endif; ?>
 				<div class="box-row bt">
 					<span class="br"><?php echo $strings['summary_system']; ?></span>
@@ -215,10 +220,46 @@ $arrayNominalPower = [
 					<span class="br"><?php echo $strings['summary_livex']; ?></span>
 					<span><?php echo $_SESSION['box_serial'] . " (" . $_SESSION['software_version'] . ")"; ?></span>
 				</div>
-				<?php if(!empty($_SESSION['system_model']) && $_SESSION['battery1_serial'] != $_SESSION['device_serial']): ?>
+				<?php if($batteryType == 'lifepo'): ?>
 					<div class="box-row bt">
 						<span class="br"><?php echo $strings['summary_batteries']; ?></span>
-						<span><?php echo ($_SESSION['battery1_serial']) . (isset($_SESSION['battery2_serial']) ? "<br>" . $_SESSION['battery2_serial'] : "") . (isset($_SESSION['battery3_serial']) ? "<br>" . $_SESSION['battery3_serial'] : "") . (isset($_SESSION['battery4_serial']) ? "<br>" . $_SESSION['battery4_serial'] : ""); ?></span>
+						<span>
+							<?php
+								if(isset($_SESSION['battery5_serial'])) {
+									if(isset($_SESSION['battery1_serial' ])) echo "<br>" . $_SESSION['battery1_serial' ];
+									if(isset($_SESSION['battery2_serial' ])) echo   ", " . $_SESSION['battery2_serial' ];
+									if(isset($_SESSION['battery3_serial' ])) echo "<br>" . $_SESSION['battery3_serial' ];
+									if(isset($_SESSION['battery4_serial' ])) echo   ", " . $_SESSION['battery4_serial' ];
+									if(isset($_SESSION['battery5_serial' ])) echo "<br>" . $_SESSION['battery5_serial' ];
+									if(isset($_SESSION['battery6_serial' ])) echo   ", " . $_SESSION['battery6_serial' ];
+									if(isset($_SESSION['battery7_serial' ])) echo "<br>" . $_SESSION['battery7_serial' ];
+									if(isset($_SESSION['battery8_serial' ])) echo   ", " . $_SESSION['battery8_serial' ];
+									if(isset($_SESSION['battery9_serial' ])) echo "<br>" . $_SESSION['battery9_serial' ];
+									if(isset($_SESSION['battery10_serial'])) echo   ", " . $_SESSION['battery10_serial'];
+									if(isset($_SESSION['battery11_serial'])) echo "<br>" . $_SESSION['battery11_serial'];
+									if(isset($_SESSION['battery12_serial'])) echo   ", " . $_SESSION['battery12_serial'];
+									if(isset($_SESSION['battery13_serial'])) echo "<br>" . $_SESSION['battery13_serial'];
+									if(isset($_SESSION['battery14_serial'])) echo   ", " . $_SESSION['battery14_serial'];
+									if(isset($_SESSION['battery15_serial'])) echo "<br>" . $_SESSION['battery15_serial'];
+									if(isset($_SESSION['battery16_serial'])) echo   ", " . $_SESSION['battery16_serial'];
+								} else {
+									if(isset($_SESSION['battery1_serial' ])) echo "<br>" . $_SESSION['battery1_serial' ];
+									if(isset($_SESSION['battery2_serial' ])) echo "<br>" . $_SESSION['battery2_serial' ];
+									if(isset($_SESSION['battery3_serial' ])) echo "<br>" . $_SESSION['battery3_serial' ];
+									if(isset($_SESSION['battery4_serial' ])) echo "<br>" . $_SESSION['battery4_serial' ];
+								}
+							?>
+						</span>
+					</div>
+				<?php elseif($batteryType == 'carbon'): ?>
+					<div class="box-row bt">
+						<span class="br"><?php echo $strings['batteries']; ?></span>
+						<span><?php echo (intval($_SESSION['battery_strings']) * ($_SESSION['battery_model'] == 'LC+2V500' ? 24 : 4)) . "x " . $_SESSION['battery_model'] . " (" . $_SESSION['battery_capacity'] . " Wh)"; ?></span>
+					</div>
+				<?php elseif($batteryType == 'other'): ?>
+					<div class="box-row bt">
+						<span class="br"><?php echo $strings['batteries']; ?></span>
+						<span><?php echo $_SESSION['battery_capacity'] . " Wh"; ?></span>
 					</div>
 				<?php endif; ?>
 				<div class="box-row bt">
@@ -241,13 +282,11 @@ $arrayNominalPower = [
 				</div>
 			</div>
 
-			<!--
 			<div id="confirmLoadCorrect" class="installer-accept border d-none">
 				<div class="box-row">
-					<span class="w-100 text-justify"><?php // echo $strings['summary_confirm_load_final']; ?></span>
+					<span class="w-100 text-justify"><?php echo $strings['summary_confirm_load_final']; ?></span>
 				</div>
 			</div>
-			-->
 
 		</div>
 		
@@ -258,12 +297,10 @@ $arrayNominalPower = [
 				<input type="checkbox" class="custom-control-input" id="checkboxAccept2">
 				<label class="custom-control-label" for="checkboxAccept2"><?php echo $strings['summary_confirm_box']; ?></label>
 			</div>
-			<!--
 			<div class="custom-control custom-checkbox mt-5">
 				<input type="checkbox" class="custom-control-input" id="checkboxAccept1">
-				<label class="custom-control-label" for="checkboxAccept1"><?php // echo $strings['summary_confirm_load_box']; ?></label>
+				<label class="custom-control-label" for="checkboxAccept1"><?php echo $strings['summary_confirm_load_box']; ?></label>
 			</div>
-			-->
 		</div>
 
 		

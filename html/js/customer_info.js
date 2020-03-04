@@ -45,7 +45,7 @@ $.get({
 
 
 		$.post({
-			url: "https://api.batterx.io/v2/commissioning.php",
+			url: "https://api.batterx.io/v2/commissioning_v2.php",
 			data: {
 				action: "retrieve_installation_info",
 				apikey: response.toString()
@@ -129,7 +129,7 @@ $("#customerInformations .email").on('change', function() {
 		return alert(lang.customer_same_as_installer);
 	
 	$.post({
-		url: "https://api.batterx.io/v2/commissioning.php",
+		url: "https://api.batterx.io/v2/commissioning_v2.php",
 		data: {
 			action    : "retrieve_customer_info",
 			customer  : email,

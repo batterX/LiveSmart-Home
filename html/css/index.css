@@ -7,7 +7,7 @@ body {
 }
 
 .container {
-	max-width: 600px !important;
+	max-width: 800px !important;
 }
 
 .container > div {
@@ -71,3 +71,4 @@ h1 {
 #lang_en > div { background-image: url(../img/lang_en.png) }
 #lang_de > div { background-image: url(../img/lang_de.png) }
 #lang_fr > div { background-image: url(../img/lang_fr.png) }
+#lang_cs > div { background-image: url(../img/lang_cs.png) }

@@ -69,7 +69,23 @@ $installationCountry = isset($_SESSION['installation_country']) ? $_SESSION['ins
 					<span class="standard"><b>VDE4105</b></span>
 				</div>
 				<div>
-					<button id="btnApplyVDE4105" class="btn btn-outline-danger ripple invisible"><?php echo $strings['switch_to_vde4105']; ?></button>
+					<div id="machineModelBox" class="invisible">
+						<select id="machineModelSelect" class="custom-select custom-select-outline border-danger">
+							<option value="050">VDE</option>
+							<option value="051">AS4777</option>
+							<option value="052">DK</option>
+							<option value="053">RD1663</option>
+							<option value="054">G83</option>
+							<option value="055">Taiwan</option>
+							<option value="056">USH</option>
+							<option value="057">USL</option>
+							<option value="058" selected>VDE4105</option>
+							<option value="059">Korea</option>
+							<option value="060">HongSun</option>
+							<option value="061">Sweden</option>
+						</select>
+						<button id="machineModelBtn" class="btn btn-danger"><?php echo $strings['apply'] ?></button>
+					</div>
 				</div>
 				<div><div class="vde-loading loading"></div></div>
 			</div>

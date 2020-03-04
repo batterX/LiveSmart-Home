@@ -26,17 +26,18 @@ session_regenerate_id();
 
 // Set Language
 $lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
-if($lang != "en" && $lang != "de" && $lang != "fr") $lang = "en";
+if($lang != "en" && $lang != "de" && $lang != "fr" && $lang != "cs") $lang = "en";
 $_SESSION['lang'] = $lang;
 
 // Get Language Strings
 $strings = file_get_contents('common/lang.json');
 $strings = json_decode($strings, true);
-	 if($lang == "fr") $strings = $strings['tables'][2];
+	 if($lang == "cs") $strings = $strings['tables'][3];
+else if($lang == "fr") $strings = $strings['tables'][2];
 else if($lang == "de") $strings = $strings['tables'][1];
 else                   $strings = $strings['tables'][0];
 
 
 
 // Version Hash
-$versionHash = "1553590182042";
+$versionHash = "1553590182050";

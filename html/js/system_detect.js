@@ -90,7 +90,7 @@ function step3(json)
 	var device_serial_number = json['device_serial_number'];
 
 	$.post({
-		url: 'https://api.batterx.io/v2/commissioning.php',
+		url: 'https://api.batterx.io/v2/commissioning_v2.php',
 		data: {
 			action: "verify_device",
 			serialnumber: device_serial_number
@@ -123,20 +123,58 @@ function step4(response)
 		url: 'api.php?get=settings',
 		error: () => { alert("E004. Please refresh the page!"); },
 		success: (response) => {
+
+			// Log Response
 			console.log(response);
+			
+			// Check If MachineModel Exists
 			if(!response || typeof response != 'object' || !response.hasOwnProperty('InverterParameters') || !response['InverterParameters'].hasOwnProperty('35'))
 				return alert("E005. Please refresh the page!");
+
+			// Get Machine Model
 			var deviceStandard = response['InverterParameters']['35']['s1'];
-			var isVde4105 = '0';
-			if(deviceStandard != '058') {
-				$('.standard').css('color', 'red');
-				$('.vde-status').removeClass('loading error success').addClass('error');
-				$('#btnApplyVDE4105').removeClass('invisible');
-			} else {
-				$('.standard').css('color', '#25ae88');
-				$('.vde-status').removeClass('loading error success').addClass('success');
-				isVde4105 = '1';
+			var isVde4105 = deviceStandard == '058' ? '1' : '0';
+			
+			// 058 = VDE4105 (Germany)
+			if(installationCountry == 'de') 
+			{
+				// Show Status
+				if(isVde4105 != '1') {
+					$('.standard').css('color', 'red');
+					$('.vde-status').removeClass('loading error success').addClass('error');
+					$('#machineModelBox').removeClass('invisible');
+					$(`#machineModelSelect option[value="${deviceStandard}"]`).append('*');
+				} else {
+					$('.standard').css('color', '#25ae88');
+					$('.vde-status').removeClass('loading error success').addClass('success');
+				}
 			}
+			// OTHER
+			else
+			{
+				var obj = {
+					'050': 'VDE',
+					'051': 'AS4777',
+					'052': 'DK',
+					'053': 'RD1663',
+					'054': 'G83',
+					'055': 'Taiwan',
+					'056': 'USH',
+					'057': 'USL',
+					'058': 'VDE4105',
+					'059': 'Korea',
+					'060': 'HongSun',
+					'061': 'Sweden'
+				}
+				// Show Status
+				$('.standard').css('color', 'black').html(`<b>${obj.hasOwnProperty(deviceStandard) ? obj[deviceStandard] : '-'}</b>`);
+				$('.vde-status').addClass('d-none');
+				$('#machineModelBox').removeClass('invisible');
+				$('#machineModelSelect').removeClass('border-danger').addClass('border-secondary');
+				$(`#machineModelSelect option[value="${deviceStandard}"]`).append('*');
+				$('#machineModelBtn').removeClass('btn-danger').addClass('btn-secondary');
+			}
+
 			// Store VDE Variable
 			$.post({
 				url: "cmd/session.php",
@@ -144,10 +182,8 @@ function step4(response)
 				error: () => { alert("E006. Please refresh the page!"); },
 				success: (response) => {
 					console.log(response);
-					if(response === '1')
-						$('#btn_next').attr('disabled', false);
-					else
-						alert("E007. Please refresh the page!");
+					if(response === '1') $('#btn_next').attr('disabled', false);
+					else alert("E007. Please refresh the page!");
 				}
 			});
 
@@ -164,14 +200,14 @@ function step4(response)
 
 
 
-// Button VDE4105 onClick
-$('#btnApplyVDE4105').on('click', () => {
-	// Switch to VDE4105
+// Button MachineModel onClick
+$('#machineModelBtn').on('click', () => {
+	// Switch to Selected MachineModel
 	$.get({
-		url: 'api.php?set=command&type=24117&entity=0&text2=058',
+		url: 'api.php?set=command&type=24117&entity=0&text2=' + $('#machineModelSelect').val(),
 		error: () => { alert("E008. Please refresh the page!"); },
 		success: () => {
-			$('#btnApplyVDE4105').hide();
+			$('#machineModelBox').hide();
 			$('#btn_next').attr('disabled', true);
 			$('.vde-loading').css('display', 'inline-block');
 			checkParameters();

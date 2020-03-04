@@ -159,20 +159,107 @@ MPPT 2
 								<label class="custom-control-label" for="bx_battery_type_1">Carbon</label>
 							</div>
 							<div class="custom-control custom-radio d-inline-block ml-4">
-								<input type="radio" id="bx_battery_type_2" name="bx_battery_type" class="custom-control-input" value="1">
-								<label class="custom-control-label" for="bx_battery_type_2"><?php echo $strings['no_batteries']; ?></label>
+								<input type="radio" id="bx_battery_type_9" name="bx_battery_type" class="custom-control-input" value="9">
+								<label class="custom-control-label" for="bx_battery_type_9"><?php echo $strings['other']; ?></label>
 							</div>
 						</div>
 
 						<div id="battery_section_0">
 							<p><?php echo $strings['batteries_serialnumber']; ?></p>
-							<input id="battery_1" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery1']; ?>">
-							<input id="battery_2" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery2']; ?>">
-							<input id="battery_3" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery3']; ?>">
-							<input id="battery_4" type="text" class="form-control form-control-outline mt-3" placeholder="<?php echo $strings['serialnumber_battery4']; ?>">
+							<input id="lifepo_battery_1" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "1", $strings['serialnumber_battery1']); ?>">
+							<input id="lifepo_battery_2" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "2", $strings['serialnumber_battery1']); ?>">
+							<input id="lifepo_battery_3" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "3", $strings['serialnumber_battery1']); ?>">
+							<input id="lifepo_battery_4" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "4", $strings['serialnumber_battery1']); ?>">
+							<div id="listAllModules" class="d-none">
+								<input id="lifepo_battery_5"  type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1",  "5", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_6"  type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1",  "6", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_7"  type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1",  "7", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_8"  type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1",  "8", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_9"  type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1",  "9", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_10" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "10", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_11" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "11", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_12" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "12", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_13" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "13", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_14" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "14", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_15" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "15", $strings['serialnumber_battery1']); ?>">
+								<input id="lifepo_battery_16" type="text" class="form-control form-control-outline mt-2" placeholder="<?php echo str_replace("1", "16", $strings['serialnumber_battery1']); ?>">
+							</div>
+							<div class="text-center">
+								<button type="button" id="btnShowAllModules" class="btn ripple mt-2"><small><b><?php echo $strings['show_more'] ?></b></small></button>
+							</div>
 						</div>
+
 						<div id="battery_section_1" style="display: none">
-							<!-- WRITE SOMETHING ABOUT THE CARBON BATTERIES ??? -->
+							<div class="mt-3 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-3"><?php echo $strings['batteries']; ?></span>
+								<select id="carbon_battery_model" class="custom-select-sm custom-select custom-select-outline w-50">
+									<option value="LC+700">LC+700 (4x12V)</option>
+									<option value="LC+1300">LC+1300 (4x12V)</option>
+									<option value="LC+2V500">LC+2V500 (24x2V)</option>
+								</select>
+							</div>
+							<div class="mt-3 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-3"><?php echo $strings['number_of_strings'] ?></span>
+								<select id="carbon_battery_strings" class="custom-select-sm custom-select custom-select-outline w-50">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</div>
+							<div class="mt-3 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-3"><?php echo $strings['capacity'] ?></span>
+								<input id="carbon_battery_capacity" type="text" class="form-control form-control-sm form-control-outline text-right w-50" value="2800 Wh" disabled>
+							</div>
+						</div>
+
+						<div id="battery_section_9" style="display: none">
+							<div class="mt-3 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-2 flex-grow-1"><small><?php echo $strings['battery_capacity'] ?></small></span>
+								<input id="other_battery_capacity" type="number" step="1" class="form-control form-control-outline p-1" style="width:25%;max-width:25%;height:calc(1.5em + 0.25rem + 2px);font-size:0.8rem">
+								<span class="d-inline-block pl-2" style="width:10%;min-width:10%"><small>Wh</small></span>
+							</div>
+							<div class="mt-3 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-2 flex-grow-1"><small><?php echo $strings['max_charging_current'] ?></small></span>
+								<input id="other_battery_maxChargingCurrent" type="number" step="1" class="form-control form-control-outline p-1" style="width:25%;max-width:25%;height:calc(1.5em + 0.25rem + 2px);font-size:0.8rem">
+								<span class="d-inline-block pl-2" style="width:10%;min-width:10%"><small>A</small></span>
+							</div>
+							<div class="mt-2 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-2 flex-grow-1"><small><?php echo $strings['max_discharging_current'] ?></small></span>
+								<input id="other_battery_maxDischargingCurrent" type="number" step="1" class="form-control form-control-outline p-1" style="width:25%;max-width:25%;height:calc(1.5em + 0.25rem + 2px);font-size:0.8rem">
+								<span class="d-inline-block pl-2" style="width:10%;min-width:10%"><small>A</small></span>
+							</div>
+							<div class="mt-3 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-2 flex-grow-1"><small><?php echo $strings['bulk_charging_voltage'] ?></small></span>
+								<input id="other_battery_bulkChargingVoltage" type="number" step="0.1" max="60" class="form-control form-control-outline p-1" style="width:25%;max-width:25%;height:calc(1.5em + 0.25rem + 2px);font-size:0.8rem">
+								<span class="d-inline-block pl-2" style="width:10%;min-width:10%"><small>V</small></span>
+							</div>
+							<div class="mt-2 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-2 flex-grow-1"><small><?php echo $strings['float_charging_voltage'] ?></small></span>
+								<input id="other_battery_floatChargingVoltage" type="number" step="0.1" max="60" class="form-control form-control-outline p-1" style="width:25%;max-width:25%;height:calc(1.5em + 0.25rem + 2px);font-size:0.8rem">
+								<span class="d-inline-block pl-2" style="width:10%;min-width:10%"><small>V</small></span>
+							</div>
+							<div class="mt-3 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-2 flex-grow-1"><small><?php echo $strings['cutoff_voltage_hybrid'] ?></small></span>
+								<input id="other_battery_cutoffVoltageHybrid" type="number" step="0.1" max="60" class="form-control form-control-outline p-1" style="width:25%;max-width:25%;height:calc(1.5em + 0.25rem + 2px);font-size:0.8rem">
+								<span class="d-inline-block pl-2" style="width:10%;min-width:10%"><small>V</small></span>
+							</div>
+							<div class="mt-2 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-2 flex-grow-1"><small><?php echo $strings['redischarging_voltage_hybrid'] ?></small></span>
+								<input id="other_battery_redischargeVoltageHybrid" type="number" step="0.1" max="60" class="form-control form-control-outline p-1" style="width:25%;max-width:25%;height:calc(1.5em + 0.25rem + 2px);font-size:0.8rem">
+								<span class="d-inline-block pl-2" style="width:10%;min-width:10%"><small>V</small></span>
+							</div>
+							<div class="mt-2 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-2 flex-grow-1"><small><?php echo $strings['cutoff_voltage'] ?></small></span>
+								<input id="other_battery_cutoffVoltage" type="number" step="0.1" max="60" class="form-control form-control-outline p-1" style="width:25%;max-width:25%;height:calc(1.5em + 0.25rem + 2px);font-size:0.8rem">
+								<span class="d-inline-block pl-2" style="width:10%;min-width:10%"><small>V</small></span>
+							</div>
+							<div class="mt-2 d-flex justify-content-between align-items-center">
+								<span class="d-inline-block pr-2 flex-grow-1"><small><?php echo $strings['redischarging_voltage'] ?></small></span>
+								<input id="other_battery_redischargeVoltage" type="number" step="0.1" max="60" class="form-control form-control-outline p-1" style="width:25%;max-width:25%;height:calc(1.5em + 0.25rem + 2px);font-size:0.8rem">
+								<span class="d-inline-block pl-2" style="width:10%;min-width:10%"><small>V</small></span>
+							</div>
 						</div>
 
 					</div>

@@ -5,7 +5,7 @@ $progress.trigger('step', 8);
 
 
 $('#checkboxAccept1, #checkboxAccept2').on('click', () => {
-	if(/*$('#checkboxAccept1').is(':checked') &&*/ $('#checkboxAccept2').is(':checked'))
+	if($('#checkboxAccept1').is(':checked') && $('#checkboxAccept2').is(':checked'))
 		$('#btnFinish').css('visibility', 'visible');
 	else
 		$('#btnFinish').css('visibility', 'hidden');
@@ -29,6 +29,8 @@ function getImageDimensions(file) {
 
 $('#btnFinishInstallation').on('click', function() {
 
+	$('#btnFinishInstallation').attr('disabled', 'disabled');
+
 	deviceModel = {
 		'h3'  : 'batterX h3',
 		'h5'  : 'batterX h5',
@@ -38,8 +40,8 @@ $('#btnFinishInstallation').on('click', function() {
 
 	var data = new FormData();
 
-	data.append('action' , 'finish_installation'                 );
-	data.append('lang'   , ($('#lang').val() == 'de' || $('#lang').val() == 'fr') ? $('#lang').val() : 'en');
+	data.append('action' , 'finish_installation');
+	data.append('lang'   , ($('#lang').val() == 'de' || $('#lang').val() == 'fr' || $('#lang').val() == 'cs' ) ? $('#lang').val() : 'en');
 
 	if(dataObj.hasOwnProperty('installation_date'     ) && dataObj['installation_date'     ] != "") data.append('installation_date'     , dataObj['installation_date'       ]);
 
@@ -80,10 +82,35 @@ $('#btnFinishInstallation').on('click', function() {
 	if(dataObj.hasOwnProperty('box_serial'            ) && dataObj['box_serial'            ] != "") data.append('box_serial'            , dataObj['box_serial'              ]);
 	if(dataObj.hasOwnProperty('software_version'      ) && dataObj['software_version'      ] != "") data.append('software_version'      , dataObj['software_version'        ]);
 
-	if(dataObj.hasOwnProperty('battery1_serial'       ) && dataObj['battery1_serial'       ] != "") data.append('battery1_serial'       , dataObj['battery1_serial'         ]);
-	if(dataObj.hasOwnProperty('battery2_serial'       ) && dataObj['battery2_serial'       ] != "") data.append('battery2_serial'       , dataObj['battery2_serial'         ]);
-	if(dataObj.hasOwnProperty('battery3_serial'       ) && dataObj['battery3_serial'       ] != "") data.append('battery3_serial'       , dataObj['battery3_serial'         ]);
-	if(dataObj.hasOwnProperty('battery4_serial'       ) && dataObj['battery4_serial'       ] != "") data.append('battery4_serial'       , dataObj['battery4_serial'         ]);
+	if(dataObj.hasOwnProperty('battery_type')) {
+		if(dataObj['battery_type'] == "lifepo") {
+			if(dataObj.hasOwnProperty('battery_type'    ) && dataObj['battery_type'    ] != "") data.append('battery_type'    , dataObj['battery_type'    ]);
+			if(dataObj.hasOwnProperty('battery1_serial' ) && dataObj['battery1_serial' ] != "") data.append('battery1_serial' , dataObj['battery1_serial' ]);
+			if(dataObj.hasOwnProperty('battery2_serial' ) && dataObj['battery2_serial' ] != "") data.append('battery2_serial' , dataObj['battery2_serial' ]);
+			if(dataObj.hasOwnProperty('battery3_serial' ) && dataObj['battery3_serial' ] != "") data.append('battery3_serial' , dataObj['battery3_serial' ]);
+			if(dataObj.hasOwnProperty('battery4_serial' ) && dataObj['battery4_serial' ] != "") data.append('battery4_serial' , dataObj['battery4_serial' ]);
+			if(dataObj.hasOwnProperty('battery5_serial' ) && dataObj['battery5_serial' ] != "") data.append('battery5_serial' , dataObj['battery5_serial' ]);
+			if(dataObj.hasOwnProperty('battery6_serial' ) && dataObj['battery6_serial' ] != "") data.append('battery6_serial' , dataObj['battery6_serial' ]);
+			if(dataObj.hasOwnProperty('battery7_serial' ) && dataObj['battery7_serial' ] != "") data.append('battery7_serial' , dataObj['battery7_serial' ]);
+			if(dataObj.hasOwnProperty('battery8_serial' ) && dataObj['battery8_serial' ] != "") data.append('battery8_serial' , dataObj['battery8_serial' ]);
+			if(dataObj.hasOwnProperty('battery9_serial' ) && dataObj['battery9_serial' ] != "") data.append('battery9_serial' , dataObj['battery9_serial' ]);
+			if(dataObj.hasOwnProperty('battery10_serial') && dataObj['battery10_serial'] != "") data.append('battery10_serial', dataObj['battery10_serial']);
+			if(dataObj.hasOwnProperty('battery11_serial') && dataObj['battery11_serial'] != "") data.append('battery11_serial', dataObj['battery11_serial']);
+			if(dataObj.hasOwnProperty('battery12_serial') && dataObj['battery12_serial'] != "") data.append('battery12_serial', dataObj['battery12_serial']);
+			if(dataObj.hasOwnProperty('battery13_serial') && dataObj['battery13_serial'] != "") data.append('battery13_serial', dataObj['battery13_serial']);
+			if(dataObj.hasOwnProperty('battery14_serial') && dataObj['battery14_serial'] != "") data.append('battery14_serial', dataObj['battery14_serial']);
+			if(dataObj.hasOwnProperty('battery15_serial') && dataObj['battery15_serial'] != "") data.append('battery15_serial', dataObj['battery15_serial']);
+			if(dataObj.hasOwnProperty('battery16_serial') && dataObj['battery16_serial'] != "") data.append('battery16_serial', dataObj['battery16_serial']);
+		} else if(dataObj['battery_type'] == "carbon") {
+			if(dataObj.hasOwnProperty('battery_type'    ) && dataObj['battery_type'    ] != "") data.append('battery_type'    , dataObj['battery_type'    ]);
+			if(dataObj.hasOwnProperty('battery_model'   ) && dataObj['battery_model'   ] != "") data.append('battery_model'   , dataObj['battery_model'   ]);
+			if(dataObj.hasOwnProperty('battery_strings' ) && dataObj['battery_strings' ] != "") data.append('battery_strings' , dataObj['battery_strings' ]);
+			if(dataObj.hasOwnProperty('battery_capacity') && dataObj['battery_capacity'] != "") data.append('battery_capacity', dataObj['battery_capacity']);
+		} else if(dataObj['battery_type'] == "other") {
+			if(dataObj.hasOwnProperty('battery_type'    ) && dataObj['battery_type'    ] != "") data.append('battery_type'    , dataObj['battery_type'    ]);
+			if(dataObj.hasOwnProperty('battery_capacity') && dataObj['battery_capacity'] != "") data.append('battery_capacity', dataObj['battery_capacity']);
+		}
+	}
 
 	$('#confirmLoadCorrect').removeClass('d-none');
 
@@ -94,7 +121,7 @@ $('#btnFinishInstallation').on('click', function() {
 
 		var img = canvas.toDataURL('image/jpeg');
 		var dimensions = await getImageDimensions(img);
-		console.log(dimensions);
+
 		var ratio = dimensions.w / dimensions.h;
 		var w = 190, h = 190 / ratio;
 		if(ratio < 0.68) { h = 277; w = 277 * ratio; }
@@ -112,7 +139,7 @@ $('#btnFinishInstallation').on('click', function() {
 		data.append('pdf_file', pdfBlob, lang['summary_installation_summary']);
 
 		$.post({
-			url: "https://api.batterx.io/v2/commissioning.php",
+			url: "https://api.batterx.io/v2/commissioning_v2.php",
 			data: data,
 			processData: false,
 			contentType: false,
@@ -123,7 +150,10 @@ $('#btnFinishInstallation').on('click', function() {
 					showSuccess();
 					$('#confirmLoadCorrect').removeClass('d-none');
 				}
-				else alert("Error: " + response);
+				else {
+					$('#btnFinishInstallation').removeAttr('disabled');
+					alert("Error: " + response);
+				}
 			}
 		});
 
@@ -155,7 +185,7 @@ $('#btnDownload').on('click', function() {
 	}).then(async canvas => {
 		var img = canvas.toDataURL('image/jpeg');
 		var dimensions = await getImageDimensions(img);
-		console.log(dimensions);
+		
 		var ratio = dimensions.w / dimensions.h;
 		var w = 190, h = 190 / ratio;
 		if(ratio < 0.68) { h = 277; w = 277 * ratio; }
