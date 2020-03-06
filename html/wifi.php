@@ -97,6 +97,9 @@ if(preg_match('/"(.*?)"/', $connectedTo, $match) == 1)
 				</select>
 				<input id="ssid_password" name="ssid_password" type="password" class="form-control form-control-outline text-monospace mt-4" placeholder="Password" autocomplete="off" required>
 				<button type="submit" class="btn btn-primary btn-block text-monospace mt-4">CONNECT</button>
+				<div class="progress mt-4" style="height:38px;border-radius:.25rem;display:none">
+					<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width:0%"></div>
+				</div>
 			</form>
 		</div>
 
@@ -104,7 +107,13 @@ if(preg_match('/"(.*?)"/', $connectedTo, $match) == 1)
 
 		<script>
 			$('#wifi_connect_form').on('submit', () => {
-				$('#wifi_connect_form button').attr('disabled', true).text("PLEASE WAIT");
+				$('#wifi_connect_form button').attr('disabled', true).hide();
+				$('#wifi_connect_form .progress').show();
+				var currentValue = 0;
+				setInterval(() => {
+					currentValue = currentValue > 99 ? currentValue : currentValue + 1;
+					$('#wifi_connect_form .progress .progress-bar').css('width', currentValue+'%');
+				}, 150);
 			});
 		</script>
 
