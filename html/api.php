@@ -145,7 +145,8 @@ else if(isset($_GET['get']) && strtolower($_GET['get']) == 'history') {
 				$row['load_power'           ] === null ? null : intval($row['load_power'           ]),
 				$row['house_power'          ] === null ? null : intval($row['house_power'          ]),
 				$row['solar_power'          ] === null ? null : intval($row['solar_power'          ]),
-				$row['extsol_power'         ] === null ? null : intval($row['extsol_power'         ])
+				$row['extsol_power'         ] === null ? null : intval($row['extsol_power'         ]),
+				$row['gridsol_power'        ] === null ? null : intval($row['gridsol_power'        ])
 			];
 		}
 

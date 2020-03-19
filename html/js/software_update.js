@@ -42,7 +42,7 @@ function performUpdate()
 			$("#notif").removeClass("loading error success").addClass("error");
 			$("#message").html(lang['no_internet_connection']).css('color', 'red');
 			$("#errorInfo").removeClass('d-none');
-			setTimeout(performUpdate, 5000); // Retry after 5 minutes
+			setTimeout(performUpdate, 5000); // Retry after 5 seconds
 		},
 		success: () => {
 

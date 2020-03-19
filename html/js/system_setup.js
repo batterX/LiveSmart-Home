@@ -930,6 +930,19 @@ function setupLiFePO_2()
 		}
 	}
 
+	// Set Grid MaxInjectionPower
+	var maxGridFeedInPower = 3000; // x1.00W
+		 if(deviceModel == "h3" ) { maxGridFeedInPower =  3000; }
+	else if(deviceModel == "h5" ) { maxGridFeedInPower =  5000; }
+	else if(deviceModel == "h5e") { maxGridFeedInPower =  5500; }
+	else if(deviceModel == "h10") { maxGridFeedInPower = 10000; }
+	maxGridFeedInPower = Math.round(Math.min(Math.max(parseInt($('#solar_wattPeak').val()) * parseInt($('#solar_feedInLimitation').val()) / 100, 50), maxGridFeedInPower)).toString();
+	$.get({
+		url: `api.php?set=command&type=20736&entity=1&text2=${maxGridFeedInPower}`,
+		error: () => { alert("E104. Please refresh the page!"); },
+		success: (response) => { if(response != '1') return alert("E104. Please refresh the page!"); }
+	});
+
 	// Verify LiFePO Communication
 	$.get({
 		url: "api.php?set=command&type=24114&entity=0&text2=5320,5300",
@@ -1302,6 +1315,19 @@ function setupCarbon_2()
 		}
 	}
 
+	// Set Grid MaxInjectionPower
+	var maxGridFeedInPower = 3000; // x1.00W
+		 if(deviceModel == "h3" ) { maxGridFeedInPower =  3000; }
+	else if(deviceModel == "h5" ) { maxGridFeedInPower =  5000; }
+	else if(deviceModel == "h5e") { maxGridFeedInPower =  5500; }
+	else if(deviceModel == "h10") { maxGridFeedInPower = 10000; }
+	maxGridFeedInPower = Math.round(Math.min(Math.max(parseInt($('#solar_wattPeak').val()) * parseInt($('#solar_feedInLimitation').val()) / 100, 50), maxGridFeedInPower)).toString();
+	$.get({
+		url: `api.php?set=command&type=20736&entity=1&text2=${maxGridFeedInPower}`,
+		error: () => { alert("E104. Please refresh the page!"); },
+		success: (response) => { if(response != '1') return alert("E104. Please refresh the page!"); }
+	});
+
 	setupCarbon_3();
 }
 
@@ -1358,7 +1384,7 @@ function setupCarbon_4()
 	newParameters['maxChargingCurrent'      ] = Math.min(Math.round(batteryCapacity * 0.15 / 48) * 100, maxChargingCurrent).toString();
 	newParameters['maxChargingCurrentAC'    ] = Math.min(Math.round(batteryCapacity * 0.15 / 48) * 100, maxChargingCurrent).toString();
 	newParameters['chargingVoltage'         ] = '5600,5400';
-	newParameters['dischargingVoltage'      ] = '4700,5200,4300,4800';
+	newParameters['dischargingVoltage'      ] = '4680,5200,4300,4800';
 	newParameters['maxDischargingCurrent'   ] = Math.min(Math.round(batteryCapacity * 0.20 / 48), maxDischargingCurrent).toString();
 	newParameters['batteryType'             ] = '0';
 	newParameters['solarEnergyPriority'     ] = '1';
@@ -1587,6 +1613,19 @@ function setupOther_2()
 			});
 		}
 	}
+
+	// Set Grid MaxInjectionPower
+	var maxGridFeedInPower = 3000; // x1.00W
+		 if(deviceModel == "h3" ) { maxGridFeedInPower =  3000; }
+	else if(deviceModel == "h5" ) { maxGridFeedInPower =  5000; }
+	else if(deviceModel == "h5e") { maxGridFeedInPower =  5500; }
+	else if(deviceModel == "h10") { maxGridFeedInPower = 10000; }
+	maxGridFeedInPower = Math.round(Math.min(Math.max(parseInt($('#solar_wattPeak').val()) * parseInt($('#solar_feedInLimitation').val()) / 100, 50), maxGridFeedInPower)).toString();
+	$.get({
+		url: `api.php?set=command&type=20736&entity=1&text2=${maxGridFeedInPower}`,
+		error: () => { alert("E104. Please refresh the page!"); },
+		success: (response) => { if(response != '1') return alert("E104. Please refresh the page!"); }
+	});
 
 	setupOther_3();
 }

@@ -170,6 +170,7 @@ function mainLoop()
 
 			if(json_has(  '369', '1')) $(  '#369_1').html(round(json_get(  '369', '1') * 1   , 1));
 			if(json_has('24582', '1')) $('#24582_1').html(round(json_get('24582', '1') * 1   , 1));
+			if(json_has( '2913', '9')) $( '#2913_9').html(round(json_get( '2913', '9') * 1   , 1));
 
 
 
