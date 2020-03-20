@@ -1145,7 +1145,7 @@ function setupLiFePO_4()
 	if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 	if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 	if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-	if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupLiFePO_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
+	//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupLiFePO_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
 	if(!retry) {
 		$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
@@ -1218,7 +1218,7 @@ function setupLiFePO_checkParameters()
 			if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 			if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 			if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-			if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupLiFePO_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
+			//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupLiFePO_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
 			if(!retry) {
 				$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
@@ -1442,7 +1442,7 @@ function setupCarbon_4()
 	if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 	if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 	if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupCarbon_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-	if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupCarbon_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
+	//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupCarbon_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
 	if(!retry) {
 		$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
@@ -1517,7 +1517,7 @@ function setupCarbon_checkParameters()
 			if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 			if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 			if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupCarbon_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-			if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupCarbon_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
+			//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupCarbon_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
 			if(!retry) {
 				$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
@@ -1747,7 +1747,7 @@ function setupOther_4()
 	if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupOther_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 	if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupOther_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 	if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupOther_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-	if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupOther_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
+	//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupOther_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
 	if(!retry) {
 		$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
@@ -1822,7 +1822,7 @@ function setupOther_checkParameters()
 			if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupOther_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 			if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupOther_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 			if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupOther_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-			if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupOther_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
+			//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupOther_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
 			if(!retry) {
 				$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
