@@ -944,15 +944,19 @@ function setupLiFePO_2()
 	});
 
 	// Verify LiFePO Communication
-	$.get({
-		url: "api.php?set=command&type=24114&entity=0&text2=5320,5300",
-		error: () => { alert("E016. Please refresh the page!"); },
-		success: (response) => {
-			if(response != '1') return alert("E017. Please refresh the page!");
-			tempDatetime = "";
-			setupLiFePO_2_check();
-		}
-	});
+	if(deviceModel == "h5" || deviceModel == "h10") {
+		$.get({
+			url: "api.php?set=command&type=24114&entity=0&text2=5320,5300",
+			error: () => { alert("E016. Please refresh the page!"); },
+			success: (response) => {
+				if(response != '1') return alert("E017. Please refresh the page!");
+				tempDatetime = "";
+				setupLiFePO_2_check();
+			}
+		});
+	} else {
+		setupLiFePO_3();
+	}
 }
 
 
@@ -1082,7 +1086,7 @@ function setupLiFePO_4()
 	var maxDischargingCurrent =  150; // x1.00A
 		 if(deviceModel == "h3" ) { maxChargingCurrent =  2500; maxDischargingCurrent = 150; maxGridFeedInPower =  3000; }
 	else if(deviceModel == "h5" ) { maxChargingCurrent =  6000; maxDischargingCurrent = 150; maxGridFeedInPower =  5000; }
-	else if(deviceModel == "h5e") { maxChargingCurrent = 10000; maxDischargingCurrent = 150; maxGridFeedInPower =  5500; }
+	else if(deviceModel == "h5e") { maxChargingCurrent =  6000; maxDischargingCurrent = 150; maxGridFeedInPower =  5500; }
 	else if(deviceModel == "h10") { maxChargingCurrent = 20000; maxDischargingCurrent = 300; maxGridFeedInPower = 10000; }
 
 	newParameters['maxChargingCurrentAC'    ] = Math.min(numberOfModules * 37 * 100, maxChargingCurrent).toString();

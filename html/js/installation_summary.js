@@ -41,7 +41,7 @@ $('#btnFinishInstallation').on('click', function() {
 	var data = new FormData();
 
 	data.append('action' , 'finish_installation');
-	data.append('lang'   , ($('#lang').val() == 'de' || $('#lang').val() == 'fr' || $('#lang').val() == 'cs' ) ? $('#lang').val() : 'en');
+	data.append('lang'   , ($('#lang').val() == 'de' || $('#lang').val() == 'fr' || $('#lang').val() == 'cs' || $('#lang').val() == 'es' ) ? $('#lang').val() : 'en');
 
 	if(dataObj.hasOwnProperty('installation_date'     ) && dataObj['installation_date'     ] != "") data.append('installation_date'     , dataObj['installation_date'       ]);
 
