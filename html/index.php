@@ -48,21 +48,25 @@ $_SESSION['last_step'] = $step;
 					<h1>Select Language</h1>
 
 					<div class="row lang">
-						<div id="lang_en" class="col">
+						<div id="lang_en" class="box col">
 							<div class="lang-en"></div>
 							<span>English</span>
 						</div>
-						<div id="lang_de" class="col">
+						<div id="lang_de" class="box col">
 							<div class="lang-de"></div>
 							<span>Deutsch</span>
 						</div>
-						<div id="lang_fr" class="col">
+						<div id="lang_fr" class="box col">
 							<div class="lang-fr"></div>
 							<span>Français</span>
 						</div>
-						<div id="lang_cs" class="col">
+						<div id="lang_cs" class="box col">
 							<div class="lang-cs"></div>
 							<span>Čeština</span>
+						</div>
+						<div id="lang_es" class="box col">
+							<div class="lang-es"></div>
+							<span>Español</span>
 						</div>
 					</div>
 

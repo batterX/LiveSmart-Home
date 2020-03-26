@@ -2,3 +2,4 @@ $('#lang_en').on('click', () => { window.location.href = "software_update.php?la
 $('#lang_de').on('click', () => { window.location.href = "software_update.php?lang=de"; });
 $('#lang_fr').on('click', () => { window.location.href = "software_update.php?lang=fr"; });
 $('#lang_cs').on('click', () => { window.location.href = "software_update.php?lang=cs"; });
+$('#lang_es').on('click', () => { window.location.href = "software_update.php?lang=es"; });

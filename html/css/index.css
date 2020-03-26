@@ -7,7 +7,7 @@ body {
 }
 
 .container {
-	max-width: 800px !important;
+	max-width: 600px !important;
 }
 
 .container > div {
@@ -34,36 +34,37 @@ h1 {
 	margin: 0;
 	font-size: 5vmin;
 	margin-top: 7.5vmin;
+	margin-bottom: 7.5vmin;
 }
 
 
 
-.row, .col {
+.row, .box {
 	margin: 0;
 	padding: 0;
 }
 
-.col {
-	margin-top: 2.5vmin !important;
+.box {
 	cursor: pointer;
 	border-radius: 1vmin;
-	padding-top: 3.75vmin !important;
-	padding-bottom: 3.75vmin !important;
+	padding-top: 2vmin !important;
+	padding-bottom: 2vmin !important;
 }
-.col:hover  { background: rgba(0, 0, 0, 0.10); }
-.col:active { background: rgba(0, 0, 0, 0.15); }
+.box:hover  { background: rgba(0, 0, 0, 0.10); }
+.box:active { background: rgba(0, 0, 0, 0.15); }
 
-.col > div {
+.box > div {
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 	height: 10vmin;
 }
 
-.col span {
+.box span {
 	display: block;
 	font-size: 2.5vmin;
 	margin-top: 1.5vmin;
+	font-weight: 500;
 }
 
 
@@ -72,3 +73,4 @@ h1 {
 #lang_de > div { background-image: url(../img/lang_de.png) }
 #lang_fr > div { background-image: url(../img/lang_fr.png) }
 #lang_cs > div { background-image: url(../img/lang_cs.png) }
+#lang_es > div { background-image: url(../img/lang_es.png) }
