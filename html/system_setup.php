@@ -109,14 +109,14 @@ $_SESSION['last_step'] = $step;
 
 						<label for="solar_wattPeak"><?php echo $strings['pv_system_size']; ?></label>
 						<div>
-							<input id="solar_wattPeak" class="form-control form-control-outline d-inline-block w-65" type="number" step="1" min="0" required>
-							<span class="pl-3"><?php echo $strings['watt_peak']; ?></span>
+							<input id="solar_wattPeak" class="form-control form-control-outline d-inline-block w-50" type="number" step="1" min="0" required>
+							<span class="pl-2"><?php echo $strings['watt_peak']; ?></span>
 						</div>
 
 						<label class="mt-4" for="solar_feedInLimitation"><?php echo $strings['pv_system_feed_in_limitation']; ?></label>
 						<div>
-							<input id="solar_feedInLimitation" class="form-control form-control-outline d-inline-block w-65" type="number" step="1" min="0" max="100" value="100" required>
-							<span class="pl-3">%</span>
+							<input id="solar_feedInLimitation" class="form-control form-control-outline d-inline-block w-50" type="number" step="1" min="0" max="100" value="100" required>
+							<span class="pl-2">%</span>
 						</div>
 
 						<label class="mt-4" for="solar_info"><?php echo $strings['pv_installation_info']; ?></label>

@@ -29,6 +29,7 @@ var tempDatetime   = "";
 
 var isSettingParameters = false;
 var checkParametersInterval;
+var checkParametersCounter;
 
 
 
@@ -422,18 +423,22 @@ function step3()
 			console.log(response);
 			var box_serial = response;
 			// Save Serial-Number to Session
-			$.post({
-				url: "cmd/session.php",
-				data: { box_serial: box_serial },
-				error: () => { alert("E005. Please refresh the page!"); },
-				success: (response) => {
-					console.log(response);
-					if(response !== '1')
-						return alert("E006. Please refresh the page!");
-					$('#bx_box').val(box_serial);
-					step4();
-				}
-			});
+			if(box_serial) {
+				$.post({
+					url: "cmd/session.php",
+					data: { box_serial: box_serial },
+					error: () => { alert("E005. Please refresh the page!"); },
+					success: (response) => {
+						console.log(response);
+						if(response !== '1')
+							return alert("E006. Please refresh the page!");
+						$('#bx_box').val(box_serial);
+						step4();
+					}
+				});
+			} else {
+				alert(`Your liveX is not registered in our database.\nPlease contact batterX to resolve the issue.\n\nAPIKEY\n${systemApikey}\n`);
+			}
 		}
 	});
 }
@@ -551,8 +556,13 @@ function step5()
 // Main Form On-Submit
 
 $('#mainForm').on('submit', (e) => {
-
 	e.preventDefault();
+	mainFormSubmit();
+});
+
+function mainFormSubmit() {
+
+	checkParametersInterval = undefined;
 
 	if(isLiFePO())
 	{
@@ -596,6 +606,12 @@ $('#mainForm').on('submit', (e) => {
 			$("#other_battery_cutoffVoltageHybrid     ").val() == "" ||
 			$("#other_battery_redischargeVoltageHybrid").val() == ""
 		) return;
+	}
+
+	// Confirm Solar Watt Peak (if between 1 and 100)
+	if(parseInt($("#solar_wattPeak").val()) > 0 && parseInt($("#solar_wattPeak").val()) <= 100) {
+		var tempFlag = confirm(`The size of the PV-System seems very low.\n\nPlease confirm that the size is only ${$("#solar_wattPeak").val()} Wp,\nor cancel and change it to the correct value\n`);
+		if(!tempFlag) return $("#solar_wattPeak").val("");
 	}
 
 	// DISABLE ALL FIELDS
@@ -658,6 +674,7 @@ $('#mainForm').on('submit', (e) => {
 	$('html, body').scrollTop($(document).height());
 
 	// START SETUP
+	checkParametersCounter = 0;
 	if(isLiFePO())
 		setupLiFePO();
 	else if(isCarbon())
@@ -665,7 +682,16 @@ $('#mainForm').on('submit', (e) => {
 	else
 		setupOther();
 
-});
+}
+
+function showSettingParametersError(errorStr) {
+	clearInterval(checkParametersInterval);
+	// HIDE LOADING SCREEN
+	isSettingParameters = false;
+	$('#notif').removeClass('loading error success').addClass('error');
+	$('#message').html(errorStr).css('color', 'red');
+	$('#btn_next').attr('disabled', false).unbind().on('click', () => { mainFormSubmit(); });
+}
 
 
 
@@ -1149,7 +1175,6 @@ function setupLiFePO_4()
 	if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 	if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 	if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-	//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupLiFePO_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
 	if(!retry) {
 		$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
@@ -1222,14 +1247,43 @@ function setupLiFePO_checkParameters()
 			if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 			if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 			if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-			//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupLiFePO_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
-			if(!retry) {
+			if(!retry)
+			{
 				$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
 				$('#notif').removeClass("loading error success").addClass("success");
 				// Next Step
 				setTimeout(function() { window.location.href = "system_test.php"; }, 2500);
-			} else console.log("RETRYING, PLEASE WAIT !!!");
+			}
+			else
+			{
+				checkParametersCounter++;
+				
+				if(checkParametersCounter < 5)
+				{
+					console.log("RETRYING, PLEASE WAIT !!!");
+				}
+				else
+				{
+					// SHOW ERROR - PARAMETER NOT ACCEPTED
+
+						 if(newParameters['maxChargingCurrentAC'    ] != oldParameters['maxChargingCurrentAC'    ]) showSettingParametersError("Problem when setting maxChargingCurrentAC"    );
+					else if(newParameters['chargingVoltage'         ] != oldParameters['chargingVoltage'         ]) showSettingParametersError("Problem when setting chargingVoltage"         );
+					else if(newParameters['dischargingVoltage'      ] != oldParameters['dischargingVoltage'      ]) showSettingParametersError("Problem when setting dischargingVoltage"      );
+					else if(newParameters['batteryType'             ] != oldParameters['batteryType'             ]) showSettingParametersError("Problem when setting batteryType"             );
+					else if(newParameters['solarEnergyPriority'     ] != oldParameters['solarEnergyPriority'     ]) showSettingParametersError("Problem when setting solarEnergyPriority"     );
+					else if(newParameters['allowBatteryCharging'    ] != oldParameters['allowBatteryCharging'    ]) showSettingParametersError("Problem when setting allowBatteryCharging"    );
+					else if(newParameters['allowBatteryChargingAC'  ] != oldParameters['allowBatteryChargingAC'  ]) showSettingParametersError("Problem when setting allowBatteryChargingAC"  );
+					else if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) showSettingParametersError("Problem when setting allowGridInjection"      );
+					else if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) showSettingParametersError("Problem when setting allowDischargingSolarOK" );
+					else if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) showSettingParametersError("Problem when setting allowDischargingSolarNOK");
+					
+					else if(newParameters['maxDischargingCurrent'   ] != oldParameters['maxDischargingCurrent'   ]) {
+						var modulesCount = parseInt(oldParameters['maxDischargingCurrent']) / 37;
+						showSettingParametersError(lang.lifepo_recognition_problem.split('X').join(modulesCount));
+					}
+				}
+			}
 
 		}
 	});
@@ -1446,7 +1500,6 @@ function setupCarbon_4()
 	if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 	if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 	if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupCarbon_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-	//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupCarbon_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
 	if(!retry) {
 		$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
@@ -1521,14 +1574,40 @@ function setupCarbon_checkParameters()
 			if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 			if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 			if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupCarbon_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-			//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupCarbon_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
-			if(!retry) {
+			if(!retry)
+			{
 				$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
 				$('#notif').removeClass("loading error success").addClass("success");
 				// Next Step
 				setTimeout(function() { window.location.href = "system_test.php"; }, 2500);
-			} else console.log("RETRYING, PLEASE WAIT !!!");
+			}
+			else
+			{
+				checkParametersCounter++;
+				
+				if(checkParametersCounter < 5)
+				{
+					console.log("RETRYING, PLEASE WAIT !!!");
+				}
+				else
+				{
+					// SHOW ERROR - PARAMETER NOT ACCEPTED
+
+						 if(newParameters['maxChargingCurrent'      ] != oldParameters['maxChargingCurrent'      ]) showSettingParametersError("Problem when setting maxChargingCurrent"      );
+					else if(newParameters['maxChargingCurrentAC'    ] != oldParameters['maxChargingCurrentAC'    ]) showSettingParametersError("Problem when setting maxChargingCurrentAC"    );
+					else if(newParameters['chargingVoltage'         ] != oldParameters['chargingVoltage'         ]) showSettingParametersError("Problem when setting chargingVoltage"         );
+					else if(newParameters['dischargingVoltage'      ] != oldParameters['dischargingVoltage'      ]) showSettingParametersError("Problem when setting dischargingVoltage"      );
+					else if(newParameters['maxDischargingCurrent'   ] != oldParameters['maxDischargingCurrent'   ]) showSettingParametersError("Problem when setting maxDischargingCurrent"   );
+					else if(newParameters['batteryType'             ] != oldParameters['batteryType'             ]) showSettingParametersError("Problem when setting batteryType"             );
+					else if(newParameters['solarEnergyPriority'     ] != oldParameters['solarEnergyPriority'     ]) showSettingParametersError("Problem when setting solarEnergyPriority"     );
+					else if(newParameters['allowBatteryCharging'    ] != oldParameters['allowBatteryCharging'    ]) showSettingParametersError("Problem when setting allowBatteryCharging"    );
+					else if(newParameters['allowBatteryChargingAC'  ] != oldParameters['allowBatteryChargingAC'  ]) showSettingParametersError("Problem when setting allowBatteryChargingAC"  );
+					else if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) showSettingParametersError("Problem when setting allowGridInjection"      );
+					else if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) showSettingParametersError("Problem when setting allowDischargingSolarOK" );
+					else if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) showSettingParametersError("Problem when setting allowDischargingSolarNOK");
+				}
+			}
 
 		}
 	});
@@ -1751,7 +1830,6 @@ function setupOther_4()
 	if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupOther_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 	if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupOther_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 	if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupOther_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-	//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupOther_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
 	if(!retry) {
 		$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
@@ -1826,14 +1904,40 @@ function setupOther_checkParameters()
 			if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) { retry = true; setupOther_sendCommand(24066, 0, "", "C," + newParameters['allowGridInjection'      ]); }
 			if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) { retry = true; setupOther_sendCommand(24066, 0, "", "D," + newParameters['allowDischargingSolarOK' ]); }
 			if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) { retry = true; setupOther_sendCommand(24066, 0, "", "E," + newParameters['allowDischargingSolarNOK']); }
-			//if(newParameters['maxGridFeedInPower'      ] != oldParameters['maxGridFeedInPower'      ]) { retry = true; setupOther_sendCommand(24085, 0, "",        newParameters['maxGridFeedInPower'      ]); }
 
-			if(!retry) {
+			if(!retry)
+			{
 				$('.setting-progress span').html(lang['setting_success']).css('color', '#25ae88');
 				$('#notif').removeClass("loading error success").addClass("success");
 				// Next Step
 				setTimeout(function() { window.location.href = "system_test.php"; }, 2500);
-			} else console.log("RETRYING, PLEASE WAIT !!!");
+			}
+			else
+			{
+				checkParametersCounter++;
+				
+				if(checkParametersCounter < 5)
+				{
+					console.log("RETRYING, PLEASE WAIT !!!");
+				}
+				else
+				{
+					// SHOW ERROR - PARAMETER NOT ACCEPTED
+
+						 if(newParameters['maxChargingCurrent'      ] != oldParameters['maxChargingCurrent'      ]) showSettingParametersError("Problem when setting maxChargingCurrent"      );
+					else if(newParameters['maxChargingCurrentAC'    ] != oldParameters['maxChargingCurrentAC'    ]) showSettingParametersError("Problem when setting maxChargingCurrentAC"    );
+					else if(newParameters['chargingVoltage'         ] != oldParameters['chargingVoltage'         ]) showSettingParametersError("Problem when setting chargingVoltage"         );
+					else if(newParameters['dischargingVoltage'      ] != oldParameters['dischargingVoltage'      ]) showSettingParametersError("Problem when setting dischargingVoltage"      );
+					else if(newParameters['maxDischargingCurrent'   ] != oldParameters['maxDischargingCurrent'   ]) showSettingParametersError("Problem when setting maxDischargingCurrent"   );
+					else if(newParameters['batteryType'             ] != oldParameters['batteryType'             ]) showSettingParametersError("Problem when setting batteryType"             );
+					else if(newParameters['solarEnergyPriority'     ] != oldParameters['solarEnergyPriority'     ]) showSettingParametersError("Problem when setting solarEnergyPriority"     );
+					else if(newParameters['allowBatteryCharging'    ] != oldParameters['allowBatteryCharging'    ]) showSettingParametersError("Problem when setting allowBatteryCharging"    );
+					else if(newParameters['allowBatteryChargingAC'  ] != oldParameters['allowBatteryChargingAC'  ]) showSettingParametersError("Problem when setting allowBatteryChargingAC"  );
+					else if(newParameters['allowGridInjection'      ] != oldParameters['allowGridInjection'      ]) showSettingParametersError("Problem when setting allowGridInjection"      );
+					else if(newParameters['allowDischargingSolarOK' ] != oldParameters['allowDischargingSolarOK' ]) showSettingParametersError("Problem when setting allowDischargingSolarOK" );
+					else if(newParameters['allowDischargingSolarNOK'] != oldParameters['allowDischargingSolarNOK']) showSettingParametersError("Problem when setting allowDischargingSolarNOK");
+				}
+			}
 
 		}
 	});

@@ -14,6 +14,15 @@ foreach ($ssidArr as $key => $value) {
 }
 
 // Connect to Wi-Fi on form submit
+if(isset($_POST['disconnect']) && $_POST['disconnect'] == "1")
+{
+	// 1) Remove All WiFi Networks
+	exec('sudo sed -i -e \'/network={/,$d\' /etc/wpa_supplicant/wpa_supplicant.conf');
+	// 3) Restart Services
+	exec('sudo systemctl daemon-reload; sudo systemctl restart dhcpcd');
+	// 4) Sleep for 15 seconds
+	sleep(15);
+}
 if(isset($_POST['ssid_name']) && isset($_POST['ssid_password']))
 {
 	$ssid = $_POST['ssid_name'    ]; $ssid = str_replace('"', '\\"', $ssid);
@@ -77,9 +86,13 @@ if(preg_match('/"(.*?)"/', $connectedTo, $match) == 1)
 		
 		<?php if($connectedTo != ""): ?>
 			<div class="active-box shadow rounded p-3 mb-3">
-				<div class="alert-success rounded text-center w-100 p-3">
-					Connected to <b><?php echo $connectedTo ?></b>
-				</div>
+				<form method="post" autocomplete="off">
+					<input type="hidden" name="disconnect" value="1">
+					<div class="alert-success rounded text-center w-100 p-3">
+						<p class="mb-3">Connected to <b><?php echo $connectedTo ?></b></p>
+						<button type="submit" class="btn btn-danger btn-sm" style="font-size: 0.75rem">Disconnect</button>
+					</div>
+				</form>
 			</div>
 		<?php elseif(isset($_POST['ssid_name']) && isset($_POST['ssid_password'])): ?>
 			<div class="active-box shadow rounded p-3 mb-3">
