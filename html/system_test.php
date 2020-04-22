@@ -78,7 +78,7 @@ $_SESSION['last_step'] = $step;
 
 					<div id="testBatteryCharging" class="status d-flex align-items-center mt-4">
 						<div class="notif"></div>
-						<span><?php echo $strings['battery_charging']; ?></span>
+						<span><?php echo $strings['battery_charging']; ?><span></span></span>
 					</div>
 
 					<div id="testUpsMode" class="status d-flex align-items-center mt-4">

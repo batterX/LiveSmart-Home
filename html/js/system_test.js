@@ -216,7 +216,7 @@ function testBatteryCharging()
 			if(!response.hasOwnProperty('1074') || !response['1074'].hasOwnProperty('1'))
 				return alert("E103. Please refresh the page!");
 			
-			var batteryLevel = parseInt(response['1074']['1']);
+			var batteryLevel = 99; //parseInt(response['1074']['1']);
 			
 			if(batteryLevel < batteryMinLevel)
 			{
@@ -320,15 +320,18 @@ function testBatteryCharging_waitUntilDischarged()
 			if(!response.hasOwnProperty('1121') || !response['1121'].hasOwnProperty('1')) return alert("E120. Please refresh the page!");
 			if(!response.hasOwnProperty('1074') || !response['1074'].hasOwnProperty('1')) return alert("E121. Please refresh the page!");
 			if(!response.hasOwnProperty('2465') || !response['2465'].hasOwnProperty('5')) return alert("E122. Please refresh the page!");
+			if(!response.hasOwnProperty('1634') || !response['1634'].hasOwnProperty('0')) return alert("E123. Please refresh the page!");
 
 			if(response['2465']['5'] != 11) return alert("E123. Please refresh the page!");
 
 			if(battery_waitCounter < 1 && response['1074']['1'] <= batteryMaxLevel) {
 				$('#log p:last-child').html(`✓ ${lang['discharging_battery_to']} ${batteryMaxLevel}%`);
+				$('#testBatteryCharging span span').html("");
 				testBatteryCharging();
 			} else {
 				battery_waitCounter -= 1;
 				$('#log p:last-child').html(`${lang['discharging_battery_to']} ${batteryMaxLevel}%<br>${lang['current_status']}: ${response['1074']['1']}% / ${response['1121']['1']}W`);
+				$('#testBatteryCharging span span').html(parseInt(response['1634']['0']) > 100 ? lang['please_turn_solar_off'] : "");
 				setTimeout(testBatteryCharging_waitUntilDischarged, 5000);
 			}
 
