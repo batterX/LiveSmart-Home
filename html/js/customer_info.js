@@ -99,6 +99,10 @@ $.get({
 							$("#installationAddress .location-address").val() == $("#customerInformations .location-address").val()
 						) $("#sameAddress").attr("checked", true).trigger("change");
 					}
+					// Show Error Message If Different Installer And Redirect to Index
+					if(json.hasOwnProperty('installer') && json.installer.hasOwnProperty('email') && json.installer.email != installerEmail) {
+						alert("You are not the installer of this system therefore, you will not be able to finish the installation.");
+					}
 				}
 
 			}
