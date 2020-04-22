@@ -216,7 +216,7 @@ function testBatteryCharging()
 			if(!response.hasOwnProperty('1074') || !response['1074'].hasOwnProperty('1'))
 				return alert("E103. Please refresh the page!");
 			
-			var batteryLevel = 99; //parseInt(response['1074']['1']);
+			var batteryLevel = parseInt(response['1074']['1']);
 			
 			if(batteryLevel < batteryMinLevel)
 			{
