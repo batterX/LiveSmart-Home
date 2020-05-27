@@ -71,15 +71,15 @@ $.get({
 							json.customer.hasOwnProperty('address'     ) && json.customer.address     != ""
 						) {
 							// Set Input Values
-							$("#customerInformations .gender"          ).attr('disabled', true).val(json.customer.gender);
-							$("#customerInformations .first-name"      ).attr('disabled', true).val(json.customer.firstname);
-							$("#customerInformations .last-name"       ).attr('disabled', true).val(json.customer.lastname);
-							$("#customerInformations .email"           ).attr('disabled', true).val(json.customer.email);
-							$("#customerInformations .telephone"       ).attr('disabled', true).val(json.customer.telephone);
-							$("#customerInformations .location-country").attr('disabled', true).val(json.customer.country);
-							$("#customerInformations .location-city"   ).attr('disabled', true).val(json.customer.city);
-							$("#customerInformations .location-zip"    ).attr('disabled', true).val(json.customer.zipcode);
-							$("#customerInformations .location-address").attr('disabled', true).val(json.customer.address);
+							$("#customerInformations .email"           ).val(json.customer.email    ).attr('disabled', true);
+							$("#customerInformations .gender"          ).val(json.customer.gender   );
+							$("#customerInformations .first-name"      ).val(json.customer.firstname);
+							$("#customerInformations .last-name"       ).val(json.customer.lastname );
+							$("#customerInformations .telephone"       ).val(json.customer.telephone);
+							$("#customerInformations .location-country").val(json.customer.country  );
+							$("#customerInformations .location-city"   ).val(json.customer.city     );
+							$("#customerInformations .location-zip"    ).val(json.customer.zipcode  );
+							$("#customerInformations .location-address").val(json.customer.address  );
 						}
 					}
 					// Set Installation Address
@@ -155,15 +155,15 @@ $("#customerInformations .email").on('change', function() {
 				json.hasOwnProperty('address'     ) && json.address     != ""
 			) {
 				// Set Input Values
-				$("#customerInformations .gender"          ).attr('disabled', true).val(json.gender);
-				$("#customerInformations .first-name"      ).attr('disabled', true).val(json.firstname);
-				$("#customerInformations .last-name"       ).attr('disabled', true).val(json.lastname);
 				$("#customerInformations .email"           ).attr('disabled', true);
-				$("#customerInformations .telephone"       ).attr('disabled', true).val(json.telephone);
-				$("#customerInformations .location-country").attr('disabled', true).val(json.country);
-				$("#customerInformations .location-city"   ).attr('disabled', true).val(json.city);
-				$("#customerInformations .location-zip"    ).attr('disabled', true).val(json.zipcode);
-				$("#customerInformations .location-address").attr('disabled', true).val(json.address);
+				$("#customerInformations .gender"          ).val(json.gender   );
+				$("#customerInformations .first-name"      ).val(json.firstname);
+				$("#customerInformations .last-name"       ).val(json.lastname );
+				$("#customerInformations .telephone"       ).val(json.telephone);
+				$("#customerInformations .location-country").val(json.country  );
+				$("#customerInformations .location-city"   ).val(json.city     );
+				$("#customerInformations .location-zip"    ).val(json.zipcode  );
+				$("#customerInformations .location-address").val(json.address  );
 			}
 
 		}

@@ -10,6 +10,23 @@ if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
 $_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
 $_SESSION['last_step'] = $step;
 
+if(isset($_SESSION['battery1_serial' ])) unset($_SESSION['battery1_serial' ]);
+if(isset($_SESSION['battery2_serial' ])) unset($_SESSION['battery2_serial' ]);
+if(isset($_SESSION['battery3_serial' ])) unset($_SESSION['battery3_serial' ]);
+if(isset($_SESSION['battery4_serial' ])) unset($_SESSION['battery4_serial' ]);
+if(isset($_SESSION['battery5_serial' ])) unset($_SESSION['battery5_serial' ]);
+if(isset($_SESSION['battery6_serial' ])) unset($_SESSION['battery6_serial' ]);
+if(isset($_SESSION['battery7_serial' ])) unset($_SESSION['battery7_serial' ]);
+if(isset($_SESSION['battery8_serial' ])) unset($_SESSION['battery8_serial' ]);
+if(isset($_SESSION['battery9_serial' ])) unset($_SESSION['battery9_serial' ]);
+if(isset($_SESSION['battery10_serial'])) unset($_SESSION['battery10_serial']);
+if(isset($_SESSION['battery11_serial'])) unset($_SESSION['battery11_serial']);
+if(isset($_SESSION['battery12_serial'])) unset($_SESSION['battery12_serial']);
+if(isset($_SESSION['battery13_serial'])) unset($_SESSION['battery13_serial']);
+if(isset($_SESSION['battery14_serial'])) unset($_SESSION['battery14_serial']);
+if(isset($_SESSION['battery15_serial'])) unset($_SESSION['battery15_serial']);
+if(isset($_SESSION['battery16_serial'])) unset($_SESSION['battery16_serial']);
+
 ?>
 
 

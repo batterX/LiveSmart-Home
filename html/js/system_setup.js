@@ -27,6 +27,7 @@ var oldParameters  = {};
 
 var tempDatetime   = "";
 
+var isAlreadyRegistered = false;
 var isSettingParameters = false;
 var checkParametersInterval;
 var checkParametersCounter;
@@ -391,6 +392,8 @@ function step2()
 					}
 				}
 
+				isAlreadyRegistered = true;
+
 			}
 
 			step3();
@@ -746,6 +749,14 @@ function setupLiFePO()
 	var battery16_serial = $('#lifepo_battery_16').val();
 
 	var canContinue = true;
+
+	// Check System S/N
+	if(canContinue && !isAlreadyRegistered) {
+		if(!system_serial.startsWith("390100EP") && !system_serial.startsWith("220100EP")) {
+			alert("System S/N not correct!");
+			canContinue = false;
+		}
+	}
 
 	// Check Inverter S/N
 	if(canContinue) {
