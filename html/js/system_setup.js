@@ -1450,11 +1450,11 @@ function setupCarbon_4()
 	else if(deviceModel == "h5e") { maxChargingCurrent = 10000; maxDischargingCurrent = 150; maxGridFeedInPower =  5500; }
 	else if(deviceModel == "h10") { maxChargingCurrent = 20000; maxDischargingCurrent = 300; maxGridFeedInPower = 10000; }
 
-	newParameters['maxChargingCurrent'      ] = Math.min(Math.round(batteryCapacity * 0.15 / 48) * 100, maxChargingCurrent).toString();
-	newParameters['maxChargingCurrentAC'    ] = Math.min(Math.round(batteryCapacity * 0.15 / 48) * 100, maxChargingCurrent).toString();
+    newParameters['maxChargingCurrent'      ] = Math.min(Math.max(Math.round(batteryCapacity * 0.15 / 48), 10) * 100, maxChargingCurrent).toString();
+	newParameters['maxChargingCurrentAC'    ] = Math.min(Math.max(Math.round(batteryCapacity * 0.15 / 48), 10) * 100, maxChargingCurrent).toString();
 	newParameters['chargingVoltage'         ] = '5600,5400';
 	newParameters['dischargingVoltage'      ] = '4680,5200,4300,4800';
-	newParameters['maxDischargingCurrent'   ] = Math.min(Math.round(batteryCapacity * 0.20 / 48), maxDischargingCurrent).toString();
+	newParameters['maxDischargingCurrent'   ] = Math.min(Math.max(Math.round(batteryCapacity * 0.20 / 48), 20), maxDischargingCurrent).toString();
 	newParameters['batteryType'             ] = '0';
 	newParameters['solarEnergyPriority'     ] = '1';
 	newParameters['allowBatteryCharging'    ] = '1';
