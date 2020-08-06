@@ -1,24 +1,38 @@
 <?php
 
+/*
+	Customer Info
+*/
+
+// Include Base
 include_once "common/base.php";
+// Set Step
 $step = 3;
 
-// Check Step
-if(!isset($_SESSION['last_step'])) header("location: index.php");
-if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
-	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
-$_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
-$_SESSION['last_step'] = $step;
+// Disable Back Button
+if(!isset($_SESSION["last_step"])) header("location: index.php");
+if($_SESSION["last_step"] != $step && $_SESSION["last_step"] != $step - 1)
+	header("location: " . (isset($_SESSION["back_url"]) ? $_SESSION["back_url"] : "index.php"));
+$_SESSION["back_url" ] = $_SERVER["REQUEST_URI"];
+$_SESSION["last_step"] = $step;
+
+// Get Apikey
+$output = shell_exec("cat /proc/cpuinfo");
+$find = "Serial";
+$pos = strpos($output, $find);
+$serial = substr($output, $pos + 10, 16);
+$apikey = sha1(strval($serial));
+$_SESSION["box_apikey"] = $apikey;
 
 ?>
+
+
 
 
 
 <!DOCTYPE html>
 
 <html>
-
-
 
 	<head>
 
@@ -35,218 +49,262 @@ $_SESSION['last_step'] = $step;
 
 	</head>
 
-
-
 	<body>
 
 
 
+
+
+		<!-- Progress Bar -->
 		<div id="progress" class="shadow-lg">
 			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
-			<div><button id="btn_next" class="btn btn-success ripple" type="submit" form="mainForm" disabled><?php echo $strings['continue']; ?></button></div>
+			<div><button id="btn_next" class="btn btn-success ripple" type="submit" form="mainForm" disabled><?php echo $lang["btn"]["continue"]; ?></button></div>
+		</div>
+		<!-- Progress Bar -->
+
+
+
+
+
+		<div class="modal fade" id="errorSameAsInstaller" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+						<span style="color: red"><b><?php echo $lang["customer_info"]["customer_same_as_installer"] ?></b></span>
+					</div>
+				</div>
+			</div>
 		</div>
 
-
-
-		<div class="container">
-
-			<form id="mainForm">
-
-
-
-				<h1 class="customer-informations"><?php echo $strings['customer_informations']; ?></h1>
-
-
-
-				<div id="customerInformations" class="row">
-
-					<div class="col-md-2 input-padding">
-						<select class="gender custom-select custom-select-outline" required>
-							<option value="0"><?php echo $strings['gender_male'  ]; ?></option>
-							<option value="1"><?php echo $strings['gender_female']; ?></option>
-						</select>
+		<div class="modal fade" id="errorNoAccessToUser" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+						<span style="color: red"><b><?php echo $lang["customer_info"]["wrong_customer_installer"] ?></b></span>
 					</div>
-					<div class="col-md-5 input-padding">
-						<input class="first-name form-control form-control-outline" type="text" placeholder="<?php echo $strings['first_name']; ?>" required>
-					</div>
-					<div class="col-md-5 input-padding">
-						<input class="last-name form-control form-control-outline" type="text" placeholder="<?php echo $strings['last_name']; ?>" required>
-					</div>
+				</div>
+			</div>
+		</div>
+		
 
-					<div class="col-md-2"></div>
-					<div class="col-md-5 input-padding">
-						<input class="email form-control form-control-outline" type="email" placeholder="<?php echo $strings['email']; ?>" required>
-					</div>
-					<div class="col-md-5 input-padding">
-						<input class="telephone form-control form-control-outline" type="text" placeholder="<?php echo $strings['telephone']; ?>" required>
-					</div>
 
-					<div class="w-100 p-3"></div>
 
-					<div class="col-md-4 input-padding">
-						<select class="location-country custom-select custom-select-outline" required>
-							<option value="de"><?php echo $strings['c_de'] ?></option>
-							<option value="at"><?php echo $strings['c_at'] ?></option>
-							<option value="be"><?php echo $strings['c_be'] ?></option>
-							<optgroup label="<?php echo $strings['europe'] ?>">
-								<option value="at"><?php echo $strings['c_at'] ?></option>
-								<option value="by"><?php echo $strings['c_by'] ?></option>
-								<option value="be"><?php echo $strings['c_be'] ?></option>
-								<option value="cy"><?php echo $strings['c_cy'] ?></option>
-								<option value="cz"><?php echo $strings['c_cz'] ?></option>
-								<option value="dk"><?php echo $strings['c_dk'] ?></option>
-								<option value="ee"><?php echo $strings['c_ee'] ?></option>
-								<option value="fi"><?php echo $strings['c_fi'] ?></option>
-								<option value="fr"><?php echo $strings['c_fr'] ?></option>
-								<option value="ge"><?php echo $strings['c_ge'] ?></option>
-								<option value="de"><?php echo $strings['c_de'] ?></option>
-								<option value="gr"><?php echo $strings['c_gr'] ?></option>
-								<option value="hu"><?php echo $strings['c_hu'] ?></option>
-								<option value="is"><?php echo $strings['c_is'] ?></option>
-								<option value="ie"><?php echo $strings['c_ie'] ?></option>
-								<option value="it"><?php echo $strings['c_it'] ?></option>
-								<option value="lv"><?php echo $strings['c_lv'] ?></option>
-								<option value="lt"><?php echo $strings['c_lt'] ?></option>
-								<option value="lu"><?php echo $strings['c_lu'] ?></option>
-								<option value="mt"><?php echo $strings['c_mt'] ?></option>
-								<option value="md"><?php echo $strings['c_md'] ?></option>
-								<option value="nl"><?php echo $strings['c_nl'] ?></option>
-								<option value="no"><?php echo $strings['c_no'] ?></option>
-								<option value="pl"><?php echo $strings['c_pl'] ?></option>
-								<option value="pt"><?php echo $strings['c_pt'] ?></option>
-								<option value="ro"><?php echo $strings['c_ro'] ?></option>
-								<option value="ru"><?php echo $strings['c_ru'] ?></option>
-								<option value="sk"><?php echo $strings['c_sk'] ?></option>
-								<option value="si"><?php echo $strings['c_si'] ?></option>
-								<option value="es"><?php echo $strings['c_es'] ?></option>
-								<option value="se"><?php echo $strings['c_se'] ?></option>
-								<option value="ch"><?php echo $strings['c_ch'] ?></option>
-								<option value="tr"><?php echo $strings['c_tr'] ?></option>
-								<option value="ua"><?php echo $strings['c_ua'] ?></option>
-								<option value="gb"><?php echo $strings['c_gb'] ?></option>
-							</optgroup>
-							<optgroup label="<?php echo $strings['africa'] ?>">
-								<option value="sn"><?php echo $strings['c_sn'] ?></option>
-								<option value="ci"><?php echo $strings['c_ci'] ?></option>
-								<option value="gh"><?php echo $strings['c_gh'] ?></option>
-								<option value="ng"><?php echo $strings['c_ng'] ?></option>
-								<option value="tg"><?php echo $strings['c_tg'] ?></option>
-								<option value="cd"><?php echo $strings['c_cd'] ?></option>
-								<option value="ug"><?php echo $strings['c_ug'] ?></option>
-								<option value="ke"><?php echo $strings['c_ke'] ?></option>
-								<option value="za"><?php echo $strings['c_za'] ?></option>
-								<option value="re"><?php echo $strings['c_re'] ?></option>
-							</optgroup>
-						</select>
-					</div>
-					<div class="col-md-4 input-padding">
-						<input class="location-city form-control form-control-outline" type="text" placeholder="<?php echo $strings['city']; ?>" required>
-					</div>
-					<div class="col-md-4 input-padding">
-						<input class="location-zip form-control form-control-outline" type="text" placeholder="<?php echo $strings['zip_code']; ?>" required>
-					</div>
 
-					<div class="col-md-12 input-padding">
-						<input class="location-address form-control form-control-outline" type="text" placeholder="<?php echo $strings['address']; ?>" required>
-					</div>
+		<div class="container pb-5">
+			<form id="mainForm" class="pb-4">
 
+				<h1 class="card-header customer-information bg-transparent border-0 mt-5"><?php echo $lang["customer_info"]["customer_information"]; ?></h1>
+
+				<div class="card elevate-1">
+					<div class="card-body">
+						<div id="customerInformation" class="row m-n1">
+
+							<div class="col-md-2 p-1">
+								<select class="gender form-control form-control-outline" required>
+									<option value="0"><?php echo $lang["dict_gender"]["0"] ?></option>
+									<option value="1"><?php echo $lang["dict_gender"]["1"] ?></option>
+								</select>
+							</div>
+							<div class="col-md-5 p-1">
+								<input class="first-name form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["first_name"]; ?>" required>
+							</div>
+							<div class="col-md-5 p-1">
+								<input class="last-name form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["last_name"]; ?>" required>
+							</div>
+
+							<div class="col-md-2"></div>
+							<div class="col-md-5 p-1">
+								<input class="email form-control form-control-outline" type="email" placeholder="<?php echo $lang["customer_info"]["email"]; ?>" required>
+							</div>
+							<div class="col-md-5 p-1">
+								<input class="telephone form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["telephone"]; ?>" required>
+							</div>
+
+							<div class="w-100" style="padding: 0.375rem"></div>
+
+							<div class="col-md-4 p-1">
+								<select class="location-country form-control form-control-outline" required>
+									<option value="de"><?php echo $lang["dict_countries"]["de"] ?></option>
+									<option value="at"><?php echo $lang["dict_countries"]["at"] ?></option>
+									<option value="be"><?php echo $lang["dict_countries"]["be"] ?></option>
+									<optgroup label="<?php echo $lang["dict_countries"]["europe"] ?>">
+										<option value="at"><?php echo $lang["dict_countries"]["at"] ?></option>
+										<option value="by"><?php echo $lang["dict_countries"]["by"] ?></option>
+										<option value="be"><?php echo $lang["dict_countries"]["be"] ?></option>
+										<option value="cy"><?php echo $lang["dict_countries"]["cy"] ?></option>
+										<option value="cz"><?php echo $lang["dict_countries"]["cz"] ?></option>
+										<option value="dk"><?php echo $lang["dict_countries"]["dk"] ?></option>
+										<option value="ee"><?php echo $lang["dict_countries"]["ee"] ?></option>
+										<option value="fi"><?php echo $lang["dict_countries"]["fi"] ?></option>
+										<option value="fr"><?php echo $lang["dict_countries"]["fr"] ?></option>
+										<option value="ge"><?php echo $lang["dict_countries"]["ge"] ?></option>
+										<option value="de"><?php echo $lang["dict_countries"]["de"] ?></option>
+										<option value="gr"><?php echo $lang["dict_countries"]["gr"] ?></option>
+										<option value="hu"><?php echo $lang["dict_countries"]["hu"] ?></option>
+										<option value="is"><?php echo $lang["dict_countries"]["is"] ?></option>
+										<option value="ie"><?php echo $lang["dict_countries"]["ie"] ?></option>
+										<option value="it"><?php echo $lang["dict_countries"]["it"] ?></option>
+										<option value="lv"><?php echo $lang["dict_countries"]["lv"] ?></option>
+										<option value="lt"><?php echo $lang["dict_countries"]["lt"] ?></option>
+										<option value="lu"><?php echo $lang["dict_countries"]["lu"] ?></option>
+										<option value="mt"><?php echo $lang["dict_countries"]["mt"] ?></option>
+										<option value="md"><?php echo $lang["dict_countries"]["md"] ?></option>
+										<option value="nl"><?php echo $lang["dict_countries"]["nl"] ?></option>
+										<option value="no"><?php echo $lang["dict_countries"]["no"] ?></option>
+										<option value="pl"><?php echo $lang["dict_countries"]["pl"] ?></option>
+										<option value="pt"><?php echo $lang["dict_countries"]["pt"] ?></option>
+										<option value="ro"><?php echo $lang["dict_countries"]["ro"] ?></option>
+										<option value="ru"><?php echo $lang["dict_countries"]["ru"] ?></option>
+										<option value="sk"><?php echo $lang["dict_countries"]["sk"] ?></option>
+										<option value="si"><?php echo $lang["dict_countries"]["si"] ?></option>
+										<option value="es"><?php echo $lang["dict_countries"]["es"] ?></option>
+										<option value="se"><?php echo $lang["dict_countries"]["se"] ?></option>
+										<option value="ch"><?php echo $lang["dict_countries"]["ch"] ?></option>
+										<option value="tr"><?php echo $lang["dict_countries"]["tr"] ?></option>
+										<option value="ua"><?php echo $lang["dict_countries"]["ua"] ?></option>
+										<option value="gb"><?php echo $lang["dict_countries"]["gb"] ?></option>
+									</optgroup>
+									<optgroup label="<?php echo $lang["dict_countries"]["africa"] ?>">
+										<option value="sn"><?php echo $lang["dict_countries"]["sn"] ?></option>
+										<option value="ci"><?php echo $lang["dict_countries"]["ci"] ?></option>
+										<option value="gh"><?php echo $lang["dict_countries"]["gh"] ?></option>
+										<option value="ng"><?php echo $lang["dict_countries"]["ng"] ?></option>
+										<option value="tg"><?php echo $lang["dict_countries"]["tg"] ?></option>
+										<option value="cd"><?php echo $lang["dict_countries"]["cd"] ?></option>
+										<option value="ug"><?php echo $lang["dict_countries"]["ug"] ?></option>
+										<option value="ke"><?php echo $lang["dict_countries"]["ke"] ?></option>
+										<option value="za"><?php echo $lang["dict_countries"]["za"] ?></option>
+										<option value="re"><?php echo $lang["dict_countries"]["re"] ?></option>
+									</optgroup>
+								</select>
+							</div>
+							<div class="col-md-4 p-1">
+								<input class="location-city form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["city"]; ?>" required>
+							</div>
+							<div class="col-md-4 p-1">
+								<input class="location-zip form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["zip_code"]; ?>" required>
+							</div>
+
+							<div class="col-md-12 p-1">
+								<input class="location-address form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["address"]; ?>" required>
+							</div>
+
+						</div>
+					</div>
 				</div>
 
 
 
-				<h1 class="installation-address"><?php echo $strings['installation_address']; ?></h1>
+				<h1 class="card-header installation-address bg-transparent border-0 mt-5"><?php echo $lang["customer_info"]["installation_address"]; ?></h1>
 
-
-
-				<div class="custom-control custom-checkbox mx-3 my-3">
-					<input type="checkbox" class="custom-control-input" id="sameAddress">
-					<label class="custom-control-label" for="sameAddress"><?php echo $strings['same_as_customer_address']; ?></label>
-				</div>
-
-				<div id="installationAddress" class="row">
-
-					<div class="col-md-4 input-padding">
-						<select class="location-country custom-select custom-select-outline">
-							<option value="de"><?php echo $strings['c_de'] ?></option>
-							<option value="at"><?php echo $strings['c_at'] ?></option>
-							<option value="be"><?php echo $strings['c_be'] ?></option>
-							<optgroup label="<?php echo $strings['europe'] ?>">
-								<option value="at"><?php echo $strings['c_at'] ?></option>
-								<option value="by"><?php echo $strings['c_by'] ?></option>
-								<option value="be"><?php echo $strings['c_be'] ?></option>
-								<option value="cy"><?php echo $strings['c_cy'] ?></option>
-								<option value="cz"><?php echo $strings['c_cz'] ?></option>
-								<option value="dk"><?php echo $strings['c_dk'] ?></option>
-								<option value="ee"><?php echo $strings['c_ee'] ?></option>
-								<option value="fi"><?php echo $strings['c_fi'] ?></option>
-								<option value="fr"><?php echo $strings['c_fr'] ?></option>
-								<option value="ge"><?php echo $strings['c_ge'] ?></option>
-								<option value="de"><?php echo $strings['c_de'] ?></option>
-								<option value="gr"><?php echo $strings['c_gr'] ?></option>
-								<option value="hu"><?php echo $strings['c_hu'] ?></option>
-								<option value="is"><?php echo $strings['c_is'] ?></option>
-								<option value="ie"><?php echo $strings['c_ie'] ?></option>
-								<option value="it"><?php echo $strings['c_it'] ?></option>
-								<option value="lv"><?php echo $strings['c_lv'] ?></option>
-								<option value="lt"><?php echo $strings['c_lt'] ?></option>
-								<option value="lu"><?php echo $strings['c_lu'] ?></option>
-								<option value="mt"><?php echo $strings['c_mt'] ?></option>
-								<option value="md"><?php echo $strings['c_md'] ?></option>
-								<option value="nl"><?php echo $strings['c_nl'] ?></option>
-								<option value="no"><?php echo $strings['c_no'] ?></option>
-								<option value="pl"><?php echo $strings['c_pl'] ?></option>
-								<option value="pt"><?php echo $strings['c_pt'] ?></option>
-								<option value="ro"><?php echo $strings['c_ro'] ?></option>
-								<option value="ru"><?php echo $strings['c_ru'] ?></option>
-								<option value="sk"><?php echo $strings['c_sk'] ?></option>
-								<option value="si"><?php echo $strings['c_si'] ?></option>
-								<option value="es"><?php echo $strings['c_es'] ?></option>
-								<option value="se"><?php echo $strings['c_se'] ?></option>
-								<option value="ch"><?php echo $strings['c_ch'] ?></option>
-								<option value="tr"><?php echo $strings['c_tr'] ?></option>
-								<option value="ua"><?php echo $strings['c_ua'] ?></option>
-								<option value="gb"><?php echo $strings['c_gb'] ?></option>
-							</optgroup>
-							<optgroup label="<?php echo $strings['africa'] ?>">
-								<option value="sn"><?php echo $strings['c_sn'] ?></option>
-								<option value="ci"><?php echo $strings['c_ci'] ?></option>
-								<option value="gh"><?php echo $strings['c_gh'] ?></option>
-								<option value="ng"><?php echo $strings['c_ng'] ?></option>
-								<option value="tg"><?php echo $strings['c_tg'] ?></option>
-								<option value="cd"><?php echo $strings['c_cd'] ?></option>
-								<option value="ug"><?php echo $strings['c_ug'] ?></option>
-								<option value="ke"><?php echo $strings['c_ke'] ?></option>
-								<option value="za"><?php echo $strings['c_za'] ?></option>
-								<option value="re"><?php echo $strings['c_re'] ?></option>
-							</optgroup>
-						</select>
-					</div>
-					<div class="col-md-4 input-padding">
-						<input class="location-city form-control form-control-outline" type="text" placeholder="<?php echo $strings['city']; ?>" required>
-					</div>
-					<div class="col-md-4 input-padding">
-						<input class="location-zip form-control form-control-outline" type="text" placeholder="<?php echo $strings['zip_code']; ?>" required>
-					</div>
+				<div class="card elevate-1">
+					<div class="card-body">
 					
-					<div class="col-md-12 input-padding">
-						<input class="location-address form-control form-control-outline" type="text" placeholder="<?php echo $strings['address']; ?>" required>
-					</div>
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" class="custom-control-input" id="sameAddress">
+							<label class="custom-control-label" for="sameAddress"><?php echo $lang["customer_info"]["same_as_customer_address"]; ?></label>
+						</div>
 
+						<div id="installationAddress" class="row mx-n1 mb-n1 mt-3">
+
+							<div class="col-md-4 p-1">
+								<select class="location-country form-control form-control-outline">
+									<option value="de"><?php echo $lang["dict_countries"]["de"] ?></option>
+									<option value="at"><?php echo $lang["dict_countries"]["at"] ?></option>
+									<option value="be"><?php echo $lang["dict_countries"]["be"] ?></option>
+									<optgroup label="<?php echo $lang["dict_countries"]["europe"] ?>">
+										<option value="at"><?php echo $lang["dict_countries"]["at"] ?></option>
+										<option value="by"><?php echo $lang["dict_countries"]["by"] ?></option>
+										<option value="be"><?php echo $lang["dict_countries"]["be"] ?></option>
+										<option value="cy"><?php echo $lang["dict_countries"]["cy"] ?></option>
+										<option value="cz"><?php echo $lang["dict_countries"]["cz"] ?></option>
+										<option value="dk"><?php echo $lang["dict_countries"]["dk"] ?></option>
+										<option value="ee"><?php echo $lang["dict_countries"]["ee"] ?></option>
+										<option value="fi"><?php echo $lang["dict_countries"]["fi"] ?></option>
+										<option value="fr"><?php echo $lang["dict_countries"]["fr"] ?></option>
+										<option value="ge"><?php echo $lang["dict_countries"]["ge"] ?></option>
+										<option value="de"><?php echo $lang["dict_countries"]["de"] ?></option>
+										<option value="gr"><?php echo $lang["dict_countries"]["gr"] ?></option>
+										<option value="hu"><?php echo $lang["dict_countries"]["hu"] ?></option>
+										<option value="is"><?php echo $lang["dict_countries"]["is"] ?></option>
+										<option value="ie"><?php echo $lang["dict_countries"]["ie"] ?></option>
+										<option value="it"><?php echo $lang["dict_countries"]["it"] ?></option>
+										<option value="lv"><?php echo $lang["dict_countries"]["lv"] ?></option>
+										<option value="lt"><?php echo $lang["dict_countries"]["lt"] ?></option>
+										<option value="lu"><?php echo $lang["dict_countries"]["lu"] ?></option>
+										<option value="mt"><?php echo $lang["dict_countries"]["mt"] ?></option>
+										<option value="md"><?php echo $lang["dict_countries"]["md"] ?></option>
+										<option value="nl"><?php echo $lang["dict_countries"]["nl"] ?></option>
+										<option value="no"><?php echo $lang["dict_countries"]["no"] ?></option>
+										<option value="pl"><?php echo $lang["dict_countries"]["pl"] ?></option>
+										<option value="pt"><?php echo $lang["dict_countries"]["pt"] ?></option>
+										<option value="ro"><?php echo $lang["dict_countries"]["ro"] ?></option>
+										<option value="ru"><?php echo $lang["dict_countries"]["ru"] ?></option>
+										<option value="sk"><?php echo $lang["dict_countries"]["sk"] ?></option>
+										<option value="si"><?php echo $lang["dict_countries"]["si"] ?></option>
+										<option value="es"><?php echo $lang["dict_countries"]["es"] ?></option>
+										<option value="se"><?php echo $lang["dict_countries"]["se"] ?></option>
+										<option value="ch"><?php echo $lang["dict_countries"]["ch"] ?></option>
+										<option value="tr"><?php echo $lang["dict_countries"]["tr"] ?></option>
+										<option value="ua"><?php echo $lang["dict_countries"]["ua"] ?></option>
+										<option value="gb"><?php echo $lang["dict_countries"]["gb"] ?></option>
+									</optgroup>
+									<optgroup label="<?php echo $lang["dict_countries"]["africa"] ?>">
+										<option value="sn"><?php echo $lang["dict_countries"]["sn"] ?></option>
+										<option value="ci"><?php echo $lang["dict_countries"]["ci"] ?></option>
+										<option value="gh"><?php echo $lang["dict_countries"]["gh"] ?></option>
+										<option value="ng"><?php echo $lang["dict_countries"]["ng"] ?></option>
+										<option value="tg"><?php echo $lang["dict_countries"]["tg"] ?></option>
+										<option value="cd"><?php echo $lang["dict_countries"]["cd"] ?></option>
+										<option value="ug"><?php echo $lang["dict_countries"]["ug"] ?></option>
+										<option value="ke"><?php echo $lang["dict_countries"]["ke"] ?></option>
+										<option value="za"><?php echo $lang["dict_countries"]["za"] ?></option>
+										<option value="re"><?php echo $lang["dict_countries"]["re"] ?></option>
+									</optgroup>
+								</select>
+							</div>
+							<div class="col-md-4 p-1">
+								<input class="location-city form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["city"] ?>" required>
+							</div>
+							<div class="col-md-4 p-1">
+								<input class="location-zip form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["zip_code"] ?>" required>
+							</div>
+						
+							<div class="col-md-12 p-1">
+								<input class="location-address form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["address"] ?>" required>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+
+
+				<div id="installationAddressCopy" class="row mx-n1 mb-n1 mt-3 invisible" style="display: none">
+					<div class="col-md-4  p-1"><input class="form-control form-control-outline" type="text"></div>
+					<div class="col-md-4  p-1"><input class="form-control form-control-outline" type="text"></div>
+					<div class="col-md-4  p-1"><input class="form-control form-control-outline" type="text"></div>
+					<div class="col-md-12 p-1"><input class="form-control form-control-outline" type="text"></div>
 				</div>
 
 
 
 			</form>
-
 		</div>
+
+
 
 
 
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
-		<script>const lang = <?php echo json_encode($strings); ?>;</script>
-		<script>const installerEmail = <?php echo json_encode($_SESSION['installer_email']); ?>;</script>
+		<script>const lang = <?php echo json_encode($lang) ?>;</script>
+		<script>const apikey = <?php echo json_encode($apikey) ?>;</script>
+		<script>const installerEmail = <?php echo json_encode($_SESSION["installer_email"]) ?>;</script>
 		<script src="js/customer_info.js?v=<?php echo $versionHash ?>"></script>
+
+
 
 
 

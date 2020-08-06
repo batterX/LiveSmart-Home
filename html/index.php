@@ -1,22 +1,30 @@
 <?php
 
+/*
+	Select Language
+*/
+
+// Include Base
 include_once "common/base.php";
+// Set Step
 $step = 0;
 
+// Reset Session
 session_unset();
 
-$_SESSION['back_url']  = $_SERVER['REQUEST_URI'];
-$_SESSION['last_step'] = $step;
+// Disable Back Button
+$_SESSION["back_url" ] = $_SERVER["REQUEST_URI"];
+$_SESSION["last_step"] = $step;
 
 ?>
+
+
 
 
 
 <!DOCTYPE html>
 
 <html>
-
-
 
 	<head>
 
@@ -33,46 +41,29 @@ $_SESSION['last_step'] = $step;
 
 	</head>
 
-
-
 	<body>
 
 
 
-		<div class="container">
-			<div>
-				<div>
 
-					<div class="logo"></div>
 
-					<h1>Select Language</h1>
+		<div class="card elevate">
 
-					<div class="row lang">
-						<div id="lang_en" class="box col">
-							<div class="lang-en"></div>
-							<span>English</span>
-						</div>
-						<div id="lang_de" class="box col">
-							<div class="lang-de"></div>
-							<span>Deutsch</span>
-						</div>
-						<div id="lang_fr" class="box col">
-							<div class="lang-fr"></div>
-							<span>Français</span>
-						</div>
-						<div id="lang_cs" class="box col">
-							<div class="lang-cs"></div>
-							<span>Čeština</span>
-						</div>
-						<div id="lang_es" class="box col">
-							<div class="lang-es"></div>
-							<span>Español</span>
-						</div>
-					</div>
+			<img class="logo" src="img/logo_livesmart.svg">
 
-				</div>
+			<h1>Select Language</h1>
+
+			<div class="row lang">
+				<div id="lang_en" class="box col"><div class="lang-en"></div><span>English </span></div>
+				<div id="lang_de" class="box col"><div class="lang-de"></div><span>Deutsch </span></div>
+				<div id="lang_fr" class="box col"><div class="lang-fr"></div><span>Français</span></div>
+				<div id="lang_cs" class="box col"><div class="lang-cs"></div><span>Čeština </span></div>
+				<div id="lang_es" class="box col"><div class="lang-es"></div><span>Español </span></div>
 			</div>
+			
 		</div>
+
+
 
 
 
@@ -81,6 +72,8 @@ $_SESSION['last_step'] = $step;
 		<script src="js/index.js?v=<?php echo $versionHash ?>"></script>
 
 
+
+		
 
 	</body>
 

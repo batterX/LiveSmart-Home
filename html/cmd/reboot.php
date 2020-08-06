@@ -1,5 +1,5 @@
 <?php
 
-exec('sudo reboot');
+exec("sudo reboot");
 
 return TRUE;

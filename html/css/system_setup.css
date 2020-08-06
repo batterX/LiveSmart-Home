@@ -2,13 +2,13 @@
 
 
 
+
+
 h1 {
 	font-size: 1.5rem;
-	margin-top: 3rem;
-	padding: 1.5rem 0rem 1.5rem 3rem;
-	margin-bottom: 1.5rem;
+	padding: 1rem 1.25rem 1rem 4.5rem !important;
 	background-repeat: no-repeat;
-	background-position: 0 center;
+	background-position: 1.25rem center;
 	background-size: 2rem;
 }
 
@@ -16,31 +16,18 @@ h1 {
 #battery h1 { background-image: url(../img/ic_battery.png); }
 #bxHome  h1 { background-image: url(../img/ic_bxHome.png ); }
 
+.card { height: calc(100% - 3.75rem) !important; }
+.card .card-body { flex: 0 auto; }
+.card .btn:hover { background: rgba(0, 0, 0, 0.10); }
 
+#battery_section_9 span { line-height: 1.2; }
 
-.w-65 { width: 65% !important; }
-
-
+textarea {
+	font-size: 0.875rem !important;
+	min-height: 120px !important;
+}
 
 .setting-progress span {
 	font-size: 1.25rem;
 	margin-left: 1rem;
-}
-
-
-textarea {
-	font-size: 0.875rem !important;
-	min-height: 107px !important;
-}
-
-
-
-form {
-	padding-bottom: 4.5rem;
-}
-
-
-
-#btnInstallerMemo {
-	letter-spacing: 1px;
 }

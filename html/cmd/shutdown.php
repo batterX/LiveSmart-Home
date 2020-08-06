@@ -1,5 +1,5 @@
 <?php
 
-exec('sudo shutdown now');
+exec("sudo shutdown now");
 
 return TRUE;

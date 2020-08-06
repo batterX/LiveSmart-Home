@@ -1,102 +1,137 @@
-* { user-select: none }
+*:not(input):not(select):not(textarea) { user-select: none }
 
 
 
-.container {
-	text-align: center;
-	padding: 0;
-}
-
-.container > div {
-	width: 100%;
-}
 
 
-
-.notif {
-	display: inline-block;
-	width: 4.5vmin;
-	height: 4.5vmin;
-	margin-right: 2vmin;
-}
-
-
-
-#inverterUnknown h1 {
-	font-size: 6vmin;
-	margin-top: 32.5vmin;
-	margin-bottom: 15vmin;
-}
-
-#inverterUnknown  .message,
-#inverterDetected .standard {
-	display: block;
-	font-size: 3vmin;
-}
-
-
-
-.serialnumber {
-	display: block;
-	font-size: 3vmin;
-	margin-bottom: 5vmin;
-}
-
-
-
-#inverterDetected {
-	display: none;
-}
-
-#inverterDetected h1 {
-	font-size: 6vmin;
-	margin-top: 15vmin;
-	margin-bottom: 7.5vmin;
-}
-
-#inverterDetected img {
-	width: 25vmin;
-	height: 25vmin;
-	margin-bottom: 7.5vmin;
-}
-
-#inverterDetected h1 span {
-	color: #92e503;
-}
-
-.vde-loading {
-	width: 4.5vmin;
-	height: 4.5vmin;
-	margin-top: 5vmin;
-}
-
-
-
-#machineModelBox {
+body {
+	min-height: 100vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-#machineModelSelect {
-	font-size: 1.5vmin;
-	margin-top: 2vmin;
-	width: 20vmin;
-	height: 4.75vmin;
+main {
+	width: 100%;
+	text-align: center;
+	padding: 1rem;
+}
+
+
+
+
+
+#inverterUnknown {
+	max-width: 720px;
+	background-color: var(--color-main);
+	text-align: center;
+	padding: 5rem 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	border-radius: 0.25rem;
+}
+
+#inverterUnknown h1 {
+	font-weight: 400;
+	margin-bottom: 4rem;
+}
+
+#inverterUnknown > div {
+	max-width: 35rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#inverterUnknown .notif {
+	display: block;
+}
+
+#inverterUnknown .message {
+	font-size: 1.5rem;
+	margin-left: 1rem;
+	line-height: 1.1;
+	text-align: left;
+}
+
+
+
+
+
+#inverterDetected {
+	max-width: 500px;
+}
+
+#inverterDetected h1 {
+	font-size: 3rem;
+	font-weight: 300;
+	margin-top: 1.5rem;
+	margin-bottom: 2.5rem;
+}
+#inverterDetected h1 span.x {
+	color: #92e503;
+}
+
+#inverterDetected img {
+	display: block;
+	width: 225px;
+	height: 225px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#inverterDetected .serialnumber {
+	display: block;
+	font-size: 1.5rem;
+	margin-top: 2.5rem;
+	margin-bottom: 1.5rem;
+}
+
+
+
+
+
+#inverterDetected .standard-cont {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#inverterDetected .standard-cont .notif {
+	margin-right: 1rem;
+}
+#inverterDetected .standard-cont .standard {
+	font-size: 1.5rem;
+}
+
+#inverterDetected #machineModelBox {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#inverterDetected #machineModelSelect {
+	height: 2.5rem;
+	width: 10rem;
 	font-weight: bold;
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 	border-width: 2px;
-	padding: 0 0 0 1vmin;
+	padding: 0 0 0 0.5rem;
 }
-
-#machineModelBtn {
-	margin-top: 2vmin;
+#inverterDetected #machineModelBtn {
+	height: 2.5rem;
 	margin-left: 0;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
-	font-size: 1.5vmin;
-	height: 4.75vmin;
 	padding: 0 0.75rem 0 0.75rem;
 	width: auto;
+}
+
+#inverterDetected .vde-loading {
+	width: 2.5rem;
+	height: 2.5rem;
+	margin-left: auto;
+	margin-right: auto;
 }

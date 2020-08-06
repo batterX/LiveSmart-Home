@@ -1,44 +1,54 @@
 <?php
 
 /*
-	Included on begin of every .php file
-
-	Handles:
-	* Session Start
-	* Language Setup
-
-	@author Ivan Gavrilov
+	Included on begin of every main .php file
 */
 
 
 
-// Secure Session Cookie
-$secure = false; // Set to true if using https.
-$httponly = true; // This stops javascript from being able to access the session id.
-$cookieParams = session_get_cookie_params(); // Gets current cookies params.
-session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], $secure, $httponly);
 
-// Session Start
+
+/*
+	Secure Session Cookie
+*/
+
+$cookieParams = session_get_cookie_params();
+session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], false, true);
+
+
+
+
+
+/*
+	Start Session
+*/
+
 session_start();
 session_regenerate_id();
 
 
 
-// Set Language
-$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_SESSION['lang']) ? $_SESSION['lang'] : "en");
-if($lang != "en" && $lang != "de" && $lang != "fr" && $lang != "cs" && $lang != "es") $lang = "en";
-$_SESSION['lang'] = $lang;
+
+
+/*
+	Load Language
+*/
+
+$_SESSION["lang"] = isset($_GET["lang"]) ? $_GET["lang"] : (isset($_SESSION["lang"]) ? $_SESSION["lang"] : "en");
+if(!in_array($_SESSION["lang"], ["en", "de", "fr", "cs", "es"])) $_SESSION["lang"] = "en";
 
 // Get Language Strings
-$strings = file_get_contents('common/lang.json');
-$strings = json_decode($strings, true);
-	 if($lang == "es") $strings = $strings['tables'][4];
-else if($lang == "cs") $strings = $strings['tables'][3];
-else if($lang == "fr") $strings = $strings['tables'][2];
-else if($lang == "de") $strings = $strings['tables'][1];
-else                   $strings = $strings['tables'][0];
+$lang = file_get_contents("common/langs/" . $_SESSION["lang"] . ".json");
+$lang = json_decode($lang, true);
 
 
 
-// Version Hash
-$versionHash = "1553590182054";
+
+
+/*
+	Set Constant Variables
+*/
+
+$versionHash = time();
+
+$softwareVersion = "v20.8.1";

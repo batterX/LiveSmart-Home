@@ -2,51 +2,32 @@
 
 
 
+
+
+body {
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .container {
-	max-width: 960px !important;
-	padding: 0;
+	max-width: 720px;
 }
 
 
-
-.row {
-	margin: 0;
-	padding: 0 .5rem;
-}
-
-.input-padding {
-	padding: 1rem .5rem 0 .5rem;
-}
 
 
 
 h1 {
 	font-size: 1.5rem;
-	margin-top: 5rem;
-	padding: 1rem 2rem 1rem 4rem;
-	margin-bottom: 1rem;
+	padding: 1rem 1.25rem 1rem 4.5rem !important;
 	background-repeat: no-repeat;
-	background-position: 1rem center;
+	background-position: 1.25rem center;
 	background-size: 2rem;
 }
 
 
 
-.customer-informations {
-	background-image: url(../img/ic_user.png);
-}
-.installation-address {
-	background-image: url(../img/ic_home.png);
-}
-
-h1 img {
-	width: 2rem;
-	height: 2rem;
-	margin-right: 1rem;
-}
-
-
-
-form {
-	padding-bottom: 5rem;
-}
+.customer-information { background-image: url(../img/ic_user.png); }
+.installation-address { background-image: url(../img/ic_home.png); }

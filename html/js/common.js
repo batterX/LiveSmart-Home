@@ -2,11 +2,7 @@
 	Ripple Script
 */
 
-$.ripple({
-	".ripple": {
-		touchDelay: 300
-	}
-});
+$.ripple({ ".ripple": { touchDelay: 300 } });
 
 
 

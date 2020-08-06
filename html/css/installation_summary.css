@@ -1,10 +1,24 @@
-* { user-select: none }
+*:not(input):not(select):not(textarea) { user-select: none }
+
+
 
 
 
 body {
-	margin-bottom: 100px;
+	background-color: var(--color-main);
+	padding-bottom: 100px;
 }
+
+body.show-success {
+	background-color: var(--color-body);
+	padding-bottom: 48px;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
 
 
 
@@ -15,36 +29,50 @@ body {
 	max-width: 950px !important;
 }
 
-
-
 #btnFinish {
 	visibility: hidden;
 }
 
 
 
-h1 {
-	font-size: 2.5rem;
-	margin-top: 3rem;
-	padding: 1.5rem 0;
-	margin-bottom: 1.5rem;
+
+
+#successBox {
+	max-width: 800px;
+	background-color: var(--color-main);
+	border-radius: 0.25rem;
 }
 
+#successBox p {
+	text-align: justify;
+}
 
+#successBox .btn {
+	min-width: 13.5rem;
+}
 
-.notif {
+#successBox .mt-2rem {
+	margin-top: 2rem;
+}
+
+#successBox .notif {
 	display: inline-block;
-	width: 2.5rem;
-	height: 2.5rem;
+	width: 2rem;
+	height: 2rem;
+	min-width: 2rem;
+	min-height: 2rem;
 }
 
 
 
-.btn {
-	letter-spacing: 1px;
+
+
+#summary {
+	width:     950px  !important;
+	min-width: 950px  !important;
+	max-width: 950px  !important;
+	padding:   0 16px !important;
 }
-
-
 
 #summary .border { border: 1px solid black !important; }
 #summary .box-margin { margin-bottom: 25px; }
@@ -53,17 +81,6 @@ h1 {
 #summary .br { border-right:  1px solid black !important; }
 #summary .bb { border-bottom: 1px solid black !important; }
 #summary .bl { border-left:   1px solid black !important; }
-
-
-
-#summary {
-	width:     950px !important;
-	min-width: 950px !important;
-	max-width: 950px !important;
-	padding:     0px !important;
-}
-
-
 
 #summary .head {
 	width: 100%;
@@ -97,8 +114,6 @@ h1 {
 	max-width: 100%;
 	max-height: 100%;
 }
-
-
 
 #summary .box-head {
 	width: 100%;

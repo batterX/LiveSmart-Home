@@ -1,24 +1,30 @@
 <?php
 
+/*
+	Accept Terms
+*/
+
+// Include Base
 include_once "common/base.php";
+// Set Step
 $step = 7;
 
-// Check Step
-if(!isset($_SESSION['last_step'])) header("location: index.php");
-if($_SESSION['last_step'] != $step && $_SESSION['last_step'] != $step - 1)
-	header('location: ' . (isset($_SESSION['back_url']) ? $_SESSION['back_url'] : "index.php"));
-$_SESSION['back_url' ] = $_SERVER['REQUEST_URI'];
-$_SESSION['last_step'] = $step;
+// Disable Back Button
+if(!isset($_SESSION["last_step"])) header("location: index.php");
+if($_SESSION["last_step"] != $step && $_SESSION["last_step"] != $step - 1)
+	header("location: " . (isset($_SESSION["back_url"]) ? $_SESSION["back_url"] : "index.php"));
+$_SESSION["back_url" ] = $_SERVER["REQUEST_URI"];
+$_SESSION["last_step"] = $step;
 
 ?>
+
+
 
 
 
 <!DOCTYPE html>
 
 <html>
-
-
 
 	<head>
 
@@ -35,19 +41,26 @@ $_SESSION['last_step'] = $step;
 
 	</head>
 
-
-
 	<body>
 
 
 
-		<div id="progress" class="shadow-lg">
+
+
+		<!-- Progress Bar -->
+		<div id="progress" class="shadow-lg d-print-none">
 			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+			<div><button id="btn_next" class="btn btn-success ripple" disabled><?php echo $lang["btn"]["continue"]; ?></button></div>
 		</div>
+		<!-- Progress Bar -->
 
 
 
-		<div class="container">
+
+
+		<div class="container pb-5">
+
+
 
 			<!-- SYSTEM WARRANTY -->
 
@@ -140,6 +153,8 @@ $_SESSION['last_step'] = $step;
 			<p>e) Die Garantiebedingungen gelten jeweils in der Version, welche aktuell auf der Webseite von VISION UPS Systems Sàrl hinterlegt bzw. verlinkt ist. </p>
 			<p>f) Auf diese Garantie findet das Recht des Großherzogtums Luxemburg Anwendung.</p>
 
+
+
 			<!-- LFP3500 WARRANTY -->
 
 			<h1>10-Jahres-Zeitwertersatzgarantie<br>für das LiFePO4 Batteriemodul LFP3500</h1>
@@ -174,30 +189,37 @@ $_SESSION['last_step'] = $step;
 
 			<p>Die gesetzlichen Gewährleistungsansprüche (Gewährleistungsfrist von grundsätzlich 2 Jahren) des Käufers gegen den Verkäufer der Batterien bleiben hiervon unberührt. Die im Rahmen des Garantieanspruchs ersetzten Batterien und sonstige Komponenten gehen in Eigentum von VISION UPS Systems Sàrl über. Die Garantieleistung bezieht sich ausschließlich auf den Zeitwertersatz der Batterien. Die bei der Feststellung und Umsetzung eines Garantieanspruches anfallenden Kosten (Service-Einsatz, Kapazitätstest, Ausbau- und Einbaukosten, Transportkosten etc.) sind nicht durch die Garantieleistung erfasst. Die hierbei entstandenen Kosten werden dem Käufer in Rechnung gestellt. Die Feststellung und Umsetzung des Garantieanspruchs ist ausschließlich durch die VISION UPS Sàrl oder deren zertifizierten Partner vorzunehmen. Bei den im Falle eines Garantieanspruches gelieferten neuen oder reparierten Batterien läuft die bisherige Garantiezeit weiter. Die Neulieferung der Batterien im Rahmen eines Garantiefalles begründet nicht den Neubeginn der Garantielaufzeit.</p>
 
+
+
 		</div>
 
-		<div class="mt-5 pt-5"><hr></div>
 
-		<!-- ACCEPT BUTTON -->
 
-		<div id="confirm" class="container pt-5 mt-5 pb-3">
-			<div class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input" id="checkboxAccept">
-				<label class="custom-control-label" for="checkboxAccept">Ich bestätige, dass ich alle <a href="#">Garantiebestimmungen</a> sowie <a href="https://www.iubenda.com/privacy-policy/13455058" target="_blank">Datenschutz</a> und <a href="https://www.iubenda.com/privacy-policy/gdpr/13455058/cookie-policy" target="_blank">Cookie-Richtlinien</a> gelesen und sie vollständig verstanden und akzeptiert habe.</label>
+
+
+		<div class="d-print-none">
+			
+			<div class="divider"><hr></div>
+
+			<div id="confirm" class="container py-5">
+				<div class="custom-control custom-checkbox py-2">
+					<input type="checkbox" class="custom-control-input" id="checkboxAccept">
+					<label class="custom-control-label" for="checkboxAccept">Ich bestätige, dass ich alle <a href="#">Garantiebestimmungen</a> sowie <a href="https://www.iubenda.com/privacy-policy/13455058" target="_blank">Datenschutz</a> und <a href="https://www.iubenda.com/privacy-policy/gdpr/13455058/cookie-policy" target="_blank">Cookie-Richtlinien</a> gelesen und sie vollständig verstanden und akzeptiert habe.</label>
+				</div>
 			</div>
+
 		</div>
 
-		<div id="btnFinish" class="container text-left my-5 pb-5">
-			<a class="btn btn-success ripple px-5 py-3" href="installation_summary.php"><?php echo $strings['continue']; ?></a>
-			<a class="btn btn-info ripple px-5 py-3 ml-3" target="_blank" href="print_accept_terms.php"><?php echo $strings['print']; ?></a>
-		</div>
+
 
 
 
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
-		<script>const lang = <?php echo json_encode($strings); ?>;</script>
+		<script>const lang = <?php echo json_encode($lang) ?>;</script>
 		<script src="js/accept_terms.js?v=<?php echo $versionHash ?>"></script>
+
+
 
 
 

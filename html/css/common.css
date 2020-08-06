@@ -1,39 +1,30 @@
-/* latin-ext */
-@font-face {
-	font-family: 'Raleway';
-	font-style: normal;
-	font-weight: 400;
-	font-display: swap;
-	src: local('Raleway'), local('Raleway-Regular'), url(dist/raleway-regular-ext.woff2) format('woff2');
-	unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-/* latin */
-@font-face {
-	font-family: 'Raleway';
-	font-style: normal;
-	font-weight: 400;
-	font-display: swap;
-	src: local('Raleway'), local('Raleway-Regular'), url(dist/raleway-regular.woff2) format('woff2');
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
+/*
+	Font Imports
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+
+
+
+
+
+
+
+
+
 
 /*
 	Bootstrap Modifications & Extensions
 */
 
 :root {
-	--font-family-sans-serif: 'Raleway',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	--font-family-sans-serif: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 }
 
-.dropdown-menu.fade {
-	display: block;
-	opacity: 0;
-	pointer-events: none;
-}
-.show > .dropdown-menu.fade {
-	pointer-events: auto !important;
-	opacity: 1 !important;
-}
+.cursor-pointer { cursor: pointer; }
+
+.dropdown-menu.fade { display: block; opacity: 0; pointer-events: none; }
+.show > .dropdown-menu.fade { pointer-events: auto !important; opacity: 1 !important; }
 
 .elevate,   .elevate:hover,   .elevate:active,   .elevate:focus,
 .elevate-1, .elevate-1:hover, .elevate-1:active, .elevate-1:focus,
@@ -49,22 +40,10 @@
 	transition: transform .2s ease-in-out, box-shadow .2s ease-in-out;
 	transition: transform .2s ease-in-out, box-shadow .2s ease-in-out, -webkit-transform .2s ease-in-out;
 }
-
-.elevate-2, .elevate-2:hover, .elevate-2:active, .elevate-2:focus {
-	box-shadow: var(--elevate-z3) !important;
-}
-
-.elevate-3, .elevate-3:hover, .elevate-3:active, .elevate-3:focus {
-	box-shadow: var(--elevate-z4) !important;
-}
-
-.elevate-4, .elevate-4:hover, .elevate-4:active, .elevate-4:focus {
-	box-shadow: var(--elevate-z6) !important;
-}
-
-.elevate-5, .elevate-5:hover, .elevate-5:active, .elevate-5:focus {
-	box-shadow: var(--elevate-z8) !important;
-}
+.elevate-2, .elevate-2:hover, .elevate-2:active, .elevate-2:focus { box-shadow: var(--elevate-z3) !important; }
+.elevate-3, .elevate-3:hover, .elevate-3:active, .elevate-3:focus { box-shadow: var(--elevate-z4) !important; }
+.elevate-4, .elevate-4:hover, .elevate-4:active, .elevate-4:focus { box-shadow: var(--elevate-z6) !important; }
+.elevate-5, .elevate-5:hover, .elevate-5:active, .elevate-5:focus { box-shadow: var(--elevate-z8) !important; }
 
 .w-100 { width: 100% !important; }
 .w-90  { width:  90% !important; }
@@ -135,13 +114,28 @@
 	.w-xl-10  { width:  10% !important; }
 }
 
-.custom-control-label::before {
-	border-color: gray;
+/* Fix Problem with Options appearing white on dark theme in Chrome */
+option:not(:disabled) { color: #202020; }
+optgroup:not(:disabled) { color: #202020; }
+
+.alert-notification {
+	width: auto;
+	min-width: 20rem;
+	max-width: 20rem;
+	border: 0;
+	box-shadow: var(--elevate-z8);
+	color: white;
 }
 
-/* Fix Problem with Options appearing white on dark theme in Chrome */
-option:not(:disabled) {
-	color: #202020;
+.alert-notification .close {
+	text-shadow: none;
+	color: white;
+	outline: 0;
+}
+
+/* TODO: CHECK IF CAN REMOVE */
+.custom-control-label::before {
+	border-color: gray;
 }
 
 
@@ -158,40 +152,97 @@ option:not(:disabled) {
 */
 
 :root {
-
-	--color-body: #f5f5f5;
-
-	--custom-navbar-color: #343a40;
-
+	--color-body: #f0f0f0;
+	--custom-navbar-color: #232323;
 	--color-input-border: gray;
-
 	--color-input: var(--color-success);
-
 }
 
 .theme-inverse {
-
 	--custom-navbar-color: #232323;
-
 	--color-input: #87d403;
-
 	--color-link: #87d403;
 	--color-link-hover: #7fc900;
-
 }
 
-.elevate-n1 {
-	box-shadow: 0 -3px 1px -2px rgba(0,0,0,.2),0 -2px 2px 0 rgba(0,0,0,.14),0 -1px 5px 0 rgba(0,0,0,.12);
-	border: 0;
+.elevate-n1, .elevate-n2, .elevate-n3 { border: 0; }
+.elevate-n1 { box-shadow: 0 -3px 1px -2px rgba(0,0,0,.2),0 -2px 2px 0 rgba(0,0,0,.14),0 -1px 5px 0 rgba(0,0,0,.12); }
+.elevate-n2 { box-shadow: 0 -3px 3px -2px rgba(0,0,0,.2),0 -3px 4px 0 rgba(0,0,0,.14),0 -1px 8px 0 rgba(0,0,0,.12); }
+.elevate-n3 { box-shadow: 0 -2px 4px -1px rgba(0,0,0,.2),0 -4px 5px 0 rgba(0,0,0,.14),0 -1px 10px 0 rgba(0,0,0,.12); }
+
+@media (min-width:576px) {
+	.modal-sm {
+		max-width: 350px;
+	}
 }
-.elevate-n2 {
-	box-shadow: 0 -3px 3px -2px rgba(0,0,0,.2),0 -3px 4px 0 rgba(0,0,0,.14),0 -1px 8px 0 rgba(0,0,0,.12);
-	border: 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	Body & Progress-Bar
+*/
+
+body {
+	padding-bottom: 50px;
 }
-.elevate-n3 {
-	box-shadow: 0 -2px 4px -1px rgba(0,0,0,.2),0 -4px 5px 0 rgba(0,0,0,.14),0 -1px 10px 0 rgba(0,0,0,.12);
-	border: 0;
+
+#progress {
+	z-index: 1000;
+	position: fixed;
+	width: 100%; /* = 100vw - scrollBar */
+	left: 0;
+	bottom: 0;
+	background: var(--color-main);
+	display: flex;
 }
+
+#progress > div:first-child {
+	flex-grow: 1;
+	flex-shrink: 1;
+	padding: 1rem 1rem;
+}
+#progress > div:first-child > .progress-bar {
+	width: 0%;
+}
+
+#progress > div:last-child {
+	width: 250px;
+}
+#progress > div:last-child > #btn_next {
+	width: 100%;
+	height: 100%;
+	border-radius: 0;
+}
+#progress > div:last-child > #btn_next:disabled {
+	background-color: #999999;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -228,56 +279,6 @@ option:not(:disabled) {
 
 
 /*
-	Body & Progress-Bar
-*/
-
-body {
-	background: var(--color-main);
-	margin-bottom: 50px;
-}
-
-#progress {
-	z-index: 1000;
-	position: fixed;
-	width: 100%; /* = 100vw - scrollBar */
-	left: 0;
-	top: calc(100vh - 48px);
-	background: var(--color-main);
-	display: flex;
-}
-
-#progress > div:first-child {
-	flex-grow: 1;
-	flex-shrink: 1;
-	padding: 1rem 1rem;
-}
-#progress > div:first-child > .progress-bar {
-	width: 0%;
-}
-
-#progress > div:last-child {
-	width: 250px;
-}
-#progress > div:last-child > #btn_next {
-	width: 100%;
-	height: 100%;
-	border-radius: 0;
-	letter-spacing: 1px;
-}
-#progress > div:last-child > #btn_next:disabled {
-	background-color: #999999;
-}
-
-
-
-
-
-
-
-
-
-
-/*
 	Loading / Error / Success
 */
 
@@ -285,10 +286,12 @@ body {
 	display: none;
 	width: 2rem;
 	height: 2rem;
+	min-width: 2rem;
+	min-height: 2rem;
 	vertical-align: text-bottom;
-	border: .125rem solid currentColor;
+	border: .15rem solid currentColor;
 	border-right-color: transparent;
-	border-radius: 50%;
+	border-radius: 50rem;
 	-webkit-animation: spinner-border .75s linear infinite;
 	animation: spinner-border .75s linear infinite;
 }

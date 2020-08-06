@@ -3,15 +3,29 @@
 }
 
 body {
-	background-color: #f5f5f5;
-	margin-bottom: 0;
+	background: var(--color-body);
+	margin: 0;
+	padding: 0;
 }
 
 
 
 
 
-#timestamp { white-space: nowrap }
+#timestamp { white-space: nowrap; }
+
+
+
+
+
+.box-live {
+	margin: 0;
+	padding: 0.5rem;
+}
+
+
+
+
 
 .table * {
 	white-space: nowrap;
@@ -32,7 +46,7 @@ body {
 }
 
 .table td:not(:last-child) {
-	border-right: 1px solid #dee2e6;
+	border-right: 1px solid var(--color-border);
 }
 
 .card {
