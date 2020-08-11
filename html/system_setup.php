@@ -91,7 +91,7 @@ $_SESSION["box_apikey"] = $apikey;
 						<span style="color: red"><b><?php echo $lang["system_setup"]["livex_not_registered"] ?></b></span>
 						<div class="mt-3">
 							<span class="d-block"><b>APIKEY</b></span>
-							<input type="text" class="form-control-plaintext text-center" value="<?php echo $apikey ?>">
+							<input type="text" class="form-control form-control-outline text-center mt-2" value="<?php echo $apikey ?>" readonly>
 						</div>
 					</div>
 				</div>
