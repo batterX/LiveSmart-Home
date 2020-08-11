@@ -91,7 +91,7 @@ $_SESSION["box_apikey"] = $apikey;
 						<span style="color: red"><b><?php echo $lang["system_setup"]["livex_not_registered"] ?></b></span>
 						<div class="mt-3">
 							<span class="d-block"><b>APIKEY</b></span>
-							<input type="text" class="form-control form-control-outline text-center mt-2" value="<?php echo $apikey ?>" readonly>
+							<input type="text" class="form-control form-control-outline text-center mt-2 px-2" style="font-size:95%" value="<?php echo $apikey ?>" readonly>
 						</div>
 					</div>
 				</div>
@@ -125,7 +125,7 @@ $_SESSION["box_apikey"] = $apikey;
 						<span style="color: red"><b><?php echo $lang["system_setup"]["battery_not_exist_or_registered_with_other_system"] ?></b></span>
 						<div class="mt-3">
 							<span class="d-block"><b><?php echo $lang["system_setup"]["serialnumber"] ?></b></span>
-							<input id="errorBatterySerial" type="text" class="form-control-plaintext text-center">
+							<input id="errorBatterySerial" type="text" class="form-control form-control-outline text-center mt-2 px-2" style="font-size:95%" readonly>
 						</div>
 					</div>
 				</div>

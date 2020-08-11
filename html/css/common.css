@@ -172,7 +172,7 @@ optgroup:not(:disabled) { color: #202020; }
 
 @media (min-width:576px) {
 	.modal-sm {
-		max-width: 350px;
+		max-width: 400px;
 	}
 }
 
