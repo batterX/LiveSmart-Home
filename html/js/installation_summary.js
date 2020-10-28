@@ -53,6 +53,7 @@ $("#btnFinishInstallation").on("click", () => {
 	if(dataObj.hasOwnProperty("customer_lastname"     ) && dataObj["customer_lastname"     ] != "") data.append("customer_lastname"     , dataObj["customer_lastname"       ]);
 	if(dataObj.hasOwnProperty("customer_email"        ) && dataObj["customer_email"        ] != "") data.append("customer_email"        , dataObj["customer_email"          ]);
 	if(dataObj.hasOwnProperty("customer_telephone"    ) && dataObj["customer_telephone"    ] != "") data.append("customer_telephone"    , dataObj["customer_telephone"      ]);
+	if(dataObj.hasOwnProperty("customer_company"      ) && dataObj["customer_company"      ] != "") data.append("customer_company"      , dataObj["customer_company"        ]);
 	if(dataObj.hasOwnProperty("customer_country"      ) && dataObj["customer_country"      ] != "") data.append("customer_country"      , dataObj["customer_country"        ]);
 	if(dataObj.hasOwnProperty("customer_city"         ) && dataObj["customer_city"         ] != "") data.append("customer_city"         , dataObj["customer_city"           ]);
 	if(dataObj.hasOwnProperty("customer_zipcode"      ) && dataObj["customer_zipcode"      ] != "") data.append("customer_zipcode"      , dataObj["customer_zipcode"        ]);

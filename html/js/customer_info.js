@@ -40,15 +40,16 @@ $.post({
 
 		// Set Customer Information
 		if(json.hasOwnProperty("customer")) {
-			if( json.customer.hasOwnProperty("gender"   ) && json.customer.gender      != "" &&
-				json.customer.hasOwnProperty("firstname") && json.customer.firstname   != "" &&
-				json.customer.hasOwnProperty("lastname" ) && json.customer.lastname    != "" &&
-				json.customer.hasOwnProperty("email"    ) && json.customer.email       != "" &&
-				json.customer.hasOwnProperty("telephone") && json.customer.telephone   != "" &&
-				json.customer.hasOwnProperty("country"  ) && json.customer.country     != "" &&
-				json.customer.hasOwnProperty("city"     ) && json.customer.city        != "" &&
-				json.customer.hasOwnProperty("zipcode"  ) && json.customer.zipcode     != "" &&
-				json.customer.hasOwnProperty("address"  ) && json.customer.address     != ""
+			if( json.customer.hasOwnProperty("gender"   ) &&
+				json.customer.hasOwnProperty("firstname") &&
+				json.customer.hasOwnProperty("lastname" ) &&
+				json.customer.hasOwnProperty("company"  ) &&
+				json.customer.hasOwnProperty("email"    ) &&
+				json.customer.hasOwnProperty("telephone") &&
+				json.customer.hasOwnProperty("country"  ) &&
+				json.customer.hasOwnProperty("city"     ) &&
+				json.customer.hasOwnProperty("zipcode"  ) &&
+				json.customer.hasOwnProperty("address"  )
 			) {
 				// Set Input Values
 				$("#customerInformation .email           ").val(json.customer.email    ).attr("disabled", true);
@@ -56,6 +57,7 @@ $.post({
 				$("#customerInformation .first-name      ").val(json.customer.firstname);
 				$("#customerInformation .last-name       ").val(json.customer.lastname );
 				$("#customerInformation .telephone       ").val(json.customer.telephone);
+				$("#customerInformation .company         ").val(json.customer.company  );
 				$("#customerInformation .location-country").val(json.customer.country  );
 				$("#customerInformation .location-city   ").val(json.customer.city     );
 				$("#customerInformation .location-zip    ").val(json.customer.zipcode  );
@@ -110,14 +112,15 @@ $("#customerInformation .email").on("change", function() {
 				return $("#errorNoAccessToUser").modal("show");
 			}
 
-			if( json.hasOwnProperty("gender"   ) && json.gender    != "" &&
-				json.hasOwnProperty("firstname") && json.firstname != "" &&
-				json.hasOwnProperty("lastname" ) && json.lastname  != "" &&
-				json.hasOwnProperty("telephone") && json.telephone != "" &&
-				json.hasOwnProperty("country"  ) && json.country   != "" &&
-				json.hasOwnProperty("city"     ) && json.city      != "" &&
-				json.hasOwnProperty("zipcode"  ) && json.zipcode   != "" &&
-				json.hasOwnProperty("address"  ) && json.address   != ""
+			if( json.hasOwnProperty("gender"   ) &&
+				json.hasOwnProperty("firstname") &&
+				json.hasOwnProperty("lastname" ) &&
+				json.hasOwnProperty("telephone") &&
+				json.hasOwnProperty("company"  ) &&
+				json.hasOwnProperty("country"  ) &&
+				json.hasOwnProperty("city"     ) &&
+				json.hasOwnProperty("zipcode"  ) &&
+				json.hasOwnProperty("address"  )
 			) {
 				// Set Input Values
 				$("#customerInformation .email           ").attr("disabled", true);
@@ -125,6 +128,7 @@ $("#customerInformation .email").on("change", function() {
 				$("#customerInformation .first-name      ").val(json.firstname);
 				$("#customerInformation .last-name       ").val(json.lastname );
 				$("#customerInformation .telephone       ").val(json.telephone);
+				$("#customerInformation .company         ").val(json.company  );
 				$("#customerInformation .location-country").val(json.country  );
 				$("#customerInformation .location-city   ").val(json.city     );
 				$("#customerInformation .location-zip    ").val(json.zipcode  );
@@ -220,6 +224,7 @@ $("#mainForm").on("submit", (e) => {
 				customer_lastname:    $("#customerInformation .last-name       ").val(),
 				customer_email:       $("#customerInformation .email           ").val(),
 				customer_telephone:   $("#customerInformation .telephone       ").val(),
+				customer_company:     $("#customerInformation .company         ").val(),
 				customer_country:     $("#customerInformation .location-country").val(),
 				customer_city:        $("#customerInformation .location-city   ").val(),
 				customer_zipcode:     $("#customerInformation .location-zip    ").val(),

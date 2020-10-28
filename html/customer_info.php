@@ -106,18 +106,20 @@ $_SESSION["box_apikey"] = $apikey;
 								</select>
 							</div>
 							<div class="col-md-5 p-1">
-								<input class="first-name form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["first_name"]; ?>" required>
+								<input class="first-name form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["first_name"]; ?>" required>
 							</div>
 							<div class="col-md-5 p-1">
-								<input class="last-name form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["last_name"]; ?>" required>
+								<input class="last-name form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["last_name"]; ?>" required>
 							</div>
 
-							<div class="col-md-2"></div>
-							<div class="col-md-5 p-1">
-								<input class="email form-control form-control-outline" type="email" placeholder="<?php echo $lang["customer_info"]["email"]; ?>" required>
+							<div class="col-md-4 p-1">
+								<input class="company form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["company"]; ?>">
 							</div>
-							<div class="col-md-5 p-1">
-								<input class="telephone form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["telephone"]; ?>" required>
+							<div class="col-md-4 p-1">
+								<input class="email form-control form-control-outline" type="email" placeholder="<?php echo $lang["common"]["email"]; ?>" required>
+							</div>
+							<div class="col-md-4 p-1">
+								<input class="telephone form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["telephone"]; ?>" required>
 							</div>
 
 							<div class="w-100" style="padding: 0.375rem"></div>
@@ -180,14 +182,14 @@ $_SESSION["box_apikey"] = $apikey;
 								</select>
 							</div>
 							<div class="col-md-4 p-1">
-								<input class="location-city form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["city"]; ?>" required>
+								<input class="location-city form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["city"]; ?>" required>
 							</div>
 							<div class="col-md-4 p-1">
-								<input class="location-zip form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["zip_code"]; ?>" required>
+								<input class="location-zip form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["zip_code"]; ?>" required>
 							</div>
 
 							<div class="col-md-12 p-1">
-								<input class="location-address form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["address"]; ?>" required>
+								<input class="location-address form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["address"]; ?>" required>
 							</div>
 
 						</div>
@@ -266,14 +268,14 @@ $_SESSION["box_apikey"] = $apikey;
 								</select>
 							</div>
 							<div class="col-md-4 p-1">
-								<input class="location-city form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["city"] ?>" required>
+								<input class="location-city form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["city"] ?>" required>
 							</div>
 							<div class="col-md-4 p-1">
-								<input class="location-zip form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["zip_code"] ?>" required>
+								<input class="location-zip form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["zip_code"] ?>" required>
 							</div>
 						
 							<div class="col-md-12 p-1">
-								<input class="location-address form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["address"] ?>" required>
+								<input class="location-address form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["address"] ?>" required>
 							</div>
 
 						</div>

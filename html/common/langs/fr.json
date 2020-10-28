@@ -1,163 +1,15 @@
 {
 
+
+
+
+
+
+
+
+
+
 	"lang": "fr",
-
-	"btn": {
-		"continue" : "Continuer",
-		"login"    : "Se connecter",
-		"apply"    : "Appliquer",
-		"save"     : "Enregistrer"
-	},
-
-	"software_update": {
-		"software_update"                : "Mise à jour du liveX",
-		"checking_internet_connection"   : "Vérification de la connexion internet",
-		"searching_for_updates"          : "Recherche des mises à jour",
-		"downloading_update"             : "Téléchargement de la mise à jour",
-		"rebooting"                      : "Redémarrage",
-		"finishing_update"               : "Terminer la mise à jour",
-		"update_completed"               : "Mise à jour terminée",
-		"no_internet_connection"         : "Pas de connexion internet",
-		"check_network_cable_connection" : "Assurez-vous que le câble réseau est connecté"
-	},
-
-	"installer_login": {
-		"installer_login"         : "Connexion de l'installateur",
-		"email"                   : "E-mail",
-		"password"                : "Mot de passe",
-		"wrong_email_or_password" : "Mauvaise l'adresse e-mail ou mot de passe. Veuillez réessayer!",
-		"wrong_system_installer"  : "Vous n'êtes pas l'installateur de ce système, vous ne pourrez donc pas terminer l'installation"
-	},
-
-	"customer_info": {
-		"customer_information"       : "Informations clients",
-		"first_name"                 : "Prénom",
-		"last_name"                  : "Nom",
-		"email"                      : "E-mail",
-		"telephone"                  : "Numéro de téléphone",
-		"city"                       : "Ville",
-		"zip_code"                   : "Code postal",
-		"address"                    : "L'adresse",
-		"installation_address"       : "L'adresse d'installation",
-		"same_as_customer_address"   : "Identique à l'adresse du client",
-		"customer_same_as_installer" : "L'adress email du client ne peut pas être le même que celui de l'installateur. Veuillez choisir une autre adresse email!",
-		"wrong_customer_installer"   : "Vous n'avez pas accès à l'adresse e-mail de ce client final. Veuillez utiliser une autre adresse e-mail!"
-	},
-
-	"system_detect": {
-		"inverter_unknown"        : "Onduleur inconnu",
-		"please_connect_inverter" : "Veuillez connecter votre onduleur au liveX",
-		"inverter_not_registered" : "Votre onduleur n'est pas enregistré dans nos bases de données",
-		"switch_to_vde4105"       : "Changer sur VDE4105"
-	},
-
-	"system_setup": {
-		"serialnumber"                                      : "Numéro de série",
-		"serialnumber_system"                               : "Numéro de série du système (armoire)",
-		"system_type_r"                                     : "Système complet",
-		"system_type_w"                                     : "Onduleur monté au mur",
-		"serialnumber_inverter"                             : "Numéro de série de l'onduleur",
-		"serialnumber_box"                                  : "Numéro de série du liveX",
-		"serialnumber_battery1"                             : "Numéro de série du module de batterie 1",
-		"batteries"                                         : "Batteries",
-		"batteries_serialnumber"                            : "Veuillez entrer le numéro de série de chaque module de batterie connectée au système.",
-		"pv_system"                                         : "Système photovoltaïque",
-		"pv_system_size"                                    : "Taille du système photovoltaïque",
-		"pv_installation_info"                              : "Détails de l'installation photovoltaïque",
-		"watt_peak"                                         : "Watts crête (Wp)",
-		"pv_system_feed_in_limitation"                      : "Quel pourcentage de l'énergie solaire peut être injecté dans le réseau par rapport au puissance crête?",
-		"setting_parameters"                                : "Enregistrement des paramètres. Attendez s'il vous plaît...",
-		"inverter_registered_with_other_system"             : "L'onduleur est déjà enregistré dans un autre système!",
-		"battery_not_exist_or_registered_with_other_system" : "La batterie n'existe pas ou est déjà enregistrée dans un autre système!",
-		"setting_success"                                   : "Paramétrage réussi",
-		"installer_memo"                                    : "Notes de l'installateur",
-		"other"                                             : "Autres",
-		"lifepo_communication_problem"                      : "Problème de communication entre l'onduleur et les modules de batterie",
-		"lifepo_recognition_problem"                        : "Only X battery modules detected",
-		"emeter_phase_connected"                            : "Veuillez indiquer à quelle phase de l'Energy Meter l'entrée de l'onduleur a été connectée.",
-		"show_more"                                         : "Afficher plus",
-		"number_of_strings"                                 : "Nombre de branches",
-		"capacity"                                          : "Capacité",
-		"battery_capacity"                                  : "Capacité de la batterie",
-		"max_charging_current"                              : "Courant de charge maximal",
-		"max_discharging_current"                           : "Courant de décharge maximal",
-		"bulk_charging_voltage"                             : "Tension de charge d'équilibrage",
-		"float_charging_voltage"                            : "Tension de charge de flottemente",
-		"cutoff_voltage_hybrid"                             : "Tension d'arrêt en fonctionnement normal",
-		"redischarging_voltage_hybrid"                      : "Limite de tension pour le redémarrage de la décharge de la batterie en fonctionnement normal",
-		"cutoff_voltage"                                    : "Tension d'arrêt en cas de coupure de courant",
-		"redischarging_voltage"                             : "Limite de tension pour le redémarrage de la décharge de la batterie en cas de coupure de courant",
-		"livex_not_registered"                              : "Votre liveX n'est pas enregistré dans notre base de données. Veuillez contacter votre partenaire batterX pour régler ce problème.",
-		"pv_size_very_low"                                  : "La puissance du système photovoltaïque semble être très faible.",
-		"pv_size_very_low_confirm"                          : "Veuillez confirmer que la puissance n'est que de 100 Wp ou modifier la puissance à la valeur correcte.",
-		"system_serial_not_correct"                         : "Le numéro de série du système n'est pas valable"
-	},
-
-	"system_test": {
-		"system_test"            : "Test du système",
-		"energy_meter"           : "Compteur d'énergie",
-		"battery_charging"       : "Chargement de la batterie",
-		"ups_mode"               : "Mode UPS",
-		"performing_test"        : "Test du système en cours",
-		"enable_ac_charging"     : "Activation du chargement des batteries par le réseau",
-		"disable_ac_charging"    : "Désactivation du chargement des batteries par le réseau",
-		"check_output_active"    : "Vérification si la sortie est activée",
-		"turn_input_off"         : "Couper le sectionneur solaire et le disjoncteur d'entrée",
-		"please_turn_solar_off"  : "Couper le sectionneur solaire.",
-		"please_turn_input_off"  : "Couper le sectionneur solaire et le disjoncteur d'entrée.",
-		"please_turn_input_on"   : "Enclencher le sectionneur solaire et le disjoncteur d'entrée",
-		"please_turn_output_on"  : "Allumez la sortie de l'onduleur s.v.p.",
-		"verifying_battery_soc"  : "Vérification du niveau des modules de batterie",
-		"charging_battery_to"    : "Chargement de modules de batterie jusqu'à",
-		"discharging_battery_to" : "Déchargement de modules de batterie jusqu'à",
-		"current_status"         : "État actuel",
-		"warning"                : "Alarme",
-		"warning_16640"          : "Coupure de courant",
-		"warning_16642"          : "Inversion des phases d'entrées"
-	},
-
-	"summary": {
-		"installation_summary"  : "Résumé de l'installation",
-		"installation_date"     : "Date d'installation",
-		"latest_maintenance"    : "Dernier entretien",
-		"installer"             : "L'installateur",
-		"name"                  : "Nom",
-		"company"               : "Société",
-		"email"                 : "E-mail",
-		"telephone"             : "Téléphone",
-		"installer_memo"        : "Notes de l'installateur",
-		"customer"              : "Client",
-		"address"               : "L'adresse",
-		"installation"          : "Installation",
-		"system_model"          : "Nom du système",
-		"vde4105"               : "Système conforme selon VDE4105",
-		"system"                : "Numéro de série du système (armoire)",
-		"inverter"              : "Numéro de série d'onduleur",
-		"nominal_power"         : "Puissance nominale",
-		"power_factor"          : "Facteur de puissance (cosφ)",
-		"livex"                 : "Numéro de série du liveX",
-		"batteries"             : "Batteries",
-		"pv_system_size"        : "Taille du système photovoltaïque",
-		"pv_installation_info"  : "Détails de l'installation photovoltaïque",
-		"feed_in_limitation"    : "Limitation d'injection dans le réseau",
-		"confirm_load_final"    : "Dans le cadre de la procédure d'installation, le technicien d'installation a confirmé que la charge de l'onduleur, y compris les courants instantanés et de démarrage, est correctement conçue ou, en cas de surcharges avec le réseau existant, est ramenée au niveau admissible dans le mois suivant la date d'installation, ce qui est une condition préalable pour la validité de la garantie du produit. Il est à noter que, selon les conditions de garantie, les surcharges dans le fonctionnement en UPS provoquent une perte de garantie.",
-		"confirm_box"           : "Je confirme par la présente que les informations ci-dessus sont vrais, complets et exacts.",
-		"confirm_load_box"      : "Il est confirmé que la charge de l'onduleur, y compris les courants instantanés et de démarrage, est correctement conçue ou, en cas de surcharges avec le réseau existant, est ramenée au niveau admissible dans le mois suivant la date d'installation, ce qui est une condition préalable pour la validité de la garantie du produit. Il est à noter que, selon les conditions de garantie, les surcharges dans le fonctionnement en UPS provoquent une perte de garantie.",
-		"finish_installation"   : "Terminer l'installation",
-		"download_pdf"          : "Télécharger le PDF",
-		"reboot_livex"          : "Redémarrage du liveX",
-		"final_congratulations" : "Félicitations!",
-		"final_p1"              : "L'installation du système batterX Home a été terminé avec succès et un courriel avec un lien de confirmation a été envoyé à l'adresse e-mail du client.",
-		"final_p2"              : "En cliquant sur le lien de confirmation, le client peut commencer à utiliser le portail pour la surveillance et le contrôle à distance de son système batterX Home.",
-		"final_p3"              : "En tant qu'installateur du système il sera également disponible dans votre compte. Cela vous donne la possibilité d'offrir une assistance à distance à votre client au cas il serait nécessaire.",
-		"final_p4"              : "Nous avons enregistré automatiquement le rapport d'installation sur le cloud batterX. Il est conseiller de le télécharger et de le stocker localement.",
-		"final_p5"              : "Il est fortement conseiller de redémarrer le liveX maintenant, en appuyant sur le bouton ci-dessous.",
-		"final_p6"              : "Le portail batterX est accessible sous l'adresse suivante"
-	},
-
-
-
-
 
 	"dict_gender": {
 		"0" : "M.",
@@ -213,6 +65,343 @@
 		"ke" : "Kenya",
 		"za" : "Afrique du Sud",
 		"re" : "Réunion"
-	}
+	},
+
+	"dict_vde4105_mode": {
+		"0" : "Kein",
+		"1" : "cosφ(P) Kennlinie",
+		"2" : "Fester cosφ",
+		"3" : "Q(U) Kennlinie"
+    },
+    
+    "dict_bs_sysmode": {
+        "0" : "None",
+		"1" : "Auto Discharge Batteries",
+		"2" : "Grid Power Near Zero",
+		"3" : "Cut Power Peak"
+    },
+
+	"btn": {
+		"continue"  : "Continuer",
+		"login"     : "Se connecter",
+		"apply"     : "Appliquer",
+		"save"      : "Enregistrer",
+		"show_more" : "Afficher plus"
+	},
+
+	"common": {
+		"email"        : "E-mail",
+		"password"     : "Mot de passe",
+		"name"         : "Nom",
+		"first_name"   : "Prénom",
+		"last_name"    : "Nom",
+		"company"      : "Société",
+        "telephone"    : "Numéro de téléphone",
+        "country"      : "Pays",
+		"city"         : "Ville",
+		"zip_code"     : "Code postal",
+		"address"      : "L'adresse",
+        "serialnumber" : "Numéro de série",
+        "on"           : "On",
+        "off"          : "Off",
+        "yes"          : "Oui",
+        "no"           : "Non",
+        "mode"         : "Mode"
+	},
+
+
+
+
+
+
+
+
+
+
+	"software_update": {
+		"software_update"                : "Mise à jour du liveX",
+		"checking_internet_connection"   : "Vérification de la connexion internet",
+		"check_network_cable_connection" : "Assurez-vous que le câble réseau est connecté",
+		"no_internet_connection"         : "Pas de connexion internet",
+		"searching_for_updates"          : "Recherche des mises à jour",
+		"downloading_update"             : "Téléchargement de la mise à jour",
+		"rebooting"                      : "Redémarrage",
+		"finishing_update"               : "Terminer la mise à jour",
+		"update_completed"               : "Mise à jour terminée"
+	},
+
+	"installer_login": {
+		"installer_login"                : "Connexion de l'installateur",
+		"wrong_email_or_password"        : "Mauvaise l'adresse e-mail ou mot de passe. Veuillez réessayer!",
+		"wrong_system_installer"         : "Vous n'êtes pas l'installateur de ce système, vous ne pourrez donc pas terminer l'installation"
+	},
+
+	"customer_info": {
+		"customer_information"           : "Informations clients",
+		"installation_address"           : "L'adresse d'installation",
+		"same_as_customer_address"       : "Identique à l'adresse du client",
+		"customer_same_as_installer"     : "L'adress email du client ne peut pas être le même que celui de l'installateur. Veuillez choisir une autre adresse email!",
+		"wrong_customer_installer"       : "Vous n'avez pas accès à l'adresse e-mail de ce client final. Veuillez utiliser une autre adresse e-mail!"
+    },
+
+    "system_test": {
+		"system_test"                    : "Test du système",
+		"energy_meter"                   : "Compteur d'énergie",
+		"battery_charging"               : "Chargement de la batterie",
+		"ups_mode"                       : "Mode UPS",
+		"warning"                        : "Alarme",
+		"warning_16640"                  : "Coupure de courant",
+		"warning_16642"                  : "Inversion des phases d'entrées",
+		"performing_test"                : "Test du système en cours",
+		"verifying_battery_soc"          : "Vérification du niveau des modules de batterie",
+		"charging_battery_to"            : "Chargement de modules de batterie jusqu'à",
+		"discharging_battery_to"         : "Déchargement de modules de batterie jusqu'à",
+		"enable_ac_charging"             : "Activation du chargement des batteries par le réseau",
+		"disable_ac_charging"            : "Désactivation du chargement des batteries par le réseau",
+		"current_status"                 : "État actuel",
+		"check_output_active"            : "Vérification si la sortie est activée",
+		"turn_solar_off"                 : "Couper le sectionneur solaire.",
+		"turn_input_off"                 : "Couper le sectionneur solaire et le disjoncteur d'entrée.",
+		"turn_input_on"                  : "Enclencher le sectionneur solaire et le disjoncteur d'entrée",
+		"turn_output_on"                 : "Allumez la sortie de l'onduleur s.v.p."
+	},
+    
+
+
+
+
+
+
+
+
+
+	"system_detect": {
+		"inverter_unknown"                                         : "Onduleur inconnu",
+		"please_connect_inverter"                                  : "Veuillez connecter votre onduleur au liveX",
+		"inverter_not_registered"                                  : "Votre onduleur n'est pas enregistré dans nos bases de données"
+    },
+    
+	"system_setup": {
+		"system"                                                   : "batterX Home",
+		"system_serialnumber_system"                               : "Numéro de série du système (armoire)",
+		"system_serialnumber_inverter"                             : "Numéro de série de l'onduleur",
+		"system_serialnumber_livex"                                : "Numéro de série du liveX",
+		"system_type_r"                                            : "Système complet",
+        "system_type_w"                                            : "Onduleur monté au mur",
+        "system_installer_memo"                                    : "Notes de l'installateur",
+		"solar"                                                    : "Système photovoltaïque",
+        "solar_size"                                               : "Taille du système photovoltaïque",
+        "solar_watt_peak"                                          : "Watts crête (Wp)",
+		"solar_feed_in_limitation"                                 : "Quel pourcentage de l'énergie solaire peut être injecté dans le réseau par rapport au puissance crête?",
+        "solar_info"                                               : "Détails de l'installation photovoltaïque",
+		"solar_emeter_phase_connected"                             : "Veuillez indiquer à quelle phase de l'Energy Meter l'entrée de l'onduleur a été connectée.",
+        "batteries"                                                : "Batteries",
+		"batteries_lifepo"                                         : "LiFePO",
+		"batteries_lifepo_serialnumber"                            : "Veuillez entrer le numéro de série de chaque module de batterie connectée au système.",
+        "batteries_lifepo_serialnumber_placeholder"                : "Numéro de série du module de batterie 1",
+		"batteries_carbon"                                         : "Carbon",
+        "batteries_carbon_model"                                   : "Batteries",
+		"batteries_carbon_number_of_strings"                       : "Nombre de branches",
+        "batteries_carbon_capacity"                                : "Capacité",
+        "batteries_other"                                          : "Autres",
+		"batteries_other_capacity"                                 : "Capacité de la batterie",
+		"batteries_other_max_charging_current"                     : "Courant de charge maximal",
+		"batteries_other_max_discharging_current"                  : "Courant de décharge maximal",
+		"batteries_other_bulk_charging_voltage"                    : "Tension de charge d'équilibrage",
+		"batteries_other_float_charging_voltage"                   : "Tension de charge de flottemente",
+		"batteries_other_cutoff_voltage_hybrid"                    : "Tension d'arrêt en fonctionnement normal",
+		"batteries_other_redischarging_voltage_hybrid"             : "Limite de tension pour le redémarrage de la décharge de la batterie en fonctionnement normal",
+		"batteries_other_cutoff_voltage"                           : "Tension d'arrêt en cas de coupure de courant",
+        "batteries_other_redischarging_voltage"                    : "Limite de tension pour le redémarrage de la décharge de la batterie en cas de coupure de courant",
+		"vde4105_title"                                            : "Blindleistungsbereitstellung nach VDE-AR-N 4105:2018",
+		"vde4105_select_mode"                                      : "Modus auswählen",
+		"vde4105_overexcited"                                      : "Übererregt",
+        "vde4105_underexcited"                                     : "Untererregt",
+		"msg_setting_parameters"                                   : "Enregistrement des paramètres. Attendez s'il vous plaît…",
+		"msg_setting_success"                                      : "Paramétrage réussi",
+        "msg_solar_size_very_low"                                  : "La puissance du système photovoltaïque semble être très faible.",
+        "msg_solar_size_very_low_confirm"                          : "Veuillez confirmer que la puissance n'est que de 100 Wp ou modifier la puissance à la valeur correcte.",
+		"msg_lifepo_communication_problem"                         : "Problème de communication entre l'onduleur et les modules de batterie",
+        "msg_lifepo_recognition_problem"                           : "Only X battery modules detected",
+		"msg_livex_not_registered"                                 : "Votre liveX n'est pas enregistré dans notre base de données. Veuillez contacter votre partenaire batterX pour régler ce problème.",
+        "msg_system_serial_not_correct"                            : "Le numéro de série du système n'est pas valable",
+		"msg_inverter_registered_with_other_system"                : "L'onduleur est déjà enregistré dans un autre système!",
+		"msg_battery_not_exist_or_registered_with_other_system"    : "La batterie n'existe pas ou est déjà enregistrée dans un autre système!"
+	},
+
+	"summary": {
+		"installation_summary"                                     : "Résumé de l'installation",
+		"installation_date"                                        : "Date d'installation",
+		"latest_maintenance"                                       : "Dernier entretien",
+		"installer"                                                : "L'installateur",
+		"customer"                                                 : "Client",
+		"installation"                                             : "Installation",
+		"installer_memo"                                           : "Notes de l'installateur",
+		"installation_system_model"                                : "Nom du système",
+		"installation_system_is_vde4105"                           : "Système conforme selon VDE4105",
+		"installation_sn_system"                                   : "Numéro de série du système (armoire)",
+		"installation_sn_inverter"                                 : "Numéro de série d'onduleur",
+		"installation_sn_livex"                                    : "Numéro de série du liveX",
+		"installation_nominal_power"                               : "Puissance nominale",
+		"installation_power_factor"                                : "Facteur de puissance (cosφ)",
+		"installation_batteries"                                   : "Batteries",
+		"installation_solar_size"                                  : "Taille du système photovoltaïque",
+		"installation_solar_info"                                  : "Détails de l'installation photovoltaïque",
+		"installation_solar_feed_in_limitation"                    : "Limitation d'injection dans le réseau",
+		"confirm_load_final"                                       : "Dans le cadre de la procédure d'installation, le technicien d'installation a confirmé que la charge de l'onduleur, y compris les courants instantanés et de démarrage, est correctement conçue ou, en cas de surcharges avec le réseau existant, est ramenée au niveau admissible dans le mois suivant la date d'installation, ce qui est une condition préalable pour la validité de la garantie du produit. Il est à noter que, selon les conditions de garantie, les surcharges dans le fonctionnement en UPS provoquent une perte de garantie.",
+		"confirm_info"                                             : "Je confirme par la présente que les informations ci-dessus sont vrais, complets et exacts.",
+		"confirm_load"                                             : "Il est confirmé que la charge de l'onduleur, y compris les courants instantanés et de démarrage, est correctement conçue ou, en cas de surcharges avec le réseau existant, est ramenée au niveau admissible dans le mois suivant la date d'installation, ce qui est une condition préalable pour la validité de la garantie du produit. Il est à noter que, selon les conditions de garantie, les surcharges dans le fonctionnement en UPS provoquent une perte de garantie.",
+		"finish_installation"                                      : "Terminer l'installation",
+		"final_congratulations"                                    : "Félicitations!",
+		"final_download_pdf"                                       : "Télécharger le PDF",
+		"final_reboot_livex"                                       : "Redémarrage du liveX",
+		"final_text1"                                              : "L'installation du système batterX Home a été terminé avec succès et un courriel avec un lien de confirmation a été envoyé à l'adresse e-mail du client.",
+		"final_text2"                                              : "En cliquant sur le lien de confirmation, le client peut commencer à utiliser le portail pour la surveillance et le contrôle à distance de son système batterX Home.",
+		"final_text3"                                              : "En tant qu'installateur du système il sera également disponible dans votre compte. Cela vous donne la possibilité d'offrir une assistance à distance à votre client au cas il serait nécessaire.",
+		"final_text4"                                              : "Le portail batterX est accessible sous l'adresse suivante",
+		"final_text5"                                              : "Nous avons enregistré automatiquement le rapport d'installation sur le cloud batterX. Il est conseiller de le télécharger et de le stocker localement.",
+		"final_text6"                                              : "Il est fortement conseiller de redémarrer le liveX maintenant, en appuyant sur le bouton ci-dessous."
+    },
+    
+
+
+
+
+
+
+
+
+
+    "trax_system_detect": {
+        "meter_not_working"                                        : "Compteur d'énergie ne fonctionne pas",
+		"please_connect_meter"                                     : "Veuillez connecter le compteur d'énergie au liveX",
+		"trax_not_registered"                                      : "Votre traX n'est pas enregistré dans nos bases de données"
+    },
+
+    "trax_summary": {
+        "installation_summary"                                     : "Résumé de l'installation",
+        "installation_date"                                        : "Date d'installation",
+        "installer"                                                : "L'installateur",
+        "customer"                                                 : "Client",
+        "installation"                                             : "Installation",
+        "confirm_info"                                             : "Je confirme par la présente que les informations ci-dessus sont vrais, complets et exacts.",
+        "finish_installation"                                      : "Terminer l'installation",
+        "final_congratulations"                                    : "Félicitations!",
+        "final_text1"                                              : "L'installation du batterX traX a été terminé avec succès et un courriel avec un lien de confirmation a été envoyé à l'adresse e-mail du client.",
+        "final_text2"                                              : "En cliquant sur le lien de confirmation, le client peut commencer à utiliser le portail pour la surveillance à distance de son batterX traX.",
+        "final_text3"                                              : "En tant qu'installateur du système il sera également disponible dans votre compte.",
+        "final_text4"                                              : "Le portail batterX est accessible sous l'adresse suivante"
+    },
+    
+
+
+
+
+
+
+
+
+
+    "bs_system_detect": {
+        "ups_unknown"                                              : "UPS Unknown",
+		"please_connect_ups"                                       : "Please connect your UPS to the LiveX"
+    },
+
+    "bs_system_setup": {
+        "system"                                                   : "batterX Business",
+        "system_serialnumber_ups"                                  : "Serial number of the UPS",
+        "system_ups_model"                                         : "UPS Model",
+        "system_serialnumber_livex"                                : "Serial number of the LiveX",
+        "system_installer_memo"                                    : "Installer Memo",
+        "solar"                                                    : "PV-System",
+        "solar_serialnumber"                                       : "Please enter the S/N and installed solar power (Wp) for each solar controller connected to the system.",
+        "solar_controller"                                         : "Controller",
+        "solar_total_power_installed"                              : "Total Solar Power Installed (Wp)",
+        "solar_info"                                               : "PV-Installation Info",
+        "batteries"                                                : "Batteries",
+        "batteries_lifepo"                                         : "LiFePO",
+        "batteries_lifepo_sn_bms_module"                           : "S/N of each BMS module",
+        "batteries_lifepo_sn_battery_modules"                      : "S/N of each battery module",
+        "batteries_carbon"                                         : "Carbon",
+        "batteries_carbon_model"                                   : "Batteries",
+        "batteries_carbon_number_of_strings"                       : "Number of strings",
+        "batteries_carbon_capacity"                                : "Capacity",
+        "batteries_other"                                          : "Other",
+        "batteries_other_total_capacity"                           : "Battery total capacity",
+        "batteries_other_max_charge_c"                             : "Battery max. charge C",
+        "batteries_other_max_discharge_c"                          : "Battery max. discharge C",
+        "batteries_other_min_discharge_voltage"                    : "Min discharge voltage",
+        "batteries_other_voltage_hysteresis"                       : "Voltage hysteresis",
+        "sysmode"                                                  : "System Mode",
+        "sysmode_cut_power_peak"                                   : "Cut Power Peak",
+        "sysmode_max_power"                                        : "Max power",
+        "sysmode_max_power_hysteresis"                             : "Max power hysteresis",
+        "sysmode_power_target"                                     : "Power target",
+        "sysmode_auto_eco_mode"                                    : "Automatic ECO Mode",
+        "sysmode_auto_pfc_off"                                     : "Automatic PFC Off",
+        "modbus_connection"                                        : "Modbus Connection",
+        "modbus_baud_rate"                                         : "Baud rate",
+        "modbus_parity"                                            : "Parity",
+        "modbus_stop_bits"                                         : "Stop bits",
+        "modbus_port_name"                                         : "Modbus Port Name",
+        "modbus_possible_usb_devices"                              : "Possible USB Devices",
+        "modbus_refresh_list"                                      : "Refresh List",
+        "modbus_use_selected"                                      : "Use Selected",
+        "modbus_devices"                                           : "Modbus Devices",
+        "modbus_devices_ups_input_counter"                         : "UPS Input Counter",
+        "modbus_devices_ups_output_counter"                        : "UPS Output Counter",
+        "modbus_devices_grid_counter"                              : "Grid Counter",
+        "modbus_devices_external_solar_counter"                    : "External Solar Counter",
+        "modbus_devices_connected"                                 : "Connected",
+        "modbus_devices_id"                                        : "Modbus ID",
+        "msg_setting_parameters"                                   : "Setting Parameters. Please Wait…",
+        "msg_setting_success"                                      : "Setting successful",
+        "msg_livex_not_registered"                                 : "Your liveX is not registered in our database. Please contact your batterX Partner to resolve this.",
+        "msg_ups_registered_with_other_system"                     : "UPS already registered with another system!",
+        "msg_controller_not_exist_or_registered_with_other_system" : "Solar Controller does not exist or is already registered with another system!",
+        "msg_battery_not_exist_or_registered_with_other_system"    : "Battery does not exist or is already registered with another system!",
+        "msg_bms_not_exist_or_registered_with_other_system"        : "BMS does not exist or is already registered with another system!"
+    },
+
+    "bs_summary": {
+        "installation_summary"                                     : "Installation Summary",
+        "installation_date"                                        : "Installation Date",
+        "latest_maintenance"                                       : "Latest Maintenance",
+        "installer"                                                : "Installer",
+        "customer"                                                 : "Customer",
+        "installation"                                             : "Installation",
+        "installer_memo"                                           : "Installer Memo",
+        "installation_sn_ups"                                      : "UPS S/N",
+        "installation_sn_livex"                                    : "liveX S/N",
+        "installation_nominal_power"                               : "Nominal Power",
+        "installation_power_factor"                                : "Power Factor (cosφ)",
+        "installation_bms"                                         : "BMS",
+        "installation_batteries"                                   : "Batteries",
+        "installation_solar_controllers"                           : "PV Controllers",
+        "installation_solar_size"                                  : "PV-System Size",
+        "installation_solar_info"                                  : "PV-Installation Info",
+        "confirm_load_final"                                       : "As part of the installation routine, the installing technician has confirmed that the UPS load, including inrush and start-up currents, is correctly designed or, in the event of overloads with available mains, will be reduced to the permissible level within 1 month of the installation date, which is a prerequisite for the validity of the product warranty. It is pointed out that according to the warranty conditions overloads in UPS mode will invalidate the warranty.",
+        "confirm_info"                                             : "I hereby confirm that the information above is true, complete and accurate.",
+        "confirm_load"                                             : "It is hereby confirmed that the UPS load, including inrush and start-up currents, is correctly designed or, in the event of overloads with available mains, will be reduced to the permissible level within 1 month of the installation date, which is a prerequisite for the validity of the product warranty. It is pointed out that according to the warranty conditions overloads in UPS mode will invalidate the warranty.",
+        "finish_installation"                                      : "Finish Installation",
+        "final_congratulations"                                    : "Congratulations!",
+		"final_download_pdf"                                       : "Download PDF",
+		"final_reboot_livex"                                       : "Reboot LiveX",
+		"final_text1"                                              : "The installation of the batterX Business System was successfully completed and an e-mail with a confirmation link was sent to the customer.",
+		"final_text2"                                              : "By clicking the confirmation link the customer can start using the batterX Portal for remote monitoring and control of his batterX Business System.",
+		"final_text3"                                              : "As the installer of the System you get full access to this batterX Business from your own account as well, so that you can offer remote support to your customer if necessary.",
+		"final_text4"                                              : "The batterX Portal can be found at the following link",
+		"final_text5"                                              : "We automatically uploaded the Installation-Report to the batterX Cloud, but we also recommend that you download the PDF File and store it locally.",
+		"final_text6"                                              : "We also recommend that you restart the liveX once, by pressing the button below."
+    }
+
+
+
+
+
+
+
+
+
 
 }

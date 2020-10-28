@@ -19,31 +19,19 @@ if(isset($_GET["get"]) && strtolower($_GET["get"]) == "currentstate") {
 	// Connect to Database
 	$db = new PDO("sqlite:/srv/bx/ram/currentD.db3");
 
-	// Returns the value with the selected type and entity
-	// ?get=currentstate&type=273&entity=1
-	if(isset($_GET["type"]) && isset($_GET["entity"])) {
-		if(ctype_digit($_GET["type"]) && ctype_digit($_GET["entity"])) {
-			$result = $db->query("SELECT entityvalue FROM CurrentState WHERE type=" . $_GET["type"] . " AND entity=" . $_GET["entity"] . " LIMIT 1");
-			$res = $result->fetchColumn();
-			echo strval($res);
-		}
-	}
-
 	// Returns the full CurrentState table
 	// ?get=currentstate
-	else {
-		$result = $db->query("SELECT type, entity, entityvalue, logtime FROM CurrentState", PDO::FETCH_ASSOC);
-		$dbh = new stdClass();
-		foreach($result as $row) {
-			$type = (string) $row["type"];
-			$entity = (string) $row["entity"];
-			if(!isset($dbh->$type)) $dbh->$type = new stdClass();
-			$dbh->$type->$entity = intval($row["entityvalue"]);
-			$dbh->logtime = (string) $row["logtime"];
-		}
-		header("Content-Type: application/json");
-		echo json_encode($dbh, JSON_FORCE_OBJECT);
+	$result = $db->query("SELECT type, entity, entityvalue, logtime FROM CurrentState", PDO::FETCH_ASSOC);
+	$dbh = new stdClass();
+	foreach($result as $row) {
+		$type = (string) $row["type"];
+		$entity = (string) $row["entity"];
+		if(!isset($dbh->$type)) $dbh->$type = new stdClass();
+		$dbh->$type->$entity = intval($row["entityvalue"]);
+		$dbh->logtime = (string) $row["logtime"];
 	}
+	header("Content-Type: application/json");
+	echo json_encode($dbh, JSON_FORCE_OBJECT);
 
 }
 
@@ -240,6 +228,24 @@ else if(isset($_GET["get"]) && strtolower($_GET["get"]) == "deviceinfo") {
 
 	header("Content-Type: application/json");
 	echo json_encode($dbh, JSON_FORCE_OBJECT);
+
+}
+
+
+
+
+
+// COUNT CommandsIn
+
+else if(isset($_GET["count"]) && strtolower($_GET["count"]) == "commands") {
+
+	// Connect to Database
+	$db = new PDO("sqlite:/srv/bx/ram/currentC.db3");
+
+	// Returns the number of rows in the CommandsIn table
+	// ?count=commands
+	$result = $db->query("SELECT COUNT(*) FROM CommandsIn")->fetchColumn();
+	echo strval($result);
 
 }
 

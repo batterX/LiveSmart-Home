@@ -153,7 +153,30 @@ $("#carbon_battery_model, #carbon_battery_strings").on("change", function() {
 $("#btnShowAllModules").on("click", function() {
 	$("#listAllModules").removeClass("d-none");
 	$(this).addClass("d-none");
-})
+});
+
+
+
+
+
+/*
+	VDE4105 Mode Change
+*/
+
+$("#vde4105_mode").on("change", function() {
+	$("#vde4105_mode1, #vde4105_mode2, #vde4105_mode3").addClass("d-none");
+	if($(this).val() == 1) $("#vde4105_mode1").removeClass("d-none");
+	if($(this).val() == 2) $("#vde4105_mode2").removeClass("d-none");
+	if($(this).val() == 3) $("#vde4105_mode3").removeClass("d-none");
+});
+$("#vde4105_mode").trigger("change");
+
+$("#vde4105_mode3_v1, #vde4105_mode3_v2, #vde4105_mode3_v3, #vde4105_mode3_v4").on("input", function() {
+	$("#svg_vde4105_mode3 #svg_vde4105_mode3_v1_value").text(($("#vde4105_mode3_v1").val() == "" ? $("#vde4105_mode3_v1").attr("placeholder") : $("#vde4105_mode3_v1").val()) + "%");
+	$("#svg_vde4105_mode3 #svg_vde4105_mode3_v2_value").text(($("#vde4105_mode3_v2").val() == "" ? $("#vde4105_mode3_v2").attr("placeholder") : $("#vde4105_mode3_v2").val()) + "%");
+	$("#svg_vde4105_mode3 #svg_vde4105_mode3_v3_value").text(($("#vde4105_mode3_v3").val() == "" ? $("#vde4105_mode3_v3").attr("placeholder") : $("#vde4105_mode3_v3").val()) + "%");
+	$("#svg_vde4105_mode3 #svg_vde4105_mode3_v4_value").text(($("#vde4105_mode3_v4").val() == "" ? $("#vde4105_mode3_v4").attr("placeholder") : $("#vde4105_mode3_v4").val()) + "%");
+});
 
 
 
@@ -464,26 +487,51 @@ function step4() {
 
 
 /*
-	Show / Hide Energy Meter Phase Selection
+	Show / Hide VDE4105 Stuff & Energy Meter Phase Selection
 */
 
 function step5() {
-
-	if(deviceModel != "h5") return;
-
-	$("#box_emeter_phase").removeClass("d-none");
 	
 	$.get({
 		url: "api.php?get=settings",
 		error: () => { alert("E012. Please refresh the page!"); },
 		success: (response) => {
+			
 			console.log(response);
 			if(!response || typeof response != "object")
 				return alert("E013. Please refresh the page!");
-			if(response.hasOwnProperty("InjectionMode")) {
-				response = response["InjectionMode"];
-				if(response["0"]["v6"] !== 0) $("#bx_emeter_phase").val(response["0"]["v6"]);
+
+			if(deviceModel == "h5") {
+				$("#box_emeter_phase").removeClass("d-none");
+				if(response.hasOwnProperty("InjectionMode")) {
+					response = response["InjectionMode"];
+					if(response["0"]["v6"] !== 0) $("#bx_emeter_phase").val(response["0"]["v6"]);
+				}
 			}
+
+			var inverterParams = response.hasOwnProperty("InverterParameters") ? response["InverterParameters"] : "";
+			// Q(U) Kennlinie
+			if(inverterParams.hasOwnProperty("2") && inverterParams["2"]["s1"].split(",")[7] == 1) {
+				$("#vde4105_mode").val("3").trigger("change");
+				if(inverterParams.hasOwnProperty("37")) {
+					var temp = inverterParams["37"]["s1"].split(",");
+					$("#vde4105_mode3_cosphi").val(Math.round(Math.cos(Math.asin(parseInt(temp[0]) / (deviceModel == "h5" ? 5000 : 10000))) * 100)).trigger("input");
+					$("#vde4105_mode3_v1    ").val(Math.round(parseInt(temp[1]) / 230.94)).trigger("input");
+					$("#vde4105_mode3_v2    ").val(Math.round(parseInt(temp[2]) / 230.94)).trigger("input");
+					$("#vde4105_mode3_v3    ").val(Math.round(parseInt(temp[3]) / 230.94)).trigger("input");
+					$("#vde4105_mode3_v4    ").val(Math.round(parseInt(temp[4]) / 230.94)).trigger("input");
+				}
+			}
+			// Fester cosφ
+			else if(inverterParams.hasOwnProperty("36") && inverterParams["36"]["s1"].split(",")[0] == 1 && inverterParams["36"]["s1"].split(",")[1] == 10) {
+				$("#vde4105_mode").val("2").trigger("change");
+				$("#vde4105_mode2_cosphi").val(inverterParams["36"]["s1"].split(",")["2"]).trigger("input");
+			}
+			// cosφ(P) Kennlinie
+			else if(inverterParams.hasOwnProperty("36") && inverterParams["36"]["s1"].split(",")[0] == 1 && inverterParams["36"]["s1"].split(",")[1] == 50 && inverterParams["36"]["s1"].split(",")[2] == 90) {
+				$("#vde4105_mode").val("1").trigger("change");
+			}
+
 		}
 	});
 
@@ -557,7 +605,7 @@ function mainFormSubmit() {
 
 	// Confirm Solar Watt Peak (if under 1000 Wp)
 	if(parseInt($("#solar_wattPeak").val()) < 1000) {
-		var tempFlag = confirm(`${lang.system_setup.pv_size_very_low}\n\n${lang.system_setup.pv_size_very_low_confirm.replace("100", $("#solar_wattPeak").val())}\n`);
+		var tempFlag = confirm(`${lang.system_setup.msg_solar_size_very_low}\n\n${lang.system_setup.msg_solar_size_very_low_confirm.replace("100", $("#solar_wattPeak").val())}\n`);
 		if(!tempFlag) return $("#solar_wattPeak").val("");
 	}
 
@@ -634,6 +682,14 @@ function mainFormSubmit() {
 		#other_battery_redischargeVoltageHybrid,
 		#other_battery_cutoffVoltage,
 		#other_battery_redischargeVoltage
+
+		#vde4105_mode,
+		#vde4105_mode2_cosphi,
+		#vde4105_mode3_cosphi,
+		#vde4105_mode3_v1,
+		#vde4105_mode3_v2,
+		#vde4105_mode3_v3,
+		#vde4105_mode3_v4
 	`).attr("disabled", true);
 
 	// Show Loading Screen
@@ -644,11 +700,31 @@ function mainFormSubmit() {
 	// Scroll To Bottom
 	$("html, body").scrollTop($(document).height());
 
-	// Start Setup
-	checkParametersCounter = 0;
-	     if(isLiFePO()) setupLiFePO();
-	else if(isCarbon()) setupCarbon();
-	else                setupOther();
+	// Add VDE4105 Mode Variables To SESSION
+	var tempData = { vde4105_mode: $("#vde4105_mode").val() };
+	if($("#vde4105_mode").val() == "2")
+		tempData["vde4105_cosphi"] = $("#vde4105_mode2_cosphi").val();
+	if($("#vde4105_mode").val() == "3") {
+		tempData["vde4105_cosphi"] = $("#vde4105_mode3_cosphi").val();
+		tempData["vde4105_v1"] = $("#vde4105_mode3_v1").val() == "" ?  "93" : Math.round($("#vde4105_mode3_v1").val());
+		tempData["vde4105_v2"] = $("#vde4105_mode3_v2").val() == "" ?  "97" : Math.round($("#vde4105_mode3_v2").val());
+		tempData["vde4105_v3"] = $("#vde4105_mode3_v3").val() == "" ? "103" : Math.round($("#vde4105_mode3_v3").val());
+		tempData["vde4105_v4"] = $("#vde4105_mode3_v4").val() == "" ? "107" : Math.round($("#vde4105_mode3_v4").val());
+	}
+	$.post({
+		url: "cmd/session.php",
+		data: tempData,
+		error: () => { alert("E056. Please refresh the page!"); },
+		success: (response) => {
+			console.log(response);
+			if(response !== "1") return alert("E057. Please refresh the page!");
+			// Start Setup
+			checkParametersCounter = 0;
+				 if(isLiFePO()) setupLiFePO();
+			else if(isCarbon()) setupCarbon();
+			else                setupOther();
+		}
+	});
 
 }
 
@@ -705,166 +781,22 @@ function setupLiFePO() {
 
 	var canContinue = true;
 
-	// Check Battery 1 S/N
-	if(canContinue && battery1_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery1_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery1_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 2 S/N
-	if(canContinue && battery2_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery2_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery2_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 3 S/N
-	if(canContinue && battery3_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery3_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery3_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 4 S/N
-	if(canContinue && battery4_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery4_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery4_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 5 S/N
-	if(canContinue && battery5_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery5_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery5_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 6 S/N
-	if(canContinue && battery6_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery6_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery6_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 7 S/N
-	if(canContinue && battery7_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery7_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery7_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 8 S/N
-	if(canContinue && battery8_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery8_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery8_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 9 S/N
-	if(canContinue && battery9_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery9_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery9_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 10 S/N
-	if(canContinue && battery10_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery10_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery10_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 11 S/N
-	if(canContinue && battery11_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery11_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery11_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 12 S/N
-	if(canContinue && battery12_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery12_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery12_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 13 S/N
-	if(canContinue && battery13_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery13_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery13_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 14 S/N
-	if(canContinue && battery14_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery14_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery14_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 15 S/N
-	if(canContinue && battery15_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery15_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery15_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
-	// Check Battery 16 S/N
-	if(canContinue && battery16_serial != "") {
-		canContinue = false;
-		$.post({
-			url: "https://api.batterx.io/v3/install_hs.php", async: false,
-			data: { action: "verify_battery", system: system_serial, serialnumber: battery16_serial },
-			error: () => { alert("E015. Please refresh the page!"); },
-			success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery16_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } }
-		});
-	}
+	/* Check Battery  1 S/N */ if(canContinue && battery1_serial  != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery1_serial  }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery1_serial ); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery  2 S/N */ if(canContinue && battery2_serial  != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery2_serial  }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery2_serial ); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery  3 S/N */ if(canContinue && battery3_serial  != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery3_serial  }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery3_serial ); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery  4 S/N */ if(canContinue && battery4_serial  != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery4_serial  }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery4_serial ); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery  5 S/N */ if(canContinue && battery5_serial  != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery5_serial  }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery5_serial ); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery  6 S/N */ if(canContinue && battery6_serial  != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery6_serial  }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery6_serial ); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery  7 S/N */ if(canContinue && battery7_serial  != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery7_serial  }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery7_serial ); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery  8 S/N */ if(canContinue && battery8_serial  != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery8_serial  }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery8_serial ); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery  9 S/N */ if(canContinue && battery9_serial  != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery9_serial  }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery9_serial ); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery 10 S/N */ if(canContinue && battery10_serial != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery10_serial }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery10_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery 11 S/N */ if(canContinue && battery11_serial != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery11_serial }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery11_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery 12 S/N */ if(canContinue && battery12_serial != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery12_serial }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery12_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery 13 S/N */ if(canContinue && battery13_serial != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery13_serial }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery13_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery 14 S/N */ if(canContinue && battery14_serial != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery14_serial }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery14_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery 15 S/N */ if(canContinue && battery15_serial != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery15_serial }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery15_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
+	/* Check Battery 16 S/N */ if(canContinue && battery16_serial != "") { canContinue = false; $.post({ url: "https://api.batterx.io/v3/install_hs.php", async: false, data: { action: "verify_battery", system: system_serial, serialnumber: battery16_serial }, error: () => { alert("E015. Please refresh the page!"); }, success: (response) => { if(response === "1") canContinue = true; else { $("#errorBatterySerial").val(battery16_serial); $("#errorBatteryNotExistOrWithOtherSystem").modal("show"); } } }); }
 
 	if(!canContinue) {
 		// Enable Battery Fields
@@ -909,7 +841,7 @@ function setupLiFePO_2() {
 
 	// Show Loading
 	$("#notif").removeClass("loading error success").addClass("loading");
-	$("#message").html(lang.system_setup.setting_parameters).css("color", "");
+	$("#message").html(lang.system_setup.msg_setting_parameters).css("color", "");
 	isSettingParameters = true;
 
 	// Set Grid InjectionPhase
@@ -971,7 +903,7 @@ function setupLiFePO_2_check() {
 			console.log(chargingVoltage);
 			if(chargingVoltage == "5320,5300") {
 				$("#notif").removeClass("loading error success").addClass("error");
-				$("#message").html(lang.system_setup.lifepo_communication_problem).css("color", "red");
+				$("#message").html(lang.system_setup.msg_lifepo_communication_problem).css("color", "red");
 				$("#btn_next").unbind().removeAttr("form").removeAttr("type").on("click", () => { setupLiFePO_2(); });
 				isSettingParameters = false;
 			} else {
@@ -1085,7 +1017,7 @@ function setupLiFePO_4() {
 	var maxChargingCurrent    = deviceModel == "h10" ? 20000 : 6000; // x0.01A
 	var maxGridFeedInPower    = deviceModel == "h10" ? 10000 : 5000; // x1.00W
 	var maxDischargingCurrent = deviceModel == "h10" ?   300 :  150; // x1.00A
-
+	
 	newParameters["maxChargingCurrentAC"    ] = Math.min(numberOfModules * 37 * 100, maxChargingCurrent).toString();
 	newParameters["chargingVoltage"         ] = "5320,5320";
 	newParameters["dischargingVoltage"      ] = "4600,5000,4600,5000";
@@ -1098,6 +1030,26 @@ function setupLiFePO_4() {
 	newParameters["allowDischargingSolarOK" ] = "1";
 	newParameters["allowDischargingSolarNOK"] = "1";
 	newParameters["maxGridFeedInPower"      ] = Math.round(Math.min(Math.max(parseInt($("#solar_wattPeak").val()) * parseInt($("#solar_feedInLimitation").val()) / 100, 50), maxGridFeedInPower)).toString();
+	
+	var vde4105_mode   = $("#vde4105_mode    ").val();
+	var vde4105_v1     = Math.round(Math.round($("#vde4105_mode3_v1").val()) * 230.94 / 10) * 10;
+	var vde4105_v2     = Math.round(Math.round($("#vde4105_mode3_v2").val()) * 230.94 / 10) * 10;
+	var vde4105_v3     = Math.round(Math.round($("#vde4105_mode3_v3").val()) * 230.94 / 10) * 10;
+	var vde4105_v4     = Math.round(Math.round($("#vde4105_mode3_v4").val()) * 230.94 / 10) * 10;
+	var vde4105_cosphi = parseInt(vde4105_mode == 2 ? Math.min($("#vde4105_mode2_cosphi").val(), 99) : (vde4105_mode == 3 ? $("#vde4105_mode3_cosphi").val() : 90));
+	var devicePower    = (deviceModel == "h5" ? 5000 : 10000);
+	var vde4105_q      = Math.round(Math.sqrt(Math.pow(devicePower, 2) - Math.pow(devicePower * vde4105_cosphi / 100, 2)));
+	newParameters["autoAdjustPowerFactor"   ] = "0,50,90";
+	newParameters["allowQuDeratingFunction" ] = "0";
+	newParameters["voltageAndReactivePower" ] = "4359,21390,22310,23690,24610";
+	if(vde4105_mode == 1) {
+		newParameters["autoAdjustPowerFactor"   ] = `1,50,90`;
+	} else if(vde4105_mode == 2) {
+		newParameters["autoAdjustPowerFactor"   ] = `1,10,${vde4105_cosphi}`
+	} else if(vde4105_mode == 3) {
+		newParameters["allowQuDeratingFunction" ] = `1`;
+		newParameters["voltageAndReactivePower" ] = `${vde4105_q},${vde4105_v1},${vde4105_v2},${vde4105_v3},${vde4105_v4}`;
+	}
 
 	// Get oldParameters
 	$.get({
@@ -1112,18 +1064,21 @@ function setupLiFePO_4() {
 			response = response["InverterParameters"];
 			deviceDatetime = response["0"]["s1"];
 			
-			oldParameters["maxChargingCurrentAC"    ] = response["31"]["s1"];
-			oldParameters["chargingVoltage"         ] = response["32"]["s1"];
-			oldParameters["dischargingVoltage"      ] = response["33"]["s1"];
-			oldParameters["maxDischargingCurrent"   ] = response["34"]["s1"];
-			oldParameters["batteryType"             ] = response[ "5"]["s1"];
-			oldParameters["solarEnergyPriority"     ] = response[ "6"]["s1"];
-			oldParameters["allowBatteryCharging"    ] = response[ "2"]["s1"].split(",")[0];
-			oldParameters["allowBatteryChargingAC"  ] = response[ "2"]["s1"].split(",")[1];
-			oldParameters["allowGridInjection"      ] = response[ "2"]["s1"].split(",")[2];
-			oldParameters["allowDischargingSolarOK" ] = response[ "2"]["s1"].split(",")[3];
-			oldParameters["allowDischargingSolarNOK"] = response[ "2"]["s1"].split(",")[4];
-			oldParameters["maxGridFeedInPower"      ] = response["15"]["s1"];
+			oldParameters["maxChargingCurrentAC"    ] = !response.hasOwnProperty("31") ? "" : response["31"]["s1"];
+			oldParameters["chargingVoltage"         ] = !response.hasOwnProperty("32") ? "" : response["32"]["s1"];
+			oldParameters["dischargingVoltage"      ] = !response.hasOwnProperty("33") ? "" : response["33"]["s1"];
+			oldParameters["maxDischargingCurrent"   ] = !response.hasOwnProperty("34") ? "" : response["34"]["s1"];
+			oldParameters["batteryType"             ] = !response.hasOwnProperty( "5") ? "" : response[ "5"]["s1"];
+			oldParameters["solarEnergyPriority"     ] = !response.hasOwnProperty( "6") ? "" : response[ "6"]["s1"];
+			oldParameters["allowBatteryCharging"    ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[0];
+			oldParameters["allowBatteryChargingAC"  ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[1];
+			oldParameters["allowGridInjection"      ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[2];
+			oldParameters["allowDischargingSolarOK" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[3];
+			oldParameters["allowDischargingSolarNOK"] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[4];
+			oldParameters["maxGridFeedInPower"      ] = !response.hasOwnProperty("15") ? "" : response["15"]["s1"];
+			oldParameters["autoAdjustPowerFactor"   ] = !response.hasOwnProperty("36") ? "" : response["36"]["s1"];
+			oldParameters["allowQuDeratingFunction" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[7];
+			oldParameters["voltageAndReactivePower" ] = !response.hasOwnProperty("37") ? "" : response["37"]["s1"];
 
 			if(oldParameters["dischargingVoltage"].split(",")[2] == "4700") newParameters["dischargingVoltage"] = "4700,5000,4700,5000";
 
@@ -1146,9 +1101,12 @@ function setupLiFePO_4() {
 	if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "C," + newParameters["allowGridInjection"      ]); }
 	if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "D," + newParameters["allowDischargingSolarOK" ]); }
 	if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "E," + newParameters["allowDischargingSolarNOK"]); }
+	if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) { retry = true; setupLiFePO_sendCommand(24118, 0, "",        newParameters["autoAdjustPowerFactor"   ]); }
+	if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "H," + newParameters["allowQuDeratingFunction" ]); }
+	if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) { retry = true; setupLiFePO_sendCommand(24119, 0, "",        newParameters["voltageAndReactivePower" ]); }
 
 	if(!retry) {
-		$(".setting-progress span").html(lang.system_setup.setting_success).css("color", "#28a745");
+		$(".setting-progress span").html(lang.system_setup.msg_setting_success).css("color", "#28a745");
 		$("#notif").removeClass("loading error success").addClass("success");
 		// Next Step
 		setTimeout(() => { window.location.href = "system_test.php"; }, 2500);
@@ -1197,18 +1155,23 @@ function setupLiFePO_checkParameters() {
 			if(response["0"]["s1"] == deviceDatetime) return false;
 			deviceDatetime = response["0"]["s1"];
 
-			oldParameters["maxChargingCurrentAC"    ] = response["31"]["s1"];
-			oldParameters["chargingVoltage"         ] = response["32"]["s1"];
-			oldParameters["dischargingVoltage"      ] = response["33"]["s1"];
-			oldParameters["maxDischargingCurrent"   ] = response["34"]["s1"];
-			oldParameters["batteryType"             ] = response[ "5"]["s1"];
-			oldParameters["solarEnergyPriority"     ] = response[ "6"]["s1"];
-			oldParameters["allowBatteryCharging"    ] = response[ "2"]["s1"].split(",")[0];
-			oldParameters["allowBatteryChargingAC"  ] = response[ "2"]["s1"].split(",")[1];
-			oldParameters["allowGridInjection"      ] = response[ "2"]["s1"].split(",")[2];
-			oldParameters["allowDischargingSolarOK" ] = response[ "2"]["s1"].split(",")[3];
-			oldParameters["allowDischargingSolarNOK"] = response[ "2"]["s1"].split(",")[4];
-			oldParameters["maxGridFeedInPower"      ] = response["15"]["s1"];
+			oldParameters["maxChargingCurrentAC"    ] = !response.hasOwnProperty("31") ? "" : response["31"]["s1"];
+			oldParameters["chargingVoltage"         ] = !response.hasOwnProperty("32") ? "" : response["32"]["s1"];
+			oldParameters["dischargingVoltage"      ] = !response.hasOwnProperty("33") ? "" : response["33"]["s1"];
+			oldParameters["maxDischargingCurrent"   ] = !response.hasOwnProperty("34") ? "" : response["34"]["s1"];
+			oldParameters["batteryType"             ] = !response.hasOwnProperty( "5") ? "" : response[ "5"]["s1"];
+			oldParameters["solarEnergyPriority"     ] = !response.hasOwnProperty( "6") ? "" : response[ "6"]["s1"];
+			oldParameters["allowBatteryCharging"    ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[0];
+			oldParameters["allowBatteryChargingAC"  ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[1];
+			oldParameters["allowGridInjection"      ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[2];
+			oldParameters["allowDischargingSolarOK" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[3];
+			oldParameters["allowDischargingSolarNOK"] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[4];
+			oldParameters["maxGridFeedInPower"      ] = !response.hasOwnProperty("15") ? "" : response["15"]["s1"];
+			oldParameters["autoAdjustPowerFactor"   ] = !response.hasOwnProperty("36") ? "" : response["36"]["s1"];
+			oldParameters["allowQuDeratingFunction" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[7];
+			oldParameters["voltageAndReactivePower" ] = !response.hasOwnProperty("37") ? "" : response["37"]["s1"];
+
+			if(oldParameters["voltageAndReactivePower"] == "") newParameters["voltageAndReactivePower"] = "";
 
 			console.log("newParameters"); console.log(newParameters);
 			console.log("oldParameters"); console.log(oldParameters);
@@ -1226,9 +1189,12 @@ function setupLiFePO_checkParameters() {
 			if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "C," + newParameters["allowGridInjection"      ]); }
 			if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "D," + newParameters["allowDischargingSolarOK" ]); }
 			if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "E," + newParameters["allowDischargingSolarNOK"]); }
+			if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) { retry = true; setupLiFePO_sendCommand(24118, 0, "",        newParameters["autoAdjustPowerFactor"   ]); }
+			if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) { retry = true; setupLiFePO_sendCommand(24066, 0, "", "H," + newParameters["allowQuDeratingFunction" ]); }
+			if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) { retry = true; setupLiFePO_sendCommand(24119, 0, "",        newParameters["voltageAndReactivePower" ]); }
 
 			if(!retry) {
-				$(".setting-progress span").html(lang.system_setup.setting_success).css("color", "#28a745");
+				$(".setting-progress span").html(lang.system_setup.msg_setting_success).css("color", "#28a745");
 				$("#notif").removeClass("loading error success").addClass("success");
 				// Next Step
 				setTimeout(function() { window.location.href = "system_test.php"; }, 2500);
@@ -1248,9 +1214,12 @@ function setupLiFePO_checkParameters() {
 					else if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) showSettingParametersError("Problem when setting allowGridInjection"      );
 					else if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) showSettingParametersError("Problem when setting allowDischargingSolarOK" );
 					else if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) showSettingParametersError("Problem when setting allowDischargingSolarNOK");
+					else if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) showSettingParametersError("Problem when setting autoAdjustPowerFactor"   );
+					else if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) showSettingParametersError("Problem when setting allowQuDeratingFunction" );
+					else if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) showSettingParametersError("Problem when setting voltageAndReactivePower" );
 					else if(newParameters["maxDischargingCurrent"   ] != oldParameters["maxDischargingCurrent"   ]) {
 						var modulesCount = parseInt(oldParameters["maxDischargingCurrent"]) / 37;
-						showSettingParametersError(lang.system_setup.lifepo_recognition_problem.split("X").join(modulesCount));
+						showSettingParametersError(lang.system_setup.msg_lifepo_recognition_problem.split("X").join(modulesCount));
 					}
 				}
 			}
@@ -1294,7 +1263,7 @@ function setupCarbon_2() {
 
 	// Show Loading
 	$("#notif").removeClass("loading error success").addClass("loading");
-	$("#message").html(lang.system_setup.setting_parameters).css("color", "");
+	$("#message").html(lang.system_setup.msg_setting_parameters).css("color", "");
 	isSettingParameters = true;
 
 	// Set Grid InjectionPhase
@@ -1392,6 +1361,26 @@ function setupCarbon_4() {
 	newParameters["allowDischargingSolarNOK"] = "1";
 	newParameters["maxGridFeedInPower"      ] = Math.round(Math.min(Math.max(parseInt($("#solar_wattPeak").val()) * parseInt($("#solar_feedInLimitation").val()) / 100, 50), maxGridFeedInPower)).toString();
 
+	var vde4105_mode   = $("#vde4105_mode    ").val();
+	var vde4105_v1     = Math.round(Math.round($("#vde4105_mode3_v1").val()) * 230.94 / 10) * 10;
+	var vde4105_v2     = Math.round(Math.round($("#vde4105_mode3_v2").val()) * 230.94 / 10) * 10;
+	var vde4105_v3     = Math.round(Math.round($("#vde4105_mode3_v3").val()) * 230.94 / 10) * 10;
+	var vde4105_v4     = Math.round(Math.round($("#vde4105_mode3_v4").val()) * 230.94 / 10) * 10;
+	var vde4105_cosphi = parseInt(vde4105_mode == 2 ? Math.min($("#vde4105_mode2_cosphi").val(), 99) : (vde4105_mode == 3 ? $("#vde4105_mode3_cosphi").val() : 90));
+	var devicePower    = (deviceModel == "h5" ? 5000 : 10000);
+	var vde4105_q      = Math.round(Math.sqrt(Math.pow(devicePower, 2) - Math.pow(devicePower * vde4105_cosphi / 100, 2)));
+	newParameters["autoAdjustPowerFactor"   ] = "0,50,90";
+	newParameters["allowQuDeratingFunction" ] = "0";
+	newParameters["voltageAndReactivePower" ] = "4359,21390,22310,23690,24610";
+	if(vde4105_mode == 1) {
+		newParameters["autoAdjustPowerFactor"   ] = `1,50,90`;
+	} else if(vde4105_mode == 2) {
+		newParameters["autoAdjustPowerFactor"   ] = `1,10,${vde4105_cosphi}`
+	} else if(vde4105_mode == 3) {
+		newParameters["allowQuDeratingFunction" ] = `1`;
+		newParameters["voltageAndReactivePower" ] = `${vde4105_q},${vde4105_v1},${vde4105_v2},${vde4105_v3},${vde4105_v4}`;
+	}
+
 	// Get oldParameters
 	$.get({
 		url: "api.php?get=settings",
@@ -1405,19 +1394,22 @@ function setupCarbon_4() {
 			response = response["InverterParameters"];
 			deviceDatetime = response["0"]["s1"];
 			
-			oldParameters["maxChargingCurrent"      ] = response["30"]["s1"];
-			oldParameters["maxChargingCurrentAC"    ] = response["31"]["s1"];
-			oldParameters["chargingVoltage"         ] = response["32"]["s1"];
-			oldParameters["dischargingVoltage"      ] = response["33"]["s1"];
-			oldParameters["maxDischargingCurrent"   ] = response["34"]["s1"];
-			oldParameters["batteryType"             ] = response[ "5"]["s1"];
-			oldParameters["solarEnergyPriority"     ] = response[ "6"]["s1"];
-			oldParameters["allowBatteryCharging"    ] = response[ "2"]["s1"].split(",")[0];
-			oldParameters["allowBatteryChargingAC"  ] = response[ "2"]["s1"].split(",")[1];
-			oldParameters["allowGridInjection"      ] = response[ "2"]["s1"].split(",")[2];
-			oldParameters["allowDischargingSolarOK" ] = response[ "2"]["s1"].split(",")[3];
-			oldParameters["allowDischargingSolarNOK"] = response[ "2"]["s1"].split(",")[4];
-			oldParameters["maxGridFeedInPower"      ] = response["15"]["s1"];
+			oldParameters["maxChargingCurrent"      ] = !response.hasOwnProperty("30") ? "" : response["30"]["s1"];
+			oldParameters["maxChargingCurrentAC"    ] = !response.hasOwnProperty("31") ? "" : response["31"]["s1"];
+			oldParameters["chargingVoltage"         ] = !response.hasOwnProperty("32") ? "" : response["32"]["s1"];
+			oldParameters["dischargingVoltage"      ] = !response.hasOwnProperty("33") ? "" : response["33"]["s1"];
+			oldParameters["maxDischargingCurrent"   ] = !response.hasOwnProperty("34") ? "" : response["34"]["s1"];
+			oldParameters["batteryType"             ] = !response.hasOwnProperty( "5") ? "" : response[ "5"]["s1"];
+			oldParameters["solarEnergyPriority"     ] = !response.hasOwnProperty( "6") ? "" : response[ "6"]["s1"];
+			oldParameters["allowBatteryCharging"    ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[0];
+			oldParameters["allowBatteryChargingAC"  ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[1];
+			oldParameters["allowGridInjection"      ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[2];
+			oldParameters["allowDischargingSolarOK" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[3];
+			oldParameters["allowDischargingSolarNOK"] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[4];
+			oldParameters["maxGridFeedInPower"      ] = !response.hasOwnProperty("15") ? "" : response["15"]["s1"];
+			oldParameters["autoAdjustPowerFactor"   ] = !response.hasOwnProperty("36") ? "" : response["36"]["s1"];
+			oldParameters["allowQuDeratingFunction" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[7];
+			oldParameters["voltageAndReactivePower" ] = !response.hasOwnProperty("37") ? "" : response["37"]["s1"];
 
 		}
 	});
@@ -1439,9 +1431,12 @@ function setupCarbon_4() {
 	if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "C," + newParameters["allowGridInjection"      ]); }
 	if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "D," + newParameters["allowDischargingSolarOK" ]); }
 	if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "E," + newParameters["allowDischargingSolarNOK"]); }
+	if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) { retry = true; setupCarbon_sendCommand(24118, 0, "",        newParameters["autoAdjustPowerFactor"   ]); }
+	if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "H," + newParameters["allowQuDeratingFunction" ]); }
+	if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) { retry = true; setupCarbon_sendCommand(24119, 0, "",        newParameters["voltageAndReactivePower" ]); }
 
 	if(!retry) {
-		$(".setting-progress span").html(lang.system_setup.setting_success).css("color", "#28a745");
+		$(".setting-progress span").html(lang.system_setup.msg_setting_success).css("color", "#28a745");
 		$("#notif").removeClass("loading error success").addClass("success");
 		// Next Step
 		setTimeout(() => { window.location.href = "system_test.php"; }, 2500);
@@ -1490,19 +1485,24 @@ function setupCarbon_checkParameters() {
 			if(response["0"]["s1"] == deviceDatetime) return false;
 			deviceDatetime = response["0"]["s1"];
 
-			oldParameters["maxChargingCurrent"      ] = response["30"]["s1"];
-			oldParameters["maxChargingCurrentAC"    ] = response["31"]["s1"];
-			oldParameters["chargingVoltage"         ] = response["32"]["s1"];
-			oldParameters["dischargingVoltage"      ] = response["33"]["s1"];
-			oldParameters["maxDischargingCurrent"   ] = response["34"]["s1"];
-			oldParameters["batteryType"             ] = response[ "5"]["s1"];
-			oldParameters["solarEnergyPriority"     ] = response[ "6"]["s1"];
-			oldParameters["allowBatteryCharging"    ] = response[ "2"]["s1"].split(",")[0];
-			oldParameters["allowBatteryChargingAC"  ] = response[ "2"]["s1"].split(",")[1];
-			oldParameters["allowGridInjection"      ] = response[ "2"]["s1"].split(",")[2];
-			oldParameters["allowDischargingSolarOK" ] = response[ "2"]["s1"].split(",")[3];
-			oldParameters["allowDischargingSolarNOK"] = response[ "2"]["s1"].split(",")[4];
-			oldParameters["maxGridFeedInPower"      ] = response["15"]["s1"];
+			oldParameters["maxChargingCurrent"      ] = !response.hasOwnProperty("30") ? "" : response["30"]["s1"];
+			oldParameters["maxChargingCurrentAC"    ] = !response.hasOwnProperty("31") ? "" : response["31"]["s1"];
+			oldParameters["chargingVoltage"         ] = !response.hasOwnProperty("32") ? "" : response["32"]["s1"];
+			oldParameters["dischargingVoltage"      ] = !response.hasOwnProperty("33") ? "" : response["33"]["s1"];
+			oldParameters["maxDischargingCurrent"   ] = !response.hasOwnProperty("34") ? "" : response["34"]["s1"];
+			oldParameters["batteryType"             ] = !response.hasOwnProperty( "5") ? "" : response[ "5"]["s1"];
+			oldParameters["solarEnergyPriority"     ] = !response.hasOwnProperty( "6") ? "" : response[ "6"]["s1"];
+			oldParameters["allowBatteryCharging"    ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[0];
+			oldParameters["allowBatteryChargingAC"  ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[1];
+			oldParameters["allowGridInjection"      ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[2];
+			oldParameters["allowDischargingSolarOK" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[3];
+			oldParameters["allowDischargingSolarNOK"] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[4];
+			oldParameters["maxGridFeedInPower"      ] = !response.hasOwnProperty("15") ? "" : response["15"]["s1"];
+			oldParameters["autoAdjustPowerFactor"   ] = !response.hasOwnProperty("36") ? "" : response["36"]["s1"];
+			oldParameters["allowQuDeratingFunction" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[7];
+			oldParameters["voltageAndReactivePower" ] = !response.hasOwnProperty("37") ? "" : response["37"]["s1"];
+
+			if(oldParameters["voltageAndReactivePower"] == "") newParameters["voltageAndReactivePower"] = "";
 
 			console.log("newParameters"); console.log(newParameters);
 			console.log("oldParameters"); console.log(oldParameters);
@@ -1521,9 +1521,12 @@ function setupCarbon_checkParameters() {
 			if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "C," + newParameters["allowGridInjection"      ]); }
 			if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "D," + newParameters["allowDischargingSolarOK" ]); }
 			if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "E," + newParameters["allowDischargingSolarNOK"]); }
+			if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) { retry = true; setupCarbon_sendCommand(24118, 0, "",        newParameters["autoAdjustPowerFactor"   ]); }
+			if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) { retry = true; setupCarbon_sendCommand(24066, 0, "", "H," + newParameters["allowQuDeratingFunction" ]); }
+			if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) { retry = true; setupCarbon_sendCommand(24119, 0, "",        newParameters["voltageAndReactivePower" ]); }
 
 			if(!retry) {
-				$(".setting-progress span").html(lang.system_setup.setting_success).css("color", "#28a745");
+				$(".setting-progress span").html(lang.system_setup.msg_setting_success).css("color", "#28a745");
 				$("#notif").removeClass("loading error success").addClass("success");
 				// Next Step
 				setTimeout(function() { window.location.href = "system_test.php"; }, 2500);
@@ -1545,6 +1548,9 @@ function setupCarbon_checkParameters() {
 					else if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) showSettingParametersError("Problem when setting allowGridInjection"      );
 					else if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) showSettingParametersError("Problem when setting allowDischargingSolarOK" );
 					else if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) showSettingParametersError("Problem when setting allowDischargingSolarNOK");
+					else if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) showSettingParametersError("Problem when setting autoAdjustPowerFactor"   );
+					else if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) showSettingParametersError("Problem when setting allowQuDeratingFunction" );
+					else if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) showSettingParametersError("Problem when setting voltageAndReactivePower" );
 				}
 			}
 
@@ -1587,7 +1593,7 @@ function setupOther_2() {
 
 	// Show Loading
 	$("#notif").removeClass("loading error success").addClass("loading");
-	$("#message").html(lang.system_setup.setting_parameters).css("color", "");
+	$("#message").html(lang.system_setup.msg_setting_parameters).css("color", "");
 	isSettingParameters = true;
 
 	// Set Grid InjectionPhase
@@ -1691,6 +1697,26 @@ function setupOther_4() {
 	newParameters["allowDischargingSolarNOK"] = "1";
 	newParameters["maxGridFeedInPower"      ] = Math.round(Math.min(Math.max(parseInt($("#solar_wattPeak").val()) * parseInt($("#solar_feedInLimitation").val()) / 100, 50), maxGridFeedInPower)).toString();
 
+	var vde4105_mode   = $("#vde4105_mode    ").val();
+	var vde4105_v1     = Math.round(Math.round($("#vde4105_mode3_v1").val()) * 230.94 / 10) * 10;
+	var vde4105_v2     = Math.round(Math.round($("#vde4105_mode3_v2").val()) * 230.94 / 10) * 10;
+	var vde4105_v3     = Math.round(Math.round($("#vde4105_mode3_v3").val()) * 230.94 / 10) * 10;
+	var vde4105_v4     = Math.round(Math.round($("#vde4105_mode3_v4").val()) * 230.94 / 10) * 10;
+	var vde4105_cosphi = parseInt(vde4105_mode == 2 ? Math.min($("#vde4105_mode2_cosphi").val(), 99) : (vde4105_mode == 3 ? $("#vde4105_mode3_cosphi").val() : 90));
+	var devicePower    = (deviceModel == "h5" ? 5000 : 10000);
+	var vde4105_q      = Math.round(Math.sqrt(Math.pow(devicePower, 2) - Math.pow(devicePower * vde4105_cosphi / 100, 2)));
+	newParameters["autoAdjustPowerFactor"   ] = "0,50,90";
+	newParameters["allowQuDeratingFunction" ] = "0";
+	newParameters["voltageAndReactivePower" ] = "4359,21390,22310,23690,24610";
+	if(vde4105_mode == 1) {
+		newParameters["autoAdjustPowerFactor"   ] = `1,50,90`;
+	} else if(vde4105_mode == 2) {
+		newParameters["autoAdjustPowerFactor"   ] = `1,10,${vde4105_cosphi}`
+	} else if(vde4105_mode == 3) {
+		newParameters["allowQuDeratingFunction" ] = `1`;
+		newParameters["voltageAndReactivePower" ] = `${vde4105_q},${vde4105_v1},${vde4105_v2},${vde4105_v3},${vde4105_v4}`;
+	}
+
 	// Get oldParameters
 	$.get({
 		url: "api.php?get=settings",
@@ -1704,19 +1730,22 @@ function setupOther_4() {
 			response = response["InverterParameters"];
 			deviceDatetime = response["0"]["s1"];
 			
-			oldParameters["maxChargingCurrent"      ] = response["30"]["s1"];
-			oldParameters["maxChargingCurrentAC"    ] = response["31"]["s1"];
-			oldParameters["chargingVoltage"         ] = response["32"]["s1"];
-			oldParameters["dischargingVoltage"      ] = response["33"]["s1"];
-			oldParameters["maxDischargingCurrent"   ] = response["34"]["s1"];
-			oldParameters["batteryType"             ] = response[ "5"]["s1"];
-			oldParameters["solarEnergyPriority"     ] = response[ "6"]["s1"];
-			oldParameters["allowBatteryCharging"    ] = response[ "2"]["s1"].split(",")[0];
-			oldParameters["allowBatteryChargingAC"  ] = response[ "2"]["s1"].split(",")[1];
-			oldParameters["allowGridInjection"      ] = response[ "2"]["s1"].split(",")[2];
-			oldParameters["allowDischargingSolarOK" ] = response[ "2"]["s1"].split(",")[3];
-			oldParameters["allowDischargingSolarNOK"] = response[ "2"]["s1"].split(",")[4];
-			oldParameters["maxGridFeedInPower"      ] = response["15"]["s1"];
+			oldParameters["maxChargingCurrent"      ] = !response.hasOwnProperty("30") ? "" : response["30"]["s1"];
+			oldParameters["maxChargingCurrentAC"    ] = !response.hasOwnProperty("31") ? "" : response["31"]["s1"];
+			oldParameters["chargingVoltage"         ] = !response.hasOwnProperty("32") ? "" : response["32"]["s1"];
+			oldParameters["dischargingVoltage"      ] = !response.hasOwnProperty("33") ? "" : response["33"]["s1"];
+			oldParameters["maxDischargingCurrent"   ] = !response.hasOwnProperty("34") ? "" : response["34"]["s1"];
+			oldParameters["batteryType"             ] = !response.hasOwnProperty( "5") ? "" : response[ "5"]["s1"];
+			oldParameters["solarEnergyPriority"     ] = !response.hasOwnProperty( "6") ? "" : response[ "6"]["s1"];
+			oldParameters["allowBatteryCharging"    ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[0];
+			oldParameters["allowBatteryChargingAC"  ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[1];
+			oldParameters["allowGridInjection"      ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[2];
+			oldParameters["allowDischargingSolarOK" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[3];
+			oldParameters["allowDischargingSolarNOK"] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[4];
+			oldParameters["maxGridFeedInPower"      ] = !response.hasOwnProperty("15") ? "" : response["15"]["s1"];
+			oldParameters["autoAdjustPowerFactor"   ] = !response.hasOwnProperty("36") ? "" : response["36"]["s1"];
+			oldParameters["allowQuDeratingFunction" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[7];
+			oldParameters["voltageAndReactivePower" ] = !response.hasOwnProperty("37") ? "" : response["37"]["s1"];
 
 		}
 	});
@@ -1738,9 +1767,12 @@ function setupOther_4() {
 	if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) { retry = true; setupOther_sendCommand(24066, 0, "", "C," + newParameters["allowGridInjection"      ]); }
 	if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) { retry = true; setupOther_sendCommand(24066, 0, "", "D," + newParameters["allowDischargingSolarOK" ]); }
 	if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) { retry = true; setupOther_sendCommand(24066, 0, "", "E," + newParameters["allowDischargingSolarNOK"]); }
+	if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) { retry = true; setupOther_sendCommand(24118, 0, "",        newParameters["autoAdjustPowerFactor"   ]); }
+	if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) { retry = true; setupOther_sendCommand(24066, 0, "", "H," + newParameters["allowQuDeratingFunction" ]); }
+	if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) { retry = true; setupOther_sendCommand(24119, 0, "",        newParameters["voltageAndReactivePower" ]); }
 
 	if(!retry) {
-		$(".setting-progress span").html(lang.system_setup.setting_success).css("color", "#28a745");
+		$(".setting-progress span").html(lang.system_setup.msg_setting_success).css("color", "#28a745");
 		$("#notif").removeClass("loading error success").addClass("success");
 		// Next Step
 		setTimeout(function() { window.location.href = "system_test.php"; }, 2500);
@@ -1789,19 +1821,24 @@ function setupOther_checkParameters() {
 			if(response["0"]["s1"] == deviceDatetime) return false;
 			deviceDatetime = response["0"]["s1"];
 
-			oldParameters["maxChargingCurrent"      ] = response["30"]["s1"];
-			oldParameters["maxChargingCurrentAC"    ] = response["31"]["s1"];
-			oldParameters["chargingVoltage"         ] = response["32"]["s1"];
-			oldParameters["dischargingVoltage"      ] = response["33"]["s1"];
-			oldParameters["maxDischargingCurrent"   ] = response["34"]["s1"];
-			oldParameters["batteryType"             ] = response[ "5"]["s1"];
-			oldParameters["solarEnergyPriority"     ] = response[ "6"]["s1"];
-			oldParameters["allowBatteryCharging"    ] = response[ "2"]["s1"].split(",")[0];
-			oldParameters["allowBatteryChargingAC"  ] = response[ "2"]["s1"].split(",")[1];
-			oldParameters["allowGridInjection"      ] = response[ "2"]["s1"].split(",")[2];
-			oldParameters["allowDischargingSolarOK" ] = response[ "2"]["s1"].split(",")[3];
-			oldParameters["allowDischargingSolarNOK"] = response[ "2"]["s1"].split(",")[4];
-			oldParameters["maxGridFeedInPower"      ] = response["15"]["s1"];
+			oldParameters["maxChargingCurrent"      ] = !response.hasOwnProperty("30") ? "" : response["30"]["s1"];
+			oldParameters["maxChargingCurrentAC"    ] = !response.hasOwnProperty("31") ? "" : response["31"]["s1"];
+			oldParameters["chargingVoltage"         ] = !response.hasOwnProperty("32") ? "" : response["32"]["s1"];
+			oldParameters["dischargingVoltage"      ] = !response.hasOwnProperty("33") ? "" : response["33"]["s1"];
+			oldParameters["maxDischargingCurrent"   ] = !response.hasOwnProperty("34") ? "" : response["34"]["s1"];
+			oldParameters["batteryType"             ] = !response.hasOwnProperty( "5") ? "" : response[ "5"]["s1"];
+			oldParameters["solarEnergyPriority"     ] = !response.hasOwnProperty( "6") ? "" : response[ "6"]["s1"];
+			oldParameters["allowBatteryCharging"    ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[0];
+			oldParameters["allowBatteryChargingAC"  ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[1];
+			oldParameters["allowGridInjection"      ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[2];
+			oldParameters["allowDischargingSolarOK" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[3];
+			oldParameters["allowDischargingSolarNOK"] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[4];
+			oldParameters["maxGridFeedInPower"      ] = !response.hasOwnProperty("15") ? "" : response["15"]["s1"];
+			oldParameters["autoAdjustPowerFactor"   ] = !response.hasOwnProperty("36") ? "" : response["36"]["s1"];
+			oldParameters["allowQuDeratingFunction" ] = !response.hasOwnProperty( "2") ? "" : response[ "2"]["s1"].split(",")[7];
+			oldParameters["voltageAndReactivePower" ] = !response.hasOwnProperty("37") ? "" : response["37"]["s1"];
+
+			if(oldParameters["voltageAndReactivePower"] == "") newParameters["voltageAndReactivePower"] = "";
 
 			console.log("newParameters"); console.log(newParameters);
 			console.log("oldParameters"); console.log(oldParameters);
@@ -1820,9 +1857,12 @@ function setupOther_checkParameters() {
 			if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) { retry = true; setupOther_sendCommand(24066, 0, "", "C," + newParameters["allowGridInjection"      ]); }
 			if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) { retry = true; setupOther_sendCommand(24066, 0, "", "D," + newParameters["allowDischargingSolarOK" ]); }
 			if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) { retry = true; setupOther_sendCommand(24066, 0, "", "E," + newParameters["allowDischargingSolarNOK"]); }
+			if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) { retry = true; setupOther_sendCommand(24118, 0, "",        newParameters["autoAdjustPowerFactor"   ]); }
+			if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) { retry = true; setupOther_sendCommand(24066, 0, "", "H," + newParameters["allowQuDeratingFunction" ]); }
+			if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) { retry = true; setupOther_sendCommand(24119, 0, "",        newParameters["voltageAndReactivePower" ]); }
 
 			if(!retry) {
-				$(".setting-progress span").html(lang.system_setup.setting_success).css("color", "#28a745");
+				$(".setting-progress span").html(lang.system_setup.msg_setting_success).css("color", "#28a745");
 				$("#notif").removeClass("loading error success").addClass("success");
 				// Next Step
 				setTimeout(function() { window.location.href = "system_test.php"; }, 2500);
@@ -1844,6 +1884,9 @@ function setupOther_checkParameters() {
 					else if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) showSettingParametersError("Problem when setting allowGridInjection"      );
 					else if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) showSettingParametersError("Problem when setting allowDischargingSolarOK" );
 					else if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) showSettingParametersError("Problem when setting allowDischargingSolarNOK");
+					else if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) showSettingParametersError("Problem when setting autoAdjustPowerFactor"   );
+					else if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) showSettingParametersError("Problem when setting allowQuDeratingFunction" );
+					else if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) showSettingParametersError("Problem when setting voltageAndReactivePower" );
 				}
 			}
 

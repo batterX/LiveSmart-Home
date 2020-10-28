@@ -106,6 +106,14 @@ $installationCountry = isset($_SESSION["installation_country"]) ? $_SESSION["ins
 									<option value="059">Korea</option>
 									<option value="060">HongSun</option>
 									<option value="061">Sweden</option>
+									<option value="062">NRS097</option>
+									<option value="063">Indian</option>
+									<option value="064">EN50438</option>
+									<option value="065">EN50438 (Czech)</option>
+									<option value="066">EN50438 (DanMark)</option>
+									<option value="067">EN50438 (Finland)</option>
+									<option value="068">EN50438 (Ireland)</option>
+									<option value="069">EN50438 (Norway)</option>
 								</select>
 								<button id="machineModelBtn" class="btn btn-danger ripple"><?php echo $lang["btn"]["apply"] ?></button>
 							</div>

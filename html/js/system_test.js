@@ -335,7 +335,7 @@ function testBatteryCharging_waitUntilDischarged() {
 			} else {
 				batteryWaitCounter -= 1;
 				$("#log p:last-child").html(`${lang.system_test.discharging_battery_to} ${batteryMaxLevel}%<br>${lang.system_test.current_status}: ${response["1074"]["1"]}% / ${response["1121"]["1"]}W`);
-				$("#testBatteryCharging span span").html(parseInt(response["1634"]["0"]) > 100 ? lang.system_test.please_turn_solar_off : "");
+				$("#testBatteryCharging span span").html(parseInt(response["1634"]["0"]) > 100 ? lang.system_test.turn_solar_off : "");
 				setTimeout(testBatteryCharging_waitUntilDischarged, 5000);
 			}
 
@@ -505,12 +505,12 @@ function testUpsMode() {
 				$("#log p:last-child").html(`<b class="mr-1">✓</b> ${lang.system_test.check_output_active}`);
 				$("#log").append(`<p>${lang.system_test.turn_input_off}</p>`);
 				scrollToBottom();
-				$("#testUpsMode span span").html(lang.system_test.please_turn_input_off);
+				$("#testUpsMode span span").html(lang.system_test.turn_input_off);
 				setTimeout(testUpsMode_waitingForInput, 5000);
 			} else if(outputIsActive != undefined) {
 				// Show Error
 				$("#log p:last-child").html(`<b class="mr-1">✗</b> ${lang.system_test.check_output_active}`);
-				$("#testUpsMode span span").html(lang.system_test.please_turn_output_on);
+				$("#testUpsMode span span").html(lang.system_test.turn_output_on);
 				setTimeout(() => { testUpsMode(); }, 5000);
 			}
 
@@ -660,7 +660,7 @@ function testUpsMode_finish() {
 				finishStep();
 			} else if(inputIsActive != undefined) {
 				// Retry
-				$("#testUpsMode span span").html(lang.system_test.please_turn_input_on);
+				$("#testUpsMode span span").html(lang.system_test.turn_input_on);
 				setTimeout(testUpsMode_finish, 5000);
 			}
 

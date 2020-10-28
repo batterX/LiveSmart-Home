@@ -1,3 +1,16 @@
+// Console Notice
+console.log("%cWelcome to batter%cX", "font-family: Arial; font-size: 48px;", "font-family: Arial; font-size: 48px; color: #87d403");
+console.log("%cThis is a browser feature intended for developers only, so make sure you know what you're doing before typing anything here!", "font-family: Arial; font-size: 24px;");
+
+
+
+
+
+
+
+
+
+
 /*
     jQuery v3.3.1 | (c) JS Foundation and other contributors | jquery.org/license
 */

@@ -76,7 +76,8 @@ $("#loginForm").on("submit", (e) => {
 						installer_firstname: response.hasOwnProperty("firstname") ? response["firstname"] : "",
 						installer_lastname:  response.hasOwnProperty("lastname" ) ? response["lastname" ] : "",
 						installer_company:   response.hasOwnProperty("company"  ) ? response["company"  ] : "",
-						installer_telephone: response.hasOwnProperty("telephone") ? response["telephone"] : ""
+						installer_telephone: response.hasOwnProperty("telephone") ? response["telephone"] : "",
+						installer_country:   response.hasOwnProperty("country"  ) ? response["country"  ] : ""
 					},
 					error: () => { alert("E002. Please refresh the page!"); },
 					success: (response) => {

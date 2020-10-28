@@ -156,7 +156,15 @@ function step4() {
 					"058": "VDE4105",
 					"059": "Korea",
 					"060": "HongSun",
-					"061": "Sweden"
+					"061": "Sweden",
+					"062": "NRS097",
+					"063": "Indian",
+					"064": "EN50438",
+					"065": "EN50438 (Czech)",
+					"066": "EN50438 (DanMark)",
+					"067": "EN50438 (Finland)",
+					"068": "EN50438 (Ireland)",
+					"069": "EN50438 (Norway)"
 				}
 				// Show Status
 				$(".standard").css("color", "black").html(`${obj.hasOwnProperty(deviceStandard) ? obj[deviceStandard] : '-'}`);
