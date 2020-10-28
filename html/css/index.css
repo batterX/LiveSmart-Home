@@ -61,3 +61,12 @@ h1 {
 #lang_fr > div { background-image: url(../img/lang_fr.png) }
 #lang_cs > div { background-image: url(../img/lang_cs.png) }
 #lang_es > div { background-image: url(../img/lang_es.png) }
+
+#softwareVersion {
+	display: block;
+	position: absolute;
+	bottom: 1vmin;
+	font-weight: bold;
+	font-size: 2vmin;
+	font-family: var(--font-family-monospace);
+}

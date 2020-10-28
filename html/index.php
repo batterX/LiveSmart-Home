@@ -63,6 +63,8 @@ $_SESSION["last_step"] = $step;
 			
 		</div>
 
+		<span id="softwareVersion"><?php echo $softwareVersion; ?></span>
+
 
 
 
