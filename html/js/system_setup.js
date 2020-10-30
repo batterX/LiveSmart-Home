@@ -851,7 +851,7 @@ function setupLiFePO_2() {
 			$.get({
 				url: "api.php?set=command&type=20736&entity=6&text2=" + selectedPhase,
 				error: () => { alert("E016. Please refresh the page!"); },
-				success: () => { if(response != "1") return alert("E017. Please refresh the page!"); }
+				success: (response) => { if(response != "1") return alert("E017. Please refresh the page!"); }
 			});
 		}
 	}
@@ -1273,7 +1273,7 @@ function setupCarbon_2() {
 			$.get({
 				url: "api.php?set=command&type=20736&entity=6&text2=" + selectedPhase,
 				error: () => { alert("E032. Please refresh the page!"); },
-				success: () => { if(response != "1") return alert("E033. Please refresh the page!"); }
+				success: (response) => { if(response != "1") return alert("E033. Please refresh the page!"); }
 			});
 		}
 	}
@@ -1603,7 +1603,7 @@ function setupOther_2() {
 			$.get({
 				url: "api.php?set=command&type=20736&entity=6&text2=" + selectedPhase,
 				error: () => { alert("E044. Please refresh the page!"); },
-				success: () => { if(response != "1") return alert("E045. Please refresh the page!"); }
+				success: (response) => { if(response != "1") return alert("E045. Please refresh the page!"); }
 			});
 		}
 	}
