@@ -92,6 +92,7 @@ $_SESSION["box_apikey"] = $apikey;
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>const lang = <?php echo json_encode($lang) ?>;</script>
 		<script>const apikey = <?php echo json_encode($apikey) ?>;</script>
+		<script>const softwareVersion = <?php echo json_encode($softwareVersion) ?>;</script>
 		<script src="js/installer_login.js?v=<?php echo $versionHash ?>"></script>
 
 

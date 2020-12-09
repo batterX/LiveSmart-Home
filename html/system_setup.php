@@ -376,7 +376,8 @@ MPPT 2
 											<label for="vde4105_mode" class="col-lg-3 col-5 col-form-label px-2"><?php echo $lang["system_setup"]["vde4105_select_mode"] ?></label>
 											<div class="col-lg-9 col-7 px-2">
 												<select class="form-control form-control-outline" id="vde4105_mode">
-													<option value="0"><?php echo $lang["dict_vde4105_mode"]["0"] ?></option>
+													<option value=""  <?php echo $_SESSION["vde4105"] == "1" ? "selected" : "" ?>></option>
+													<option value="0" <?php echo $_SESSION["vde4105"] != "1" ? "selected" : "" ?>><?php echo $lang["dict_vde4105_mode"]["0"] ?></option>
 													<option value="2"><?php echo $lang["dict_vde4105_mode"]["2"] ?></option>
 													<option value="3"><?php echo $lang["dict_vde4105_mode"]["3"] ?></option>
 													<option value="1"><?php echo $lang["dict_vde4105_mode"]["1"] ?></option>

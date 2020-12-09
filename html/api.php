@@ -100,7 +100,9 @@ else if(isset($_GET["get"]) && strtolower($_GET["get"]) == "history") {
 	$db = new PDO("sqlite:/srv/bx/usv.db3");
 
 	// Returns History for Selected Range
+	// ?get=history&from=YYYYMMDD
 	// ?get=history&from=YYYYMMDD&to=YYYYMMDD
+	if(!isset($_GET["to"])) $_GET["to"] = date("Ymd", strtotime("+1 day"));
 	if(isset($_GET["from"]) && isset($_GET["to"]) && strlen($_GET["from"]) == 8 && strlen($_GET["to"]) == 8) {
 		$from = substr($_GET["from"], 0, 4) . "-" . substr($_GET["from"], 4, 2) . "-" . substr($_GET["from"], 6, 2);
 		$to   = substr($_GET["to"  ], 0, 4) . "-" . substr($_GET["to"  ], 4, 2) . "-" . substr($_GET["to"  ], 6, 2);

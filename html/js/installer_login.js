@@ -4,6 +4,30 @@ $progress.trigger("step", 2);
 
 
 
+// Get Latest Version Number
+var canContinue = false;
+$.get({
+	url: "https://raw.githubusercontent.com/batterX/LiveSmart-Home/master/version.txt",
+	dataType: "text",
+	cache: false,
+	error: () => {
+		canContinue = true;
+		enableLogin();
+	},
+	success: (versionNum) => {
+		if(softwareVersion != versionNum) {
+			window.location.href = ".";
+		} else {
+			canContinue = true;
+			enableLogin();
+		}
+	}
+});
+
+
+
+
+
 var isLoggedIn = false;
 
 function validateEmail(email) {
@@ -14,7 +38,7 @@ function validateEmail(email) {
 function enableLogin() {
 	var e = $("#email   ").val().trim();
 	var p = $("#password").val().trim();
-	$("#btn_next").attr("disabled", e == "" || p == "" || !validateEmail(e));
+	$("#btn_next").attr("disabled", e == "" || p == "" || !validateEmail(e) || !canContinue);
 	isLoggedIn = false;
 }
 

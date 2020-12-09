@@ -195,7 +195,8 @@ setInterval(() => {
 			$("#bx_box                ").val() != "" &&
 			$("#solar_wattPeak        ").val() != "" &&
 			$("#solar_feedInLimitation").val() != "" &&
-			$("#lifepo_battery_1      ").val() != ""
+			$("#lifepo_battery_1      ").val() != "" &&
+			$("#vde4105_mode          ").val() != ""
 		) {
 			$("#btn_next").attr("disabled", isSettingParameters);
 		} else {
@@ -210,7 +211,8 @@ setInterval(() => {
 			$("#solar_feedInLimitation ").val() != "" &&
 			$("#carbon_battery_model   ").val() != "" &&
 			$("#carbon_battery_strings ").val() != "" &&
-			$("#carbon_battery_capacity").val() != ""
+			$("#carbon_battery_capacity").val() != "" &&
+			$("#vde4105_mode           ").val() != ""
 		) {
 			$("#btn_next").attr("disabled", isSettingParameters);
 		} else {
@@ -231,7 +233,8 @@ setInterval(() => {
 			$("#other_battery_cutoffVoltage           ").val() != "" &&
 			$("#other_battery_redischargeVoltage      ").val() != "" &&
 			$("#other_battery_cutoffVoltageHybrid     ").val() != "" &&
-			$("#other_battery_redischargeVoltageHybrid").val() != ""
+			$("#other_battery_redischargeVoltageHybrid").val() != "" &&
+			$("#vde4105_mode                          ").val() != ""
 		) {
 			$("#btn_next").attr("disabled", isSettingParameters);
 		} else {
@@ -509,29 +512,6 @@ function step5() {
 				}
 			}
 
-			var inverterParams = response.hasOwnProperty("InverterParameters") ? response["InverterParameters"] : "";
-			// Q(U) Kennlinie
-			if(inverterParams.hasOwnProperty("2") && inverterParams["2"]["s1"].split(",")[7] == 1) {
-				$("#vde4105_mode").val("3").trigger("change");
-				if(inverterParams.hasOwnProperty("37")) {
-					var temp = inverterParams["37"]["s1"].split(",");
-					$("#vde4105_mode3_cosphi").val(Math.round(Math.cos(Math.asin(parseInt(temp[0]) / (deviceModel == "h5" ? 5000 : 10000))) * 100)).trigger("input");
-					$("#vde4105_mode3_v1    ").val(Math.round(parseInt(temp[1]) / 230.94)).trigger("input");
-					$("#vde4105_mode3_v2    ").val(Math.round(parseInt(temp[2]) / 230.94)).trigger("input");
-					$("#vde4105_mode3_v3    ").val(Math.round(parseInt(temp[3]) / 230.94)).trigger("input");
-					$("#vde4105_mode3_v4    ").val(Math.round(parseInt(temp[4]) / 230.94)).trigger("input");
-				}
-			}
-			// Fester cosφ
-			else if(inverterParams.hasOwnProperty("36") && inverterParams["36"]["s1"].split(",")[0] == 1 && inverterParams["36"]["s1"].split(",")[1] == 10) {
-				$("#vde4105_mode").val("2").trigger("change");
-				$("#vde4105_mode2_cosphi").val(inverterParams["36"]["s1"].split(",")["2"]).trigger("input");
-			}
-			// cosφ(P) Kennlinie
-			else if(inverterParams.hasOwnProperty("36") && inverterParams["36"]["s1"].split(",")[0] == 1 && inverterParams["36"]["s1"].split(",")[1] == 50 && inverterParams["36"]["s1"].split(",")[2] == 90) {
-				$("#vde4105_mode").val("1").trigger("change");
-			}
-
 		}
 	});
 
@@ -571,7 +551,8 @@ function mainFormSubmit() {
 			$("#bx_box                ").val() == "" ||
 			$("#solar_wattPeak        ").val() == "" ||
 			$("#solar_feedInLimitation").val() == "" ||
-			$("#lifepo_battery_1      ").val() == ""
+			$("#lifepo_battery_1      ").val() == "" ||
+			$("#vde4105_mode          ").val() == ""
 		) return;
 	} else if(isCarbon()) {
 		if( $("#installation_date      ").val() == "" ||
@@ -582,7 +563,8 @@ function mainFormSubmit() {
 			$("#solar_feedInLimitation ").val() == "" ||
 			$("#carbon_battery_model   ").val() == "" ||
 			$("#carbon_battery_strings ").val() == "" ||
-			$("#carbon_battery_capacity").val() == ""
+			$("#carbon_battery_capacity").val() == "" ||
+			$("#vde4105_mode           ").val() == ""
 		) return;
 	} else { // isOther()
 		if( $("#installation_date                     ").val() == "" ||
@@ -599,7 +581,8 @@ function mainFormSubmit() {
 			$("#other_battery_cutoffVoltage           ").val() == "" ||
 			$("#other_battery_redischargeVoltage      ").val() == "" ||
 			$("#other_battery_cutoffVoltageHybrid     ").val() == "" ||
-			$("#other_battery_redischargeVoltageHybrid").val() == ""
+			$("#other_battery_redischargeVoltageHybrid").val() == "" ||
+			$("#vde4105_mode                          ").val() == ""
 		) return;
 	}
 
@@ -681,7 +664,7 @@ function mainFormSubmit() {
 		#other_battery_cutoffVoltageHybrid,
 		#other_battery_redischargeVoltageHybrid,
 		#other_battery_cutoffVoltage,
-		#other_battery_redischargeVoltage
+		#other_battery_redischargeVoltage,
 
 		#vde4105_mode,
 		#vde4105_mode2_cosphi,
@@ -1031,7 +1014,7 @@ function setupLiFePO_4() {
 	newParameters["allowDischargingSolarNOK"] = "1";
 	newParameters["maxGridFeedInPower"      ] = Math.round(Math.min(Math.max(parseInt($("#solar_wattPeak").val()) * parseInt($("#solar_feedInLimitation").val()) / 100, 50), maxGridFeedInPower)).toString();
 	
-	var vde4105_mode   = $("#vde4105_mode    ").val();
+	var vde4105_mode   = $("#vde4105_mode").val();
 	var vde4105_v1     = Math.round(Math.round($("#vde4105_mode3_v1").val()) * 230.94 / 10) * 10;
 	var vde4105_v2     = Math.round(Math.round($("#vde4105_mode3_v2").val()) * 230.94 / 10) * 10;
 	var vde4105_v3     = Math.round(Math.round($("#vde4105_mode3_v3").val()) * 230.94 / 10) * 10;
@@ -1361,7 +1344,7 @@ function setupCarbon_4() {
 	newParameters["allowDischargingSolarNOK"] = "1";
 	newParameters["maxGridFeedInPower"      ] = Math.round(Math.min(Math.max(parseInt($("#solar_wattPeak").val()) * parseInt($("#solar_feedInLimitation").val()) / 100, 50), maxGridFeedInPower)).toString();
 
-	var vde4105_mode   = $("#vde4105_mode    ").val();
+	var vde4105_mode   = $("#vde4105_mode").val();
 	var vde4105_v1     = Math.round(Math.round($("#vde4105_mode3_v1").val()) * 230.94 / 10) * 10;
 	var vde4105_v2     = Math.round(Math.round($("#vde4105_mode3_v2").val()) * 230.94 / 10) * 10;
 	var vde4105_v3     = Math.round(Math.round($("#vde4105_mode3_v3").val()) * 230.94 / 10) * 10;
@@ -1697,7 +1680,7 @@ function setupOther_4() {
 	newParameters["allowDischargingSolarNOK"] = "1";
 	newParameters["maxGridFeedInPower"      ] = Math.round(Math.min(Math.max(parseInt($("#solar_wattPeak").val()) * parseInt($("#solar_feedInLimitation").val()) / 100, 50), maxGridFeedInPower)).toString();
 
-	var vde4105_mode   = $("#vde4105_mode    ").val();
+	var vde4105_mode   = $("#vde4105_mode").val();
 	var vde4105_v1     = Math.round(Math.round($("#vde4105_mode3_v1").val()) * 230.94 / 10) * 10;
 	var vde4105_v2     = Math.round(Math.round($("#vde4105_mode3_v2").val()) * 230.94 / 10) * 10;
 	var vde4105_v3     = Math.round(Math.round($("#vde4105_mode3_v3").val()) * 230.94 / 10) * 10;
