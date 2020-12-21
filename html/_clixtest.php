@@ -72,6 +72,13 @@ if(empty($_POST["secretPass"]) || !password_verify($_POST["secretPass"], $secret
     exit();
 }
 
+// Get Apikey
+$output = shell_exec("cat /proc/cpuinfo");
+$find = "Serial";
+$pos = strpos($output, $find);
+$serial = substr($output, $pos + 10, 16);
+$apikey = sha1(strval($serial));
+
 ?>
 
 
@@ -136,7 +143,6 @@ if(empty($_POST["secretPass"]) || !password_verify($_POST["secretPass"], $secret
             <div class="card p-4 elevate" id="ups_mode_test">
 
                 <p class="step-info">Connect the UPS MODE connector to the back side of the cliX, then press <u>Begin Test</u> below.</p>
-
                 <button class="step-start btn btn-sm btn-primary w-20 ripple">Begin Test</button>
 
                 <div class="log"></div>
@@ -157,7 +163,6 @@ if(empty($_POST["secretPass"]) || !password_verify($_POST["secretPass"], $secret
             <div class="card p-4 elevate" id="gpio_test">
 
                 <p class="step-info">Connect GPIO Outputs and Inputs together, then press <u>Begin Test</u> below.</p>
-
                 <button class="step-start btn btn-sm btn-primary w-20 ripple">Begin Test</button>
 
                 <div class="step-content row m-0 p-0 d-none text-muted">
@@ -189,7 +194,6 @@ if(empty($_POST["secretPass"]) || !password_verify($_POST["secretPass"], $secret
             <div class="card p-4 elevate" id="emeter_test">
 
                 <p class="step-info">Connect Energy Meter to the liveX, then press <u>Begin Test</u> below.</p>
-
                 <button class="step-start btn btn-sm btn-primary w-20 ripple">Begin Test</button>
 
                 <div class="log"></div>
@@ -232,7 +236,10 @@ if(empty($_POST["secretPass"]) || !password_verify($_POST["secretPass"], $secret
             
             <div class="card p-4 elevate" id="connect_default_mode">
 
-                TODO
+                <p class="step-info d-none">Remove BACKUP MODE connector and connect UPS MODE connector, then press <u>Continue</u> below.</p>
+                <button class="step-start btn btn-sm btn-primary w-20 ripple d-none">Continue</button>
+
+                <div class="log"></div>
                 
             </div>
 
@@ -245,10 +252,58 @@ if(empty($_POST["secretPass"]) || !password_verify($_POST["secretPass"], $secret
 
 
 
-            <h1>Print / Download / Upload Report</h1>
+            <h1>Generate Report</h1>
             
-            <div class="card p-4 elevate">
-                TODO
+            <div class="card p-4 elevate" id="generate_report">
+                <div id="report" class="d-none">
+
+                    <table class="table table-borderless mb-4">
+                        <tbody>
+                            <tr>
+                                <td>Date</td>
+                                <td id="report_date"><?php echo date('Y-m-d') ?></td>
+                            </tr>
+                            <tr>
+                                <td>Apikey</td>
+                                <td id="report_apikey"><?php echo $apikey ?></td>
+                            </tr>
+                            <tr>
+                                <td>S/N</td>
+                                <td id="report_sn"></td>
+                            </tr>
+                            <tr>
+                                <td>EW S/N</td>
+                                <td><input id="report_ewsn" type="text" class="form-control-plaintext p-0" placeholder="Type here…"></td>
+                            </tr>
+                            <tr>
+                                <td>Software</td>
+                                <td id="report_software"><?php echo $softwareVersion ?></td>
+                            </tr>
+                            <tr>
+                                <td>Passed Tests</td>
+                                <td id="report_tests">
+                                    liveX Update<br>
+                                    UPS Mode<br>
+                                    GPIO<br>
+                                    E.Meter<br>
+                                    Backup Mode
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Note</td>
+                                <td>
+                                    <textarea id="report_note" class="form-control-plaintext p-0" placeholder="Type here…" rows="1" style="height:26px"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <button id="report_send" class="btn btn-success w-20 ripple">Send Report</button>
+                        <button id="report_download" class="btn btn-primary w-20 ripple" disabled>Download</button>
+                    </div>
+
+                </div>
             </div>
 
 
@@ -262,8 +317,17 @@ if(empty($_POST["secretPass"]) || !password_verify($_POST["secretPass"], $secret
 
             <h1>Finish Test / Shutdown LiveX</h1>
             
-            <div class="card p-4 elevate">
-                TODO
+            <div class="card p-4 elevate" id="finish_test">
+
+                <div class="row p-0 m-0">
+                    <div class="col-6 pl-4 pr-4">
+                        <button id="finish_cleardb" class="btn btn-lg btn-primary w-100 ripple">Clear Database</button>
+                    </div>
+                    <div class="col-6 pl-4 pr-4">
+                        <button id="finish_shutdown" class="btn btn-lg btn-danger w-100 ripple" disabled>Shutdown</button>
+                    </div>
+                </div>
+
             </div>
 
 

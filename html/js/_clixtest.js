@@ -30,6 +30,65 @@ function removeLastMsg(viewId) {
 	$(`#${viewId} .log .msg:last-child`).remove();
 }
 
+function download(filename, text) {
+	var element = document.createElement("a");
+	element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+	element.setAttribute("download", filename);
+	element.style.display = "none";
+	document.body.appendChild(element);
+	element.click();
+	document.body.removeChild(element);
+}
+
+function getReport() {
+	var text = "";
+	text += `Date:     ${$("#report_date    ").text()}\n`;
+	text += `Software: ${$("#report_software").text()}\n`;
+	text += `Apikey:   ${$("#report_apikey  ").text()}\n`;
+	text += `S/N:      ${$("#report_sn      ").text()}\n`;
+	text += `EW S/N:   ${$("#report_ewsn    ").val ()}\n`;
+	text += `\n`;
+	text += `Passed Tests:\n`;
+	text += `- liveX Update\n`;
+	text += `- UPS Mode\n`;
+	text += `- GPIO\n`;
+	text += `- E.Meter\n`;
+	text += `- Backup Mode\n`;
+	text += `\n`;
+	text += `Note:\n`;
+	text += `${$("#report_note").val()}\n`;
+	return text;
+}
+
+var tempLogtime = "";
+function getCurrentStateUpdate(callback) {
+	setTimeout(() => {
+		tempLogtime = "";
+		getCurrentState((json) => {
+			if(!json || !json.hasOwnProperty("logtime")) {
+				getCurrentStateUpdate(callback);
+			} else {
+				tempLogtime = json.logtime;
+				getCurrentStateUpdate_2(callback);
+			}
+		});
+	}, 2500);
+}
+function getCurrentStateUpdate_2(callback) {
+	setTimeout(() => {
+		getCurrentState((json) => {
+			if(!json || !json.hasOwnProperty("logtime")) {
+				getCurrentStateUpdate_2(callback);
+			} else {
+				if(tempLogtime == json.logtime)
+					getCurrentStateUpdate_2(callback);
+				else
+					callback(json);
+			}
+		});
+	}, 2500);
+}
+
 
 
 
@@ -184,34 +243,33 @@ function livex_update_waitForSuccess() {
 */
 
 function ups_mode_test() {
-
 	enableStep("ups_mode_test");
-
 	$("#ups_mode_test .step-start").on("click", () => {
 		$("#ups_mode_test .step-info, #ups_mode_test .step-start").addClass("d-none");
 		ups_mode_test_s1();
 	});
-
 }
 
 function ups_mode_test_s1() {
 	removeLastMsg("ups_mode_test");
-	logMsg("ups_mode_test", "", "Setting System Mode to UPS. Please wait... (60 sec)");
+	logMsg("ups_mode_test", "", "Setting System Mode to UPS. Please wait... (±60 sec)");
 	// Set SystemMode to UPS
 	$.get({ url: "api.php?set=command&type=20752&text1=0&text2=0", success: (response) => { console.log(response); } });
-	// Wait 60 seconds, then check if SystemMode is UPS
+	// Wait 15 seconds, then check if SystemMode is UPS
 	setTimeout(() => {
-		getSettings((json) => {
-			if(json == null) { ups_mode_test_s1(); return; }
-			// Check SystemMode
-			if(!json.hasOwnProperty("SystemMode")) { ups_mode_test_s1(); return; }
-			if(json["SystemMode"]["0"]["mode"] != "0") { ups_mode_test_s1(); return; }
-			removeLastMsg("ups_mode_test");
-			logMsg("ups_mode_test", "green", "System Mode = UPS");
-			logMsg("ups_mode_test", "", "");
-			ups_mode_test_s2();
+		getCurrentStateUpdate(() => {
+			getSettings((json) => {
+				if(json == null) { ups_mode_test_s1(); return; }
+				// Check SystemMode
+				if(!json.hasOwnProperty("SystemMode")) { ups_mode_test_s1(); return; }
+				if(json["SystemMode"]["0"]["mode"] != "0") { ups_mode_test_s1(); return; }
+				removeLastMsg("ups_mode_test");
+				logMsg("ups_mode_test", "green", "System Mode = UPS");
+				logMsg("ups_mode_test", "", "");
+				ups_mode_test_s2();
+			});
 		});
-	}, 60000);
+	}, 15000);
 }
 
 function ups_mode_test_s2() {
@@ -219,25 +277,23 @@ function ups_mode_test_s2() {
 	logMsg("ups_mode_test", "", "Turning UPS Output ON. Please wait...");
 	// Turn Output ON
 	$.get({ url: "api.php?set=command&type=24224&text1=0&text2=1", success: (response) => { console.log(response); } });
-	// Wait 15 seconds, then check if Output ON
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { ups_mode_test_s2(); return; }
-			// Check UPS Output
-			if(json[1297][1] < 20000) { ups_mode_test_s2(); return; }
-			if(json[1298][1] < 20000) { ups_mode_test_s2(); return; }
-			if(json[1299][1] < 20000) { ups_mode_test_s2(); return; }
-			removeLastMsg("ups_mode_test");
-			logMsg("ups_mode_test", "green", "UPS Output = ON");
-			logMsg("ups_mode_test", "", "");
-			ups_mode_test_s3();
-		});
-	}, 15000);
+	// Check if Output ON
+	getCurrentStateUpdate((json) => {
+		if(json == null) { ups_mode_test_s2(); return; }
+		// Check UPS Output
+		if(json[1297][1] < 20000) { ups_mode_test_s2(); return; }
+		if(json[1298][1] < 20000) { ups_mode_test_s2(); return; }
+		if(json[1299][1] < 20000) { ups_mode_test_s2(); return; }
+		removeLastMsg("ups_mode_test");
+		logMsg("ups_mode_test", "green", "UPS Output = ON");
+		logMsg("ups_mode_test", "", "");
+		ups_mode_test_s3();
+	});
 }
 
 function ups_mode_test_s3() {
 	// Check Voltages & Powers
-	getCurrentState((json) => {
+	getCurrentStateUpdate((json) => {
 		if(json == null) { ups_mode_test_s3(); return; }
 		// Check UPS Output Voltage
 		if(json[1297][1] < 20000) { alert("ERROR -> UPS Output L1 Voltage < 200V"); return; }
@@ -252,9 +308,9 @@ function ups_mode_test_s3() {
 		if(json[2834][0] < 20000) { alert("ERROR -> E.Meter L2 Voltage < 200V"); return; }
 		if(json[2835][0] < 20000) { alert("ERROR -> E.Meter L3 Voltage < 200V"); return; }
 		// Check UPS Output Power
-		if(json[1377][1] < 500) { alert("ERROR -> UPS Output Power < 500W"); return; }
+		if(json[1377][1] < 400) { alert("ERROR -> UPS Output Power < 400W"); return; }
 		// Check Unprotected Power
-		if(json[2913][2] > 500) { alert("ERROR -> Unprotected Power > 500W"); return; }
+		if(json[2913][2] > 400) { alert("ERROR -> Unprotected Power > 400W"); return; }
 		ups_mode_test_s4();
 	});
 }
@@ -266,7 +322,7 @@ function ups_mode_test_s4() {
 	$.get({ url: "api.php?set=command&type=24224&text1=0&text2=0", success: (response) => { console.log(response); } });
 	// Wait 15 seconds, then check if working
 	setTimeout(() => {
-		getCurrentState((json) => {
+		getCurrentStateUpdate((json) => {
 			if(json == null) { ups_mode_test_s4(); return; }
 			// Check UPS Output Voltage
 			if(json[1297][1] != 0) { alert("ERROR -> UPS Output L1 Voltage != 0V"); return; }
@@ -283,7 +339,7 @@ function ups_mode_test_s4() {
 			// Check UPS Output Power
 			if(json[1377][1] > 0) { alert("ERROR -> UPS Output Power > 0W"); return; }
 			// Check Unprotected Power
-			if(json[2913][2] < 500) { alert("ERROR -> Unprotected Power < 500W"); return; }
+			if(json[2913][2] < 400) { alert("ERROR -> Unprotected Power < 400W"); return; }
 			// TEST OK
 			removeLastMsg("ups_mode_test");
 			logMsg("ups_mode_test", "green", "Test = OK");
@@ -298,20 +354,18 @@ function ups_mode_test_s5() {
 	logMsg("ups_mode_test", "", "Finishing Test. Please wait...");
 	// Turn Output ON
 	$.get({ url: "api.php?set=command&type=24224&text1=0&text2=1", success: (response) => { console.log(response); } });
-	// Wait 15 seconds, then check if Output ON
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { ups_mode_test_s5(); return; }
-			// Check UPS Output
-			if(json[1297][1] < 20000) { ups_mode_test_s5(); return; }
-			if(json[1298][1] < 20000) { ups_mode_test_s5(); return; }
-			if(json[1299][1] < 20000) { ups_mode_test_s5(); return; }
-			removeLastMsg("ups_mode_test");
-			logMsg("ups_mode_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
-			finishStep("ups_mode_test");
-			gpio_test();
-		});
-	}, 15000);
+	// Check if Output ON
+	getCurrentStateUpdate((json) => {
+		if(json == null) { ups_mode_test_s5(); return; }
+		// Check UPS Output
+		if(json[1297][1] < 20000) { ups_mode_test_s5(); return; }
+		if(json[1298][1] < 20000) { ups_mode_test_s5(); return; }
+		if(json[1299][1] < 20000) { ups_mode_test_s5(); return; }
+		removeLastMsg("ups_mode_test");
+		logMsg("ups_mode_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
+		finishStep("ups_mode_test");
+		gpio_test();
+	});
 }
 
 
@@ -353,24 +407,22 @@ function gpio_test_start() {
 	$.get({ url: "api.php?set=command&type=20737&text1=2&text2=0", success: (response) => { console.log(response); } });
 	$.get({ url: "api.php?set=command&type=20737&text1=3&text2=0", success: (response) => { console.log(response); } });
 	$.get({ url: "api.php?set=command&type=20737&text1=4&text2=0", success: (response) => { console.log(response); } });
-	// Wait 10 seconds, then check if all ouputs are off
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { gpio_test_start(); return; }
-			// Check Outputs (Must be forced-off)
-			if(json[2337][1] != 10) { gpio_test_start(); return; }
-			if(json[2337][2] != 10) { gpio_test_start(); return; }
-			if(json[2337][3] != 10) { gpio_test_start(); return; }
-			if(json[2337][4] != 10) { gpio_test_start(); return; }
-			// Check Inputs (1/2/3 Off, 4 On)
-			if(json[2321][1] !=  0) { alert("ERROR -> INPUT 1"); return; }
-			if(json[2321][2] !=  0) { alert("ERROR -> INPUT 2"); return; }
-			if(json[2321][3] !=  0) { alert("ERROR -> INPUT 3"); return; }
-			if(json[2321][4] !=  1) { alert("ERROR -> INPUT 4"); return; }
-			// Begin Test
-			gpio_test_1();
-		});
-	}, 10000);
+	// Check inputs & outputs
+	getCurrentStateUpdate((json) => {
+		if(json == null) { gpio_test_start(); return; }
+		// Check Outputs (Must be forced-off)
+		if(json[2337][1] != 10) { gpio_test_start(); return; }
+		if(json[2337][2] != 10) { gpio_test_start(); return; }
+		if(json[2337][3] != 10) { gpio_test_start(); return; }
+		if(json[2337][4] != 10) { gpio_test_start(); return; }
+		// Check Inputs (1/2/3 Off, 4 On)
+		if(json[2321][1] !=  0) { alert("ERROR -> INPUT 1"); return; }
+		if(json[2321][2] !=  0) { alert("ERROR -> INPUT 2"); return; }
+		if(json[2321][3] !=  0) { alert("ERROR -> INPUT 3"); return; }
+		if(json[2321][4] !=  1) { alert("ERROR -> INPUT 4"); return; }
+		// Begin Test
+		gpio_test_1();
+	});
 }
 
 function gpio_test_1() {
@@ -381,17 +433,15 @@ function gpio_test_1() {
 			console.log(response);
 			$("#gpio_test .out1").addClass("red");
 			$("#gpio_test .in1").addClass("red");
-			setTimeout(() => {
-				getCurrentState((json) => {
-					if(json == null) { gpio_test_1(); return; }
-					if(json[2337][1] != 11) { gpio_test_1(); return; }
-					$("#gpio_test .out1").addClass("green");
-					if(json[2321][1] != 1) { alert("ERROR -> INPUT 1"); return; }
-					$("#gpio_test .in1").addClass("green");
-					$.get({ url: "api.php?set=command&type=20737&text1=1&text2=0", success: (response) => { console.log(response); } });
-					gpio_test_2();
-				});
-			}, 10000);
+			getCurrentStateUpdate((json) => {
+				if(json == null) { gpio_test_1(); return; }
+				if(json[2337][1] != 11) { gpio_test_1(); return; }
+				$("#gpio_test .out1").addClass("green");
+				if(json[2321][1] != 1) { alert("ERROR -> INPUT 1"); return; }
+				$("#gpio_test .in1").addClass("green");
+				$.get({ url: "api.php?set=command&type=20737&text1=1&text2=0", success: (response) => { console.log(response); } });
+				gpio_test_2();
+			});
 		}
 	});
 }
@@ -404,17 +454,15 @@ function gpio_test_2() {
 			console.log(response);
 			$("#gpio_test .out2").addClass("red");
 			$("#gpio_test .in2").addClass("red");
-			setTimeout(() => {
-				getCurrentState((json) => {
-					if(json == null) { gpio_test_2(); return; }
-					if(json[2337][2] != 11) { gpio_test_2(); return; }
-					$("#gpio_test .out2").addClass("green");
-					if(json[2321][2] != 1) { alert("ERROR -> INPUT 2"); return; }
-					$("#gpio_test .in2").addClass("green");
-					$.get({ url: "api.php?set=command&type=20737&text1=2&text2=0", success: (response) => { console.log(response); } });
-					gpio_test_3();
-				});
-			}, 10000);
+			getCurrentStateUpdate((json) => {
+				if(json == null) { gpio_test_2(); return; }
+				if(json[2337][2] != 11) { gpio_test_2(); return; }
+				$("#gpio_test .out2").addClass("green");
+				if(json[2321][2] != 1) { alert("ERROR -> INPUT 2"); return; }
+				$("#gpio_test .in2").addClass("green");
+				$.get({ url: "api.php?set=command&type=20737&text1=2&text2=0", success: (response) => { console.log(response); } });
+				gpio_test_3();
+			});
 		}
 	});
 }
@@ -427,17 +475,15 @@ function gpio_test_3() {
 			console.log(response);
 			$("#gpio_test .out3").addClass("red");
 			$("#gpio_test .in3").addClass("red");
-			setTimeout(() => {
-				getCurrentState((json) => {
-					if(json == null) { gpio_test_3(); return; }
-					if(json[2337][3] != 11) { gpio_test_3(); return; }
-					$("#gpio_test .out3").addClass("green");
-					if(json[2321][3] != 1) { alert("ERROR -> INPUT 3"); return; }
-					$("#gpio_test .in3").addClass("green");
-					$.get({ url: "api.php?set=command&type=20737&text1=3&text2=0", success: (response) => { console.log(response); } });
-					gpio_test_4();
-				});
-			}, 10000);
+			getCurrentStateUpdate((json) => {
+				if(json == null) { gpio_test_3(); return; }
+				if(json[2337][3] != 11) { gpio_test_3(); return; }
+				$("#gpio_test .out3").addClass("green");
+				if(json[2321][3] != 1) { alert("ERROR -> INPUT 3"); return; }
+				$("#gpio_test .in3").addClass("green");
+				$.get({ url: "api.php?set=command&type=20737&text1=3&text2=0", success: (response) => { console.log(response); } });
+				gpio_test_4();
+			});
 		}
 	});
 }
@@ -450,20 +496,18 @@ function gpio_test_4() {
 			console.log(response);
 			$("#gpio_test .out4").addClass("red");
 			$("#gpio_test .in4").addClass("red");
-			setTimeout(() => {
-				getCurrentState((json) => {
-					if(json == null) { gpio_test_4(); return; }
-					if(json[2337][4] != 11) { gpio_test_4(); return; }
-					$("#gpio_test .out4").addClass("green");
-					if(json[2321][4] != 0) { alert("ERROR -> INPUT 4"); return; }
-					$("#gpio_test .in4").addClass("green");
-					$.get({ url: "api.php?set=command&type=20737&text1=4&text2=0", success: (response) => { console.log(response); } });
-					// Test Completed
-					logMsg("gpio_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
-					finishStep("gpio_test");
-					emeter_test();
-				});
-			}, 10000);
+			getCurrentStateUpdate((json) => {
+				if(json == null) { gpio_test_4(); return; }
+				if(json[2337][4] != 11) { gpio_test_4(); return; }
+				$("#gpio_test .out4").addClass("green");
+				if(json[2321][4] != 0) { alert("ERROR -> INPUT 4"); return; }
+				$("#gpio_test .in4").addClass("green");
+				$.get({ url: "api.php?set=command&type=20737&text1=4&text2=0", success: (response) => { console.log(response); } });
+				// Test Completed
+				logMsg("gpio_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
+				finishStep("gpio_test");
+				emeter_test();
+			});
 		}
 	});
 }
@@ -502,22 +546,20 @@ function emeter_test() {
 function emeter_test_start() {
 	removeLastMsg("emeter_test");
 	logMsg("emeter_test", "", "Testing E.Meter Connection. Please wait...")
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { emeter_test_start(); return; }
-			if(!json.hasOwnProperty(2913) || !json[2913].hasOwnProperty(0)) {
-				removeLastMsg("emeter_test");
-				logMsg("emeter_test", "red", "E.Meter Connection Problem!");
-				setTimeout(() => { emeter_test_start(); }, 5000);
-				return;
-			}
+	getCurrentStateUpdate((json) => {
+		if(json == null) { emeter_test_start(); return; }
+		if(!json.hasOwnProperty(2913) || !json[2913].hasOwnProperty(0)) {
 			removeLastMsg("emeter_test");
-			logMsg("emeter_test", "green", "E.Meter Test OK");
-			logMsg("emeter_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
-			finishStep("emeter_test");
-			backup_mode_test();
-		});
-	}, 5000);
+			logMsg("emeter_test", "red", "E.Meter Connection Problem!");
+			emeter_test_start();
+			return;
+		}
+		removeLastMsg("emeter_test");
+		logMsg("emeter_test", "green", "E.Meter Test OK");
+		logMsg("emeter_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
+		finishStep("emeter_test");
+		backup_mode_test();
+	});
 }
 
 
@@ -556,20 +598,18 @@ function backup_mode_test_start() {
 	logMsg("backup_mode_test", "", "Verifying. Please wait...");
 	// Turn-On Output 1
 	$.get({ url: "api.php?set=command&type=20737&text1=1&text2=1", success: (response) => { console.log(response); } });
-	// Wait 10 seconds, then check if output 1 is on
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { backup_mode_test_start(); return; }
-			// Check Output 1 (Must be forced-on)
-			if(json[2337][1] != 11) { backup_mode_test_start(); return; }
-			// Check Input 1 (Must be on)
-			if(json[2321][1] !=  0) { alert("ERROR -> GPIO CONNECTOR IS STILL CONNECTED"); return; }
-			// Turn-Off Output 1
-			$.get({ url: "api.php?set=command&type=20737&text1=1&text2=0", success: (response) => { console.log(response); } });
-			// Continue Test
-			backup_mode_test_2();
-		});
-	}, 10000);
+	// Check if output 1 is on
+	getCurrentStateUpdate((json) => {
+		if(json == null) { backup_mode_test_start(); return; }
+		// Check Output 1 (Must be forced-on)
+		if(json[2337][1] != 11) { backup_mode_test_start(); return; }
+		// Check Input 1 (Must be on)
+		if(json[2321][1] !=  0) { alert("ERROR -> GPIO CONNECTOR IS STILL CONNECTED"); return; }
+		// Turn-Off Output 1
+		$.get({ url: "api.php?set=command&type=20737&text1=1&text2=0", success: (response) => { console.log(response); } });
+		// Continue Test
+		backup_mode_test_2();
+	});
 }
 
 function backup_mode_test_2() {
@@ -577,17 +617,15 @@ function backup_mode_test_2() {
 	logMsg("backup_mode_test", "", "Turning UPS Output OFF. Please wait...");
 	// Turn Output OFF
 	$.get({ url: "api.php?set=command&type=24224&text1=0&text2=0", success: (response) => { console.log(response); } });
-	// Wait 15 seconds, then check if Output OFF
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { backup_mode_test_2(); return; }
-			// Check UPS Output
-			if(json[1297][1] != 0) { backup_mode_test_2(); return; }
-			if(json[1298][1] != 0) { backup_mode_test_2(); return; }
-			if(json[1299][1] != 0) { backup_mode_test_2(); return; }
-			backup_mode_test_3();
-		});
-	}, 15000);
+	// Check if Output OFF
+	getCurrentStateUpdate((json) => {
+		if(json == null) { backup_mode_test_2(); return; }
+		// Check UPS Output
+		if(json[1297][1] != 0) { backup_mode_test_2(); return; }
+		if(json[1298][1] != 0) { backup_mode_test_2(); return; }
+		if(json[1299][1] != 0) { backup_mode_test_2(); return; }
+		backup_mode_test_3();
+	});
 }
 
 function backup_mode_test_3() {
@@ -604,100 +642,96 @@ function backup_mode_test_4() {
 	logMsg("backup_mode_test", "", "Turning UPS Output ON. Please wait...");
 	// Turn Output ON
 	$.get({ url: "api.php?set=command&type=24224&text1=0&text2=1", success: (response) => { console.log(response); } });
-	// Wait 15 seconds, then check if Output ON
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { backup_mode_test_4(); return; }
-			// Check UPS Output
-			if(json[1297][1] < 20000) { backup_mode_test_4(); return; }
-			if(json[1298][1] < 20000) { backup_mode_test_4(); return; }
-			if(json[1299][1] < 20000) { backup_mode_test_4(); return; }
-			removeLastMsg("backup_mode_test");
-			logMsg("backup_mode_test", "green", "UPS Output = ON");
-			logMsg("backup_mode_test", "", "");
-			backup_mode_test_5();
-		});
-	}, 15000);
+	// Check if Output ON
+	getCurrentStateUpdate((json) => {
+		if(json == null) { backup_mode_test_4(); return; }
+		// Check UPS Output
+		if(json[1297][1] < 20000) { backup_mode_test_4(); return; }
+		if(json[1298][1] < 20000) { backup_mode_test_4(); return; }
+		if(json[1299][1] < 20000) { backup_mode_test_4(); return; }
+		removeLastMsg("backup_mode_test");
+		logMsg("backup_mode_test", "green", "UPS Output = ON");
+		logMsg("backup_mode_test", "", "");
+		backup_mode_test_5();
+	});
 }
 
 function backup_mode_test_5() {
 	removeLastMsg("backup_mode_test");
-	logMsg("backup_mode_test", "", "Setting System Mode to BACKUP. Please wait... (60 sec)");
+	logMsg("backup_mode_test", "", "Setting System Mode to BACKUP. Please wait... (±60 sec)");
 	// Set SystemMode to BACKUP
 	$.get({ url: "api.php?set=command&type=20752&text1=0&text2=1", success: (response) => { console.log(response); } });
-	// Wait 60 seconds, then check if SystemMode is BACKUP
+	// Wait 15 seconds, then check if SystemMode is BACKUP
 	setTimeout(() => {
-		getSettings((json) => {
-			if(json == null) { backup_mode_test_5(); return; }
-			// Check SystemMode
-			if(!json.hasOwnProperty("SystemMode")) { backup_mode_test_5(); return; }
-			if(json["SystemMode"]["0"]["mode"] != "1") { backup_mode_test_5(); return; }
-			removeLastMsg("backup_mode_test");
-			logMsg("backup_mode_test", "green", "System Mode = BACKUP");
-			logMsg("backup_mode_test", "", "");
-			backup_mode_test_6();
+		getCurrentStateUpdate(() => {
+			getSettings((json) => {
+				if(json == null) { backup_mode_test_5(); return; }
+				// Check SystemMode
+				if(!json.hasOwnProperty("SystemMode")) { backup_mode_test_5(); return; }
+				if(json["SystemMode"]["0"]["mode"] != "1") { backup_mode_test_5(); return; }
+				removeLastMsg("backup_mode_test");
+				logMsg("backup_mode_test", "green", "System Mode = BACKUP");
+				logMsg("backup_mode_test", "", "");
+				backup_mode_test_6();
+			});
 		});
-	}, 60000);
+	}, 15000);
 }
 
 function backup_mode_test_6() {
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { backup_mode_test_6(); return; }
-			// Check UPS Output Voltage
-			if(json[1297][1] < 20000) { alert("ERROR -> UPS Output L1 Voltage < 200V"); return; }
-			if(json[1298][1] < 20000) { alert("ERROR -> UPS Output L2 Voltage < 200V"); return; }
-			if(json[1299][1] < 20000) { alert("ERROR -> UPS Output L3 Voltage < 200V"); return; }
-			// Check UPS Input Voltage
-			if(json[273][1] < 20000) { alert("ERROR -> UPS Input L1 Voltage < 200V"); return; }
-			if(json[274][1] < 20000) { alert("ERROR -> UPS Input L2 Voltage < 200V"); return; }
-			if(json[275][1] < 20000) { alert("ERROR -> UPS Input L3 Voltage < 200V"); return; }
-			// Check E.Meter Voltage
-			if(json[2833][0] < 20000) { alert("ERROR -> E.Meter L1 Voltage < 200V"); return; }
-			if(json[2834][0] < 20000) { alert("ERROR -> E.Meter L2 Voltage < 200V"); return; }
-			if(json[2835][0] < 20000) { alert("ERROR -> E.Meter L3 Voltage < 200V"); return; }
-			// Check UPS Output Power
-			if(json[1377][1] > 100) { alert("ERROR -> UPS Output Power > 100W"); return; }
-			// Check Unprotected Power
-			if(json[2913][2] < 500) { alert("ERROR -> Unprotected Power < 500W"); return; }
-			// Continue
-			backup_mode_test_7();
-		});
-	}, 5000);
+	getCurrentStateUpdate((json) => {
+		if(json == null) { backup_mode_test_6(); return; }
+		// Check UPS Output Voltage
+		if(json[1297][1] < 20000) { alert("ERROR -> UPS Output L1 Voltage < 200V"); return; }
+		if(json[1298][1] < 20000) { alert("ERROR -> UPS Output L2 Voltage < 200V"); return; }
+		if(json[1299][1] < 20000) { alert("ERROR -> UPS Output L3 Voltage < 200V"); return; }
+		// Check UPS Input Voltage
+		if(json[273][1] < 20000) { alert("ERROR -> UPS Input L1 Voltage < 200V"); return; }
+		if(json[274][1] < 20000) { alert("ERROR -> UPS Input L2 Voltage < 200V"); return; }
+		if(json[275][1] < 20000) { alert("ERROR -> UPS Input L3 Voltage < 200V"); return; }
+		// Check E.Meter Voltage
+		if(json[2833][0] < 20000) { alert("ERROR -> E.Meter L1 Voltage < 200V"); return; }
+		if(json[2834][0] < 20000) { alert("ERROR -> E.Meter L2 Voltage < 200V"); return; }
+		if(json[2835][0] < 20000) { alert("ERROR -> E.Meter L3 Voltage < 200V"); return; }
+		// Check UPS Output Power
+		if(json[1377][1] > 100) { alert("ERROR -> UPS Output Power > 100W"); return; }
+		// Check Unprotected Power
+		if(json[2913][2] < 400) { alert("ERROR -> Unprotected Power < 400W"); return; }
+		// Continue
+		backup_mode_test_7();
+	});
 }
 
 function backup_mode_test_7() {
 	removeLastMsg("backup_mode_test");
 	logMsg("backup_mode_test", "mt-4", "<b>Please Turn Grid Input OFF</b>");
 	// Wait Until Grid Input OFF
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { backup_mode_test_7(); return; }
-			// Check UPS Input
-			if(json[273][1] != 0) { backup_mode_test_7(); return; }
-			if(json[274][1] != 0) { backup_mode_test_7(); return; }
-			if(json[275][1] != 0) { backup_mode_test_7(); return; }
-			removeLastMsg("backup_mode_test");
-			logMsg("backup_mode_test", "green", "Grid Input = OFF");
-			logMsg("backup_mode_test", "", "");
-			backup_mode_test_8();
-		});
-	}, 5000);
+	getCurrentStateUpdate((json) => {
+		if(json == null) { backup_mode_test_7(); return; }
+		// Check UPS Input
+		if(json[273][1] != 0) { backup_mode_test_7(); return; }
+		if(json[274][1] != 0) { backup_mode_test_7(); return; }
+		if(json[275][1] != 0) { backup_mode_test_7(); return; }
+		removeLastMsg("backup_mode_test");
+		logMsg("backup_mode_test", "green", "Grid Input = OFF");
+		logMsg("backup_mode_test", "", "");
+		backup_mode_test_8();
+	});
 }
 
 function backup_mode_test_8() {
 	removeLastMsg("backup_mode_test");
 	logMsg("backup_mode_test", "", "Testing. Please wait...");
-	// Wait 15 seconds then test voltage/power
+	// Wait 15 seconds, then test voltage/power
 	setTimeout(() => {
-		getCurrentState((json) => {
+		getCurrentStateUpdate((json) => {
 			if(json == null) { backup_mode_test_8(); return; }
 			// Check UPS Output Voltage
 			if(json[1297][1] < 20000) { alert("ERROR -> UPS Output L1 Voltage < 200V"); return; }
 			if(json[1298][1] < 20000) { alert("ERROR -> UPS Output L2 Voltage < 200V"); return; }
 			if(json[1299][1] < 20000) { alert("ERROR -> UPS Output L3 Voltage < 200V"); return; }
 			// Check UPS Output Power
-			if(json[1377][1] < 500) { alert("ERROR -> UPS Output Power < 500W"); return; }
+			if(json[1377][1] < 400) { alert("ERROR -> UPS Output Power < 400W"); return; }
 			// Continue
 			removeLastMsg("backup_mode_test");
 			logMsg("backup_mode_test", "green", "Test = OK");
@@ -711,27 +745,25 @@ function backup_mode_test_9() {
 	removeLastMsg("backup_mode_test");
 	logMsg("backup_mode_test", "mt-4", "<b>Please Turn Grid Input ON</b>");
 	// Wait Until Grid Input ON
-	setTimeout(() => {
-		getCurrentState((json) => {
-			if(json == null) { backup_mode_test_9(); return; }
-			// Check UPS Input
-			if(json[273][1] < 20000) { backup_mode_test_9(); return; }
-			if(json[274][1] < 20000) { backup_mode_test_9(); return; }
-			if(json[275][1] < 20000) { backup_mode_test_9(); return; }
-			removeLastMsg("backup_mode_test");
-			logMsg("backup_mode_test", "green", "Grid Input = ON");
-			logMsg("backup_mode_test", "", "");
-			backup_mode_test_10();
-		});
-	}, 5000);
+	getCurrentState((json) => {
+		if(json == null) { backup_mode_test_9(); return; }
+		// Check UPS Input
+		if(json[273][1] < 20000) { backup_mode_test_9(); return; }
+		if(json[274][1] < 20000) { backup_mode_test_9(); return; }
+		if(json[275][1] < 20000) { backup_mode_test_9(); return; }
+		removeLastMsg("backup_mode_test");
+		logMsg("backup_mode_test", "green", "Grid Input = ON");
+		logMsg("backup_mode_test", "", "");
+		backup_mode_test_10();
+	});
 }
 
 function backup_mode_test_10() {
 	removeLastMsg("backup_mode_test");
 	logMsg("backup_mode_test", "", "Testing. Please wait...");
-	// Wait 15 seconds then test voltage/power
+	// Wait 15 seconds, then test voltage/power
 	setTimeout(() => {
-		getCurrentState((json) => {
+		getCurrentStateUpdate((json) => {
 			if(json == null) { backup_mode_test_10(); return; }
 			// Check UPS Output Voltage
 			if(json[1297][1] < 20000) { alert("ERROR -> UPS Output L1 Voltage < 200V"); return; }
@@ -740,13 +772,13 @@ function backup_mode_test_10() {
 			// Check UPS Output Power
 			if(json[1377][1] > 100) { alert("ERROR -> UPS Output Power > 100W"); return; }
 			// Check Unprotected Power
-			if(json[2913][2] < 500) { alert("ERROR -> Unprotected Power < 500W"); return; }
+			if(json[2913][2] < 400) { alert("ERROR -> Unprotected Power < 400W"); return; }
 			// Test Completed
 			removeLastMsg("backup_mode_test");
 			logMsg("backup_mode_test", "green", "Test = OK");
 			logMsg("backup_mode_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
 			finishStep("backup_mode_test");
-			connect_default_mode();
+			setTimeout(() => { connect_default_mode(); }, 2500);
 		});
 	}, 15000);
 }
@@ -775,12 +807,205 @@ function backup_mode_test_10() {
 */
 
 function connect_default_mode() {
-
 	enableStep("connect_default_mode");
-
-	alert("TODO ... KOMMT NOCH");
-
+	removeLastMsg("connect_default_mode");
+	logMsg("connect_default_mode", "", "Turning UPS Output OFF. Please wait...");
+	// Turn Output OFF
+	$.get({ url: "api.php?set=command&type=24224&text1=0&text2=0", success: (response) => { console.log(response); } });
+	// Check if Output OFF
+	getCurrentStateUpdate((json) => {
+		if(json == null) { connect_default_mode(); return; }
+		// Check UPS Output
+		if(json[1297][1] != 0) { connect_default_mode(); return; }
+		if(json[1298][1] != 0) { connect_default_mode(); return; }
+		if(json[1299][1] != 0) { connect_default_mode(); return; }
+		connect_default_mode_2();
+	});
 }
+
+function connect_default_mode_2() {
+	removeLastMsg("connect_default_mode");
+	$("#connect_default_mode .step-info, #connect_default_mode .step-start").removeClass("d-none");
+	$("#connect_default_mode .step-start").on("click", () => {
+		$("#connect_default_mode .step-info, #connect_default_mode .step-start").addClass("d-none");
+		connect_default_mode_3();
+	});
+}
+
+function connect_default_mode_3() {
+	removeLastMsg("connect_default_mode");
+	logMsg("connect_default_mode", "", "Turning UPS Output ON. Please wait...");
+	// Turn Output ON
+	$.get({ url: "api.php?set=command&type=24224&text1=0&text2=1", success: (response) => { console.log(response); } });
+	// Check if Output ON
+	getCurrentStateUpdate((json) => {
+		if(json == null) { connect_default_mode_3(); return; }
+		// Check UPS Output
+		if(json[1297][1] < 20000) { connect_default_mode_3(); return; }
+		if(json[1298][1] < 20000) { connect_default_mode_3(); return; }
+		if(json[1299][1] < 20000) { connect_default_mode_3(); return; }
+		removeLastMsg("connect_default_mode");
+		logMsg("connect_default_mode", "green", "UPS Output = ON");
+		logMsg("connect_default_mode", "", "");
+		connect_default_mode_4();
+	});
+}
+
+function connect_default_mode_4() {
+	removeLastMsg("connect_default_mode");
+	logMsg("connect_default_mode", "", "Setting System Mode to UPS. Please wait... (±60 sec)");
+	// Set SystemMode to UPS
+	$.get({ url: "api.php?set=command&type=20752&text1=0&text2=0", success: (response) => { console.log(response); } });
+	// Wait 15 seconds, then check if SystemMode is UPS
+	setTimeout(() => {
+		getCurrentStateUpdate(() => {
+			getSettings((json) => {
+				if(json == null) { connect_default_mode_4(); return; }
+				// Check SystemMode
+				if(!json.hasOwnProperty("SystemMode")) { connect_default_mode_4(); return; }
+				if(json["SystemMode"]["0"]["mode"] != "0") { connect_default_mode_4(); return; }
+				removeLastMsg("connect_default_mode");
+				logMsg("connect_default_mode", "green", "System Mode = UPS");
+				logMsg("connect_default_mode", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
+				finishStep("connect_default_mode");
+				generate_report();
+			});
+		});
+	}, 15000);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    GENERATE REPORT
+*/
+
+function generate_report() {
+	enableStep("generate_report");
+	$.post({
+		url: "https://api.batterx.io/v3/_clixtest.php",
+		data: {
+			action: "get_livex_serialnumber",
+			apikey: $("#report_apikey").text()
+		},
+		error: () => {
+			setTimeout(() => {
+				generate_report();
+			}, 10000);
+		},
+		success: (response) => {
+			$("#report_sn").text(response);
+			$("#report").removeClass("d-none");
+		}
+	});
+}
+
+$("#report_send").on("click", () => {
+	if($("#report_ewsn").val() == "" && !confirm("Continue without EW S/N?")) return;
+	$("#report_ewsn").prop("disabled", true);
+	$("#report_send").prop("disabled", true);
+	$("#report_note").prop("disabled", true);
+	$.post({
+		url: "https://api.batterx.io/v3/_clixtest.php",
+		data: {
+			action                : "register_livex",
+			apikey                : $("#report_apikey  ").text(),
+			serialnumber          : $("#report_sn      ").text(),
+			serialnumber_producer : $("#report_ewsn    ").val (),
+			software_version      : $("#report_software").text(),
+			date_tested           : $("#report_date    ").text(),
+			report                : getReport()
+		},
+		error: () => { alert("CLOUD ERROR - TRY AGAIN"); },
+		success: (response) => {
+			console.log(response);
+			if(response != "1") {
+				$("#report_send").prop("disabled", false);
+				alert(response);
+			} else {
+				$("#report_download").trigger("click");
+			}
+			$("#report_download").prop("disabled", false);
+			finish_test();
+		}
+	});
+});
+
+$("#report_download").on("click", () => {
+	download(`${$("#report_sn").text()}.txt`, getReport());
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    FINISH TEST
+*/
+
+function finish_test() {
+	enableStep("finish_test");
+}
+
+$("#finish_cleardb").on("click", () => {
+	$.get({
+        url: "api.php?cleardb=1",
+        error: () => { alert("API ERROR - TRY AGAIN"); },
+        success: (response) => {
+			if(response == "1")
+				$("#finish_shutdown").prop("disabled", false);
+			else
+				alert(response);
+		}
+    });
+});
+
+$("#finish_shutdown").on("click", () => {
+	if(!confirm("Are you sure you want to SHUTDOWN the liveX?")) return false;
+	$.get({
+		url: "cmd/shutdown.php",
+		complete: function(res) {
+			setTimeout(function() {
+				alert("SHUTDOWN SUCCESS");
+				location.reload(1);
+			}, 5000);
+		}
+	});
+	$("#finish_cleardb").attr("disabled", true);
+	$("#finish_shutdown").attr("disabled", true);
+});
 
 
 
