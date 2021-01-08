@@ -163,7 +163,7 @@ function livex_update() {
 						// Update Completed
 						logMsg("livex_update", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
 						finishStep("livex_update");
-						ups_mode_test();
+						emeter_test();
 					}
 
 				}
@@ -216,6 +216,56 @@ function livex_update_waitForSuccess() {
 				setTimeout(() => { window.location.reload(true); }, 5000);
 			}, 60000);
 		}
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    E.METER TEST
+*/
+
+function emeter_test() {
+	enableStep("emeter_test");
+	$("#emeter_test .step-start").on("click", () => {
+		$("#emeter_test .step-info, #emeter_test .step-start").addClass("d-none");
+		emeter_test_start();
+	});
+}
+
+function emeter_test_start() {
+	removeLastMsg("emeter_test");
+	logMsg("emeter_test", "", "Testing E.Meter Connection. Please wait...")
+	getCurrentStateUpdate((json) => {
+		if(json == null) { emeter_test_start(); return; }
+		if(!json.hasOwnProperty(2913) || !json[2913].hasOwnProperty(0)) {
+			removeLastMsg("emeter_test");
+			logMsg("emeter_test", "red", "E.Meter Connection Problem!");
+			emeter_test_start();
+			return;
+		}
+		removeLastMsg("emeter_test");
+		logMsg("emeter_test", "green", "E.Meter Test OK");
+		logMsg("emeter_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
+		finishStep("emeter_test");
+		ups_mode_test();
 	});
 }
 
@@ -308,9 +358,9 @@ function ups_mode_test_s3() {
 		if(json[2834][0] < 20000) { alert("ERROR -> E.Meter L2 Voltage < 200V"); return; }
 		if(json[2835][0] < 20000) { alert("ERROR -> E.Meter L3 Voltage < 200V"); return; }
 		// Check UPS Output Power
-		if(json[1377][1] < 400) { alert("ERROR -> UPS Output Power < 400W"); return; }
+		if(json[1377][1] < 300) { alert("ERROR -> UPS Output Power < 300W"); return; }
 		// Check Unprotected Power
-		if(json[2913][2] > 400) { alert("ERROR -> Unprotected Power > 400W"); return; }
+		if(json[2913][2] > 300) { alert("ERROR -> Unprotected Power > 300W"); return; }
 		ups_mode_test_s4();
 	});
 }
@@ -339,7 +389,7 @@ function ups_mode_test_s4() {
 			// Check UPS Output Power
 			if(json[1377][1] > 0) { alert("ERROR -> UPS Output Power > 0W"); return; }
 			// Check Unprotected Power
-			if(json[2913][2] < 400) { alert("ERROR -> Unprotected Power < 400W"); return; }
+			if(json[2913][2] < 300) { alert("ERROR -> Unprotected Power < 300W"); return; }
 			// TEST OK
 			removeLastMsg("ups_mode_test");
 			logMsg("ups_mode_test", "green", "Test = OK");
@@ -506,59 +556,9 @@ function gpio_test_4() {
 				// Test Completed
 				logMsg("gpio_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
 				finishStep("gpio_test");
-				emeter_test();
+				backup_mode_test();
 			});
 		}
-	});
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    E.METER TEST
-*/
-
-function emeter_test() {
-	enableStep("emeter_test");
-	$("#emeter_test .step-start").on("click", () => {
-		$("#emeter_test .step-info, #emeter_test .step-start").addClass("d-none");
-		emeter_test_start();
-	});
-}
-
-function emeter_test_start() {
-	removeLastMsg("emeter_test");
-	logMsg("emeter_test", "", "Testing E.Meter Connection. Please wait...")
-	getCurrentStateUpdate((json) => {
-		if(json == null) { emeter_test_start(); return; }
-		if(!json.hasOwnProperty(2913) || !json[2913].hasOwnProperty(0)) {
-			removeLastMsg("emeter_test");
-			logMsg("emeter_test", "red", "E.Meter Connection Problem!");
-			emeter_test_start();
-			return;
-		}
-		removeLastMsg("emeter_test");
-		logMsg("emeter_test", "green", "E.Meter Test OK");
-		logMsg("emeter_test", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
-		finishStep("emeter_test");
-		backup_mode_test();
 	});
 }
 
@@ -696,7 +696,7 @@ function backup_mode_test_6() {
 		// Check UPS Output Power
 		if(json[1377][1] > 100) { alert("ERROR -> UPS Output Power > 100W"); return; }
 		// Check Unprotected Power
-		if(json[2913][2] < 400) { alert("ERROR -> Unprotected Power < 400W"); return; }
+		if(json[2913][2] < 300) { alert("ERROR -> Unprotected Power < 300W"); return; }
 		// Continue
 		backup_mode_test_7();
 	});
@@ -731,7 +731,7 @@ function backup_mode_test_8() {
 			if(json[1298][1] < 20000) { alert("ERROR -> UPS Output L2 Voltage < 200V"); return; }
 			if(json[1299][1] < 20000) { alert("ERROR -> UPS Output L3 Voltage < 200V"); return; }
 			// Check UPS Output Power
-			if(json[1377][1] < 400) { alert("ERROR -> UPS Output Power < 400W"); return; }
+			if(json[1377][1] < 300) { alert("ERROR -> UPS Output Power < 300W"); return; }
 			// Continue
 			removeLastMsg("backup_mode_test");
 			logMsg("backup_mode_test", "green", "Test = OK");
@@ -772,7 +772,7 @@ function backup_mode_test_10() {
 			// Check UPS Output Power
 			if(json[1377][1] > 100) { alert("ERROR -> UPS Output Power > 100W"); return; }
 			// Check Unprotected Power
-			if(json[2913][2] < 400) { alert("ERROR -> Unprotected Power < 400W"); return; }
+			if(json[2913][2] < 300) { alert("ERROR -> Unprotected Power < 300W"); return; }
 			// Test Completed
 			removeLastMsg("backup_mode_test");
 			logMsg("backup_mode_test", "green", "Test = OK");

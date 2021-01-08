@@ -138,6 +138,26 @@ $apikey = sha1(strval($serial));
 
 
 
+            <h1>Emeter Test</h1>
+            
+            <div class="card p-4 elevate" id="emeter_test">
+
+                <p class="step-info">Connect Energy Meter to the liveX, then press <u>Begin Test</u> below.</p>
+                <button class="step-start btn btn-sm btn-primary w-20 ripple">Begin Test</button>
+
+                <div class="log"></div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
             <h1>UPS Mode Test</h1>
             
             <div class="card p-4 elevate" id="ups_mode_test">
@@ -175,26 +195,6 @@ $apikey = sha1(strval($serial));
                     <div class="in3  col-3 text-center">Input 3</div>
                     <div class="in4  col-3 text-center">Input 4</div>
                 </div>
-
-                <div class="log"></div>
-
-            </div>
-
-
-
-
-
-
-
-
-
-
-            <h1>Emeter Test</h1>
-            
-            <div class="card p-4 elevate" id="emeter_test">
-
-                <p class="step-info">Connect Energy Meter to the liveX, then press <u>Begin Test</u> below.</p>
-                <button class="step-start btn btn-sm btn-primary w-20 ripple">Begin Test</button>
 
                 <div class="log"></div>
 
