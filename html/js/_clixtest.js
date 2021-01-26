@@ -16,6 +16,13 @@ function getSettings(callback) {
         success: (json) => { callback(json); }
     });
 }
+function getWarnings(callback) {
+	$.get({
+		url: "api.php?get=warnings",
+		error: () => { callback(null); },
+		success: (json) => { callback(json); }
+	});
+}
 
 function enableStep (stepId) { $(`#${stepId}`).addClass   ("enable-step"); }
 function disableStep(stepId) { $(`#${stepId}`).removeClass("enable-step"); }
@@ -163,7 +170,7 @@ function livex_update() {
 						// Update Completed
 						logMsg("livex_update", "mt-4 green text-center", "<b>CONTINUE NEXT STEP</b>");
 						finishStep("livex_update");
-						emeter_test();
+						check_warnings();
 					}
 
 				}
@@ -215,6 +222,20 @@ function livex_update_waitForSuccess() {
 				logMsg("livex_update", "mt-4 green", "Update Completed");
 				setTimeout(() => { window.location.reload(true); }, 5000);
 			}, 60000);
+		}
+	});
+}
+
+function check_warnings() {
+	getWarnings((json) => {
+		if(json == null) { check_warnings(); return; }
+		if(json.length == 0) {
+			emeter_test();
+		} else {
+			var tempArr = json[0][1];
+			if(tempArr.includes(16640)) return alert("WARNING ... AC Input Loss");
+			if(tempArr.includes(16642)) return alert("WARNING ... AC Input Phase Dislocation");
+			emeter_test();
 		}
 	});
 }
