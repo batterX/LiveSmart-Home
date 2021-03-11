@@ -88,38 +88,45 @@ $installationCountry = isset($_SESSION["installation_country"]) ? $_SESSION["ins
 				<div class="card elevate-1 mt-3 py-2">
 					<div class="card-body py-4">
 						<div class="standard-cont">
-							<div class="vde-status notif loading"></div>
+							<div class="cert-status notif loading"></div>
 							<span class="standard">VDE4105</span>
 						</div>
 						<div>
 							<div id="machineModelBox" class="mt-4 mb-2 d-none">
 								<select id="machineModelSelect" class="custom-select custom-select-outline border-danger">
-									<option value="050">VDE</option>
+									<option value="050">VDE0126</option>
 									<option value="051">AS4777</option>
 									<option value="052">DK</option>
 									<option value="053">RD1663</option>
 									<option value="054">G83</option>
-									<option value="055">Taiwan</option>
+									<option value="055">TaiWan</option>
 									<option value="056">USH</option>
 									<option value="057">USL</option>
-									<option value="058" selected>VDE4105</option>
+									<option value="058">VDE4105</option>
 									<option value="059">Korea</option>
 									<option value="060">HongSun</option>
 									<option value="061">Sweden</option>
 									<option value="062">NRS097</option>
 									<option value="063">Indian</option>
 									<option value="064">EN50438</option>
-									<option value="065">EN50438 (Czech)</option>
-									<option value="066">EN50438 (DanMark)</option>
-									<option value="067">EN50438 (Finland)</option>
-									<option value="068">EN50438 (Ireland)</option>
-									<option value="069">EN50438 (Norway)</option>
+									<option value="065">Czech</option>
+									<option value="066">DanMark</option>
+									<option value="067">Finland</option>
+									<option value="068">Ireland</option>
+									<option value="069">Norway</option>
+									<option value="070">CEI-021</option>
+									<option value="071">G59</option>
+									<option value="072">NZLD</option>
+									<option value="073">Cyprus</option>
+									<option value="074">TOR</option>
+									<option value="075">EN50549</option>
+									<option value="076">G98</option>
 								</select>
 								<button id="machineModelBtn" class="btn btn-danger ripple"><?php echo $lang["btn"]["apply"] ?></button>
 							</div>
 						</div>
 						<div>
-							<div class="vde-loading loading mt-4 mb-2"></div>
+							<div class="cert-loading loading mt-4 mb-2"></div>
 						</div>
 					</div>
 				</div>

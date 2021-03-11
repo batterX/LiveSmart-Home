@@ -12,6 +12,8 @@ step1();
 
 // Get CurrentState (Verify if inverter is working)
 
+var previousLogtime = null;
+
 function step1() {
 
 	$.get({
@@ -26,6 +28,8 @@ function step1() {
 			var curtime   = moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss");
 			var isWorking = moment(json["logtime"]).isAfter(moment(curtime));
 			if(!isWorking) {
+				if(previousLogtime == null) previousLogtime = json["logtime"];
+				else if(previousLogtime != json["logtime"]) alert("Error! PC or liveX time/timezone not set correctly.");
 				setTimeout(step1, 5000);
 				return;
 			}
@@ -54,12 +58,12 @@ function step2() {
 			var device_model         = json["device_model"        ];
 			var device_serial_number = json["device_serial_number"];
 			$(".serialnumber b").html(device_serial_number);
-			if(device_model.toLowerCase() == "batterx h5") {
+			if(device_model == "batterX h5") {
 				$("#inverterDetected h1 .model").html("h5");
-				$("#inverterDetected img").attr("src", "img/device_h5.png");
-			} else if(device_model.toLowerCase() == "batterx h10") {
+				$("#inverterDetected img").attr("src", "img/device_batterx_h5.png");
+			} else if(device_model == "batterX h10") {
 				$("#inverterDetected h1 .model").html("h10");
-				$("#inverterDetected img").attr("src", "img/device_h10.png");
+				$("#inverterDetected img").attr("src", "img/device_batterx_h10.png");
 			} else {
 				$("#inverterDetected h1 .model").html("");
 				$("#inverterDetected img").attr("src", "");
@@ -82,7 +86,7 @@ function step3(json) {
 	var device_serial_number = json.device_serial_number;
 
 	$.post({
-		url: "https://api.batterx.io/v3/install_hs.php",
+		url: "https://api.batterx.io/v3/install.php",
 		data: {
 			action: "verify_device",
 			serialnumber: device_serial_number
@@ -109,7 +113,7 @@ function step3(json) {
 
 
 
-// Show VDE4105 Status & Disable Buzzer
+// Show Certificate Status & Disable Buzzer
 
 function step4() {
 
@@ -120,7 +124,7 @@ function step4() {
 
 			// Log Response
 			console.log(response);
-			
+
 			// Check If MachineModel Exists
 			if(!response || typeof response != "object" || !response.hasOwnProperty("InverterParameters") || !response["InverterParameters"].hasOwnProperty("35"))
 				return alert("E005. Please refresh the page!");
@@ -128,29 +132,45 @@ function step4() {
 			// Get Machine Model
 			var deviceStandard = response["InverterParameters"]["35"]["s1"];
 			var isVde4105 = deviceStandard == "058" ? "1" : "0";
+			var isTor     = deviceStandard == "074" ? "1" : "0";
 			
 			// Germany (058 = VDE4105)
 			if(installationCountry == "de") {
+				$(".standard").text("VDE4105");
 				// Show Status
 				if(isVde4105 != "1") {
 					$(".standard").css("color", "red");
-					$(".vde-status").removeClass("loading error success").addClass("error").css("display", "block");;
+					$(".cert-status").removeClass("loading error success").addClass("error").css("display", "block");
 					$(`#machineModelSelect option[value="${deviceStandard}"]`).append("*");
 					$("#machineModelBox").removeClass("d-none");
 				} else {
 					$(".standard").css("color", "#28a745");
-					$(".vde-status").removeClass("loading error success").addClass("success").css("display", "block");;
+					$(".cert-status").removeClass("loading error success").addClass("success").css("display", "block");
+				}
+			}
+			// Austria (074 = TOR)
+			else if(installationCountry == "at") {
+				$(".standard").text("TOR");
+				// Show Status
+				if(isTor != "1") {
+					$(".standard").css("color", "red");
+					$(".cert-status").removeClass("loading error success").addClass("error").css("display", "block");
+					$(`#machineModelSelect option[value="${deviceStandard}"]`).append("*");
+					$("#machineModelBox").removeClass("d-none");
+				} else {
+					$(".standard").css("color", "#28a745");
+					$(".cert-status").removeClass("loading error success").addClass("success").css("display", "block");
 				}
 			}
 			// Other
 			else {
 				var obj = {
-					"050": "VDE",
+					"050": "VDE0126",
 					"051": "AS4777",
 					"052": "DK",
 					"053": "RD1663",
 					"054": "G83",
-					"055": "Taiwan",
+					"055": "TaiWan",
 					"056": "USH",
 					"057": "USL",
 					"058": "VDE4105",
@@ -160,25 +180,32 @@ function step4() {
 					"062": "NRS097",
 					"063": "Indian",
 					"064": "EN50438",
-					"065": "EN50438 (Czech)",
-					"066": "EN50438 (DanMark)",
-					"067": "EN50438 (Finland)",
-					"068": "EN50438 (Ireland)",
-					"069": "EN50438 (Norway)"
+					"065": "Czech",
+					"066": "DanMark",
+					"067": "Finland",
+					"068": "Ireland",
+					"069": "Norway",
+					"070": "CEI-021",
+					"071": "G59",
+					"072": "NZLD",
+					"073": "Cyprus",
+					"074": "TOR",
+					"075": "EN50549",
+					"076": "G98"
 				}
 				// Show Status
 				$(".standard").css("color", "black").html(`${obj.hasOwnProperty(deviceStandard) ? obj[deviceStandard] : '-'}`);
-				$(".vde-status").addClass("d-none");
+				$(".cert-status").addClass("d-none");
 				$("#machineModelSelect").removeClass("border-danger").addClass("border-secondary");
 				$(`#machineModelSelect option[value="${deviceStandard}"]`).append("*");
 				$("#machineModelBtn").removeClass("btn-danger").addClass("btn-secondary");
 				$("#machineModelBox").removeClass("d-none");
 			}
 
-			// Store VDE Variable
+			// Store Certificate Variable
 			$.post({
 				url: "cmd/session.php",
-				data: { vde4105: isVde4105 },
+				data: { vde4105: isVde4105, tor: isTor },
 				error: () => { alert("E006. Please refresh the page!"); },
 				success: (response) => {
 					console.log(response);
@@ -205,7 +232,7 @@ $("#machineModelBtn").on("click", () => {
 		success: () => {
 			$("#machineModelBox").hide();
 			$("#btn_next").attr("disabled", true);
-			$(".vde-loading").css("display", "block");
+			$(".cert-loading").css("display", "block");
 			checkParameters();
 		}
 	});

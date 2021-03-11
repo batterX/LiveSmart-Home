@@ -19,12 +19,15 @@ $_SESSION["last_step"] = $step;
 // Define Arrays
 $arrayGender       = $lang["dict_gender"   ];
 $arrayCountry      = $lang["dict_countries"];
-$arrayDeviceModel  = [ "h5"  => "batterX h5", "h10" => "batterX h10" ];
-$arrayNominalPower = [ "h5"  => "5000"      , "h10" => "10000"       ];
+$arrayDeviceModel  = [ "batterx_h5" => "batterX h5", "batterx_h10" => "batterX h10" ];
+$arrayNominalPower = [ "batterx_h5" => "5000"      , "batterx_h10" => "10000"       ];
 
 // Get Battery Type
 $batteryType = isset($_SESSION["battery_type"]) ? $_SESSION["battery_type"] : "";
 if($batteryType == "other" && $_SESSION["battery_capacity"] == "0") $batteryType = "";
+
+// Get Settings Table
+$dataSettings = json_decode(file_get_contents("http://localhost/api.php?get=settings"), true);
 
 ?>
 
@@ -152,9 +155,19 @@ if($batteryType == "other" && $_SESSION["battery_capacity"] == "0") $batteryType
 				<?php if($batteryType == "lifepo" && !empty($_SESSION["system_model"])): ?>
 					<div class="box-row bt">
 						<span class="br"><?php echo $lang["summary"]["installation_system_model"]; ?></span>
-						<span><?php echo ($_SESSION["system_model"]) . ($_SESSION["vde4105"] == "1" ? "<br>(" . $lang["summary"]["installation_system_is_vde4105"] . ")" : ""); ?></span>
+						<span>
+							<?php
+								echo $_SESSION["system_model"];
+								if($_SESSION["vde4105"] == "1") echo "<br>(" . $lang["summary"]["installation_system_is_vde4105"] . ")";
+								if($_SESSION["tor"    ] == "1") echo "<br>(" . $lang["summary"]["installation_system_is_tor"    ] . ")";
+							?>
+						</span>
 					</div>
 				<?php endif; ?>
+				<div class="box-row bt">
+					<span class="br"><?php echo $lang["system_setup"]["system_mode"] ?></span>
+					<span><?php echo $_SESSION["system_mode"] == "1" ? $lang["system_setup"]["system_mode_backup"] : $lang["system_setup"]["system_mode_ups"]; ?></span>
+				</div>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_sn_system"]; ?></span>
 					<span><?php echo $_SESSION["system_serial"]; ?></span>
@@ -167,35 +180,60 @@ if($batteryType == "other" && $_SESSION["battery_capacity"] == "0") $batteryType
 					<span class="br"><?php echo $lang["summary"]["installation_nominal_power"]; ?></span>
 					<span><?php echo $arrayNominalPower[$_SESSION["device_model"]]; ?> W</span>
 				</div>
-				<?php if($_SESSION["vde4105_mode"] > 0): ?>
+				<?php if($_SESSION["vde4105"] == "1" || $_SESSION["tor"] == "1"): ?>
 					<div class="box-row bt">
 						<span class="br">Blindleistungsbereitstellung</span>
 						<span>
 							<?php
-								if($_SESSION["vde4105_mode"] == "1") {
-									echo $lang["dict_vde4105_mode"]["1"];
-								} else if($_SESSION["vde4105_mode"] == "2") {
-									if($_SESSION["vde4105_cosphi"] == "100") echo $lang["dict_vde4105_mode"]["2"] . " = 1.00";
-									else echo $lang["dict_vde4105_mode"]["2"] . " = 0." . $_SESSION["vde4105_cosphi"];
-								} else if($_SESSION["vde4105_mode"] == "3") {
-									echo $lang["dict_vde4105_mode"]["3"] . "<br>";
-									echo "U1 = " . $_SESSION["vde4105_v1"] . "% &nbsp; ";
-									echo "U2 = " . $_SESSION["vde4105_v2"] . "% &nbsp; ";
-									echo "U3 = " . $_SESSION["vde4105_v3"] . "% &nbsp; ";
-									echo "U4 = " . $_SESSION["vde4105_v4"] . "% &nbsp; ";
-									if($_SESSION["vde4105_cosphi"] == "100") echo "cosφ = 1.00";
-									else echo "cosφ = 0." . $_SESSION["vde4105_cosphi"];
+								switch($_SESSION["reactive_mode"]) {
+									case "0":
+										echo $lang["dict_reactive_mode"]["2"] . " = 1.00";
+										break;
+									case "1":
+										echo $lang["dict_reactive_mode"]["1"];
+										break;
+									case "2":
+										if($_SESSION["reactive_cosphi"] == "100")
+											echo $lang["dict_reactive_mode"]["2"] . " = 1.00";
+										else {
+											echo $lang["dict_reactive_mode"]["2"];
+											echo intval($_SESSION["reactive_cosphi"]) < 0 ? " = -0." : " = 0.";
+											echo abs(intval($_SESSION["reactive_cosphi"]));
+										}
+										break;
+									case "3":
+										echo $lang["dict_reactive_mode"]["3"] . "<br>";
+										echo "U1 = " . $_SESSION["reactive_v1"] . "% &nbsp; ";
+										echo "U2 = " . $_SESSION["reactive_v2"] . "% &nbsp; ";
+										echo "U3 = " . $_SESSION["reactive_v3"] . "% &nbsp; ";
+										echo "U4 = " . $_SESSION["reactive_v4"] . "% &nbsp; ";
+										echo $_SESSION["reactive_cosphi"] == "100" ? "cosφ = 1.00" : ("cosφ = 0." . $_SESSION["reactive_cosphi"]);
+										break;
+									default:
+										break;
 								}
 							?>
 						</span>
 					</div>
+					<div class="box-row bt">
+						<span class="br"><?php echo $lang["summary"]["extended_overfrequency_reduction"] ?></span>
+						<span>
+							<?php echo $lang["summary"]["extended_enabled"] ?> (✓)<br>
+							<?php echo $lang["summary"]["extended_start_of_reduction"] ?> = <?php echo round(intval($_SESSION["extended_dropRatedPowerPoint"]) / 100, 1) ?> Hz<br>
+							<?php echo $lang["summary"]["extended_gradient"] ?> = <?php echo $_SESSION["extended_dropRatedPowerSlope"] ?> %
+						</span>
+					</div>
+					<?php if($_SESSION["tor"] == "1"): ?>
+						<div class="box-row bt">
+							<span class="br"><?php echo $lang["summary"]["extended_overvoltage_reduction"] ?></span>
+							<span>
+								<?php echo $lang["summary"]["extended_enabled"] ?> (✓)<br>
+								<?php echo $lang["summary"]["extended_start_point"] ?> = 110 [% Un]<br>
+								<?php echo $lang["summary"]["extended_end_point"] ?> = 112 [% Un]
+							</span>
+						</div>
+					<?php endif; ?>
 				<?php endif; ?>
-				<!--
-				<div class="box-row bt">
-					<span class="br"><?php echo $lang["summary"]["installation_power_factor"]; ?></span>
-					<span>0.9</span>
-				</div>
-				-->
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_sn_livex"]; ?></span>
 					<span><?php echo $_SESSION["box_serial"] . " (" . $_SESSION["software_version"] . ")"; ?></span>
@@ -205,28 +243,18 @@ if($batteryType == "other" && $_SESSION["battery_capacity"] == "0") $batteryType
 						<span class="br"><?php echo $lang["summary"]["installation_batteries"]; ?></span>
 						<span>
 							<?php
-								if(isset($_SESSION["battery5_serial"])) {
-									if(isset($_SESSION["battery1_serial" ])) echo     "" . $_SESSION["battery1_serial" ];
-									if(isset($_SESSION["battery2_serial" ])) echo   ", " . $_SESSION["battery2_serial" ];
-									if(isset($_SESSION["battery3_serial" ])) echo "<br>" . $_SESSION["battery3_serial" ];
-									if(isset($_SESSION["battery4_serial" ])) echo   ", " . $_SESSION["battery4_serial" ];
-									if(isset($_SESSION["battery5_serial" ])) echo "<br>" . $_SESSION["battery5_serial" ];
-									if(isset($_SESSION["battery6_serial" ])) echo   ", " . $_SESSION["battery6_serial" ];
-									if(isset($_SESSION["battery7_serial" ])) echo "<br>" . $_SESSION["battery7_serial" ];
-									if(isset($_SESSION["battery8_serial" ])) echo   ", " . $_SESSION["battery8_serial" ];
-									if(isset($_SESSION["battery9_serial" ])) echo "<br>" . $_SESSION["battery9_serial" ];
-									if(isset($_SESSION["battery10_serial"])) echo   ", " . $_SESSION["battery10_serial"];
-									if(isset($_SESSION["battery11_serial"])) echo "<br>" . $_SESSION["battery11_serial"];
-									if(isset($_SESSION["battery12_serial"])) echo   ", " . $_SESSION["battery12_serial"];
-									if(isset($_SESSION["battery13_serial"])) echo "<br>" . $_SESSION["battery13_serial"];
-									if(isset($_SESSION["battery14_serial"])) echo   ", " . $_SESSION["battery14_serial"];
-									if(isset($_SESSION["battery15_serial"])) echo "<br>" . $_SESSION["battery15_serial"];
-									if(isset($_SESSION["battery16_serial"])) echo   ", " . $_SESSION["battery16_serial"];
+								$tempArr = explode(",", $_SESSION["battery_serialnumbers"]);
+								if(count($tempArr) <= 4) {
+									echo implode("<br>", $tempArr);
 								} else {
-									if(isset($_SESSION["battery1_serial" ])) echo     "" . $_SESSION["battery1_serial" ];
-									if(isset($_SESSION["battery2_serial" ])) echo "<br>" . $_SESSION["battery2_serial" ];
-									if(isset($_SESSION["battery3_serial" ])) echo "<br>" . $_SESSION["battery3_serial" ];
-									if(isset($_SESSION["battery4_serial" ])) echo "<br>" . $_SESSION["battery4_serial" ];
+									$tempArrNew = (array) [];
+									for($x = 0; $x < count($tempArr); $x++) {
+										if($x % 2 == 0) $tempArrNew[] = (array) [$tempArr[$x]];
+										else $tempArrNew[count($tempArrNew) - 1][] = $tempArr[$x];
+									}
+									$tempArr = (array) [];
+									foreach($tempArrNew as $key => $value) $tempArr[] = implode(", ", $value);
+									echo implode("<br>", $tempArr);
 								}
 							?>
 						</span>
@@ -239,12 +267,23 @@ if($batteryType == "other" && $_SESSION["battery_capacity"] == "0") $batteryType
 				<?php elseif($batteryType == "other"): ?>
 					<div class="box-row bt">
 						<span class="br"><?php echo $lang["summary"]["installation_batteries"]; ?></span>
-						<span><?php echo $_SESSION["battery_capacity"] . " Wh"; ?></span>
+						<span style="font-size:95%">
+							<?php echo $lang["system_setup"]["batteries_other_capacity"]                     ?> = <?php echo $_SESSION["battery_capacity"] ?> Wh<br>
+							<?php echo $lang["system_setup"]["batteries_other_max_charging_current"]         ?> = <?php echo intval($dataSettings["InverterParameters"]["30"]["s1"]) / 100                  ?> A<br>
+							<?php echo $lang["system_setup"]["batteries_other_max_discharging_current"]      ?> = <?php echo intval($dataSettings["InverterParameters"]["34"]["s1"])                        ?> A<br>
+							<?php echo $lang["system_setup"]["batteries_other_bulk_charging_voltage"]        ?> = <?php echo intval(explode(",", $dataSettings["InverterParameters"]["32"]["s1"])[0]) / 100 ?> V<br>
+							<?php echo $lang["system_setup"]["batteries_other_float_charging_voltage"]       ?> = <?php echo intval(explode(",", $dataSettings["InverterParameters"]["32"]["s1"])[1]) / 100 ?> V<br>
+							<?php echo $lang["system_setup"]["batteries_other_cutoff_voltage_hybrid"]        ?> = <?php echo intval(explode(",", $dataSettings["InverterParameters"]["33"]["s1"])[0]) / 100 ?> V<br>
+							<?php echo $lang["system_setup"]["batteries_other_redischarging_voltage_hybrid"] ?> = <?php echo intval(explode(",", $dataSettings["InverterParameters"]["33"]["s1"])[1]) / 100 ?> V<br>
+							<?php echo $lang["system_setup"]["batteries_other_cutoff_voltage"]               ?> = <?php echo intval(explode(",", $dataSettings["InverterParameters"]["33"]["s1"])[2]) / 100 ?> V<br>
+							<?php echo $lang["system_setup"]["batteries_other_redischarging_voltage"]        ?> = <?php echo intval(explode(",", $dataSettings["InverterParameters"]["33"]["s1"])[3]) / 100 ?> V
+
+						</span>
 					</div>
 				<?php endif; ?>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_solar_size"]; ?></span>
-					<span><?php echo $_SESSION["solar_wattPeak"] . " Wp"; ?></span>
+					<span><?php echo $_SESSION["solar_wattpeak"] . " Wp"; ?></span>
 				</div>
 				<?php if(!empty($_SESSION["solar_info"])): ?>
 					<div class="box-row bt">
@@ -254,7 +293,7 @@ if($batteryType == "other" && $_SESSION["battery_capacity"] == "0") $batteryType
 				<?php endif; ?>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_solar_feed_in_limitation"]; ?></span>
-					<span><?php echo $_SESSION["solar_feedInLimitation"] . " %"; ?></span>
+					<span><?php echo $_SESSION["solar_feedinlimitation"] . " %"; ?></span>
 				</div>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["common"]["address"]; ?></span>

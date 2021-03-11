@@ -168,16 +168,17 @@ $_SESSION["box_apikey"] = $apikey;
 										<option value="gb"><?php echo $lang["dict_countries"]["gb"] ?></option>
 									</optgroup>
 									<optgroup label="<?php echo $lang["dict_countries"]["africa"] ?>">
-										<option value="sn"><?php echo $lang["dict_countries"]["sn"] ?></option>
-										<option value="ci"><?php echo $lang["dict_countries"]["ci"] ?></option>
-										<option value="gh"><?php echo $lang["dict_countries"]["gh"] ?></option>
-										<option value="ng"><?php echo $lang["dict_countries"]["ng"] ?></option>
-										<option value="tg"><?php echo $lang["dict_countries"]["tg"] ?></option>
 										<option value="cd"><?php echo $lang["dict_countries"]["cd"] ?></option>
-										<option value="ug"><?php echo $lang["dict_countries"]["ug"] ?></option>
+										<option value="gh"><?php echo $lang["dict_countries"]["gh"] ?></option>
+										<option value="ci"><?php echo $lang["dict_countries"]["ci"] ?></option>
 										<option value="ke"><?php echo $lang["dict_countries"]["ke"] ?></option>
-										<option value="za"><?php echo $lang["dict_countries"]["za"] ?></option>
+										<option value="ng"><?php echo $lang["dict_countries"]["ng"] ?></option>
 										<option value="re"><?php echo $lang["dict_countries"]["re"] ?></option>
+										<option value="sn"><?php echo $lang["dict_countries"]["sn"] ?></option>
+										<option value="za"><?php echo $lang["dict_countries"]["za"] ?></option>
+										<option value="tg"><?php echo $lang["dict_countries"]["tg"] ?></option>
+										<option value="tn"><?php echo $lang["dict_countries"]["tn"] ?></option>
+										<option value="ug"><?php echo $lang["dict_countries"]["ug"] ?></option>
 									</optgroup>
 								</select>
 							</div>
@@ -254,16 +255,17 @@ $_SESSION["box_apikey"] = $apikey;
 										<option value="gb"><?php echo $lang["dict_countries"]["gb"] ?></option>
 									</optgroup>
 									<optgroup label="<?php echo $lang["dict_countries"]["africa"] ?>">
-										<option value="sn"><?php echo $lang["dict_countries"]["sn"] ?></option>
-										<option value="ci"><?php echo $lang["dict_countries"]["ci"] ?></option>
-										<option value="gh"><?php echo $lang["dict_countries"]["gh"] ?></option>
-										<option value="ng"><?php echo $lang["dict_countries"]["ng"] ?></option>
-										<option value="tg"><?php echo $lang["dict_countries"]["tg"] ?></option>
 										<option value="cd"><?php echo $lang["dict_countries"]["cd"] ?></option>
-										<option value="ug"><?php echo $lang["dict_countries"]["ug"] ?></option>
+										<option value="gh"><?php echo $lang["dict_countries"]["gh"] ?></option>
+										<option value="ci"><?php echo $lang["dict_countries"]["ci"] ?></option>
 										<option value="ke"><?php echo $lang["dict_countries"]["ke"] ?></option>
-										<option value="za"><?php echo $lang["dict_countries"]["za"] ?></option>
+										<option value="ng"><?php echo $lang["dict_countries"]["ng"] ?></option>
 										<option value="re"><?php echo $lang["dict_countries"]["re"] ?></option>
+										<option value="sn"><?php echo $lang["dict_countries"]["sn"] ?></option>
+										<option value="za"><?php echo $lang["dict_countries"]["za"] ?></option>
+										<option value="tg"><?php echo $lang["dict_countries"]["tg"] ?></option>
+										<option value="tn"><?php echo $lang["dict_countries"]["tn"] ?></option>
+										<option value="ug"><?php echo $lang["dict_countries"]["ug"] ?></option>
 									</optgroup>
 								</select>
 							</div>

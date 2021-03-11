@@ -473,6 +473,9 @@ function testBatteryCharging_waitUntilReset() {
 
 function testUpsMode() {
 
+	// IF system_mode == 1
+	if(backupMode) return finishStep();
+
 	showLoading_upsMode();
 
 	// Check Output Voltage

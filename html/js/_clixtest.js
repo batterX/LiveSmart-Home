@@ -278,8 +278,8 @@ function emeter_test_start() {
 		if(json == null) { emeter_test_start(); return; }
 		if(!json.hasOwnProperty(2913) || !json[2913].hasOwnProperty(0)) {
 			removeLastMsg("emeter_test");
-			logMsg("emeter_test", "red", "E.Meter Connection Problem!");
-			emeter_test_start();
+			logMsg("emeter_test", "red", "E.Meter Connection Problem");
+			setTimeout(() => { emeter_test_start(); }, 2500);
 			return;
 		}
 		removeLastMsg("emeter_test");

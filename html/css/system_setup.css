@@ -15,7 +15,9 @@ h1 {
 #solar   h1 { background-image: url(../img/ic_solar.png  ); }
 #battery h1 { background-image: url(../img/ic_battery.png); }
 #bxHome  h1 { background-image: url(../img/ic_bxHome.png ); }
-#vde4105 h1 { background-image: url(../img/ic_vde4105.png); }
+
+.vde4105 h1 { background-image: url(../img/ic_vde4105.png); }
+.tor     h1 { background-image: url(../img/ic_tor.png    ); }
 
 .card { height: calc(100% - 3.75rem) !important; }
 .card .card-body { flex: 0 auto; }

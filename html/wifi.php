@@ -111,9 +111,9 @@ if(preg_match('/"(.*?)"/', $connectedTo, $match) == 1)
 					<?php foreach ($ssidArr as $key => $value) { echo '<option value="' . $value . '">' . $value . '</option>'; } ?>
 				</select>
 				<input id="ssid_password" name="ssid_password" type="password" class="form-control form-control-outline text-monospace mt-4" placeholder="Password" autocomplete="off" required>
-				<button type="submit" class="btn btn-primary btn-block text-monospace mt-4 ripple">CONNECT</button>
+				<button type="submit" class="btn btn-success btn-block text-monospace mt-4 ripple">CONNECT</button>
 				<div class="progress mt-4" style="height:38px;border-radius:.25rem;display:none">
-					<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width:0%"></div>
+					<div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:0%"></div>
 				</div>
 			</form>
 		</div>

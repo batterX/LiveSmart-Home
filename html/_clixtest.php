@@ -283,9 +283,9 @@ $apikey = sha1(strval($serial));
                                 <td>Passed Tests</td>
                                 <td id="report_tests">
                                     liveX Update<br>
+                                    E.Meter<br>
                                     UPS Mode<br>
                                     GPIO<br>
-                                    E.Meter<br>
                                     Backup Mode
                                 </td>
                             </tr>
