@@ -582,6 +582,8 @@ function mainFormSubmit() {
 					$("#modalConfirmBackupMode").modal("hide");
 					mainFormSubmit_2();
 				});
+			} else {
+				mainFormSubmit_2();
 			}
 		});
 	}
