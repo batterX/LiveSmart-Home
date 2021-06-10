@@ -4,8 +4,8 @@ $progress.trigger("step", 8);
 
 
 
-$("#checkboxAccept1, #checkboxAccept2").on("click", () => {
-	if($("#checkboxAccept1").is(":checked") && $("#checkboxAccept2").is(":checked"))
+$("#checkboxAccept1, #checkboxAccept2, #checkboxAccept3").on("click", () => {
+	if($("#checkboxAccept1").is(":checked") && $("#checkboxAccept2").is(":checked") && $("#checkboxAccept3").is(":checked"))
 		$("#btnFinish").css("visibility", "visible");
 	else
 		$("#btnFinish").css("visibility", "hidden");

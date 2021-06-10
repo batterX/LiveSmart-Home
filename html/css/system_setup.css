@@ -34,3 +34,28 @@ textarea {
 	font-size: 1.25rem;
 	margin-left: 1rem;
 }
+
+
+
+
+#bx_system,
+#bx_device,
+#bx_box,
+#lifepo_battery_1,
+#lifepo_battery_2,
+#lifepo_battery_3,
+#lifepo_battery_4,
+#lifepo_battery_5,
+#lifepo_battery_6,
+#lifepo_battery_7,
+#lifepo_battery_8,
+#lifepo_battery_9,
+#lifepo_battery_10,
+#lifepo_battery_11,
+#lifepo_battery_12,
+#lifepo_battery_13,
+#lifepo_battery_14,
+#lifepo_battery_15,
+#lifepo_battery_16 {
+	text-transform: uppercase;
+}

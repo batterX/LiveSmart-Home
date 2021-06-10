@@ -69,6 +69,7 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 		<!-- Progress Bar -->
 		<div id="progress" class="shadow-lg">
 			<div><div class="progress"><div class="progress-bar progress-bar-striped bg-success progress-bar-animated"></div></div></div>
+			<div data-toggle="modal" data-target="#modalSkipSetup" style="position:absolute;width:1rem;height:1rem;z-index:100;bottom:0;left:0"></div>
 			<div><button id="btn_next" class="btn btn-success ripple" type="submit" form="mainForm" disabled><?php echo $lang["btn"]["continue"]; ?></button></div>
 		</div>
 		<!-- Progress Bar -->
@@ -77,6 +78,16 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 
 
 
+		<div class="modal fade" id="modalSkipSetup" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content">
+					<div class="modal-body text-center p-0">
+						<input type="password" class="form-control form-control-outline border-0 text-center p-4" value="">
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		<div class="modal fade" id="errorBoxNotRegistered" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-dialog-centered modal-sm">
 				<div class="modal-content">
@@ -167,6 +178,64 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 			</div>
 		</div>
 
+		<div class="modal fade" id="modalUserMeters" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content">
+					<h5 class="modal-header mb-0"><?php echo $lang["system_setup"]["user_meters"] ?></h5>
+					<div class="modal-body">
+						
+						<h6 class="py-2 mb-2" style="font-size:0.875rem"><b><?php echo $lang["system_setup"]["user_meter"] ?> 1 (Modbus ID 101)</b></h6>
+						<div class="form-row mt-2">
+							<label for="meter1_mode" class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["connected"] ?></label>
+							<div class="col-6"><select id="meter1_mode" class="form-control form-control-outline form-control-sm"><option value="1"><?php echo $lang["common"]["yes"] ?></option><option value="0" selected=""><?php echo $lang["common"]["no"] ?></option></select></div>
+						</div>
+						<div class="form-row mt-2">
+							<label for="meter1_label" class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["label"] ?></label>
+							<div class="col-6"><input id="meter1_label" class="form-control form-control-outline form-control-sm" type="text" placeholder="<?php echo $lang["system_setup"]["user_meter"] ?> 1"></div>
+						</div>
+
+						<br>
+
+						<h6 class="py-2 mb-2" style="font-size:0.875rem"><b><?php echo $lang["system_setup"]["user_meter"] ?> 2 (Modbus ID 102)</b></h6>
+						<div class="form-row mt-2">
+							<label for="meter2_mode" class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["connected"] ?></label>
+							<div class="col-6"><select id="meter2_mode" class="form-control form-control-outline form-control-sm"><option value="1"><?php echo $lang["common"]["yes"] ?></option><option value="0" selected=""><?php echo $lang["common"]["no"] ?></option></select></div>
+						</div>
+						<div class="form-row mt-2">
+							<label for="meter2_label" class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["label"] ?></label>
+							<div class="col-6"><input id="meter2_label" class="form-control form-control-outline form-control-sm" type="text" placeholder="<?php echo $lang["system_setup"]["user_meter"] ?> 2"></div>
+						</div>
+
+						<br>
+
+						<h6 class="py-2 mb-2" style="font-size:0.875rem"><b><?php echo $lang["system_setup"]["user_meter"] ?> 3 (Modbus ID 103)</b></h6>
+						<div class="form-row mt-2">
+							<label for="meter3_mode" class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["connected"] ?></label>
+							<div class="col-6"><select id="meter3_mode" class="form-control form-control-outline form-control-sm"><option value="1"><?php echo $lang["common"]["yes"] ?></option><option value="0" selected=""><?php echo $lang["common"]["no"] ?></option></select></div>
+						</div>
+						<div class="form-row mt-2">
+							<label for="meter3_label" class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["label"] ?></label>
+							<div class="col-6"><input id="meter3_label" class="form-control form-control-outline form-control-sm" type="text" placeholder="<?php echo $lang["system_setup"]["user_meter"] ?> 3"></div>
+						</div>
+
+						<br>
+
+						<h6 class="py-2 mb-2" style="font-size:0.875rem"><b><?php echo $lang["system_setup"]["user_meter"] ?> 4 (Modbus ID 104)</b></h6>
+						<div class="form-row mt-2">
+							<label for="meter4_mode" class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["connected"] ?></label>
+							<div class="col-6"><select id="meter4_mode" class="form-control form-control-outline form-control-sm"><option value="1"><?php echo $lang["common"]["yes"] ?></option><option value="0" selected=""><?php echo $lang["common"]["no"] ?></option></select></div>
+						</div>
+						<div class="form-row mt-2">
+							<label for="meter4_label" class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["label"] ?></label>
+							<div class="col-6"><input id="meter4_label" class="form-control form-control-outline form-control-sm" type="text" placeholder="<?php echo $lang["system_setup"]["user_meter"] ?> 4"></div>
+						</div>
+						
+					</div>
+					<div class="modal-footer"><button type="button" class="btn btn-sm px-4 py-2 btn-success ripple" data-dismiss="modal"><b><?php echo $lang["btn"]["save"] ?></b></button></div>
+				</div>
+			</div>
+		</div>
+
 		<div class="modal fade" id="modalConfirmUpsMode" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-dialog-centered modal-sm">
 				<div class="modal-content">
@@ -200,6 +269,17 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 						<p class="mb-0" style="color:red"><?php echo $lang["system_setup"]["otherbatteriesconfirm_message2"] ?></p>
 					</div>
 					<div class="modal-footer"><button type="button" class="btn btn-sm px-4 py-2 btn-success ripple" style="min-width:50%"><b><?php echo $lang["system_setup"]["otherbatteriesconfirm_confirm"] ?></b></button></div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="modalConfirmInternalSolar" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content">
+					<h5 class="modal-header mb-0"><?php echo $lang["system_setup"]["internalsolarconfirm_title"] ?></h5>
+					<div class="modal-body">
+						<p class="message mb-0"><?php echo $lang["system_setup"]["internalsolarconfirm_message"] ?></p>
+					</div>
+					<div class="modal-footer"><button type="button" class="btn btn-sm px-4 py-2 btn-success ripple" style="min-width:50%"><b><?php echo $lang["system_setup"]["internalsolarconfirm_confirm"] ?></b></button></div>
 				</div>
 			</div>
 		</div>
@@ -260,7 +340,7 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 
 						<h1 class="card-header bg-transparent border-0"><?php echo $lang["system_setup"]["solar"] ?></h1>
 
-						<div class="card elevate-1 h-100">
+						<div class="card elevate-1 h-100" style="height: calc(100% - 3.75rem - 4.5rem) !important">
 							<div class="card-body border-bottom">
 								<label for="solar_wattpeak"><?php echo $lang["system_setup"]["solar_size"]; ?></label>
 								<div class="row m-0 p-0">
@@ -273,6 +353,10 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 								<div class="row m-0 p-0">
 									<div class="col-6 d-flex align-items-center m-0 p-0"><input id="solar_feedinlimitation" class="form-control form-control-outline" type="number" step="1" min="0" max="100" value="100" required></div>
 									<div class="col-6 d-flex align-items-center m-0 py-0 pr-0 pl-2"><span>%</span></div>
+								</div>
+								<div class="custom-control custom-checkbox pt-3">
+									<input type="checkbox" class="custom-control-input" id="regulation_check">
+									<label class="custom-control-label" for="regulation_check"><?php echo $lang["system_setup"]["global_regulation_check"]; ?></label>
 								</div>
 							</div>
 							<div class="card-body pt-3">
@@ -293,6 +377,18 @@ MPPT 2
 									<option value="2">Phase 2</option>
 									<option value="3">Phase 3</option>
 								</select>
+							</div>
+							<div class="card-body border-top">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="extsol_check">
+									<label class="custom-control-label" for="extsol_check"><?php echo $lang["system_setup"]["extsol_meter"]; ?></label>
+								</div>
+							</div>
+						</div>
+
+						<div class="card elevate-1 mt-3" style="height: auto !important">
+							<div class="card-body p-2">
+								<button id="btnUserMeters" type="button" class="btn btn-block ripple p-2" data-toggle="modal" data-target="#modalUserMeters"><small><b><?php echo $lang["system_setup"]["user_meters"]; ?></b></small></button>
 							</div>
 						</div>
 

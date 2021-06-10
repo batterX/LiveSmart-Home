@@ -49,10 +49,11 @@ $.post({
 				json.customer.hasOwnProperty("country"  ) &&
 				json.customer.hasOwnProperty("city"     ) &&
 				json.customer.hasOwnProperty("zipcode"  ) &&
-				json.customer.hasOwnProperty("address"  )
+				json.customer.hasOwnProperty("address"  ) &&
+				json.customer.hasOwnProperty("verified" )
 			) {
 				// Set Input Values
-				$("#customerInformation .email           ").val(json.customer.email    ).attr("disabled", true);
+				$("#customerInformation .email           ").val(json.customer.email    ).attr("disabled", json.customer.verified == "1");
 				$("#customerInformation .gender          ").val(json.customer.gender   );
 				$("#customerInformation .first-name      ").val(json.customer.firstname);
 				$("#customerInformation .last-name       ").val(json.customer.lastname );
@@ -120,10 +121,11 @@ $("#customerInformation .email").on("change", function() {
 				json.hasOwnProperty("country"  ) &&
 				json.hasOwnProperty("city"     ) &&
 				json.hasOwnProperty("zipcode"  ) &&
-				json.hasOwnProperty("address"  )
+				json.hasOwnProperty("address"  ) &&
+				json.hasOwnProperty("verified" )
 			) {
 				// Set Input Values
-				$("#customerInformation .email           ").attr("disabled", true);
+				$("#customerInformation .email           ").attr("disabled", json.verified == "1");
 				$("#customerInformation .gender          ").val(json.gender   );
 				$("#customerInformation .first-name      ").val(json.firstname);
 				$("#customerInformation .last-name       ").val(json.lastname );

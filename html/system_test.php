@@ -16,6 +16,10 @@ if($_SESSION["last_step"] != $step && $_SESSION["last_step"] != $step - 1)
 $_SESSION["back_url" ] = $_SERVER["REQUEST_URI"];
 $_SESSION["last_step"] = $step;
 
+$noBattery  = (!isset($_SESSION["battery_type"]) || ($_SESSION["battery_type"] == "other" && $_SESSION["battery_capacity"] == "0")) ? true : false;
+$backupMode = (isset($_SESSION["system_mode"]) && $_SESSION["system_mode"] == "1") ? true : false;
+$batteryType = isset($_SESSION["battery_type"]) ? $_SESSION["battery_type"] : "other";
+
 ?>
 
 
@@ -90,12 +94,12 @@ $_SESSION["last_step"] = $step;
 								<span><?php echo $lang["system_test"]["energy_meter"]; ?></span>
 							</div>
 
-							<div id="testBatteryCharging" class="status d-flex align-items-center mt-4">
+							<div id="testBatteryCharging" class="status d-flex align-items-center mt-4" <?php echo $noBattery ? "style='display:none !important'" : "" ?>>
 								<div class="notif"></div>
 								<span><?php echo $lang["system_test"]["battery_charging"]; ?><span></span></span>
 							</div>
 
-							<div id="testUpsMode" class="status d-flex align-items-center mt-4" <?php echo (isset($_SESSION["system_mode"]) && $_SESSION["system_mode"] == "1") ? "style='display:none !important'" : "" ?>>
+							<div id="testUpsMode" class="status d-flex align-items-center mt-4" <?php echo $noBattery || $backupMode ? "style='display:none !important'" : "" ?>>
 								<div class="notif"></div>
 								<span><?php echo $lang["system_test"]["ups_mode"]; ?><span></span></span>
 							</div>
@@ -116,9 +120,17 @@ $_SESSION["last_step"] = $step;
 
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
-		<script>const lang = <?php echo json_encode($lang) ?>;</script>
-		<script>const noBattery = <?php echo (!isset($_SESSION["battery_type"]) || ($_SESSION["battery_type"] == "other" && $_SESSION["battery_capacity"] == "0")) ? "true" : "false" ?>;</script>
-		<script>const backupMode = <?php echo (isset($_SESSION["system_mode"]) && $_SESSION["system_mode"] == "1") ? "true" : "false" ?>;</script>
+		<script>
+			const lang        = <?php echo json_encode($lang) ?>;
+			const noBattery   = <?php echo $noBattery  ? "true" : "false" ?>;
+			const backupMode  = <?php echo $backupMode ? "true" : "false" ?>;
+			const hasExtSol   = <?php echo (isset($_SESSION["has_extsol" ]) && $_SESSION["has_extsol" ] == "1") ? "true" : "false" ?>;
+			const hasMeter1   = <?php echo (isset($_SESSION["has_meter1" ]) && $_SESSION["has_meter1" ] == "1") ? "true" : "false" ?>;
+			const hasMeter2   = <?php echo (isset($_SESSION["has_meter2" ]) && $_SESSION["has_meter2" ] == "1") ? "true" : "false" ?>;
+			const hasMeter3   = <?php echo (isset($_SESSION["has_meter3" ]) && $_SESSION["has_meter3" ] == "1") ? "true" : "false" ?>;
+			const hasMeter4   = <?php echo (isset($_SESSION["has_meter4" ]) && $_SESSION["has_meter4" ] == "1") ? "true" : "false" ?>;
+			const batteryType = "<?php echo $batteryType ?>";
+		</script>
 		<script src="js/system_test.js?v=<?php echo $versionHash ?>"></script>
 
 

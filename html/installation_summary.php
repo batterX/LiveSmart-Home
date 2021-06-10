@@ -29,6 +29,8 @@ if($batteryType == "other" && $_SESSION["battery_capacity"] == "0") $batteryType
 // Get Settings Table
 $dataSettings = json_decode(file_get_contents("http://localhost/api.php?get=settings"), true);
 
+$backupMode = (isset($_SESSION["system_mode"]) && $_SESSION["system_mode"] == "1") ? true : false;
+
 ?>
 
 
@@ -182,7 +184,7 @@ $dataSettings = json_decode(file_get_contents("http://localhost/api.php?get=sett
 				</div>
 				<?php if($_SESSION["vde4105"] == "1" || $_SESSION["tor"] == "1"): ?>
 					<div class="box-row bt">
-						<span class="br">Blindleistungsbereitstellung</span>
+						<span class="br"><?php echo $lang["summary"]["installation_reactive_power_supply"]; ?></span>
 						<span>
 							<?php
 								switch($_SESSION["reactive_mode"]) {
@@ -293,7 +295,10 @@ $dataSettings = json_decode(file_get_contents("http://localhost/api.php?get=sett
 				<?php endif; ?>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_solar_feed_in_limitation"]; ?></span>
-					<span><?php echo $_SESSION["solar_feedinlimitation"] . " %"; ?></span>
+					<span>
+						<?php echo $_SESSION["solar_feedinlimitation"] . "%"; ?>
+						<?php echo (isset($_SESSION["has_extsol"]) && $_SESSION["has_extsol"] == "1") ? "<br>" . $lang["system_setup"]["extsol_meter"] . " (✓)" : "" ?>
+					</span>
 				</div>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["common"]["address"]; ?></span>
@@ -303,7 +308,10 @@ $dataSettings = json_decode(file_get_contents("http://localhost/api.php?get=sett
 
 			<div id="confirmLoadCorrect" class="installer-accept border d-none">
 				<div class="box-row">
-					<span class="w-100 text-justify"><?php echo $lang["summary"]["confirm_load_final"]; ?></span>
+					<span class="w-100 text-justify"><?php echo $backupMode ? $lang["summary"]["confirm_load_final_backup"] : $lang["summary"]["confirm_load_final_ups"]; ?></span>
+				</div>
+				<div class="box-row bt">
+					<span class="w-100 text-justify"><?php echo $lang["summary"]["confirm_userdocs_final"]; ?></span>
 				</div>
 			</div>
 
@@ -320,7 +328,11 @@ $dataSettings = json_decode(file_get_contents("http://localhost/api.php?get=sett
 			</div>
 			<div class="custom-control custom-checkbox mt-5">
 				<input type="checkbox" class="custom-control-input" id="checkboxAccept1">
-				<label class="custom-control-label" for="checkboxAccept1"><?php echo $lang["summary"]["confirm_load"]; ?></label>
+				<label class="custom-control-label" for="checkboxAccept1"><?php echo $backupMode ? $lang["summary"]["confirm_load_backup"] : $lang["summary"]["confirm_load_ups"]; ?></label>
+			</div>
+			<div class="custom-control custom-checkbox mt-5">
+				<input type="checkbox" class="custom-control-input" id="checkboxAccept3">
+				<label class="custom-control-label" for="checkboxAccept3"><?php echo $lang["summary"]["confirm_userdocs"]; ?></label>
 			</div>
 		</div>
 

@@ -115,8 +115,10 @@
 }
 
 /* Fix Problem with Options appearing white on dark theme in Chrome */
-option:not(:disabled) { color: #202020; }
-optgroup:not(:disabled) { color: #202020; }
+option { background: #eeeeee; color: #111111; }
+optgroup { background: #eeeeee; color: #111111; }
+/*option:not(:disabled) { color: #202020; }
+optgroup:not(:disabled) { color: #202020; }*/
 
 .alert-notification {
 	width: auto;
