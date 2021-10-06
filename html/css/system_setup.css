@@ -35,12 +35,20 @@ textarea {
 	margin-left: 1rem;
 }
 
+#bxHome.can-import-cloud-data .main-card {
+	height: calc(100% - 3.75rem - 4.5rem) !important;
+}
+#bxHome.can-import-cloud-data .import-data-card {
+	display: block !important;
+}
+
 
 
 
 #bx_system,
 #bx_device,
 #bx_box,
+#system_co_sn,
 #lifepo_battery_1,
 #lifepo_battery_2,
 #lifepo_battery_3,

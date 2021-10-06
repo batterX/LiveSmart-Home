@@ -24,6 +24,7 @@ var skipEnergyMeteryTest = false;
 var batteryCharging_firstRun = true;
 var batteryCharging_count = 0; // run 5 times (5sec delay), then finish
 var batteryCharging_datetime = "";
+var batteryCharging_alreadyCharged = false;
 var batteryMinLevel = 20;
 var batteryMaxLevel = 95;
 var batteryMinVoltage = 51;
@@ -246,7 +247,7 @@ function testBatteryCharging() {
 			var batteryVoltage = parseInt(response["1042"]["1"]) / 100;
 			
 			// Charge Battery
-			if(isLiFePO() && batteryLevel < batteryMinLevel || !isLiFePO() && batteryVoltage < batteryMinVoltage) {
+			if(!batteryCharging_alreadyCharged && (isLiFePO() && batteryLevel < batteryMinLevel || !isLiFePO() && batteryVoltage < batteryMinVoltage)) {
 				if(isLiFePO()) {
 					$("#log p:last-child").html(`<b class="mr-1">✗</b> ${lang.system_test.verifying_battery_soc} (${batteryLevel}%)`);
 					$("#log").append(`<p>${lang.system_test.charging_battery_to} ${batteryMinLevel}%</p>`);
@@ -266,7 +267,7 @@ function testBatteryCharging() {
 				});
 			}
 			// Discharge Battery
-			else if(isLiFePO() && batteryLevel > batteryMaxLevel || !isLiFePO() && batteryVoltage > batteryMaxVoltage) {
+			else if(!batteryCharging_alreadyCharged && (isLiFePO() && batteryLevel > batteryMaxLevel || !isLiFePO() && batteryVoltage > batteryMaxVoltage)) {
 				if(isLiFePO()) {
 					$("#log p:last-child").html(`<b class="mr-1">✗</b> ${lang.system_test.verifying_battery_soc} (${batteryLevel}%)`);
 					$("#log").append(`<p>${lang.system_test.discharging_battery_to} ${batteryMaxLevel}%</p>`);
@@ -335,6 +336,7 @@ function testBatteryCharging_waitUntilCharged() {
 			if(isLiFePO()) {
 				if(batteryWaitCounter < 1 && response["1074"]["1"] >= batteryMinLevel) {
 					$("#log p:last-child").html(`<b class="mr-1">✓</b> ${lang.system_test.charging_battery_to} ${batteryMinLevel}%`);
+					batteryCharging_alreadyCharged = true;
 					testBatteryCharging();
 				} else {
 					batteryWaitCounter -= 1;
@@ -344,6 +346,7 @@ function testBatteryCharging_waitUntilCharged() {
 			} else {
 				if(batteryWaitCounter < 1 && parseInt(response["1042"]["1"]) / 100 >= batteryMinVoltage) {
 					$("#log p:last-child").html(`<b class="mr-1">✓</b> ${lang.system_test.charging_battery_to} ${batteryMinVoltage}V`);
+					batteryCharging_alreadyCharged = true;
 					testBatteryCharging();
 				} else {
 					batteryWaitCounter -= 1;

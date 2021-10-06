@@ -35,6 +35,8 @@ $_SESSION["box_apikey"] = $apikey;
 $isVde4105 = isset($_SESSION["vde4105"]) && $_SESSION["vde4105"] == "1";
 $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 
+$customerEmail = empty($_SESSION["customer_email"]) ? "" : $_SESSION["customer_email"];
+
 ?>
 
 
@@ -284,6 +286,18 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 			</div>
 		</div>
 
+		<div class="modal fade" id="importingDataFromCloud" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content">
+					<div class="modal-body text-center py-4">
+						<span><b>Importing Data from Cloud</b></span>
+						<span class="d-block mt-3"><b>Please Wait…</b></span>
+						<span id="importingDataFromCloud_step" class="d-block mt-2 text-monospace"><b>-</b></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
 
 
 
@@ -299,10 +313,10 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 
 						<h1 class="card-header bg-transparent border-0"><?php echo $lang["system_setup"]["system"]; ?></h1>
 
-						<div class="card elevate-1 h-100">
+						<div class="main-card card elevate-1 h-100">
 							<div id="system_type" class="card-body border-bottom">
 								<label for="bx_system"><?php echo $lang["system_setup"]["system_serialnumber_system"]; ?></label>
-								<input id="bx_system" class="form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["serialnumber"]; ?>" required>
+								<input id="bx_system" class="form-control form-control-outline" type="text" placeholder="<?php echo $lang["common"]["serialnumber"]; ?>">
 								<div class="custom-control custom-radio mt-3">
 									<input type="radio" id="bx_system_type_r" name="bx_system_type" class="custom-control-input" checked>
 									<label class="custom-control-label" for="bx_system_type_r"><?php echo $lang["system_setup"]["system_type_r"]; ?></label>
@@ -311,6 +325,17 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 									<input type="radio" id="bx_system_type_w" name="bx_system_type" class="custom-control-input">
 									<label class="custom-control-label" for="bx_system_type_w"><?php echo $lang["system_setup"]["system_type_w"]; ?></label>
 								</div>
+							</div>
+							<div id="system_co_box" class="card-body border-bottom" style="display: none">
+								<div class="custom-control custom-radio">
+									<input type="radio" id="system_co_new" name="system_co_radio" class="custom-control-input" value="new" checked>
+									<label class="custom-control-label" for="system_co_new"><?php echo $lang["system_setup"]["system_new"]; ?></label>
+								</div>
+								<div class="custom-control custom-radio mt-1">
+									<input type="radio" id="system_co_old" name="system_co_radio" class="custom-control-input" value="old">
+									<label class="custom-control-label" for="system_co_old"><?php echo $lang["system_setup"]["system_existing"]; ?></label>
+								</div>
+								<input id="system_co_sn" class="form-control form-control-outline mt-3" style="display: none" type="text" placeholder="<?php echo $lang["common"]["serialnumber"]; ?>" value="">
 							</div>
 							<div class="card-body border-bottom pt-3">
 								<label for="bx_device"><?php echo $lang["system_setup"]["system_serialnumber_inverter"]; ?></label>
@@ -329,6 +354,12 @@ $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
 							</div>
 							<div class="card-body p-2">
 								<button id="btnInstallerMemo" type="button" class="btn btn-block ripple p-2" data-toggle="modal" data-target="#modalInstallerMemo"><small><b><?php echo $lang["system_setup"]["system_installer_memo"]; ?></b></small></button>
+							</div>
+						</div>
+
+						<div class="import-data-card card elevate-1 mt-3 d-none" style="height: auto !important">
+							<div class="card-body p-2">
+								<button id="btnImportDataFromCloud" type="button" class="btn btn-block ripple p-2" style="color:darkorange"><small><b>Import data from Cloud</b></small></button>
 							</div>
 						</div>
 
@@ -649,6 +680,7 @@ MPPT 2
 		<script>const apikey = <?php echo json_encode($apikey) ?>;</script>
 		<script>const isVde4105 = <?php echo $isVde4105 ? "true" : "false" ?>;</script>
 		<script>const isTor = <?php echo $isTor ? "true" : "false" ?>;</script>
+		<script>const customerEmail = <?php echo json_encode($customerEmail) ?>;</script>
 		<script src="js/system_setup.js?v=<?php echo $versionHash ?>"></script>
 
 

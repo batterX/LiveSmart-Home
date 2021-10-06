@@ -56,6 +56,9 @@ var reactive_v4     = null;
 
 var isClixV2 = false;
 
+var dataSettings = {};
+var importedData = {};
+
 
 
 
@@ -93,10 +96,13 @@ function isBackup () { return $("#bx_sysmode").val() == "1"; }
 
 function hasExtSol() { return $("#extsol_check").is(":checked"); }
 
-function hasMeter1() { return ("#meter1_mode").val() == "1"; }
-function hasMeter2() { return ("#meter2_mode").val() == "1"; }
-function hasMeter3() { return ("#meter3_mode").val() == "1"; }
-function hasMeter4() { return ("#meter4_mode").val() == "1"; }
+function hasMeter1() { return $("#meter1_mode").val() == "1"; }
+function hasMeter2() { return $("#meter2_mode").val() == "1"; }
+function hasMeter3() { return $("#meter3_mode").val() == "1"; }
+function hasMeter4() { return $("#meter4_mode").val() == "1"; }
+
+function isNewSys () { return $("#system_co_new").is(":checked"); }
+function isOldSys () { return $("#system_co_old").is(":checked"); }
 
 
 
@@ -130,7 +136,6 @@ function allFieldsCorrect() {
     
     // Return If Empty Field
     if( $("#installation_date           ").val() == "" ||
-        $("#bx_system                   ").val() == "" ||
         $("#bx_device                   ").val() == "" ||
         $("#bx_box                      ").val() == "" ||
         $("#bx_sysmode                  ").val() == "" ||
@@ -143,11 +148,15 @@ function allFieldsCorrect() {
 
     // LiFePO
     if(isLiFePO()) {
+        if( $("#bx_system       ").val() == ""
+        ) return false;
         if( $("#lifepo_battery_1").val() == ""
         ) return false;
     }
     // Carbon
     else if(isCarbon()) {
+        if( isOldSys() && $("#system_co_sn").val() == ""
+        ) return false;
         if( $("#carbon_battery_model   ").val() == "" ||
             $("#carbon_battery_strings ").val() == "" ||
             $("#carbon_battery_capacity").val() == ""
@@ -155,6 +164,8 @@ function allFieldsCorrect() {
     }
     // Other
     else {
+        if( isOldSys() && $("#system_co_sn").val() == ""
+        ) return false;
         if( $("#other_battery_capacity                ").val() == "" ||
             $("#other_battery_maxChargingCurrent      ").val() == "" ||
             $("#other_battery_maxDischargingCurrent   ").val() == "" ||
@@ -291,6 +302,7 @@ function verifyModulesCommunication(callback) {
             console.log(response);
             if(!response || typeof response != "object" || !response.hasOwnProperty("InverterParameters"))
                 return alert("E023. Please refresh the page!");
+            dataSettings = JSON.parse(JSON.stringify(response));
             response = response["InverterParameters"];
             if(tempDatetime == "") { tempDatetime = response["0"]["s1"]; setTimeout(() => { verifyModulesCommunication(callback); }, 5000); return; }
             if(response["0"]["s1"] == tempDatetime) { setTimeout(() => { verifyModulesCommunication(callback); }, 5000); return; }
@@ -371,11 +383,439 @@ $("#modalSkipSetup input").on("keypress", (e) => {
 
 
 
+/*
+    Helper Functions
+*/
+
+function showSystemInfo(json) {
+
+    if(!json) return;
+
+    // Set System Info
+    if(json.hasOwnProperty("system")) {
+        if(json.system.hasOwnProperty("serialnumber")) {
+            $("#bx_system, #system_co_sn").val(json.system.serialnumber).attr("disabled", true);
+            systemSerial = json.system.serialnumber;
+        }
+        if(json.system.hasOwnProperty("model")) {
+            systemType = json.system.model.includes("W") ? "w" : "r";
+            $(`#bx_system_type_${systemType}`).click();
+            $("#bx_system_type_w, #bx_system_type_r").attr("disabled", true);
+        }
+    }
+
+    // Set Device Info
+    if(json.hasOwnProperty("device")) {
+        if(json.device.hasOwnProperty("solar_watt_peak"))
+            $("#solar_wattpeak").val(json.device.solar_watt_peak);
+        if(json.device.hasOwnProperty("grid_feedin_limitation"))
+            $("#solar_feedinlimitation").val(json.device.grid_feedin_limitation);
+    }
+
+    // Set Installation Date
+    if(json.hasOwnProperty("installation_date"))
+        $("#installation_date").val(json.installation_date);
+
+    // Set Solar Info
+    if(json.hasOwnProperty("solar_info"))
+        $("#solar_info").val(json.solar_info);
+
+    // Set Inverter Memo
+    if(json.hasOwnProperty("note"))
+        $("#installer_memo").val(json.note);
+
+    // Set Batteries Info
+    if(json.hasOwnProperty("batteries")) {
+        // Multiple Batteries (LiFePO Only)
+        if(json.batteries.length > 1) {
+            if(json.batteries.length > 4) $("#btnShowAllModules").click();
+            var x = 1;
+            json.batteries.forEach(battery => {
+                if(battery.hasOwnProperty("serialnumber")) $(`#lifepo_battery_${x}`).val(battery.serialnumber);
+                x++;
+            });
+        }
+        // Single Battery (LiFePO|Carbon|Other)
+        else if(json.batteries.length == 1 && json.batteries[0].hasOwnProperty("serialnumber") && json.batteries[0].hasOwnProperty("type")) {
+            var battery = json.batteries[0];
+            // LiFePO
+            if(battery.type == 0) {
+                $("#lifepo_battery_1").val(battery.serialnumber);
+            }
+            // Carbon
+            else if(battery.type == 1) {
+                $("#bx_battery_type_1").prop("checked", true).trigger("change");
+                $("#bx_system_type_w ").prop("checked", true).trigger("change");
+                if(battery.hasOwnProperty("capacity")) $("#carbon_battery_capacity").val(`${battery.capacity} Wh`);
+                if(battery.hasOwnProperty("strings" )) $("#carbon_battery_strings ").val(battery.strings).trigger("change");
+                if(battery.hasOwnProperty("model"   )) $("#carbon_battery_model   ").val(battery.model  ).trigger("change");
+            }
+            // Other
+            else if(battery.type == 9) {
+                $("#bx_battery_type_9").prop("checked", true).trigger("change");
+                $("#bx_system_type_w ").prop("checked", true).trigger("change");
+                if(battery.hasOwnProperty("capacity")) $("#other_battery_capacity").val(battery.capacity);
+            }
+        }
+        // No Batteries
+        else if(json.batteries.length == 0) {
+            $("#bx_battery_type_9").prop("checked", true).trigger("change");
+            $("#bx_system_type_w ").prop("checked", true).trigger("change");
+            $("#other_battery_capacity").val(0);
+        }
+    }
+
+    // Disable CO System Radio
+    $("#system_co_old").prop("checked", true).trigger("change");
+    $("#system_co_new, #system_co_old").prop("disabled", true);
+
+    isAlreadyRegistered = true;
+
+}
+
+
+
+
+
+
+
+
+
+
+/*
+    Helper Functions
+*/
+
+function showSystemSettings(response) {
+
+    // E.Meter Phase Connection (batterX h5)
+    if(deviceModel == "batterx_h5") {
+        $("#box_emeter_phase").removeClass("d-none");
+        if(response.hasOwnProperty("InjectionMode")) {
+            var temp = response["InjectionMode"];
+            if(temp["0"]["v6"] !== 0) $("#bx_emeter_phase").val(temp["0"]["v6"]);
+        }
+    }
+
+    // System Mode (cliX 2.0)
+    if(isClixV2) {
+        if(response.hasOwnProperty("SystemMode")) {
+            var temp = response["SystemMode"];
+            $("#bx_sysmode").val(temp["0"]["mode"]);
+        }
+    }
+
+    // Inverter Parameters
+    if(response.hasOwnProperty("InverterParameters")) {
+        var temp = response["InverterParameters"];
+        // Battery Parameters
+        if(temp.hasOwnProperty("30"))
+            $("#other_battery_maxChargingCurrent      ").val(parseInt(temp["30"]["s1"]) / 100);
+        if(temp.hasOwnProperty("34"))
+            $("#other_battery_maxDischargingCurrent   ").val(parseInt(temp["34"]["s1"]));
+        if(temp.hasOwnProperty("32")) {
+            $("#other_battery_bulkChargingVoltage     ").val(parseInt(temp["32"]["s1"].split(",")[0]) / 100);
+            $("#other_battery_floatChargingVoltage    ").val(parseInt(temp["32"]["s1"].split(",")[1]) / 100);
+        }
+        if(temp.hasOwnProperty("33")) {
+            $("#other_battery_cutoffVoltageHybrid     ").val(parseInt(temp["33"]["s1"].split(",")[0]) / 100);
+            $("#other_battery_redischargeVoltageHybrid").val(parseInt(temp["33"]["s1"].split(",")[1]) / 100);
+            $("#other_battery_cutoffVoltage           ").val(parseInt(temp["33"]["s1"].split(",")[2]) / 100);
+            $("#other_battery_redischargeVoltage      ").val(parseInt(temp["33"]["s1"].split(",")[3]) / 100);
+        }
+        // Extended Parameters
+        if(temp.hasOwnProperty("38")) {
+            if(temp["38"]["s1"] != "") {
+                $("#extended_dropRatedPowerPoint").val(temp["38"]["s1"].split(",")[0]);
+                $("#extended_dropRatedPowerSlope").val(temp["38"]["s1"].split(",")[1]);
+            }
+        }
+    }
+
+    // E.Meter Injection Regulation
+    if(response.hasOwnProperty("InjectionMode")) {
+        var temp = response["InjectionMode"];
+        $("#regulation_check").prop("checked", temp["0"]["v5"] != "0");
+    }
+
+    // ExtSol Energy Meter
+    if(response.hasOwnProperty("ModbusExtSolarDevice")) {
+        var temp = response["ModbusExtSolarDevice"];
+        $("#extsol_check").prop("checked", temp["0"]["mode"] != "0");
+    }
+
+    // User Meters
+    if(response.hasOwnProperty("UserMeter")) {
+        var temp = response["UserMeter"];
+        if(temp.hasOwnProperty("1")) {
+            $("#meter1_mode ").val(temp["1"]["mode"]);
+            $("#meter1_label").val(temp["1"]["s1"  ]);
+        }
+        if(temp.hasOwnProperty("2")) {
+            $("#meter2_mode ").val(temp["2"]["mode"]);
+            $("#meter2_label").val(temp["2"]["s1"  ]);
+        }
+        if(temp.hasOwnProperty("3")) {
+            $("#meter3_mode ").val(temp["3"]["mode"]);
+            $("#meter3_label").val(temp["3"]["s1"  ]);
+        }
+        if(temp.hasOwnProperty("4")) {
+            $("#meter4_mode ").val(temp["4"]["mode"]);
+            $("#meter4_label").val(temp["4"]["s1"  ]);
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+/*
+    Show|Hide Import Data From Cloud Button
+*/
+
+$("#bx_system, #system_co_sn").on("change", () => showImportDataFromCloud());
+
+function showImportDataFromCloud() {
+
+    $("#bxHome").removeClass("can-import-cloud-data");
+
+    if(isLiFePO() && $("#bx_system").val().trim() == "") return;
+    if((isCarbon() || isOther()) && isOldSys() && $("#system_co_sn").val().trim() == "") return;
+    if(Object.keys(dataSettings).length == 0) return;
+    if(!dataSettings.hasOwnProperty("CloudSet")) return;
+    if(!dataSettings["CloudSet"].hasOwnProperty("0")) return;
+    if(!dataSettings["CloudSet"]["0"].hasOwnProperty("mode")) return;
+    if(dataSettings["CloudSet"]["0"]["mode"].toString() != "0") return;
+
+    $.post({
+        url: "https://api.batterx.io/v3/install.php",
+        data: {
+            action : "get_system_data",
+            system : isLiFePO() ? $("#bx_system").val().trim() : $("#system_co_sn").val().trim(),
+            customer : customerEmail.trim()
+        },
+        error: () => { alert("E004. Please refresh the page!"); },
+        success: (json) => {
+            console.log(json);
+            if((isCarbon() || isOther()) && isOldSys() && !json) {
+                alert(`System with S/N ${$("#system_co_sn").val().trim()} does not exist`);
+                $("#system_co_sn").val("");
+            }
+            if(!json) return;
+            importedData = json;
+            $("#bxHome").addClass("can-import-cloud-data");
+        }
+    });
+
+}
+
+
+
+
+
+
+
+
+
+
+/*
+    Show Imported Data From Cloud
+*/
+
+$("#btnImportDataFromCloud").on("click", () => {
+    importSystemInfo();
+    importSystemSettings();
+    $("#bxHome").removeClass("can-import-cloud-data");
+});
+
+
+
+
+
+
+
+
+
+
+/*
+    Show Imported Data From Cloud
+*/
+
+function importSystemInfo() {
+    if(!importedData.hasOwnProperty("info")) return;
+    showSystemInfo(importedData.info);
+}
+
+
+
+
+
+
+
+
+
+
+/*
+    Log All Imported Settings to Database
+*/
+
+function importSystemSettings() {
+
+    if(!importedData.hasOwnProperty("settings")) return;
+
+    var response = importedData.settings;
+
+    /*
+        SETTINGS LOADED BELOW
+        - ModbusExtSolarDevice 0
+        - UserMeter 1
+        - UserMeter 2
+        - UserMeter 3
+        - UserMeter 4
+        - PrepareBatteryExtension 0
+    */
+
+    showSystemSettings(response);
+
+    /*
+        SETTINGS STORED DIRECTLY IN DATABASE
+        - BxOutPin 1
+        - BxOutPin 2
+        - BxOutPin 3
+        - BxOutPin 4
+        - SystemMode 0
+        - GridInjection 0
+        - BatteryCharging 0
+        - BatteryChargingAC 0
+        - BatteryDischarging 0
+        - BatteryDischargingAC 0
+        - IgnoreWarnings 0
+        - BatteryMinSoC 0
+        - InjectionMode 0
+    */
+
+    var totalSteps = 13;
+    var temp = false; // Function Inside Function
+    temp = response.hasOwnProperty("BxOutPin"            ) && response["BxOutPin"            ].hasOwnProperty("1") ? response["BxOutPin"            ]["1"] : false; importSystemSettings_logSetting(totalSteps,  1, "BxOutPin"            , "1", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("BxOutPin"            ) && response["BxOutPin"            ].hasOwnProperty("2") ? response["BxOutPin"            ]["2"] : false; importSystemSettings_logSetting(totalSteps,  2, "BxOutPin"            , "2", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("BxOutPin"            ) && response["BxOutPin"            ].hasOwnProperty("3") ? response["BxOutPin"            ]["3"] : false; importSystemSettings_logSetting(totalSteps,  3, "BxOutPin"            , "3", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("BxOutPin"            ) && response["BxOutPin"            ].hasOwnProperty("4") ? response["BxOutPin"            ]["4"] : false; importSystemSettings_logSetting(totalSteps,  4, "BxOutPin"            , "4", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("SystemMode"          ) && response["SystemMode"          ].hasOwnProperty("0") ? response["SystemMode"          ]["0"] : false; importSystemSettings_logSetting(totalSteps,  5, "SystemMode"          , "0", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("GridInjection"       ) && response["GridInjection"       ].hasOwnProperty("0") ? response["GridInjection"       ]["0"] : false; importSystemSettings_logSetting(totalSteps,  6, "GridInjection"       , "0", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("BatteryCharging"     ) && response["BatteryCharging"     ].hasOwnProperty("0") ? response["BatteryCharging"     ]["0"] : false; importSystemSettings_logSetting(totalSteps,  7, "BatteryCharging"     , "0", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("BatteryChargingAC"   ) && response["BatteryChargingAC"   ].hasOwnProperty("0") ? response["BatteryChargingAC"   ]["0"] : false; importSystemSettings_logSetting(totalSteps,  8, "BatteryChargingAC"   , "0", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("BatteryDischarging"  ) && response["BatteryDischarging"  ].hasOwnProperty("0") ? response["BatteryDischarging"  ]["0"] : false; importSystemSettings_logSetting(totalSteps,  9, "BatteryDischarging"  , "0", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("BatteryDischargingAC") && response["BatteryDischargingAC"].hasOwnProperty("0") ? response["BatteryDischargingAC"]["0"] : false; importSystemSettings_logSetting(totalSteps, 10, "BatteryDischargingAC", "0", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("IgnoreWarnings"      ) && response["IgnoreWarnings"      ].hasOwnProperty("0") ? response["IgnoreWarnings"      ]["0"] : false; importSystemSettings_logSetting(totalSteps, 11, "IgnoreWarnings"      , "0", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("BatteryMinSoC"       ) && response["BatteryMinSoC"       ].hasOwnProperty("0") ? response["BatteryMinSoC"       ]["0"] : false; importSystemSettings_logSetting(totalSteps, 12, "BatteryMinSoC"       , "0", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+    temp = response.hasOwnProperty("InjectionMode"       ) && response["InjectionMode"       ].hasOwnProperty("0") ? response["InjectionMode"       ]["0"] : false; importSystemSettings_logSetting(totalSteps, 13, "InjectionMode"       , "0", temp === false ? [] : [temp.mode, temp.v1, temp.v2, temp.v3, temp.v4, temp.v5, temp.v6, temp.s1, temp.s2, temp.name], () => {
+        // SHOW SUCCESS
+        alert("Data imported successfully!");
+        $("#importingDataFromCloud").modal("hide");
+    }); }); }); }); }); }); }); }); }); }); }); }); });
+
+}
+
+function importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback) {
+    $("#importingDataFromCloud_step").html(`<b>${currentStep} / ${totalSteps}</b>`);
+    $("#importingDataFromCloud").modal("show");
+    if(jsonArr.length == 0) return callback();
+    $.get({
+        url: `api.php?set=command&type=11&entity=0&text1=${entity} ${varName}&text2=${JSON.stringify(jsonArr)}`,
+        error: () => { alert("Error while writing the settings, please refresh the page! (E001)"); },
+        success: (response) => {
+            if(response != "1") return alert("Error while writing the settings, please refresh the page! (E002)");
+            setTimeout(() => { importSystemSettings_waitUntilSet(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+        }
+    });
+}
+
+function importSystemSettings_waitUntilSet(totalSteps, currentStep, varName, entity, jsonArr, callback) {
+    $.get({
+        url: "api.php?get=settings",
+        error: () => { return setTimeout(() => { importSystemSettings_waitUntilSet(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000); },
+        success: (response) => {
+            
+            console.log(response);
+            
+            if(!response || typeof response != "object") return setTimeout(() => { importSystemSettings_waitUntilSet(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            
+            dataSettings = JSON.parse(JSON.stringify(response));
+
+            if(!response.hasOwnProperty(varName) || !response[varName].hasOwnProperty(entity)) return alert("Error while writing the settings, please refresh the page! (E003) " + varName + " " + entity);
+
+            if(jsonArr.length > 0 && response[varName][entity].mode != jsonArr[0]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            if(jsonArr.length > 1 && response[varName][entity].v1   != jsonArr[1]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            if(jsonArr.length > 2 && response[varName][entity].v2   != jsonArr[2]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            if(jsonArr.length > 3 && response[varName][entity].v3   != jsonArr[3]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            if(jsonArr.length > 4 && response[varName][entity].v4   != jsonArr[4]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            if(jsonArr.length > 5 && response[varName][entity].v5   != jsonArr[5]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            if(jsonArr.length > 6 && response[varName][entity].v6   != jsonArr[6]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            if(jsonArr.length > 7 && response[varName][entity].s1   != jsonArr[7]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            if(jsonArr.length > 8 && response[varName][entity].s2   != jsonArr[8]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+            if(jsonArr.length > 9 && response[varName][entity].name != jsonArr[9]) return setTimeout(() => { importSystemSettings_logSetting(totalSteps, currentStep, varName, entity, jsonArr, callback); }, 5000);
+
+            return callback();
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+/*
+    CO System Radio OnChange Listener
+*/
+
+$("input[name=system_co_radio]").on("change", function() {
+    if(this.value == "old")
+        $("#system_co_sn").show();
+    else
+        $("#system_co_sn").hide();
+});
 
 
 
@@ -400,12 +840,14 @@ $("input[name=bx_battery_type]").on("change", function() {
     if(this.value == "0") {
         // LiFePO
         $("#system_type, #system_mode").show();
-        $("#bx_system").val(systemSerial);
+        $("#system_co_box").hide();
+        $("#bx_system").val(systemSerial).trigger("change");
         $(`#bx_system_type_${systemType}`).prop("checked", true);
     } else {
         // Carbon|Other
         $("#system_type, #system_mode").hide();
-        $("#bx_system").val($("#bx_device").val());
+        $("#system_co_box").show();
+        $("#bx_system").val(systemSerial).trigger("change");
         $("#bx_system_type_w").prop("checked", true);
         $("#bx_sysmode").val("0");
     }
@@ -586,81 +1028,7 @@ function step2() {
 
             if(!json) { step3(); return; }
 
-            // Set System Info
-            if(json.hasOwnProperty("system")) {
-                if(json.system.hasOwnProperty("serialnumber")) {
-                    $("#bx_system").val(json.system.serialnumber).attr("disabled", true);
-                    systemSerial = json.system.serialnumber;
-                }
-                if(json.system.hasOwnProperty("model")) {
-                    systemType = json.system.model.includes("W") ? "w" : "r";
-                    $(`#bx_system_type_${systemType}`).click();
-                    $("#bx_system_type_w, #bx_system_type_r").attr("disabled", true);
-                }
-            }
-
-            // Set Device Info
-            if(json.hasOwnProperty("device")) {
-                if(json.device.hasOwnProperty("solar_watt_peak"))
-                    $("#solar_wattpeak").val(json.device.solar_watt_peak);
-                if(json.device.hasOwnProperty("grid_feedin_limitation"))
-                    $("#solar_feedinlimitation").val(json.device.grid_feedin_limitation);
-            }
-
-            // Set Installation Date
-            if(json.hasOwnProperty("installation_date"))
-                $("#installation_date").val(json.installation_date);
-
-            // Set Solar Info
-            if(json.hasOwnProperty("solar_info"))
-                $("#solar_info").val(json.solar_info);
-
-            // Set Inverter Memo
-            if(json.hasOwnProperty("note"))
-                $("#installer_memo").val(json.note);
-
-            // Set Batteries Info
-            if(json.hasOwnProperty("batteries")) {
-                // Multiple Batteries (LiFePO Only)
-                if(json.batteries.length > 1) {
-                    if(json.batteries.length > 4) $("#btnShowAllModules").click();
-                    var x = 1;
-                    json.batteries.forEach(battery => {
-                        if(battery.hasOwnProperty("serialnumber")) $(`#lifepo_battery_${x}`).val(battery.serialnumber);
-                        x++;
-                    });
-                }
-                // Single Battery (LiFePO|Carbon|Other)
-                else if(json.batteries.length == 1 && json.batteries[0].hasOwnProperty("serialnumber") && json.batteries[0].hasOwnProperty("type")) {
-                    var battery = json.batteries[0];
-                    // LiFePO
-                    if(battery.type == 0) {
-                        $("#lifepo_battery_1").val(battery.serialnumber);
-                    }
-                    // Carbon
-                    else if(battery.type == 1) {
-                        $("#bx_battery_type_1").prop("checked", true).trigger("change");
-                        $("#bx_system_type_w ").prop("checked", true).trigger("change");
-                        if(battery.hasOwnProperty("capacity")) $("#carbon_battery_capacity").val(`${battery.capacity} Wh`);
-                        if(battery.hasOwnProperty("strings" )) $("#carbon_battery_strings ").val(battery.strings).trigger("change");
-                        if(battery.hasOwnProperty("model"   )) $("#carbon_battery_model   ").val(battery.model  ).trigger("change");
-                    }
-                    // Other
-                    else if(battery.type == 9) {
-                        $("#bx_battery_type_9").prop("checked", true).trigger("change");
-                        $("#bx_system_type_w ").prop("checked", true).trigger("change");
-                        if(battery.hasOwnProperty("capacity")) $("#other_battery_capacity").val(battery.capacity);
-                    }
-                }
-                // No Batteries
-                else if(json.batteries.length == 0) {
-                    $("#bx_battery_type_9").prop("checked", true).trigger("change");
-                    $("#bx_system_type_w ").prop("checked", true).trigger("change");
-                    $("#other_battery_capacity").val(0);
-                }
-            }
-
-            isAlreadyRegistered = true;
+            showSystemInfo(json);
 
             step3();
 
@@ -702,6 +1070,15 @@ function step3() {
             // Check If cliX v2
             if(box_serial.includes("XC") && box_serial.length == 10 && parseInt(box_serial.substring(0, 2)) >= 21) isClixV2 = true;
             if(!isClixV2) $("#bx_sysmode option[value=1]").remove();
+
+            // Enable|Disable Battery Type Selection
+            if(box_serial.includes("XC") && box_serial.length == 10) {
+                // Only LiFePO|None
+            } else {
+                // Only Carbon|Other
+                $("#bx_battery_type_1").prop("checked", true).trigger("change");
+                $("#bx_battery_type_0").attr("disabled", true);
+            }
 
             // Save LiveX Serial-Number to Session
             $.post({
@@ -767,7 +1144,6 @@ function step4() {
                     console.log(response);
                     if(response !== "1") return alert("E011. Please refresh the page!");
                     $("#bx_device").val(device_serial_number);
-                    if(isCarbon() || isOther()) $("#bx_system").val(device_serial_number);
                     step5();
                 }
             });
@@ -801,82 +1177,12 @@ function step5() {
             
             if(!response || typeof response != "object") return alert("E013. Please refresh the page!");
 
-            // E.Meter Phase Connection (batterX h5)
-            if(deviceModel == "batterx_h5") {
-                $("#box_emeter_phase").removeClass("d-none");
-                if(response.hasOwnProperty("InjectionMode")) {
-                    var temp = response["InjectionMode"];
-                    if(temp["0"]["v6"] !== 0) $("#bx_emeter_phase").val(temp["0"]["v6"]);
-                }
-            }
+            dataSettings = JSON.parse(JSON.stringify(response));
 
-            // System Mode (cliX 2.0)
-            if(isClixV2) {
-                if(response.hasOwnProperty("SystemMode")) {
-                    var temp = response["SystemMode"];
-                    $("#bx_sysmode").val(temp["0"]["mode"]);
-                }
-            }
+            showSystemSettings(response);
 
-            // Inverter Parameters
-            if(response.hasOwnProperty("InverterParameters")) {
-                var temp = response["InverterParameters"];
-                // Battery Parameters
-                if(temp.hasOwnProperty("30"))
-                    $("#other_battery_maxChargingCurrent      ").val(parseInt(temp["30"]["s1"]) / 100);
-                if(temp.hasOwnProperty("34"))
-                    $("#other_battery_maxDischargingCurrent   ").val(parseInt(temp["34"]["s1"]));
-                if(temp.hasOwnProperty("32")) {
-                    $("#other_battery_bulkChargingVoltage     ").val(parseInt(temp["32"]["s1"].split(",")[0]) / 100);
-                    $("#other_battery_floatChargingVoltage    ").val(parseInt(temp["32"]["s1"].split(",")[1]) / 100);
-                }
-                if(temp.hasOwnProperty("33")) {
-                    $("#other_battery_cutoffVoltageHybrid     ").val(parseInt(temp["33"]["s1"].split(",")[0]) / 100);
-                    $("#other_battery_redischargeVoltageHybrid").val(parseInt(temp["33"]["s1"].split(",")[1]) / 100);
-                    $("#other_battery_cutoffVoltage           ").val(parseInt(temp["33"]["s1"].split(",")[2]) / 100);
-                    $("#other_battery_redischargeVoltage      ").val(parseInt(temp["33"]["s1"].split(",")[3]) / 100);
-                }
-                // Extended Parameters
-                if(temp.hasOwnProperty("38")) {
-                    if(temp["38"]["s1"] != "") {
-                        $("#extended_dropRatedPowerPoint").val(temp["38"]["s1"].split(",")[0]);
-                        $("#extended_dropRatedPowerSlope").val(temp["38"]["s1"].split(",")[1]);
-                    }
-                }
-            }
-
-            // E.Meter Injection Regulation
-            if(response.hasOwnProperty("InjectionMode")) {
-                var temp = response["InjectionMode"];
-                $("#regulation_check").prop("checked", temp["0"]["v5"] != "0");
-            }
-
-            // ExtSol Energy Meter
-            if(response.hasOwnProperty("ModbusExtSolarDevice")) {
-                var temp = response["ModbusExtSolarDevice"];
-                $("#extsol_check").prop("checked", temp["0"]["mode"] != "0");
-            }
-
-            // User Meters
-            if(response.hasOwnProperty("UserMeter")) {
-                var temp = response["UserMeter"];
-                if(temp.hasOwnProperty("1")) {
-                    $("#meter1_mode ").val(temp["1"]["mode"]);
-                    $("#meter1_label").val(temp["1"]["s1"  ]);
-                }
-                if(temp.hasOwnProperty("2")) {
-                    $("#meter2_mode ").val(temp["2"]["mode"]);
-                    $("#meter2_label").val(temp["2"]["s1"  ]);
-                }
-                if(temp.hasOwnProperty("3")) {
-                    $("#meter3_mode ").val(temp["3"]["mode"]);
-                    $("#meter3_label").val(temp["3"]["s1"  ]);
-                }
-                if(temp.hasOwnProperty("4")) {
-                    $("#meter4_mode ").val(temp["4"]["mode"]);
-                    $("#meter4_label").val(temp["4"]["s1"  ]);
-                }
-            }
+            // Show|Hide Import Data From Cloud Button
+            showImportDataFromCloud();
 
         }
     });
@@ -983,7 +1289,7 @@ function mainFormSubmit_4() {
         if(!tempFlag) return $("#solar_wattpeak").val("");
     }
 
-    // Check System S/N
+    // Check System S/N (For LiFePO)
     if(isLiFePO() && !isAlreadyRegistered && $("#bx_system").val().length != 14)
         return $("#errorSystemSerialNotCorrect").modal("show");
     
@@ -996,7 +1302,7 @@ function mainFormSubmit_4() {
         data: {
             action       : "verify_device",
             serialnumber : $("#bx_device").val(),
-            system       : $("#bx_system").val()
+            system       : isLiFePO() ? $("#bx_system").val().trim() : isOldSys() ? $("#system_co_sn").val().trim() : "NEW"
         },
         error: () => { alert("E014. Please refresh the page!"); },
         success: (response) => {
@@ -1100,7 +1406,11 @@ function mainFormSubmit_5() {
         #meter3_mode,
         #meter3_label,
         #meter4_mode,
-        #meter4_label
+        #meter4_label,
+
+        #system_co_new,
+        #system_co_old,
+        #system_co_sn
     `).attr("disabled", true);
 
 
@@ -1162,14 +1472,17 @@ function setValuesToSession() {
 
     // Common Parameters
 
-    tempData.system_serial          = $("#bx_system             ").val();
-    tempData.device_serial          = $("#bx_device             ").val();
-    tempData.solar_wattpeak         = $("#solar_wattpeak        ").val();
-    tempData.solar_feedinlimitation = $("#solar_feedinlimitation").val();
-    tempData.solar_info             = $("#solar_info            ").val();
-    tempData.note                   = $("#installer_memo        ").val();
-    tempData.installation_date      = $("#installation_date     ").val();
-    tempData.system_mode            = $("#bx_sysmode            ").val();
+    tempData.system_serial          = $("#bx_system             ").val().trim();
+    tempData.device_serial          = $("#bx_device             ").val().trim();
+    tempData.solar_wattpeak         = $("#solar_wattpeak        ").val().trim();
+    tempData.solar_feedinlimitation = $("#solar_feedinlimitation").val().trim();
+    tempData.solar_info             = $("#solar_info            ").val().trim();
+    tempData.note                   = $("#installer_memo        ").val().trim();
+    tempData.installation_date      = $("#installation_date     ").val().trim();
+    tempData.system_mode            = $("#bx_sysmode            ").val().trim();
+
+    if(isCarbon() || isOther())
+        tempData.system_serial = isOldSys() ? $("#system_co_sn").val().trim() : "NEW";
 
 
 
@@ -1512,6 +1825,7 @@ function setup2() {
     newParameters["meter4Label"   ] = $("#meter4_label    ").val();
 
     newParameters["prepareBatteryExtension"] = "0";
+    newParameters["cloudSet"               ] = "1";
 
 
 
@@ -1526,6 +1840,8 @@ function setup2() {
 
             if(!response || typeof response != "object" || !response.hasOwnProperty("InverterParameters"))
                 return alert("E027. Please refresh the page!");
+
+            dataSettings = JSON.parse(JSON.stringify(response));
             
             var temp = response["InverterParameters"];
             deviceDatetime = temp["0"]["s1"];
@@ -1574,6 +1890,7 @@ function setup2() {
             oldParameters["meter4Label"   ] = !response.hasOwnProperty("UserMeter") || !response["UserMeter"].hasOwnProperty("4") ? ""  : response["UserMeter"]["4"]["s1"  ];
 
             oldParameters["prepareBatteryExtension"] = !response.hasOwnProperty("PrepareBatteryExtension") || !response["PrepareBatteryExtension"].hasOwnProperty("0") ? "0" : response["PrepareBatteryExtension"]["0"]["mode"];
+            oldParameters["cloudSet"               ] = !response.hasOwnProperty("CloudSet"               ) || !response["CloudSet"               ].hasOwnProperty("0") ? ""  : response["CloudSet"               ]["0"]["mode"];
 
         }
     });
@@ -1623,6 +1940,7 @@ function setup2() {
     if(newParameters["meter4Label"   ] != oldParameters["meter4Label"   ]) { retry = true; setup_sendSetting("UserMeter"            , "4", "s1"   , newParameters["meter4Label"   ]); }
 
     if(newParameters["prepareBatteryExtension"] != oldParameters["prepareBatteryExtension"]) { retry = true; setup_sendSetting("PrepareBatteryExtension", "0", "mode", newParameters["prepareBatteryExtension"]) }
+    if(newParameters["cloudSet"               ] != oldParameters["cloudSet"               ]) { retry = true; setup_sendSetting("CloudSet"               , "0", "mode", newParameters["cloudSet"               ]) }
 
     if(!retry) {
         $(".setting-progress span").html(lang.system_setup.msg_setting_success).css("color", "#28a745");
@@ -1689,6 +2007,8 @@ function setup_checkParameters() {
             if(!response || typeof response != "object" || !response.hasOwnProperty("InverterParameters"))
                 return alert("E031. Please refresh the page!");
 
+            dataSettings = JSON.parse(JSON.stringify(response));
+
             var temp = response["InverterParameters"];
             if(temp["0"]["s1"] == deviceDatetime) return false;
             deviceDatetime = temp["0"]["s1"];
@@ -1746,6 +2066,7 @@ function setup_checkParameters() {
             oldParameters["meter4Label"   ] = !response.hasOwnProperty("UserMeter") || !response["UserMeter"].hasOwnProperty("4") ? ""  : response["UserMeter"]["4"]["s1"  ];
 
             oldParameters["prepareBatteryExtension"] = !response.hasOwnProperty("PrepareBatteryExtension") || !response["PrepareBatteryExtension"].hasOwnProperty("0") ? "0" : response["PrepareBatteryExtension"]["0"]["mode"];
+            oldParameters["cloudSet"               ] = !response.hasOwnProperty("CloudSet"               ) || !response["CloudSet"               ].hasOwnProperty("0") ? ""  : response["CloudSet"               ]["0"]["mode"];
 
             console.log("newParameters"); console.log(newParameters);
             console.log("oldParameters"); console.log(oldParameters);
@@ -1792,6 +2113,7 @@ function setup_checkParameters() {
             if(newParameters["meter4Label"   ] != oldParameters["meter4Label"   ]) { retry = true; setup_sendSetting("UserMeter"            , "4", "s1"   , newParameters["meter4Label"   ]); }
 
             if(newParameters["prepareBatteryExtension"] != oldParameters["prepareBatteryExtension"]) { retry = true; setup_sendSetting("PrepareBatteryExtension", "0", "mode", newParameters["prepareBatteryExtension"]) }
+            if(newParameters["cloudSet"               ] != oldParameters["cloudSet"               ]) { retry = true; setup_sendSetting("CloudSet"               , "0", "mode", newParameters["cloudSet"               ]) }
 
             if(!retry) {
                 $(".setting-progress span").html(lang.system_setup.msg_setting_success).css("color", "#28a745");
@@ -1808,8 +2130,14 @@ function setup_checkParameters() {
                         showSettingParametersError("Problem when setting maxChargingCurrent");
                     else if((isCarbon() || isOther()) && newParameters["maxChargingCurrent"] != oldParameters["maxChargingCurrent"])
                         showSettingParametersError("Problem when setting maxDischargingCurrent");
-                    else if(isLiFePO() && newParameters["maxDischargingCurrent"] != oldParameters["maxDischargingCurrent"])
-                        showSettingParametersError(lang.system_setup.msg_lifepo_recognition_problem.split("X").join(parseInt(oldParameters["maxDischargingCurrent"]) / 37));
+                    else if(isLiFePO() && newParameters["maxDischargingCurrent"] != oldParameters["maxDischargingCurrent"]) {
+                        showSettingParametersError(lang.system_setup.msg_lifepo_recognition_problem.split("X").join(Math.round(parseInt(oldParameters["maxDischargingCurrent"]) / 37)));
+                        if(oldParameters["maxDischargingCurrent"] == "10") {
+                            showSettingParametersError("Low battery SoC, please wait several minutes");
+                            newParameters["allowBatteryChargingAC"] = "1";
+                            $.get({ url: "api.php?set=command&type=20738&entity=0&text1=3&text2=1", success: () => {} });
+                        }
+                    }
                     else if(newParameters["chargingVoltage"         ] != oldParameters["chargingVoltage"         ]) showSettingParametersError("Problem when setting chargingVoltage"         );
                     else if(newParameters["dischargingVoltage"      ] != oldParameters["dischargingVoltage"      ]) showSettingParametersError("Problem when setting dischargingVoltage"      );
                     else if(newParameters["batteryType"             ] != oldParameters["batteryType"             ]) showSettingParametersError("Problem when setting batteryType"             );
@@ -1843,6 +2171,7 @@ function setup_checkParameters() {
                     else if(newParameters["meter3Label"             ] != oldParameters["meter3Label"             ]) showSettingParametersError("Problem when setting meter3Label"             );
                     else if(newParameters["meter4Label"             ] != oldParameters["meter4Label"             ]) showSettingParametersError("Problem when setting meter4Label"             );
                     else if(newParameters["prepareBatteryExtension" ] != oldParameters["prepareBatteryExtension" ]) showSettingParametersError("Problem when setting prepareBatteryExtension" );
+                    else if(newParameters["cloudSet"                ] != oldParameters["cloudSet"                ]) showSettingParametersError("Problem when setting cloudSet"                );
                 }
             }
 

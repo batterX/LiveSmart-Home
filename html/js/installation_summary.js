@@ -31,6 +31,48 @@ $("#btnFinishInstallation").on("click", () => {
 
 	$("#btnFinishInstallation").attr("disabled", "disabled");
 
+	if(dataObj.hasOwnProperty("system_serial") && dataObj["system_serial"] == "NEW") {
+		generateSystemSerial((sn) => {
+			if(!sn) return alert("E001. Please refresh the page! (generate_system_serial)");
+			$("#systemSerial").html(sn);
+			dataObj.system_serial = sn;
+			finishInstallation();
+		});
+	} else {
+		finishInstallation();
+	}
+
+});
+
+
+
+
+
+function generateSystemSerial(callback) {
+
+	$.post({
+		url: "https://api.batterx.io/v3/install.php",
+		data: {
+			action: "generate_system_serial",
+			begin: "XH01" + new Date().getFullYear().toString().substr(-2)
+		},
+		error: () => { alert("E002. Please refresh the page! (generate_system_serial)"); },
+		success: (response) => {
+			// Show Not Registered
+			callback(response);
+		}
+	});
+
+}
+
+
+
+
+
+function finishInstallation() {
+
+	$("#btnFinishInstallation").attr("disabled", "disabled");
+
 	deviceModel = {
 		"batterx_h5"  : "batterX h5",
 		"batterx_h10" : "batterX h10"
@@ -158,7 +200,7 @@ $("#btnFinishInstallation").on("click", () => {
 
 	});
 
-});
+}
 
 
 

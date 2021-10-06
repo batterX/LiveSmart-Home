@@ -200,6 +200,8 @@
     
     "system_setup": {
         "system"                                                   : "batterX Home",
+        "system_new"                                               : "Neues System",
+        "system_existing"                                          : "Bestehendes System",
         "system_serialnumber_system"                               : "Seriennummer des Systems (Schrank)",
         "system_serialnumber_inverter"                             : "Seriennummer des Wechselrichters",
         "system_serialnumber_livex"                                : "Seriennummer des LiveX",

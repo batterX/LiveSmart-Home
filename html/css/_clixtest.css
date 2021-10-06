@@ -20,6 +20,21 @@ main > .card:not(.enable-step) {
 main > .card.finish-step {
     border: 2px solid green;
 }
+main > .card.error-step {
+    border: 2px solid red;
+    background-color: rgba(255, 0, 0, 0.1);
+    pointer-events: none !important;
+    user-select: none !important;
+    opacity: 1 !important;
+}
 
 main .red   { color: red;   }
 main .green { color: green; }
+
+main .info-popup {
+    position: relative;
+    bottom: 2px;
+    cursor: pointer;
+    font-weight: 400;
+    margin-left: 0.4em;
+}

@@ -127,7 +127,7 @@ function step4() {
 
 			// Check If MachineModel Exists
 			if(!response || typeof response != "object" || !response.hasOwnProperty("InverterParameters") || !response["InverterParameters"].hasOwnProperty("35"))
-				return alert("E005. Please refresh the page!");
+				return alert("Please wait one minute, then refresh the page!");
 
 			// Get Machine Model
 			var deviceStandard = response["InverterParameters"]["35"]["s1"];

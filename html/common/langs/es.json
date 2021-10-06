@@ -200,6 +200,8 @@
     
     "system_setup": {
         "system"                                                   : "batterX Home",
+        "system_new"                                               : "Sistema nuevo",
+        "system_existing"                                          : "Sistema existente",
         "system_serialnumber_system"                               : "Número de serie del sistema (armário)",
         "system_serialnumber_inverter"                             : "Número de serie del inversor",
         "system_serialnumber_livex"                                : "Número de serie del LiveX",

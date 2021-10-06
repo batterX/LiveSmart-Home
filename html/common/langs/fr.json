@@ -200,6 +200,8 @@
     
     "system_setup": {
         "system"                                                   : "batterX Home",
+        "system_new"                                               : "Nouveau système",
+        "system_existing"                                          : "Système existant",
         "system_serialnumber_system"                               : "Numéro de série du système (armoire)",
         "system_serialnumber_inverter"                             : "Numéro de série de l'onduleur",
         "system_serialnumber_livex"                                : "Numéro de série du liveX",

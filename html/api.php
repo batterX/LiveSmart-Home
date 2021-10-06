@@ -19,19 +19,34 @@ if(isset($_GET["get"]) && strtolower($_GET["get"]) == "currentstate") {
 	// Connect to Database
 	$db = new PDO("sqlite:/srv/bx/ram/currentD.db3");
 
+	// Return single value from CurrentState table
+	// ?get=currentstate&type=273&entity=1
+	if(isset($_GET["type"]) && isset($_GET["entity"])) {
+		$sql = "SELECT type, entity, entityvalue, logtime FROM CurrentState WHERE type = :type AND entity = :entity AND logtime > DATETIME(CURRENT_TIMESTAMP, '-5 minutes')";
+		if($stmt = $db->prepare($sql)) {
+			$stmt->bindParam(":type", $_GET["type"], PDO::PARAM_INT);
+			$stmt->bindParam(":entity", $_GET["entity"], PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			echo $row["entityvalue"];
+		}
+	}
+
 	// Returns the full CurrentState table
 	// ?get=currentstate
-	$result = $db->query("SELECT type, entity, entityvalue, logtime FROM CurrentState", PDO::FETCH_ASSOC);
-	$dbh = new stdClass();
-	foreach($result as $row) {
-		$type = (string) $row["type"];
-		$entity = (string) $row["entity"];
-		if(!isset($dbh->$type)) $dbh->$type = new stdClass();
-		$dbh->$type->$entity = intval($row["entityvalue"]);
-		$dbh->logtime = (string) $row["logtime"];
+	else {
+		$result = $db->query("SELECT type, entity, entityvalue, logtime FROM CurrentState", PDO::FETCH_ASSOC);
+		$dbh = new stdClass();
+		foreach($result as $row) {
+			$type = (string) $row["type"];
+			$entity = (string) $row["entity"];
+			if(!isset($dbh->$type)) $dbh->$type = new stdClass();
+			$dbh->$type->$entity = intval($row["entityvalue"]);
+			$dbh->logtime = (string) $row["logtime"];
+		}
+		header("Content-Type: application/json");
+		echo json_encode($dbh, JSON_FORCE_OBJECT);
 	}
-	header("Content-Type: application/json");
-	echo json_encode($dbh, JSON_FORCE_OBJECT);
 
 }
 
@@ -263,9 +278,10 @@ else if(isset($_GET["cleardb"]) && $_GET["cleardb"] == "1") {
 	$db = new PDO("sqlite:/srv/bx/usv.db3");
 
 	// Send Command to Database
-	$db->query("DELETE FROM TempState ");
+	$db->query("DELETE FROM TempState");
 	$db->query("DELETE FROM DeviceInfo");
-	$db->query("DELETE FROM Settings  ");
+	$db->query("DELETE FROM Settings");
+	$db->query("REPLACE INTO Settings (VarName, entity, Name, InUse, Mode, V1, V2, V3, V4, V5, V6, S1, S2, UpDateTime) VALUES ('CloudSet', 0, '', 1, 0, 0, 0, 0, 0, 0, 0, '', '', CURRENT_TIMESTAMP)");
 	echo "1";
 
 }
