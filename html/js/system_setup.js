@@ -743,7 +743,7 @@ function importSystemSettings_logSetting(totalSteps, currentStep, varName, entit
     $("#importingDataFromCloud").modal("show");
     if(jsonArr.length == 0) return callback();
     $.get({
-        url: `api.php?set=command&type=11&entity=0&text1=${entity} ${varName}&text2=${JSON.stringify(jsonArr)}`,
+        url: `api.php?set=command&type=11&entity=0&text1=${entity} ${varName}&text2=${encodeURIComponent(JSON.stringify(jsonArr))}`,
         error: () => { alert("Error while writing the settings, please refresh the page! (E001)"); },
         success: (response) => {
             if(response != "1") return alert("Error while writing the settings, please refresh the page! (E002)");
