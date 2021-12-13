@@ -1875,8 +1875,10 @@ function setup2() {
             oldParameters["voltageAndReactivePower" ] = !temp.hasOwnProperty("37") ? "" : temp["37"]["s1"];
             oldParameters["overFreqDropRatedPower"  ] = !temp.hasOwnProperty("38") ? "" : temp["38"]["s1"];
 
-            if(isLiFePO() && oldParameters["dischargingVoltage"].split(",")[2] == "4700")
+            if(isLiFePO() && oldParameters["dischargingVoltage"].split(",")[2] == "4700") // Old B Modules
                 newParameters["dischargingVoltage"] = "4700,5000,4700,5000";
+            else if(isLiFePO() && oldParameters["dischargingVoltage"].split(",")[2] == "4500") // New C Modules
+                newParameters["dischargingVoltage"] = "4500,5000,4500,5000";
 
             oldParameters["regulationMode"] = !response.hasOwnProperty("InjectionMode") ? "0" : response["InjectionMode"]["0"]["v5"];
             oldParameters["extsolMode"    ] = !response.hasOwnProperty("ModbusExtSolarDevice") ? "0" : response["ModbusExtSolarDevice"]["0"]["mode"];
