@@ -73,12 +73,15 @@ $.post({
 			if(json.installation.hasOwnProperty("zipcode")) $("#installationAddress .location-zip    ").val(json.installation.zipcode);
 			if(json.installation.hasOwnProperty("address")) $("#installationAddress .location-address").val(json.installation.address);
 			// Same as customer address
-			if( $("#installationAddress .location-country").val() == $("#customerInformation .location-country").val() &&
-				$("#installationAddress .location-city   ").val() == $("#customerInformation .location-city   ").val() &&
-				$("#installationAddress .location-zip    ").val() == $("#customerInformation .location-zip    ").val() &&
-				$("#installationAddress .location-address").val() == $("#customerInformation .location-address").val()
+			if( $("#installationAddress .location-country").val().trim() == $("#customerInformation .location-country").val().trim() &&
+				$("#installationAddress .location-city   ").val().trim() == $("#customerInformation .location-city   ").val().trim() &&
+				$("#installationAddress .location-zip    ").val().trim() == $("#customerInformation .location-zip    ").val().trim() &&
+				$("#installationAddress .location-address").val().trim() == $("#customerInformation .location-address").val().trim()
 			) $("#sameAddress").attr("checked", true).trigger("change");
 		}
+
+		// Set Installer on Site
+		$("#installerOnSite").val("");
 
 	}
 });
@@ -150,18 +153,19 @@ $("#customerInformation .email").on("change", function() {
 
 setInterval(() => {
 
-	if( $("#customerInformation .gender          ").val() == "" ||
-		$("#customerInformation .first-name      ").val() == "" ||
-		$("#customerInformation .last-name       ").val() == "" ||
-		$("#customerInformation .email           ").val() == "" ||
-		$("#customerInformation .telephone       ").val() == "" ||
-		$("#customerInformation .location-country").val() == "" ||
-		$("#customerInformation .location-city   ").val() == "" ||
-		$("#customerInformation .location-zip    ").val() == "" ||
-		$("#customerInformation .location-address").val() == "" ||
+	if( $("#customerInformation .gender          ").val().trim() == "" ||
+		$("#customerInformation .first-name      ").val().trim() == "" ||
+		$("#customerInformation .last-name       ").val().trim() == "" ||
+		$("#customerInformation .email           ").val().trim() == "" ||
+		$("#customerInformation .telephone       ").val().trim() == "" ||
+		$("#customerInformation .location-country").val().trim() == "" ||
+		$("#customerInformation .location-city   ").val().trim() == "" ||
+		$("#customerInformation .location-zip    ").val().trim() == "" ||
+		$("#customerInformation .location-address").val().trim() == "" ||
+		$("#installerOnSite                      ").val().trim() == "" ||
 		!validateEmail($("#customerInformation .email").val().trim())
 	) return $("#btn_next").attr("disabled", true);
-	
+
 	if($("#sameAddress").is(":checked")) {
 		$("#installationAddress .location-country").attr("required", false);
 		$("#installationAddress .location-city   ").attr("required", false);
@@ -173,10 +177,10 @@ setInterval(() => {
 		$("#installationAddress .location-city   ").attr("required", true);
 		$("#installationAddress .location-zip    ").attr("required", true);
 		$("#installationAddress .location-address").attr("required", true);
-		if( $("#installationAddress .location-country").val() == "" ||
-			$("#installationAddress .location-city   ").val() == "" ||
-			$("#installationAddress .location-zip    ").val() == "" ||
-			$("#installationAddress .location-address").val() == ""
+		if( $("#installationAddress .location-country").val().trim() == "" ||
+			$("#installationAddress .location-city   ").val().trim() == "" ||
+			$("#installationAddress .location-zip    ").val().trim() == "" ||
+			$("#installationAddress .location-address").val().trim() == ""
 		) { $('#btn_next').attr('disabled', true); }
 		else { $('#btn_next').attr('disabled', false); }
 	}
@@ -191,22 +195,23 @@ $("#mainForm").on("submit", (e) => {
 
 	e.preventDefault();
 
-	if( $("#customerInformation .gender          ").val() != "" &&
-		$("#customerInformation .first-name      ").val() != "" &&
-		$("#customerInformation .last-name       ").val() != "" &&
-		$("#customerInformation .email           ").val() != "" &&
-		$("#customerInformation .telephone       ").val() != "" &&
-		$("#customerInformation .location-country").val() != "" &&
-		$("#customerInformation .location-city   ").val() != "" &&
-		$("#customerInformation .location-zip    ").val() != "" &&
-		$("#customerInformation .location-address").val() != "" &&
+	if( $("#customerInformation .gender          ").val().trim() != "" &&
+		$("#customerInformation .first-name      ").val().trim() != "" &&
+		$("#customerInformation .last-name       ").val().trim() != "" &&
+		$("#customerInformation .email           ").val().trim() != "" &&
+		$("#customerInformation .telephone       ").val().trim() != "" &&
+		$("#customerInformation .location-country").val().trim() != "" &&
+		$("#customerInformation .location-city   ").val().trim() != "" &&
+		$("#customerInformation .location-zip    ").val().trim() != "" &&
+		$("#customerInformation .location-address").val().trim() != "" &&
+		$("#installerOnSite                      ").val().trim() != "" &&
 		(
 			$("#sameAddress").is(":checked") ||
 			(
-				$("#installationAddress .location-country").val() != "" &&
-				$("#installationAddress .location-city   ").val() != "" &&
-				$("#installationAddress .location-zip    ").val() != "" &&
-				$("#installationAddress .location-address").val() != ""
+				$("#installationAddress .location-country").val().trim() != "" &&
+				$("#installationAddress .location-city   ").val().trim() != "" &&
+				$("#installationAddress .location-zip    ").val().trim() != "" &&
+				$("#installationAddress .location-address").val().trim() != ""
 			)
 		)
 	) {
@@ -221,20 +226,21 @@ $("#mainForm").on("submit", (e) => {
 		$.post({
 			url: "cmd/session.php",
 			data: {
-				customer_gender:      $("#customerInformation .gender          ").val(),
-				customer_firstname:   $("#customerInformation .first-name      ").val(),
-				customer_lastname:    $("#customerInformation .last-name       ").val(),
-				customer_email:       $("#customerInformation .email           ").val(),
-				customer_telephone:   $("#customerInformation .telephone       ").val(),
-				customer_company:     $("#customerInformation .company         ").val(),
-				customer_country:     $("#customerInformation .location-country").val(),
-				customer_city:        $("#customerInformation .location-city   ").val(),
-				customer_zipcode:     $("#customerInformation .location-zip    ").val(),
-				customer_address:     $("#customerInformation .location-address").val(),
-				installation_country: $("#sameAddress").is(":checked") ? $("#customerInformation .location-country").val() : $("#installationAddress  .location-country").val(),
-				installation_city:    $("#sameAddress").is(":checked") ? $("#customerInformation .location-city   ").val() : $("#installationAddress  .location-city   ").val(),
-				installation_zipcode: $("#sameAddress").is(":checked") ? $("#customerInformation .location-zip    ").val() : $("#installationAddress  .location-zip    ").val(),
-				installation_address: $("#sameAddress").is(":checked") ? $("#customerInformation .location-address").val() : $("#installationAddress  .location-address").val()
+				customer_gender:      $("#customerInformation .gender          ").val().trim(),
+				customer_firstname:   $("#customerInformation .first-name      ").val().trim(),
+				customer_lastname:    $("#customerInformation .last-name       ").val().trim(),
+				customer_email:       $("#customerInformation .email           ").val().trim(),
+				customer_telephone:   $("#customerInformation .telephone       ").val().trim(),
+				customer_company:     $("#customerInformation .company         ").val().trim(),
+				customer_country:     $("#customerInformation .location-country").val().trim(),
+				customer_city:        $("#customerInformation .location-city   ").val().trim(),
+				customer_zipcode:     $("#customerInformation .location-zip    ").val().trim(),
+				customer_address:     $("#customerInformation .location-address").val().trim(),
+				installer_on_site:    $("#installerOnSite                      ").val().trim(),
+				installation_country: $("#sameAddress").is(":checked") ? $("#customerInformation .location-country").val().trim() : $("#installationAddress  .location-country").val().trim(),
+				installation_city:    $("#sameAddress").is(":checked") ? $("#customerInformation .location-city   ").val().trim() : $("#installationAddress  .location-city   ").val().trim(),
+				installation_zipcode: $("#sameAddress").is(":checked") ? $("#customerInformation .location-zip    ").val().trim() : $("#installationAddress  .location-zip    ").val().trim(),
+				installation_address: $("#sameAddress").is(":checked") ? $("#customerInformation .location-address").val().trim() : $("#installationAddress  .location-address").val().trim()
 			},
 			error: () => { alert("E003. Please refresh the page!"); },
 			success: (response) => {

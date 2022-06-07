@@ -96,6 +96,7 @@ function finishInstallation() {
 	if(dataObj.hasOwnProperty("installer_telephone"   ) && dataObj["installer_telephone"   ] != "") data.append("installer_telephone"   , dataObj["installer_telephone"      ]);
 	if(dataObj.hasOwnProperty("installer_email"       ) && dataObj["installer_email"       ] != "") data.append("installer_email"       , dataObj["installer_email"          ]);
 	if(dataObj.hasOwnProperty("installer_password"    ) && dataObj["installer_password"    ] != "") data.append("installer_password"    , dataObj["installer_password"       ]);
+	if(dataObj.hasOwnProperty("installer_on_site"     ) && dataObj["installer_on_site"     ] != "") data.append("installer_on_site"     , dataObj["installer_on_site"        ]);
 
 	if(dataObj.hasOwnProperty("customer_gender"       ) && dataObj["customer_gender"       ] != "") data.append("customer_gender"       , dataObj["customer_gender"          ]);
 	if(dataObj.hasOwnProperty("customer_firstname"    ) && dataObj["customer_firstname"    ] != "") data.append("customer_firstname"    , dataObj["customer_firstname"       ]);

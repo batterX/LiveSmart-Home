@@ -155,6 +155,7 @@
 
     "customer_info": {
         "customer_information"           : "Informaciones para clientes",
+        "installer_on_site"              : "Installer on site",
         "installation_address"           : "Dirección de instalación",
         "same_as_customer_address"       : "Igual que la dirección del cliente",
         "customer_same_as_installer"     : "El correo electrónico del cliente no puede ser el mismo que el correo electrónico del instalador. ¡Elija otro correo electrónico!",
@@ -260,6 +261,8 @@
         "msg_system_serial_not_correct"                            : "Sistema S/N no correcto",
         "msg_inverter_registered_with_other_system"                : "Inversor ya registrado con otro sistema!",
         "msg_battery_not_exist_or_registered_with_other_system"    : "¡La batería no existe o ya está registrada en otro sistema!",
+        "msg_low_soc_please_wait"                                  : "Low battery SoC, please wait several minutes",
+        "msg_system_with_sn_does_not_exist"                        : "System with S/N 123 does not exist",
         "backupmodeconfirm_title"                                  : "Confirm Backup Mode",
         "backupmodeconfirm_message"                                : "Please confirm that the Backup Mode connector is connected, as shown on the image below.",
         "backupmodeconfirm_confirm"                                : "Confirm",

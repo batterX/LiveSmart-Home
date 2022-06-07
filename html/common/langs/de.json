@@ -155,6 +155,7 @@
 
     "customer_info": {
         "customer_information"           : "Kundeninformationen",
+        "installer_on_site"              : "Installateur vor Ort",
         "installation_address"           : "Installationsadresse",
         "same_as_customer_address"       : "Gleich Kundenadresse",
         "customer_same_as_installer"     : "Die Kunden-E-Mail kann nicht mit der Installateur-E-Mail gleich sein. Bitte wählen Sie eine andere E-Mail Adresse!",
@@ -260,6 +261,8 @@
         "msg_system_serial_not_correct"                            : "Seriennummer des Systems nicht gültig",
         "msg_inverter_registered_with_other_system"                : "Der Wechselrichter ist mit einem anderen System registriert!",
         "msg_battery_not_exist_or_registered_with_other_system"    : "Das Batteriemodul existiert nicht oder ist bereits mit einem anderen System registriert.",
+        "msg_low_soc_please_wait"                                  : "Batterie SoC zu niedrig, bitte warten Sie einige Minuten.",
+        "msg_system_with_sn_does_not_exist"                        : "System mit S/N 123 ist nicht vorhanden.",
         "backupmodeconfirm_title"                                  : "Bestätigen Sie den Ersatzstrom-Modus",
         "backupmodeconfirm_message"                                : "Bitte bestätigen Sie, dass der Ersatzstrom-Adapter angeschlossen ist, wie auf dem Bild unten dargestellt.",
         "backupmodeconfirm_confirm"                                : "Bestätigen",

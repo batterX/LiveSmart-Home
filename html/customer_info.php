@@ -197,6 +197,12 @@ $_SESSION["box_apikey"] = $apikey;
 					</div>
 				</div>
 
+				<div class="card elevate-1 mt-3">
+					<div class="card-body">
+						<input id="installerOnSite" class="form-control form-control-outline" type="text" placeholder="<?php echo $lang["customer_info"]["installer_on_site"] . " (" . $lang["common"]["name"] . ")"; ?>" required>
+					</div>
+				</div>
+
 
 
 				<h1 class="card-header installation-address bg-transparent border-0 mt-5"><?php echo $lang["customer_info"]["installation_address"]; ?></h1>

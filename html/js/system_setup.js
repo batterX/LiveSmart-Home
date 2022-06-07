@@ -309,7 +309,7 @@ function verifyModulesCommunication(callback) {
             // Verify Battery Charging Voltage
             var chargingVoltage = response["32"]["s1"];
             console.log(chargingVoltage);
-            if(chargingVoltage == "5320,5300") {
+            if(chargingVoltage != "5320,5320") {
                 $("#notif").removeClass("loading error success").addClass("error");
                 $("#message").html(lang.system_setup.msg_lifepo_communication_problem).css("color", "red");
                 $("#btn_next").unbind().removeAttr("form").removeAttr("type").on("click", () => { setup1(); });
@@ -620,7 +620,7 @@ function showImportDataFromCloud() {
         success: (json) => {
             console.log(json);
             if((isCarbon() || isOther()) && isOldSys() && !json) {
-                alert(`System with S/N ${$("#system_co_sn").val().trim()} does not exist`);
+                alert(lang.system_setup.msg_system_with_sn_does_not_exist.replace("123", $("#system_co_sn").val().trim()));
                 $("#system_co_sn").val("");
             }
             if(!json) return;
@@ -2137,7 +2137,7 @@ function setup_checkParameters() {
                     else if(isLiFePO() && newParameters["maxDischargingCurrent"] != oldParameters["maxDischargingCurrent"]) {
                         showSettingParametersError(lang.system_setup.msg_lifepo_recognition_problem.split("X").join(Math.round(parseInt(oldParameters["maxDischargingCurrent"]) / 37)));
                         if(oldParameters["maxDischargingCurrent"] == "10") {
-                            showSettingParametersError("Low battery SoC, please wait several minutes");
+                            showSettingParametersError(lang.system_setup.msg_low_soc_please_wait);
                             newParameters["allowBatteryChargingAC"] = "1";
                             $.get({ url: "api.php?set=command&type=20738&entity=0&text1=3&text2=1", success: () => {} });
                         }

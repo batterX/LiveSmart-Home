@@ -99,12 +99,12 @@ $backupMode = (isset($_SESSION["system_mode"]) && $_SESSION["system_mode"] == "1
 					<span><?php echo $lang["summary"]["installer"]; ?></span>
 				</div>
 				<div class="box-row bt">
-					<span class="br"><?php echo $lang["common"]["name"]; ?></span>
-					<span><?php echo $arrayGender[$_SESSION["installer_gender"]] . " " . $_SESSION["installer_firstname"] . " " . $_SESSION["installer_lastname"]; ?></span>
+					<span class="br"><?php echo $lang["customer_info"]["installer_on_site"]; ?></span>
+					<span><?php echo $_SESSION["installer_on_site"]; ?></span>
 				</div>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["common"]["company"]; ?></span>
-					<span><?php echo $_SESSION["installer_company"]; ?></span>
+					<span><?php echo $arrayGender[$_SESSION["installer_gender"]] . " " . $_SESSION["installer_firstname"] . " " . $_SESSION["installer_lastname"] . "<br>" . $_SESSION["installer_company"]; ?></span>
 				</div>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["common"]["email"]; ?></span>
