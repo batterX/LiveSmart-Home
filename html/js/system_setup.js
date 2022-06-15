@@ -1683,18 +1683,27 @@ function setup1() {
     if(isLiFePO()) {
         setTimeout(() => {
             $.get({
-                url: "api.php?set=command&type=24114&entity=0&text2=5320,5300",
-                error: () => { alert("E020. Please refresh the page!"); },
+                url: "api.php?set=command&type=24065&entity=0&text2=I,1",
+                error: () => { alert("E024. Please refresh the page!"); },
                 success: (response) => {
-                    if(response != "1") return alert("E021. Please refresh the page!");
-                    tempDatetime = "";
-                    verifyModulesCommunication((flag) => {
-                        // Next Step For LiFePO Batteries
-                        if(flag) setup2();
-                    });
+                    if(response != "1") return alert("E025. Please refresh the page!");
+                    setTimeout(() => {
+                        $.get({
+                            url: "api.php?set=command&type=24114&entity=0&text2=5320,5300",
+                            error: () => { alert("E020. Please refresh the page!"); },
+                            success: (response) => {
+                                if(response != "1") return alert("E021. Please refresh the page!");
+                                tempDatetime = "";
+                                verifyModulesCommunication((flag) => {
+                                    // Next Step For LiFePO Batteries
+                                    if(flag) setup2();
+                                });
+                            }
+                        });
+                    }, 10000);
                 }
             });
-        }, 10000);
+        }, 5000);
     }
 
 
