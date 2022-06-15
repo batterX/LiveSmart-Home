@@ -1659,8 +1659,7 @@ function setup1() {
 
     // Set Grid MaxInjectionPower
 
-    var maxGridFeedInPower = (deviceModel == "batterx_h10") ? 10000 : 5000;
-    maxGridFeedInPower = Math.round(Math.min(Math.max(parseInt($("#solar_wattpeak").val()) * parseInt($("#solar_feedinlimitation").val()) / 100, 50), maxGridFeedInPower)).toString();
+    var maxGridFeedInPower = Math.round(Math.max(parseInt($("#solar_wattpeak").val()) * parseInt($("#solar_feedinlimitation").val()) / 100, 50)).toString();
     $.get({
         url: "api.php?set=command&type=20736&entity=1&text2=" + maxGridFeedInPower,
         error: () => { alert("E018. Please refresh the page!"); },
@@ -1726,7 +1725,6 @@ function setup2() {
     newParameters = {};
 
     var maxChargingCurrent    = deviceModel == "batterx_h10" ? 20000 : 6000; // x0.01A
-    var maxGridFeedInPower    = deviceModel == "batterx_h10" ? 10000 : 5000; // x1.00W
     var maxDischargingCurrent = deviceModel == "batterx_h10" ?   300 :  150; // x1.00A
 
     if(isLiFePO()) {
@@ -1778,7 +1776,7 @@ function setup2() {
     newParameters["allowGridInjection"      ] = "1";
     newParameters["allowDischargingSolarOK" ] = "1";
     newParameters["allowDischargingSolarNOK"] = "1";
-    newParameters["maxGridFeedInPower"      ] = Math.round(Math.min(Math.max(parseInt($("#solar_wattpeak").val()) * parseInt($("#solar_feedinlimitation").val()) / 100, 50), maxGridFeedInPower)).toString();
+    newParameters["maxGridFeedInPower"      ] = Math.round(Math.max(parseInt($("#solar_wattpeak").val()) * parseInt($("#solar_feedinlimitation").val()) / 100, 50)).toString();
     newParameters["systemMode"              ] = $("#bx_sysmode").val();
     newParameters["allowNGRelCloseInBatMode"] = "1";
 
