@@ -21,7 +21,7 @@ then
 	gpio -g write 27 0
 	cd /
 	cd home/pi
-	sudo ./BatterX
+	sudo ./BatterX &
 	cd /
 fi
 
@@ -31,7 +31,7 @@ then
 	gpio -g write 24 0
 	cd /
 	cd home/pi
-	sudo ./CloudStream
+	sudo ./CloudStream &
 	cd /
 fi
 
@@ -39,6 +39,6 @@ if ! pgrep -x "MqttStream" > /dev/null
 then
 	cd /
 	cd home/pi
-	sudo ./MqttStream
+	sudo ./MqttStream &
 	cd /
 fi
