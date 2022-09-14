@@ -25,6 +25,14 @@ then
 	cd /
 fi
 
+if ! pgrep -x "MqttStream" > /dev/null
+then
+	cd /
+	cd home/pi
+	sudo ./MqttStream &
+	cd /
+fi
+
 if ! pgrep -x "CloudStream" > /dev/null
 then
 	gpio -g mode 24 out
@@ -32,13 +40,5 @@ then
 	cd /
 	cd home/pi
 	sudo ./CloudStream &
-	cd /
-fi
-
-if ! pgrep -x "MqttStream" > /dev/null
-then
-	cd /
-	cd home/pi
-	sudo ./MqttStream &
 	cd /
 fi
