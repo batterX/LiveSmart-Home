@@ -51,7 +51,7 @@ $("#btnFinishInstallation").on("click", () => {
 function generateSystemSerial(callback) {
 
 	$.post({
-		url: "https://api.batterx.io/v3/install.php",
+		url: "https://api.batterx.app/v1/install.php",
 		data: {
 			action: "generate_system_serial",
 			begin: "XH01" + new Date().getFullYear().toString().substr(-2)
@@ -182,7 +182,7 @@ function finishInstallation() {
 		data.append("pdf_file", pdfBlob, lang.summary.installation_summary);
 
 		$.post({
-			url: "https://api.batterx.io/v3/install.php",
+			url: "https://api.batterx.app/v1/install.php",
 			data: data,
 			processData: false,
 			contentType: false,

@@ -24,6 +24,9 @@ $serial = substr($output, $pos + 10, 16);
 $apikey = sha1(strval($serial));
 $_SESSION["box_apikey"] = $apikey;
 
+// Get Installer Country
+$installerCountry = isset($_SESSION["installer_country"]) ? $_SESSION["installer_country"] : "";
+
 ?>
 
 
@@ -126,59 +129,59 @@ $_SESSION["box_apikey"] = $apikey;
 
 							<div class="col-md-4 p-1">
 								<select class="location-country form-control form-control-outline" required>
-									<option value="de"><?php echo $lang["dict_countries"]["de"] ?></option>
-									<option value="at"><?php echo $lang["dict_countries"]["at"] ?></option>
-									<option value="be"><?php echo $lang["dict_countries"]["be"] ?></option>
+									<option value="de" <?php echo $installerCountry == "de" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["de"] ?></option>
+									<option value="at" <?php echo $installerCountry == "at" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["at"] ?></option>
+									<option value="be" <?php echo $installerCountry == "be" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["be"] ?></option>
 									<optgroup label="<?php echo $lang["dict_countries"]["europe"] ?>">
-										<option value="at"><?php echo $lang["dict_countries"]["at"] ?></option>
-										<option value="by"><?php echo $lang["dict_countries"]["by"] ?></option>
-										<option value="be"><?php echo $lang["dict_countries"]["be"] ?></option>
-										<option value="hr"><?php echo $lang["dict_countries"]["hr"] ?></option>
-										<option value="cy"><?php echo $lang["dict_countries"]["cy"] ?></option>
-										<option value="cz"><?php echo $lang["dict_countries"]["cz"] ?></option>
-										<option value="dk"><?php echo $lang["dict_countries"]["dk"] ?></option>
-										<option value="ee"><?php echo $lang["dict_countries"]["ee"] ?></option>
-										<option value="fi"><?php echo $lang["dict_countries"]["fi"] ?></option>
-										<option value="fr"><?php echo $lang["dict_countries"]["fr"] ?></option>
-										<option value="ge"><?php echo $lang["dict_countries"]["ge"] ?></option>
-										<option value="de"><?php echo $lang["dict_countries"]["de"] ?></option>
-										<option value="gr"><?php echo $lang["dict_countries"]["gr"] ?></option>
-										<option value="hu"><?php echo $lang["dict_countries"]["hu"] ?></option>
-										<option value="is"><?php echo $lang["dict_countries"]["is"] ?></option>
-										<option value="ie"><?php echo $lang["dict_countries"]["ie"] ?></option>
-										<option value="it"><?php echo $lang["dict_countries"]["it"] ?></option>
-										<option value="lv"><?php echo $lang["dict_countries"]["lv"] ?></option>
-										<option value="lt"><?php echo $lang["dict_countries"]["lt"] ?></option>
-										<option value="lu"><?php echo $lang["dict_countries"]["lu"] ?></option>
-										<option value="mt"><?php echo $lang["dict_countries"]["mt"] ?></option>
-										<option value="md"><?php echo $lang["dict_countries"]["md"] ?></option>
-										<option value="nl"><?php echo $lang["dict_countries"]["nl"] ?></option>
-										<option value="no"><?php echo $lang["dict_countries"]["no"] ?></option>
-										<option value="pl"><?php echo $lang["dict_countries"]["pl"] ?></option>
-										<option value="pt"><?php echo $lang["dict_countries"]["pt"] ?></option>
-										<option value="ro"><?php echo $lang["dict_countries"]["ro"] ?></option>
-										<option value="ru"><?php echo $lang["dict_countries"]["ru"] ?></option>
-										<option value="sk"><?php echo $lang["dict_countries"]["sk"] ?></option>
-										<option value="si"><?php echo $lang["dict_countries"]["si"] ?></option>
-										<option value="es"><?php echo $lang["dict_countries"]["es"] ?></option>
-										<option value="se"><?php echo $lang["dict_countries"]["se"] ?></option>
-										<option value="ch"><?php echo $lang["dict_countries"]["ch"] ?></option>
-										<option value="tr"><?php echo $lang["dict_countries"]["tr"] ?></option>
-										<option value="ua"><?php echo $lang["dict_countries"]["ua"] ?></option>
-										<option value="gb"><?php echo $lang["dict_countries"]["gb"] ?></option>
+										<option value="at" <?php echo $installerCountry == "at" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["at"] ?></option>
+										<option value="by" <?php echo $installerCountry == "by" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["by"] ?></option>
+										<option value="be" <?php echo $installerCountry == "be" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["be"] ?></option>
+										<option value="hr" <?php echo $installerCountry == "hr" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["hr"] ?></option>
+										<option value="cy" <?php echo $installerCountry == "cy" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["cy"] ?></option>
+										<option value="cz" <?php echo $installerCountry == "cz" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["cz"] ?></option>
+										<option value="dk" <?php echo $installerCountry == "dk" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["dk"] ?></option>
+										<option value="ee" <?php echo $installerCountry == "ee" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ee"] ?></option>
+										<option value="fi" <?php echo $installerCountry == "fi" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["fi"] ?></option>
+										<option value="fr" <?php echo $installerCountry == "fr" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["fr"] ?></option>
+										<option value="ge" <?php echo $installerCountry == "ge" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ge"] ?></option>
+										<option value="de" <?php echo $installerCountry == "de" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["de"] ?></option>
+										<option value="gr" <?php echo $installerCountry == "gr" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["gr"] ?></option>
+										<option value="hu" <?php echo $installerCountry == "hu" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["hu"] ?></option>
+										<option value="is" <?php echo $installerCountry == "is" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["is"] ?></option>
+										<option value="ie" <?php echo $installerCountry == "ie" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ie"] ?></option>
+										<option value="it" <?php echo $installerCountry == "it" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["it"] ?></option>
+										<option value="lv" <?php echo $installerCountry == "lv" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["lv"] ?></option>
+										<option value="lt" <?php echo $installerCountry == "lt" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["lt"] ?></option>
+										<option value="lu" <?php echo $installerCountry == "lu" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["lu"] ?></option>
+										<option value="mt" <?php echo $installerCountry == "mt" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["mt"] ?></option>
+										<option value="md" <?php echo $installerCountry == "md" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["md"] ?></option>
+										<option value="nl" <?php echo $installerCountry == "nl" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["nl"] ?></option>
+										<option value="no" <?php echo $installerCountry == "no" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["no"] ?></option>
+										<option value="pl" <?php echo $installerCountry == "pl" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["pl"] ?></option>
+										<option value="pt" <?php echo $installerCountry == "pt" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["pt"] ?></option>
+										<option value="ro" <?php echo $installerCountry == "ro" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ro"] ?></option>
+										<option value="ru" <?php echo $installerCountry == "ru" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ru"] ?></option>
+										<option value="sk" <?php echo $installerCountry == "sk" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["sk"] ?></option>
+										<option value="si" <?php echo $installerCountry == "si" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["si"] ?></option>
+										<option value="es" <?php echo $installerCountry == "es" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["es"] ?></option>
+										<option value="se" <?php echo $installerCountry == "se" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["se"] ?></option>
+										<option value="ch" <?php echo $installerCountry == "ch" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ch"] ?></option>
+										<option value="tr" <?php echo $installerCountry == "tr" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["tr"] ?></option>
+										<option value="ua" <?php echo $installerCountry == "ua" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ua"] ?></option>
+										<option value="gb" <?php echo $installerCountry == "gb" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["gb"] ?></option>
 									</optgroup>
 									<optgroup label="<?php echo $lang["dict_countries"]["africa"] ?>">
-										<option value="cd"><?php echo $lang["dict_countries"]["cd"] ?></option>
-										<option value="gh"><?php echo $lang["dict_countries"]["gh"] ?></option>
-										<option value="ci"><?php echo $lang["dict_countries"]["ci"] ?></option>
-										<option value="ke"><?php echo $lang["dict_countries"]["ke"] ?></option>
-										<option value="ng"><?php echo $lang["dict_countries"]["ng"] ?></option>
-										<option value="re"><?php echo $lang["dict_countries"]["re"] ?></option>
-										<option value="sn"><?php echo $lang["dict_countries"]["sn"] ?></option>
-										<option value="za"><?php echo $lang["dict_countries"]["za"] ?></option>
-										<option value="tg"><?php echo $lang["dict_countries"]["tg"] ?></option>
-										<option value="tn"><?php echo $lang["dict_countries"]["tn"] ?></option>
-										<option value="ug"><?php echo $lang["dict_countries"]["ug"] ?></option>
+										<option value="cd" <?php echo $installerCountry == "cd" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["cd"] ?></option>
+										<option value="gh" <?php echo $installerCountry == "gh" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["gh"] ?></option>
+										<option value="ci" <?php echo $installerCountry == "ci" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ci"] ?></option>
+										<option value="ke" <?php echo $installerCountry == "ke" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ke"] ?></option>
+										<option value="ng" <?php echo $installerCountry == "ng" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ng"] ?></option>
+										<option value="re" <?php echo $installerCountry == "re" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["re"] ?></option>
+										<option value="sn" <?php echo $installerCountry == "sn" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["sn"] ?></option>
+										<option value="za" <?php echo $installerCountry == "za" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["za"] ?></option>
+										<option value="tg" <?php echo $installerCountry == "tg" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["tg"] ?></option>
+										<option value="tn" <?php echo $installerCountry == "tn" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["tn"] ?></option>
+										<option value="ug" <?php echo $installerCountry == "ug" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ug"] ?></option>
 									</optgroup>
 								</select>
 							</div>
@@ -219,59 +222,59 @@ $_SESSION["box_apikey"] = $apikey;
 
 							<div class="col-md-4 p-1">
 								<select class="location-country form-control form-control-outline">
-									<option value="de"><?php echo $lang["dict_countries"]["de"] ?></option>
-									<option value="at"><?php echo $lang["dict_countries"]["at"] ?></option>
-									<option value="be"><?php echo $lang["dict_countries"]["be"] ?></option>
+									<option value="de" <?php echo $installerCountry == "de" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["de"] ?></option>
+									<option value="at" <?php echo $installerCountry == "at" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["at"] ?></option>
+									<option value="be" <?php echo $installerCountry == "be" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["be"] ?></option>
 									<optgroup label="<?php echo $lang["dict_countries"]["europe"] ?>">
-										<option value="at"><?php echo $lang["dict_countries"]["at"] ?></option>
-										<option value="by"><?php echo $lang["dict_countries"]["by"] ?></option>
-										<option value="be"><?php echo $lang["dict_countries"]["be"] ?></option>
-										<option value="hr"><?php echo $lang["dict_countries"]["hr"] ?></option>
-										<option value="cy"><?php echo $lang["dict_countries"]["cy"] ?></option>
-										<option value="cz"><?php echo $lang["dict_countries"]["cz"] ?></option>
-										<option value="dk"><?php echo $lang["dict_countries"]["dk"] ?></option>
-										<option value="ee"><?php echo $lang["dict_countries"]["ee"] ?></option>
-										<option value="fi"><?php echo $lang["dict_countries"]["fi"] ?></option>
-										<option value="fr"><?php echo $lang["dict_countries"]["fr"] ?></option>
-										<option value="ge"><?php echo $lang["dict_countries"]["ge"] ?></option>
-										<option value="de"><?php echo $lang["dict_countries"]["de"] ?></option>
-										<option value="gr"><?php echo $lang["dict_countries"]["gr"] ?></option>
-										<option value="hu"><?php echo $lang["dict_countries"]["hu"] ?></option>
-										<option value="is"><?php echo $lang["dict_countries"]["is"] ?></option>
-										<option value="ie"><?php echo $lang["dict_countries"]["ie"] ?></option>
-										<option value="it"><?php echo $lang["dict_countries"]["it"] ?></option>
-										<option value="lv"><?php echo $lang["dict_countries"]["lv"] ?></option>
-										<option value="lt"><?php echo $lang["dict_countries"]["lt"] ?></option>
-										<option value="lu"><?php echo $lang["dict_countries"]["lu"] ?></option>
-										<option value="mt"><?php echo $lang["dict_countries"]["mt"] ?></option>
-										<option value="md"><?php echo $lang["dict_countries"]["md"] ?></option>
-										<option value="nl"><?php echo $lang["dict_countries"]["nl"] ?></option>
-										<option value="no"><?php echo $lang["dict_countries"]["no"] ?></option>
-										<option value="pl"><?php echo $lang["dict_countries"]["pl"] ?></option>
-										<option value="pt"><?php echo $lang["dict_countries"]["pt"] ?></option>
-										<option value="ro"><?php echo $lang["dict_countries"]["ro"] ?></option>
-										<option value="ru"><?php echo $lang["dict_countries"]["ru"] ?></option>
-										<option value="sk"><?php echo $lang["dict_countries"]["sk"] ?></option>
-										<option value="si"><?php echo $lang["dict_countries"]["si"] ?></option>
-										<option value="es"><?php echo $lang["dict_countries"]["es"] ?></option>
-										<option value="se"><?php echo $lang["dict_countries"]["se"] ?></option>
-										<option value="ch"><?php echo $lang["dict_countries"]["ch"] ?></option>
-										<option value="tr"><?php echo $lang["dict_countries"]["tr"] ?></option>
-										<option value="ua"><?php echo $lang["dict_countries"]["ua"] ?></option>
-										<option value="gb"><?php echo $lang["dict_countries"]["gb"] ?></option>
+										<option value="at" <?php echo $installerCountry == "at" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["at"] ?></option>
+										<option value="by" <?php echo $installerCountry == "by" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["by"] ?></option>
+										<option value="be" <?php echo $installerCountry == "be" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["be"] ?></option>
+										<option value="hr" <?php echo $installerCountry == "hr" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["hr"] ?></option>
+										<option value="cy" <?php echo $installerCountry == "cy" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["cy"] ?></option>
+										<option value="cz" <?php echo $installerCountry == "cz" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["cz"] ?></option>
+										<option value="dk" <?php echo $installerCountry == "dk" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["dk"] ?></option>
+										<option value="ee" <?php echo $installerCountry == "ee" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ee"] ?></option>
+										<option value="fi" <?php echo $installerCountry == "fi" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["fi"] ?></option>
+										<option value="fr" <?php echo $installerCountry == "fr" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["fr"] ?></option>
+										<option value="ge" <?php echo $installerCountry == "ge" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ge"] ?></option>
+										<option value="de" <?php echo $installerCountry == "de" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["de"] ?></option>
+										<option value="gr" <?php echo $installerCountry == "gr" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["gr"] ?></option>
+										<option value="hu" <?php echo $installerCountry == "hu" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["hu"] ?></option>
+										<option value="is" <?php echo $installerCountry == "is" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["is"] ?></option>
+										<option value="ie" <?php echo $installerCountry == "ie" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ie"] ?></option>
+										<option value="it" <?php echo $installerCountry == "it" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["it"] ?></option>
+										<option value="lv" <?php echo $installerCountry == "lv" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["lv"] ?></option>
+										<option value="lt" <?php echo $installerCountry == "lt" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["lt"] ?></option>
+										<option value="lu" <?php echo $installerCountry == "lu" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["lu"] ?></option>
+										<option value="mt" <?php echo $installerCountry == "mt" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["mt"] ?></option>
+										<option value="md" <?php echo $installerCountry == "md" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["md"] ?></option>
+										<option value="nl" <?php echo $installerCountry == "nl" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["nl"] ?></option>
+										<option value="no" <?php echo $installerCountry == "no" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["no"] ?></option>
+										<option value="pl" <?php echo $installerCountry == "pl" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["pl"] ?></option>
+										<option value="pt" <?php echo $installerCountry == "pt" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["pt"] ?></option>
+										<option value="ro" <?php echo $installerCountry == "ro" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ro"] ?></option>
+										<option value="ru" <?php echo $installerCountry == "ru" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ru"] ?></option>
+										<option value="sk" <?php echo $installerCountry == "sk" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["sk"] ?></option>
+										<option value="si" <?php echo $installerCountry == "si" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["si"] ?></option>
+										<option value="es" <?php echo $installerCountry == "es" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["es"] ?></option>
+										<option value="se" <?php echo $installerCountry == "se" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["se"] ?></option>
+										<option value="ch" <?php echo $installerCountry == "ch" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ch"] ?></option>
+										<option value="tr" <?php echo $installerCountry == "tr" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["tr"] ?></option>
+										<option value="ua" <?php echo $installerCountry == "ua" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ua"] ?></option>
+										<option value="gb" <?php echo $installerCountry == "gb" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["gb"] ?></option>
 									</optgroup>
 									<optgroup label="<?php echo $lang["dict_countries"]["africa"] ?>">
-										<option value="cd"><?php echo $lang["dict_countries"]["cd"] ?></option>
-										<option value="gh"><?php echo $lang["dict_countries"]["gh"] ?></option>
-										<option value="ci"><?php echo $lang["dict_countries"]["ci"] ?></option>
-										<option value="ke"><?php echo $lang["dict_countries"]["ke"] ?></option>
-										<option value="ng"><?php echo $lang["dict_countries"]["ng"] ?></option>
-										<option value="re"><?php echo $lang["dict_countries"]["re"] ?></option>
-										<option value="sn"><?php echo $lang["dict_countries"]["sn"] ?></option>
-										<option value="za"><?php echo $lang["dict_countries"]["za"] ?></option>
-										<option value="tg"><?php echo $lang["dict_countries"]["tg"] ?></option>
-										<option value="tn"><?php echo $lang["dict_countries"]["tn"] ?></option>
-										<option value="ug"><?php echo $lang["dict_countries"]["ug"] ?></option>
+										<option value="cd" <?php echo $installerCountry == "cd" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["cd"] ?></option>
+										<option value="gh" <?php echo $installerCountry == "gh" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["gh"] ?></option>
+										<option value="ci" <?php echo $installerCountry == "ci" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ci"] ?></option>
+										<option value="ke" <?php echo $installerCountry == "ke" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ke"] ?></option>
+										<option value="ng" <?php echo $installerCountry == "ng" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ng"] ?></option>
+										<option value="re" <?php echo $installerCountry == "re" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["re"] ?></option>
+										<option value="sn" <?php echo $installerCountry == "sn" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["sn"] ?></option>
+										<option value="za" <?php echo $installerCountry == "za" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["za"] ?></option>
+										<option value="tg" <?php echo $installerCountry == "tg" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["tg"] ?></option>
+										<option value="tn" <?php echo $installerCountry == "tn" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["tn"] ?></option>
+										<option value="ug" <?php echo $installerCountry == "ug" ? "selected" : "" ?>><?php echo $lang["dict_countries"]["ug"] ?></option>
 									</optgroup>
 								</select>
 							</div>

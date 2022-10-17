@@ -1,4 +1,4 @@
-# batterX liveX Home (v22.9.0)
+# batterX liveX Home (v22.9.1)
 
 **Note:** The RS232 converter must be connected to the Top-Left USB Port of the liveX
 ```

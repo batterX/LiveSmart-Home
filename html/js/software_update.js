@@ -17,7 +17,7 @@ performUpdate();
 function performUpdate() {
 
 	$.get({
-		url: "https://api.batterx.io",
+		url: "https://api.batterx.app",
 		dataType: "text",
 		cache: false,
 		error: () => {

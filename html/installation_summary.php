@@ -31,6 +31,14 @@ $dataSettings = json_decode(file_get_contents("http://localhost/api.php?get=sett
 
 $backupMode = (isset($_SESSION["system_mode"]) && $_SESSION["system_mode"] == "1") ? true : false;
 
+$clixVersion = "";
+if(strpos($_SESSION["box_serial"], "XC") && strlen($_SESSION["box_serial"]) == 10) {
+	if(intval(substr($_SESSION["box_serial"], 0, 2) >= 21))
+		$clixVersion = "cliX 2.0";
+	else
+		$clixVersion = "cliX 1.0";
+}
+
 ?>
 
 
@@ -238,7 +246,7 @@ $backupMode = (isset($_SESSION["system_mode"]) && $_SESSION["system_mode"] == "1
 				<?php endif; ?>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_sn_livex"]; ?></span>
-					<span><?php echo $_SESSION["box_serial"] . " (" . $_SESSION["software_version"] . ")"; ?></span>
+					<span><?php echo $_SESSION["box_serial"] . " (" . $_SESSION["software_version"] . ") " . $clixVersion; ?></span>
 				</div>
 				<?php if($batteryType == "lifepo"): ?>
 					<div class="box-row bt">
@@ -358,7 +366,7 @@ $backupMode = (isset($_SESSION["system_mode"]) && $_SESSION["system_mode"] == "1
 
 			<p><?php echo $lang["summary"]["final_text3"]; ?></p>
 
-			<p class="mt-2rem"><?php echo $lang["summary"]["final_text4"]; ?>: <br><a href="https://my.batterx.io" target="_blank">my.batterx.io</a></p>
+			<p class="mt-2rem"><?php echo $lang["summary"]["final_text4"]; ?>: <br><a href="https://batterx.app" target="_blank">batterx.app</a></p>
 
 			<p class="mt-2rem"><?php echo $lang["summary"]["final_text5"]; ?></p>
 

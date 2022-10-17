@@ -86,7 +86,7 @@ function step3(json) {
 	var device_serial_number = json.device_serial_number;
 
 	$.post({
-		url: "https://api.batterx.io/v3/install.php",
+		url: "https://api.batterx.app/v1/install.php",
 		data: {
 			action: "verify_device",
 			serialnumber: device_serial_number

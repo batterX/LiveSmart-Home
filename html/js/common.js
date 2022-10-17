@@ -23,3 +23,19 @@ $progress.on('step', function(e, stepIndex) {
   
 // Trigger first bullet
 $progress.trigger('step', 0);
+
+
+
+
+
+/*
+	Keep Session Active
+*/
+
+setInterval(() => {
+	$.post({
+		url: "cmd/session.php",
+		error: () => { console.log("Error Keep Session Active"); },
+		success: (response) => { console.log(response); }
+	});
+}, 60000);

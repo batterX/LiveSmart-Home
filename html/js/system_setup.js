@@ -243,7 +243,7 @@ function verifyModulesLiFePO() {
         if(canContinue) {
             canContinue = false;
             $.post({
-                url: "https://api.batterx.io/v3/install.php",
+                url: "https://api.batterx.app/v1/install.php",
                 async: false,
                 data: {
                     action: "verify_battery",
@@ -610,7 +610,7 @@ function showImportDataFromCloud() {
     if(dataSettings["CloudSet"]["0"]["mode"].toString() != "0") return;
 
     $.post({
-        url: "https://api.batterx.io/v3/install.php",
+        url: "https://api.batterx.app/v1/install.php",
         data: {
             action : "get_system_data",
             system : isLiFePO() ? $("#bx_system").val().trim() : $("#system_co_sn").val().trim(),
@@ -1016,7 +1016,7 @@ function step1() {
 function step2() {
 
     $.post({
-        url: "https://api.batterx.io/v3/install.php",
+        url: "https://api.batterx.app/v1/install.php",
         data: {
             action : "get_installation_info",
             apikey : systemApikey
@@ -1053,7 +1053,7 @@ function step2() {
 function step3() {
 
     $.post({
-        url: "https://api.batterx.io/v3/install.php",
+        url: "https://api.batterx.app/v1/install.php",
         data: {
             action : "get_box_serial",
             apikey : systemApikey
@@ -1298,7 +1298,7 @@ function mainFormSubmit_4() {
 
     // Check Inverter S/N
     $.post({
-        url: "https://api.batterx.io/v3/install.php",
+        url: "https://api.batterx.app/v1/install.php",
         data: {
             action       : "verify_device",
             serialnumber : $("#bx_device").val(),

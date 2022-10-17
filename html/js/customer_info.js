@@ -26,7 +26,7 @@ var hasAccessToUser = true;
 
 
 $.post({
-	url: "https://api.batterx.io/v3/install.php",
+	url: "https://api.batterx.app/v1/install.php",
 	data: {
 		action: "get_installation_info",
 		apikey: apikey
@@ -100,7 +100,7 @@ $("#customerInformation .email").on("change", function() {
 	if(email == installerEmail.trim()) return $("#errorSameAsInstaller").modal("show");
 	
 	$.post({
-		url: "https://api.batterx.io/v3/install.php",
+		url: "https://api.batterx.app/v1/install.php",
 		data: {
 			action    : "get_customer_info",
 			customer  : email,
