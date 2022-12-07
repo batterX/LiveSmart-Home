@@ -72,7 +72,8 @@
         "0" : "Ninguno",
         "1" : "Curva coso(P)",
         "2" : "Coso fijo",
-        "3" : "Q(U) Curva"
+        "3" : "Q(U) Curva",
+        "4" : "Fixed Reactive Power (Qfix)"
     },
     
     "dict_bs_sysmode": {
@@ -216,6 +217,13 @@
         "extended_overfrequency_reduction"                         : "Reducción de potencia extendida activa en caso de sobrefrequencia",
         "extended_start_of_reduction"                              : "Inicio de reducción de potencia",
         "extended_gradient"                                        : "Degradada",
+        "extended_uefftime"                                        : "Ueff Time",
+        "extended_mingridvoltage"                                  : "Min grid voltage",
+        "extended_maxgridvoltage"                                  : "Max grid voltage",
+        "extended_mingridfrequency"                                : "Min grid frequency",
+        "extended_maxgridfrequency"                                : "Max grid frequency",
+        "extended_gridconnectdelay"                                : "Grid connect delay",
+        "extended_putime"                                          : "P(U) Time",
         "solar"                                                    : "Sistema PV",
         "solar_size"                                               : "Tamaño del sistema PV",
         "solar_watt_peak"                                          : "Potencia pico (Wp)",
@@ -251,6 +259,8 @@
         "reactive_select_mode"                                     : "Seleccionar modo",
         "reactive_overexcited"                                     : "Sobreexcitado",
         "reactive_underexcited"                                    : "No suficientemente excitado",
+        "reactive_qutime"                                          : "Q(U) Time",
+        "reactive_kinkpoint"                                       : "Kink Point",
         "msg_setting_parameters"                                   : "Configuración de parámetros. Por favor espere…",
         "msg_setting_success"                                      : "Configuración exitosa",
         "msg_solar_size_very_low"                                  : "El tamaño del sistema PV parece demasiado bajo.",

@@ -72,7 +72,8 @@
         "0" : "None",
         "1" : "cosφ(P) Curve",
         "2" : "Fixed cosφ",
-        "3" : "Q(U) Curve"
+        "3" : "Q(U) Curve",
+        "4" : "Fixed Reactive Power (Qfix)"
     },
     
     "dict_bs_sysmode": {
@@ -216,6 +217,13 @@
         "extended_overfrequency_reduction"                         : "Réduction de la puissance active en cas de sur-fréquence",
         "extended_start_of_reduction"                              : "Début de la réduction de puissance",
         "extended_gradient"                                        : "Gradient",
+        "extended_uefftime"                                        : "Ueff Time",
+        "extended_mingridvoltage"                                  : "Min grid voltage",
+        "extended_maxgridvoltage"                                  : "Max grid voltage",
+        "extended_mingridfrequency"                                : "Min grid frequency",
+        "extended_maxgridfrequency"                                : "Max grid frequency",
+        "extended_gridconnectdelay"                                : "Grid connect delay",
+        "extended_putime"                                          : "P(U) Time",
         "solar"                                                    : "FV systém",
         "solar_size"                                               : "Velikost fotovoltaického systému",
         "solar_watt_peak"                                          : "Maximální výkon (Wp)",
@@ -251,6 +259,8 @@
         "reactive_select_mode"                                     : "Select mode",
         "reactive_overexcited"                                     : "Overexcited",
         "reactive_underexcited"                                    : "Underexcited",
+        "reactive_qutime"                                          : "Q(U) Time",
+        "reactive_kinkpoint"                                       : "Kink Point",
         "msg_setting_parameters"                                   : "Probíhá nastavování parametrů. Čekejte prosím…",
         "msg_setting_success"                                      : "Nastavení proběhlo úspěšně",
         "msg_solar_size_very_low"                                  : "The size of the PV-System seems very low.",

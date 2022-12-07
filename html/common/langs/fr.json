@@ -72,7 +72,8 @@
         "0" : "Aucun",
         "1" : "cosφ(P) Courbe",
         "2" : "cosφ fixe",
-        "3" : "Q(U) Courbe"
+        "3" : "Q(U) Courbe",
+        "4" : "Fixed Reactive Power (Qfix)"
     },
     
     "dict_bs_sysmode": {
@@ -216,6 +217,13 @@
         "extended_overfrequency_reduction"                         : "Réduction de la puissance active en cas de sur-fréquence",
         "extended_start_of_reduction"                              : "Début de la réduction de puissance",
         "extended_gradient"                                        : "Gradient",
+        "extended_uefftime"                                        : "Ueff Time",
+        "extended_mingridvoltage"                                  : "Min grid voltage",
+        "extended_maxgridvoltage"                                  : "Max grid voltage",
+        "extended_mingridfrequency"                                : "Min grid frequency",
+        "extended_maxgridfrequency"                                : "Max grid frequency",
+        "extended_gridconnectdelay"                                : "Grid connect delay",
+        "extended_putime"                                          : "P(U) Time",
         "solar"                                                    : "Système photovoltaïque",
         "solar_size"                                               : "Taille du système photovoltaïque",
         "solar_watt_peak"                                          : "Watts crête (Wp)",
@@ -251,6 +259,8 @@
         "reactive_select_mode"                                     : "Sélectionnez le mode",
         "reactive_overexcited"                                     : "Surexcité",
         "reactive_underexcited"                                    : "Sous-excitée",
+        "reactive_qutime"                                          : "Q(U) Time",
+        "reactive_kinkpoint"                                       : "Kink Point",
         "msg_setting_parameters"                                   : "Enregistrement des paramètres. Attendez s'il vous plaît…",
         "msg_setting_success"                                      : "Paramétrage réussi",
         "msg_solar_size_very_low"                                  : "La puissance du système photovoltaïque semble être très faible.",

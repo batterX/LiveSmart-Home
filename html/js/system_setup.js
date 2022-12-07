@@ -48,11 +48,14 @@ var checkParametersInterval;
 var checkParametersCounter;
 
 var reactive_mode   = null;
+var reactive_kink   = null;
 var reactive_cosphi = null;
 var reactive_v1     = null;
 var reactive_v2     = null;
 var reactive_v3     = null;
 var reactive_v4     = null;
+var reactive_qutime = null;
+var reactive_qfix   = null;
 
 var isClixV2 = false;
 
@@ -114,6 +117,22 @@ function isOldSys () { return $("#system_co_old").is(":checked"); }
 
 
 /*
+    Helper Function
+*/
+
+function convertVoltToUn(volt) { return Math.round(volt / 230 * 100) / 100; }
+function convertUnToVolt(un) { return Math.round(un * 230 * 10) / 10; }
+
+
+
+
+
+
+
+
+
+
+/*
     Helper Functions
 */
 
@@ -143,7 +162,21 @@ function allFieldsCorrect() {
         $("#solar_feedinlimitation      ").val() == "" ||
         $("#reactive_mode               ").val() == "" ||
         $("#extended_dropRatedPowerPoint").val() == "" ||
-        $("#extended_dropRatedPowerSlope").val() == ""
+        $("#extended_dropRatedPowerSlope").val() == "" ||
+        (isTor && $("#extended_Ueff            ").val() == "") ||
+        (isTor && $("#extended_UeffTime        ").val() == "") ||
+        (isTor && $("#extended_UeffOver1       ").val() == "") ||
+        (isTor && $("#extended_UeffUnder1      ").val() == "") ||
+        (isTor && $("#extended_UeffOver2       ").val() == "") ||
+        (isTor && $("#extended_UeffUnder2      ").val() == "") ||
+        (isTor && $("#extended_fOver1          ").val() == "") ||
+        (isTor && $("#extended_fUnder1         ").val() == "") ||
+        (isTor && $("#extended_maxGridVoltage  ").val() == "") ||
+        (isTor && $("#extended_minGridVoltage  ").val() == "") ||
+        (isTor && $("#extended_maxGridFrequency").val() == "") ||
+        (isTor && $("#extended_minGridFrequency").val() == "") ||
+        (isTor && $("#extended_gridConnectDelay").val() == "") ||
+        (isTor && $("#extended_puTime          ").val() == "")
     ) return false;
 
     // LiFePO
@@ -530,6 +563,23 @@ function showSystemSettings(response) {
                 $("#extended_dropRatedPowerSlope").val(temp["38"]["s1"].split(",")[1]);
             }
         }
+        // Extended Parameters TOR
+        if(isTor && isAlreadyRegistered) {
+            if(temp.hasOwnProperty("14")) $("#extended_Ueff            ").val(convertVoltToUn(parseInt(temp["14"]["s1"]) / 100));
+            if(temp.hasOwnProperty("46")) $("#extended_UeffTime        ").val(Math.round(parseInt(temp["46"]["s1"]) / 60));
+            if(temp.hasOwnProperty("39")) $("#extended_UeffOver1       ").val(convertVoltToUn(parseInt(temp["39"]["s1"].split(",")[0]) / 100));
+            if(temp.hasOwnProperty("39")) $("#extended_UeffUnder1      ").val(convertVoltToUn(parseInt(temp["39"]["s1"].split(",")[1]) / 100));
+            if(temp.hasOwnProperty("41")) $("#extended_UeffOver2       ").val(convertVoltToUn(parseInt(temp["41"]["s1"].split(",")[0]) / 100));
+            if(temp.hasOwnProperty("41")) $("#extended_UeffUnder2      ").val(convertVoltToUn(parseInt(temp["41"]["s1"].split(",")[1]) / 100));
+            if(temp.hasOwnProperty("40")) $("#extended_fOver1          ").val(parseInt(temp["40"]["s1"].split(",")[0]) / 100);
+            if(temp.hasOwnProperty("40")) $("#extended_fUnder1         ").val(parseInt(temp["40"]["s1"].split(",")[1]) / 100);
+            if(temp.hasOwnProperty("11")) $("#extended_maxGridVoltage  ").val(convertVoltToUn(parseInt(temp["11"]["s1"]) / 100));
+            if(temp.hasOwnProperty("10")) $("#extended_minGridVoltage  ").val(convertVoltToUn(parseInt(temp["10"]["s1"]) / 100));
+            if(temp.hasOwnProperty("13")) $("#extended_maxGridFrequency").val(parseInt(temp["13"]["s1"]) / 100);
+            if(temp.hasOwnProperty("12")) $("#extended_minGridFrequency").val(parseInt(temp["12"]["s1"]) / 100);
+            if(temp.hasOwnProperty( "4")) $("#extended_gridConnectDelay").val(parseInt(temp["4"]["s1"]));
+            if(temp.hasOwnProperty("47")) $("#extended_puTime          ").val(parseInt(temp["47"]["s1"].split(",")[1]));
+        }
     }
 
     // E.Meter Injection Regulation
@@ -913,18 +963,22 @@ $("#btnShowAllModules").on("click", function() {
 */
 
 $("#reactive_mode").on("change", function() {
-    $(`#reactive_mode1, #reactive_mode2, #reactive_mode3`).addClass("d-none");
+    $(`#reactive_mode1, #reactive_mode2, #reactive_mode3, #reactive_mode4`).addClass("d-none");
     $(`#reactive_mode${this.value}`).removeClass("d-none");
 });
 
-$("#reactive_mode3_v1, #reactive_mode3_v2, #reactive_mode3_v3, #reactive_mode3_v4").on("input", function() {
+$("#reactive_mode1_kink").on("change", function() {
+    $("#svg_reactive_mode1 #svg_reactive_mode1_kink_value").text(parseInt($("#reactive_mode1_kink").val()) / 100);
+});
+
+$("#reactive_mode3_v1, #reactive_mode3_v2, #reactive_mode3_v3, #reactive_mode3_v4").on("change input", function() {
     $("#svg_reactive_mode3 #svg_reactive_mode3_v1_value").text(($("#reactive_mode3_v1").val() == "" ? $("#reactive_mode3_v1").attr("placeholder") : $("#reactive_mode3_v1").val()) + "%");
     $("#svg_reactive_mode3 #svg_reactive_mode3_v2_value").text(($("#reactive_mode3_v2").val() == "" ? $("#reactive_mode3_v2").attr("placeholder") : $("#reactive_mode3_v2").val()) + "%");
     $("#svg_reactive_mode3 #svg_reactive_mode3_v3_value").text(($("#reactive_mode3_v3").val() == "" ? $("#reactive_mode3_v3").attr("placeholder") : $("#reactive_mode3_v3").val()) + "%");
     $("#svg_reactive_mode3 #svg_reactive_mode3_v4_value").text(($("#reactive_mode3_v4").val() == "" ? $("#reactive_mode3_v4").attr("placeholder") : $("#reactive_mode3_v4").val()) + "%");
 });
 
-$("#reactive_mode, #reactive_mode3_v1, #reactive_mode3_v2, #reactive_mode3_v3, #reactive_mode3_v4").trigger("change");
+$("#reactive_mode, #reactive_mode1_kink, #reactive_mode3_v1, #reactive_mode3_v2, #reactive_mode3_v3, #reactive_mode3_v4").trigger("change");
 
 
 
@@ -1223,11 +1277,29 @@ $("#mainForm").on("submit", (e) => {
 });
 
 function mainFormSubmit() {
-    if(isOther() && $("#other_battery_capacity").val() != "0") {
-        $("#modalConfirmOtherBatteries").modal("show");
-        $("#modalConfirmOtherBatteries button").unbind().on("click", () => {
-            $("#modalConfirmOtherBatteries").modal("hide");
+    if(isTor) {
+        $("#confirmExtended_Ueff"            ).val($("#extended_Ueff"            ).val());
+        $("#confirmExtended_UeffTime"        ).val($("#extended_UeffTime"        ).val());
+        $("#confirmExtended_UeffOver1"       ).val($("#extended_UeffOver1"       ).val());
+        $("#confirmExtended_UeffUnder1"      ).val($("#extended_UeffUnder1"      ).val());
+        $("#confirmExtended_UeffOver2"       ).val($("#extended_UeffOver2"       ).val());
+        $("#confirmExtended_UeffUnder2"      ).val($("#extended_UeffUnder2"      ).val());
+        $("#confirmExtended_fOver1"          ).val($("#extended_fOver1"          ).val());
+        $("#confirmExtended_fUnder1"         ).val($("#extended_fUnder1"         ).val());
+        $("#confirmExtended_maxGridVoltage"  ).val($("#extended_maxGridVoltage"  ).val());
+        $("#confirmExtended_minGridVoltage"  ).val($("#extended_minGridVoltage"  ).val());
+        $("#confirmExtended_maxGridFrequency").val($("#extended_maxGridFrequency").val());
+        $("#confirmExtended_minGridFrequency").val($("#extended_minGridFrequency").val());
+        $("#confirmExtended_gridConnectDelay").val($("#extended_gridConnectDelay").val());
+        $("#confirmExtended_puTime"          ).val($("#extended_puTime"          ).val());
+        $("#modalConfirmExtendedParameters").modal("show");
+        $("#modalConfirmExtendedParameters button.confirm").unbind().on("click", () => {
+            $("#modalConfirmExtendedParameters").modal("hide");
             mainFormSubmit_2();
+        });
+        $("#modalConfirmExtendedParameters button.modify").unbind().on("click", () => {
+            $("#modalConfirmExtendedParameters").modal("hide");
+            $("#modalExtendedParameters").modal("show");
         });
     } else {
         mainFormSubmit_2();
@@ -1235,16 +1307,10 @@ function mainFormSubmit() {
 }
 
 function mainFormSubmit_2() {
-    if(isClixV2 && isUPS()) {
-        $("#modalConfirmUpsMode").modal("show");
-        $("#modalConfirmUpsMode button").unbind().on("click", () => {
-            $("#modalConfirmUpsMode").modal("hide");
-            mainFormSubmit_3();
-        });
-    } else if(isClixV2 && isBackup()) {
-        $("#modalConfirmBackupMode").modal("show");
-        $("#modalConfirmBackupMode button").unbind().on("click", () => {
-            $("#modalConfirmBackupMode").modal("hide");
+    if(isOther() && $("#other_battery_capacity").val() != "0") {
+        $("#modalConfirmOtherBatteries").modal("show");
+        $("#modalConfirmOtherBatteries button").unbind().on("click", () => {
+            $("#modalConfirmOtherBatteries").modal("hide");
             mainFormSubmit_3();
         });
     } else {
@@ -1253,15 +1319,33 @@ function mainFormSubmit_2() {
 }
 
 function mainFormSubmit_3() {
+    if(isClixV2 && isUPS()) {
+        $("#modalConfirmUpsMode").modal("show");
+        $("#modalConfirmUpsMode button").unbind().on("click", () => {
+            $("#modalConfirmUpsMode").modal("hide");
+            mainFormSubmit_4();
+        });
+    } else if(isClixV2 && isBackup()) {
+        $("#modalConfirmBackupMode").modal("show");
+        $("#modalConfirmBackupMode button").unbind().on("click", () => {
+            $("#modalConfirmBackupMode").modal("hide");
+            mainFormSubmit_4();
+        });
+    } else {
+        mainFormSubmit_4();
+    }
+}
+
+function mainFormSubmit_4() {
     if($("#regulation_check").is(":checked") && parseInt($("#solar_feedinlimitation").val()) < 100) {
         $("#modalConfirmInternalSolar .message").html(lang.system_setup.internalsolarconfirm_message.replace("30%", `<b>${Math.round(100 - parseInt($("#solar_feedinlimitation").val()))}%</b>`));
         $("#modalConfirmInternalSolar").modal("show");
         $("#modalConfirmInternalSolar button").unbind().on("click", () => {
             $("#modalConfirmInternalSolar").modal("hide");
-            mainFormSubmit_4();
+            mainFormSubmit_5();
         });
     } else {
-        mainFormSubmit_4();
+        mainFormSubmit_5();
     }
 }
 
@@ -1278,7 +1362,7 @@ function mainFormSubmit_3() {
     Check All Fields
 */
 
-function mainFormSubmit_4() {
+function mainFormSubmit_5() {
 
     // Return If Empty Fields
     if(!allFieldsCorrect()) return;
@@ -1308,7 +1392,7 @@ function mainFormSubmit_4() {
         success: (response) => {
             console.log(response);
             if(response !== "1") return $("#errorInverterRegisteredWithOtherSystem").modal("show");
-            mainFormSubmit_5();
+            mainFormSubmit_6();
         }
     });
 
@@ -1327,7 +1411,7 @@ function mainFormSubmit_4() {
     Start Setup
 */
 
-function mainFormSubmit_5() {
+function mainFormSubmit_6() {
 
 
 
@@ -1385,6 +1469,7 @@ function mainFormSubmit_5() {
         #other_battery_redischargeVoltage,
 
         #reactive_mode,
+        #reactive_mode1_kink,
         #reactive_mode2_cosphi,
         #reactive_mode2_cosphi_sign,
         #reactive_mode3_cosphi,
@@ -1392,9 +1477,25 @@ function mainFormSubmit_5() {
         #reactive_mode3_v2,
         #reactive_mode3_v3,
         #reactive_mode3_v4,
+        #reactive_mode3_qutime,
+        #reactive_mode4_qfix,
         #btnExtendedParameters,
         #extended_dropRatedPowerPoint,
         #extended_dropRatedPowerSlope,
+        #extended_Ueff,
+        #extended_UeffTime,
+        #extended_UeffOver1,
+        #extended_UeffUnder1,
+        #extended_UeffOver2,
+        #extended_UeffUnder2,
+        #extended_fOver1,
+        #extended_fUnder1,
+        #extended_maxGridVoltage,
+        #extended_minGridVoltage,
+        #extended_maxGridFrequency,
+        #extended_minGridFrequency,
+        #extended_gridConnectDelay,
+        #extended_puTime,
 
         #regulation_check,
         #extsol_check,
@@ -1491,13 +1592,18 @@ function setValuesToSession() {
     // Reactive Power Mode
 
     reactive_mode   = Math.round($("#reactive_mode").val());
+    reactive_kink   = null;
     reactive_cosphi = null;
     reactive_v1     = null;
     reactive_v2     = null;
     reactive_v3     = null;
     reactive_v4     = null;
+    reactive_qutime = $("#reactive_mode3_qutime").val() == "" ? 5 : Math.round($("#reactive_mode3_qutime").val());
+    reactive_qfix   = null;
 
-    if(reactive_mode == "2") {
+    if(reactive_mode == "1") {
+        reactive_kink = Math.round($("#reactive_mode1_kink").val());
+    } else if(reactive_mode == "2") {
         reactive_cosphi = Math.round($("#reactive_mode2_cosphi").val());
         if($("#reactive_mode2_cosphi_sign").val() == "1" && reactive_cosphi != 100) reactive_cosphi = -reactive_cosphi;
     } else if(reactive_mode == "3") {
@@ -1506,17 +1612,41 @@ function setValuesToSession() {
         reactive_v2     = $("#reactive_mode3_v2").val() == "" ? isTor ?  96 :  97 : Math.round($("#reactive_mode3_v2").val());
         reactive_v3     = $("#reactive_mode3_v3").val() == "" ? isTor ? 105 : 103 : Math.round($("#reactive_mode3_v3").val());
         reactive_v4     = $("#reactive_mode3_v4").val() == "" ? isTor ? 108 : 107 : Math.round($("#reactive_mode3_v4").val());
+        reactive_qutime = $("#reactive_mode3_qutime").val() == "" ? 5 : Math.round($("#reactive_mode3_qutime").val());
+        if(reactive_qutime < 3) reactive_qutime = 3;
+        if(reactive_qutime > 60) reactive_qutime = 60;
+    } else if(reactive_mode == "4") {
+        reactive_qfix   = $("#reactive_mode4_qfix").val() == "" ? 0 : Math.round($("#reactive_mode4_qfix").val());
+        if(reactive_qfix < -5000) reactive_qfix = -5000;
+        if(reactive_qfix >  5000) reactive_qfix =  5000;
     }
 
     if(reactive_mode   != null) tempData.reactive_mode   = reactive_mode;
+    if(reactive_kink   != null) tempData.reactive_kink   = reactive_kink;
     if(reactive_cosphi != null) tempData.reactive_cosphi = reactive_cosphi;
     if(reactive_v1     != null) tempData.reactive_v1     = reactive_v1;
     if(reactive_v2     != null) tempData.reactive_v2     = reactive_v2;
     if(reactive_v3     != null) tempData.reactive_v3     = reactive_v3;
     if(reactive_v4     != null) tempData.reactive_v4     = reactive_v4;
+    if(reactive_qutime != null) tempData.reactive_qutime = reactive_qutime;
+    if(reactive_qfix   != null) tempData.reactive_qfix   = reactive_qfix;
 
     if($("#extended_dropRatedPowerPoint").val() != "") tempData.extended_dropRatedPowerPoint = $("#extended_dropRatedPowerPoint").val();
     if($("#extended_dropRatedPowerSlope").val() != "") tempData.extended_dropRatedPowerSlope = $("#extended_dropRatedPowerSlope").val();
+    if($("#extended_Ueff               ").val() != "") tempData.extended_Ueff                = $("#extended_Ueff               ").val();
+    if($("#extended_UeffTime           ").val() != "") tempData.extended_UeffTime            = $("#extended_UeffTime           ").val();
+    if($("#extended_UeffOver1          ").val() != "") tempData.extended_UeffOver1           = $("#extended_UeffOver1          ").val();
+    if($("#extended_UeffUnder1         ").val() != "") tempData.extended_UeffUnder1          = $("#extended_UeffUnder1         ").val();
+    if($("#extended_UeffOver2          ").val() != "") tempData.extended_UeffOver2           = $("#extended_UeffOver2          ").val();
+    if($("#extended_UeffUnder2         ").val() != "") tempData.extended_UeffUnder2          = $("#extended_UeffUnder2         ").val();
+    if($("#extended_fOver1             ").val() != "") tempData.extended_fOver1              = $("#extended_fOver1             ").val();
+    if($("#extended_fUnder1            ").val() != "") tempData.extended_fUnder1             = $("#extended_fUnder1            ").val();
+    if($("#extended_maxGridVoltage     ").val() != "") tempData.extended_maxGridVoltage      = $("#extended_maxGridVoltage     ").val();
+    if($("#extended_minGridVoltage     ").val() != "") tempData.extended_minGridVoltage      = $("#extended_minGridVoltage     ").val();
+    if($("#extended_maxGridFrequency   ").val() != "") tempData.extended_maxGridFrequency    = $("#extended_maxGridFrequency   ").val();
+    if($("#extended_minGridFrequency   ").val() != "") tempData.extended_minGridFrequency    = $("#extended_minGridFrequency   ").val();
+    if($("#extended_gridConnectDelay   ").val() != "") tempData.extended_gridConnectDelay    = $("#extended_gridConnectDelay   ").val();
+    if($("#extended_puTime             ").val() != "") tempData.extended_puTime              = $("#extended_puTime             ").val();
 
 
 
@@ -1789,38 +1919,83 @@ function setup2() {
     newParameters["systemMode"              ] = $("#bx_sysmode").val();
     newParameters["allowNGRelCloseInBatMode"] = "1";
 
-    newParameters["allowOverVoltageDerating"] = isVde4105 ? "0" : (isTor ? "1" : "0");
-    newParameters["allowUnderFreqDropPower" ] = isVde4105 ? "1" : (isTor ? "0" : "0");
-    newParameters["allowLVRT"               ] = "0";
-    newParameters["allowHVRT"               ] = "0";
-    newParameters["allowSoftStartACCharging"] = "0";
-    newParameters["allowOverFreqDerating"   ] = isVde4105 ? "1" : (isTor ? "1" : "0");
+    newParameters["allowOverVoltageDerating"] = isTor ? "1" : "0";
+    newParameters["allowUnderFreqDropPower" ] = (isVde4105 || isEstonia) ? "1" : "0";
+    newParameters["allowLVRT"               ] = ((isTor || isEstonia) && isBackup()) ? "1" : "0";
+    newParameters["allowHVRT"               ] = ((isTor || isEstonia) && isBackup()) ? "1" : "0";
+    newParameters["allowSoftStartACCharging"] = (isTor && isBackup()) ? "1" : "0";
+    newParameters["allowOverFreqDerating"   ] = (isVde4105 || isTor || isEstonia) ? "1" : "0";
     newParameters["allowQuDeratingFunction" ] = "0";
     newParameters["feedInPowerFactor"       ] = "100";
     newParameters["autoAdjustPowerFactor"   ] = "0,50,-90";
     newParameters["voltageAndReactivePower" ] = "4359,21390,22310,23690,24610";
     newParameters["overFreqDropRatedPower"  ] = "5020,40,0";
+    newParameters["feedInReactivePower"     ] = "0";
+    newParameters["configTimeConstants"     ] = "5,5";
 
-    var devicePower = deviceModel == "batterx_h10" ? 10000 : 5000;
-    var temp_v1     = Math.round(Math.round(reactive_v1) * 230.94 / 10) * 10;
-    var temp_v2     = Math.round(Math.round(reactive_v2) * 230.94 / 10) * 10;
-    var temp_v3     = Math.round(Math.round(reactive_v3) * 230.94 / 10) * 10;
-    var temp_v4     = Math.round(Math.round(reactive_v4) * 230.94 / 10) * 10;
-    var temp_q      = Math.round(Math.sqrt(Math.pow(devicePower, 2) - Math.pow(devicePower * reactive_cosphi / 100, 2)));
     if(reactive_mode == 1) {
         // cosφ(P) Curve
-        newParameters["autoAdjustPowerFactor"] = `1,50,-90`;
+        newParameters["autoAdjustPowerFactor"] = `1,${reactive_kink},-90`;
     } else if(reactive_mode == 2) {
         // Fixed cosφ
         newParameters["feedInPowerFactor"] = `${reactive_cosphi}`;
     } else if(reactive_mode == 3) {
         // Q(U) Curve
+        var devicePower = deviceModel == "batterx_h10" ? 10000 : 5000;
+        var temp_v1     = Math.round(Math.round(reactive_v1) * 230.94 / 10) * 10;
+        var temp_v2     = Math.round(Math.round(reactive_v2) * 230.94 / 10) * 10;
+        var temp_v3     = Math.round(Math.round(reactive_v3) * 230.94 / 10) * 10;
+        var temp_v4     = Math.round(Math.round(reactive_v4) * 230.94 / 10) * 10;
+        var temp_q      = Math.round(Math.sqrt(Math.pow(devicePower, 2) - Math.pow(devicePower * reactive_cosphi / 100, 2)));
         newParameters["allowQuDeratingFunction"] = `1`;
         newParameters["voltageAndReactivePower"] = `${temp_q},${temp_v1},${temp_v2},${temp_v3},${temp_v4}`;
+        newParameters["configTimeConstants"    ] = `${reactive_qutime},5`;
+    } else if(reactive_mode == 4) {
+        newParameters["feedInReactivePower"] = `${reactive_qfix}`;
     }
     var temp_point = Math.round($("#extended_dropRatedPowerPoint").val());
     var temp_slope = Math.round($("#extended_dropRatedPowerSlope").val());
     newParameters["overFreqDropRatedPower"] = `${temp_point},${temp_slope},0`;
+
+    if(isTor) {
+        var temp_Ueff             = Math.round(convertUnToVolt($("#extended_Ueff").val()) * 100);
+        var temp_UeffTime         = Math.round($("#extended_UeffTime").val() * 60);
+        var temp_UeffOver1        = Math.round(convertUnToVolt($("#extended_UeffOver1").val()) * 100);
+        var temp_UeffUnder1       = Math.round(convertUnToVolt($("#extended_UeffUnder1").val()) * 100);
+        var temp_UeffOver2        = Math.round(convertUnToVolt($("#extended_UeffOver2").val()) * 100);
+        var temp_UeffUnder2       = Math.round(convertUnToVolt($("#extended_UeffUnder2").val()) * 100);
+        var temp_fOver1           = Math.round($("#extended_fOver1").val() * 100);
+        var temp_fUnder1          = Math.round($("#extended_fUnder1").val() * 100);
+        var temp_maxGridVoltage   = Math.round(convertUnToVolt($("#extended_maxGridVoltage").val()) * 100);
+        var temp_minGridVoltage   = Math.round(convertUnToVolt($("#extended_minGridVoltage").val()) * 100);
+        var temp_maxGridFrequency = Math.round($("#extended_maxGridFrequency").val() * 100);
+        var temp_minGridFrequency = Math.round($("#extended_minGridFrequency").val() * 100);
+        var temp_gridConnectDelay = Math.round($("#extended_gridConnectDelay").val());
+        var temp_puTime           = Math.round($("#extended_puTime").val());
+        newParameters["configTimeConstants"        ] = `${reactive_qutime},${temp_puTime}`;
+        newParameters["gridVoltageProtectionTime"  ] = "100,500,60000,1500";
+        newParameters["gridFrequencyProtectionTime"] = "60,60,100,100";
+        newParameters["gridAverageVoltage"         ] = `${temp_Ueff}`;
+        newParameters["gridAverageVoltageTime"     ] = `${temp_UeffTime}`;
+        newParameters["gridFirstOrderVoltage"      ] = `${temp_UeffOver1},${temp_UeffUnder1}`;
+        newParameters["gridSecondOrderVoltage"     ] = `${temp_UeffOver2},${temp_UeffUnder2}`;
+        newParameters["gridFirstOrderFrequency"    ] = `${temp_fOver1},${temp_fUnder1}`;
+        newParameters["maxGridVoltage"             ] = `${temp_maxGridVoltage}`;
+        newParameters["minGridVoltage"             ] = `${temp_minGridVoltage}`;
+        newParameters["maxGridFrequency"           ] = `${temp_maxGridFrequency}`;
+        newParameters["minGridFrequency"           ] = `${temp_minGridFrequency}`;
+        newParameters["gridConnectDelay"           ] = `${temp_gridConnectDelay}`;
+    } else if(isEstonia) {
+        newParameters["gridVoltageProtectionTime"  ] = "100,360,3000,1200";
+        newParameters["gridFrequencyProtectionTime"] = "160,360,100,100";
+        newParameters["gridFirstOrderVoltage"      ] = "25530,19550";
+        newParameters["gridSecondOrderVoltage"     ] = "26450,4600";
+        newParameters["gridFirstOrderFrequency"    ] = "5160,4740";
+        newParameters["maxGridVoltage"             ] = "26450";
+        newParameters["minGridVoltage"             ] = "19550";
+        newParameters["maxGridFrequency"           ] = "5200";
+        newParameters["minGridFrequency"           ] = "4700";
+    }
 
     newParameters["regulationMode"] = $("#regulation_check").is(":checked") ? "1" : "0";
     newParameters["extsolMode"    ] = $("#extsol_check    ").is(":checked") ? "1" : "0";
@@ -1855,34 +2030,53 @@ function setup2() {
             var temp = response["InverterParameters"];
             deviceDatetime = temp["0"]["s1"];
             
-            oldParameters["chargingVoltage"         ] = !temp.hasOwnProperty("32") ? "" : temp["32"]["s1"];
-            oldParameters["dischargingVoltage"      ] = !temp.hasOwnProperty("33") ? "" : temp["33"]["s1"];
-            oldParameters["maxDischargingCurrent"   ] = !temp.hasOwnProperty("34") ? "" : temp["34"]["s1"];
-            oldParameters["batteryType"             ] = !temp.hasOwnProperty( "5") ? "" : temp[ "5"]["s1"];
-            oldParameters["solarEnergyPriority"     ] = !temp.hasOwnProperty( "6") ? "" : temp[ "6"]["s1"];
-            oldParameters["allowBatteryCharging"    ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[0];
-            oldParameters["allowBatteryChargingAC"  ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[1];
-            oldParameters["allowGridInjection"      ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[2];
-            oldParameters["allowDischargingSolarOK" ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[3];
-            oldParameters["allowDischargingSolarNOK"] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[4];
-            oldParameters["maxGridFeedInPower"      ] = !temp.hasOwnProperty("15") ? "" : temp["15"]["s1"];
+            oldParameters["chargingVoltage"         ] = !temp.hasOwnProperty("32") || !temp["32"]["s1"].replaceAll(",", "") ? "" : temp["32"]["s1"];
+            oldParameters["dischargingVoltage"      ] = !temp.hasOwnProperty("33") || !temp["33"]["s1"].replaceAll(",", "") ? "" : temp["33"]["s1"];
+            oldParameters["maxDischargingCurrent"   ] = !temp.hasOwnProperty("34") || !temp["34"]["s1"].replaceAll(",", "") ? "" : temp["34"]["s1"];
+            oldParameters["batteryType"             ] = !temp.hasOwnProperty( "5") || !temp[ "5"]["s1"].replaceAll(",", "") ? "" : temp[ "5"]["s1"];
+            oldParameters["solarEnergyPriority"     ] = !temp.hasOwnProperty( "6") || !temp[ "6"]["s1"].replaceAll(",", "") ? "" : temp[ "6"]["s1"];
+            oldParameters["allowBatteryCharging"    ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[0];
+            oldParameters["allowBatteryChargingAC"  ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[1];
+            oldParameters["allowGridInjection"      ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[2];
+            oldParameters["allowDischargingSolarOK" ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[3];
+            oldParameters["allowDischargingSolarNOK"] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[4];
+            oldParameters["maxGridFeedInPower"      ] = !temp.hasOwnProperty("15") || !temp["15"]["s1"].replaceAll(",", "") ? "" : temp["15"]["s1"];
             oldParameters["systemMode"              ] = !response.hasOwnProperty("SystemMode") ? "" : response["SystemMode"]["0"]["mode"];
-            oldParameters["allowNGRelCloseInBatMode"] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[5];
+            oldParameters["allowNGRelCloseInBatMode"] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[5];
 
             if(isCarbon() || isOther())
-                oldParameters["maxChargingCurrent"  ] = !temp.hasOwnProperty("30") ? "" : temp["30"]["s1"];
+                oldParameters["maxChargingCurrent"  ] = !temp.hasOwnProperty("30") || !temp["30"]["s1"].replaceAll(",", "") ? "" : temp["30"]["s1"];
 
-            oldParameters["allowOverVoltageDerating"] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[6];
-            oldParameters["allowUnderFreqDropPower" ] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[9];
-            oldParameters["allowLVRT"               ] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[10];
-            oldParameters["allowHVRT"               ] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[11];
-            oldParameters["allowSoftStartACCharging"] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[12];
-            oldParameters["allowOverFreqDerating"   ] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[7];
-            oldParameters["allowQuDeratingFunction" ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[7];
-            oldParameters["feedInPowerFactor"       ] = !temp.hasOwnProperty("16") ? "" : temp["16"]["s1"];
-            oldParameters["autoAdjustPowerFactor"   ] = !temp.hasOwnProperty("36") ? "" : temp["36"]["s1"];
-            oldParameters["voltageAndReactivePower" ] = !temp.hasOwnProperty("37") ? "" : temp["37"]["s1"];
-            oldParameters["overFreqDropRatedPower"  ] = !temp.hasOwnProperty("38") ? "" : temp["38"]["s1"];
+            oldParameters["allowOverVoltageDerating"] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[6];
+            oldParameters["allowUnderFreqDropPower" ] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[9];
+            oldParameters["allowLVRT"               ] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[10];
+            oldParameters["allowHVRT"               ] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[11];
+            oldParameters["allowSoftStartACCharging"] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[12];
+            oldParameters["allowOverFreqDerating"   ] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[7];
+            oldParameters["allowQuDeratingFunction" ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[7];
+            oldParameters["feedInPowerFactor"       ] = !temp.hasOwnProperty("16") || !temp["16"]["s1"].replaceAll(",", "") ? "" : temp["16"]["s1"];
+            oldParameters["autoAdjustPowerFactor"   ] = !temp.hasOwnProperty("36") || !temp["36"]["s1"].replaceAll(",", "") ? "" : temp["36"]["s1"];
+            oldParameters["voltageAndReactivePower" ] = !temp.hasOwnProperty("37") || !temp["37"]["s1"].replaceAll(",", "") ? "" : temp["37"]["s1"];
+            oldParameters["overFreqDropRatedPower"  ] = !temp.hasOwnProperty("38") || !temp["38"]["s1"].replaceAll(",", "") ? "" : temp["38"]["s1"];
+            oldParameters["feedInReactivePower"     ] = !temp.hasOwnProperty("43") || !temp["43"]["s1"].replaceAll(",", "") ? "" : temp["43"]["s1"];
+            oldParameters["configTimeConstants"     ] = !temp.hasOwnProperty("47") || !temp["47"]["s1"].replaceAll(",", "") ? "" : temp["47"]["s1"];
+
+            if(isTor || isEstonia) {
+                oldParameters["gridVoltageProtectionTime"  ] = !temp.hasOwnProperty("44") || !temp["44"]["s1"].replaceAll(",", "") ? "" : temp["44"]["s1"];
+                oldParameters["gridFrequencyProtectionTime"] = !temp.hasOwnProperty("45") || !temp["45"]["s1"].replaceAll(",", "") ? "" : temp["45"]["s1"];
+                oldParameters["gridFirstOrderVoltage"      ] = !temp.hasOwnProperty("39") || !temp["39"]["s1"].replaceAll(",", "") ? "" : temp["39"]["s1"];
+                oldParameters["gridSecondOrderVoltage"     ] = !temp.hasOwnProperty("41") || !temp["41"]["s1"].replaceAll(",", "") ? "" : temp["41"]["s1"];
+                oldParameters["gridFirstOrderFrequency"    ] = !temp.hasOwnProperty("40") || !temp["40"]["s1"].replaceAll(",", "") ? "" : temp["40"]["s1"];
+                oldParameters["maxGridVoltage"             ] = !temp.hasOwnProperty("11") || !temp["11"]["s1"].replaceAll(",", "") ? "" : temp["11"]["s1"];
+                oldParameters["minGridVoltage"             ] = !temp.hasOwnProperty("10") || !temp["10"]["s1"].replaceAll(",", "") ? "" : temp["10"]["s1"];
+                oldParameters["maxGridFrequency"           ] = !temp.hasOwnProperty("13") || !temp["13"]["s1"].replaceAll(",", "") ? "" : temp["13"]["s1"];
+                oldParameters["minGridFrequency"           ] = !temp.hasOwnProperty("12") || !temp["12"]["s1"].replaceAll(",", "") ? "" : temp["12"]["s1"];
+                if(isTor) {
+                    oldParameters["gridAverageVoltage"     ] = !temp.hasOwnProperty("14") || !temp["14"]["s1"].replaceAll(",", "") ? "" : temp["14"]["s1"];
+                    oldParameters["gridAverageVoltageTime" ] = !temp.hasOwnProperty("46") || !temp["46"]["s1"].replaceAll(",", "") ? "" : temp["46"]["s1"];
+                    oldParameters["gridConnectDelay"       ] = !temp.hasOwnProperty( "4") || !temp[ "4"]["s1"].replaceAll(",", "") ? "" : temp[ "4"]["s1"];
+                }
+            }
 
             if(isLiFePO() && oldParameters["dischargingVoltage"].split(",")[2] == "4700") // Old B Modules
                 newParameters["dischargingVoltage"] = "4700,5000,4700,5000";
@@ -1938,6 +2132,25 @@ function setup2() {
     if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) { retry = true; setup_sendCommand(24118, 0, "",        newParameters["autoAdjustPowerFactor"   ]); }
     if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) { retry = true; setup_sendCommand(24119, 0, "",        newParameters["voltageAndReactivePower" ]); }
     if(newParameters["overFreqDropRatedPower"  ] != oldParameters["overFreqDropRatedPower"  ]) { retry = true; setup_sendCommand(24120, 0, "",        newParameters["overFreqDropRatedPower"  ]); }
+    if(newParameters["feedInReactivePower"     ] != oldParameters["feedInReactivePower"     ]) { retry = true; setup_sendCommand(24131, 0, "",        newParameters["feedInReactivePower"     ]); }
+    if(newParameters["configTimeConstants"     ] != oldParameters["configTimeConstants"     ]) { retry = true; setup_sendCommand(24135, 0, "",        newParameters["configTimeConstants"     ]); }
+
+    if(isTor || isEstonia) {
+        if(newParameters["gridVoltageProtectionTime"  ] != oldParameters["gridVoltageProtectionTime"  ]) { retry = true; setup_sendCommand(24132, 0, "",        newParameters["gridVoltageProtectionTime"  ]); }
+        if(newParameters["gridFrequencyProtectionTime"] != oldParameters["gridFrequencyProtectionTime"]) { retry = true; setup_sendCommand(24133, 0, "",        newParameters["gridFrequencyProtectionTime"]); }
+        if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) { retry = true; setup_sendCommand(24121, 0, "",        newParameters["gridFirstOrderVoltage"      ]); }
+        if(newParameters["gridSecondOrderVoltage"     ] != oldParameters["gridSecondOrderVoltage"     ]) { retry = true; setup_sendCommand(24129, 0, "",        newParameters["gridSecondOrderVoltage"     ]); }
+        if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) { retry = true; setup_sendCommand(24128, 0, "",        newParameters["gridFirstOrderFrequency"    ]); }
+        if(newParameters["maxGridVoltage"             ] != oldParameters["maxGridVoltage"             ]) { retry = true; setup_sendCommand(24081, 0, "",        newParameters["maxGridVoltage"             ]); }
+        if(newParameters["minGridVoltage"             ] != oldParameters["minGridVoltage"             ]) { retry = true; setup_sendCommand(24080, 0, "",        newParameters["minGridVoltage"             ]); }
+        if(newParameters["maxGridFrequency"           ] != oldParameters["maxGridFrequency"           ]) { retry = true; setup_sendCommand(24083, 0, "",        newParameters["maxGridFrequency"           ]); }
+        if(newParameters["minGridFrequency"           ] != oldParameters["minGridFrequency"           ]) { retry = true; setup_sendCommand(24082, 0, "",        newParameters["minGridFrequency"           ]); }
+        if(isTor) {
+            if(newParameters["gridAverageVoltage"     ] != oldParameters["gridAverageVoltage"         ]) { retry = true; setup_sendCommand(24084, 0, "",        newParameters["gridAverageVoltage"         ]); }
+            if(newParameters["gridAverageVoltageTime" ] != oldParameters["gridAverageVoltageTime"     ]) { retry = true; setup_sendCommand(24134, 0, "",        newParameters["gridAverageVoltageTime"     ]); }
+            if(newParameters["gridConnectDelay"       ] != oldParameters["gridConnectDelay"           ]) { retry = true; setup_sendCommand(24068, 0, "",        newParameters["gridConnectDelay"           ]); }
+        }
+    }
 
     if(newParameters["regulationMode"] != oldParameters["regulationMode"]) { retry = true; setup_sendSetting("InjectionMode"        , "0", "v5"   , newParameters["regulationMode"]); }
     if(newParameters["extsolMode"    ] != oldParameters["extsolMode"    ]) { retry = true; setup_sendSetting("ModbusExtSolarDevice" , "0", "mode" , newParameters["extsolMode"    ]); }
@@ -2024,34 +2237,53 @@ function setup_checkParameters() {
             if(temp["0"]["s1"] == deviceDatetime) return false;
             deviceDatetime = temp["0"]["s1"];
 
-            oldParameters["chargingVoltage"         ] = !temp.hasOwnProperty("32") ? "" : temp["32"]["s1"];
-            oldParameters["dischargingVoltage"      ] = !temp.hasOwnProperty("33") ? "" : temp["33"]["s1"];
-            oldParameters["maxDischargingCurrent"   ] = !temp.hasOwnProperty("34") ? "" : temp["34"]["s1"];
-            oldParameters["batteryType"             ] = !temp.hasOwnProperty( "5") ? "" : temp[ "5"]["s1"];
-            oldParameters["solarEnergyPriority"     ] = !temp.hasOwnProperty( "6") ? "" : temp[ "6"]["s1"];
-            oldParameters["allowBatteryCharging"    ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[0];
-            oldParameters["allowBatteryChargingAC"  ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[1];
-            oldParameters["allowGridInjection"      ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[2];
-            oldParameters["allowDischargingSolarOK" ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[3];
-            oldParameters["allowDischargingSolarNOK"] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[4];
-            oldParameters["maxGridFeedInPower"      ] = !temp.hasOwnProperty("15") ? "" : temp["15"]["s1"];
+            oldParameters["chargingVoltage"         ] = !temp.hasOwnProperty("32") || !temp["32"]["s1"].replaceAll(",", "") ? "" : temp["32"]["s1"];
+            oldParameters["dischargingVoltage"      ] = !temp.hasOwnProperty("33") || !temp["33"]["s1"].replaceAll(",", "") ? "" : temp["33"]["s1"];
+            oldParameters["maxDischargingCurrent"   ] = !temp.hasOwnProperty("34") || !temp["34"]["s1"].replaceAll(",", "") ? "" : temp["34"]["s1"];
+            oldParameters["batteryType"             ] = !temp.hasOwnProperty( "5") || !temp[ "5"]["s1"].replaceAll(",", "") ? "" : temp[ "5"]["s1"];
+            oldParameters["solarEnergyPriority"     ] = !temp.hasOwnProperty( "6") || !temp[ "6"]["s1"].replaceAll(",", "") ? "" : temp[ "6"]["s1"];
+            oldParameters["allowBatteryCharging"    ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[0];
+            oldParameters["allowBatteryChargingAC"  ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[1];
+            oldParameters["allowGridInjection"      ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[2];
+            oldParameters["allowDischargingSolarOK" ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[3];
+            oldParameters["allowDischargingSolarNOK"] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[4];
+            oldParameters["maxGridFeedInPower"      ] = !temp.hasOwnProperty("15") || !temp["15"]["s1"].replaceAll(",", "") ? "" : temp["15"]["s1"];
             oldParameters["systemMode"              ] = !response.hasOwnProperty("SystemMode") ? "" : response["SystemMode"]["0"]["mode"];
-            oldParameters["allowNGRelCloseInBatMode"] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[5];
+            oldParameters["allowNGRelCloseInBatMode"] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[5];
 
             if(isCarbon() || isOther())
-                oldParameters["maxChargingCurrent"  ] = !temp.hasOwnProperty("30") ? "" : temp["30"]["s1"];
+                oldParameters["maxChargingCurrent"  ] = !temp.hasOwnProperty("30") || !temp["30"]["s1"].replaceAll(",", "") ? "" : temp["30"]["s1"];
 
-            oldParameters["allowOverVoltageDerating"] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[6];
-            oldParameters["allowUnderFreqDropPower" ] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[9];
-            oldParameters["allowLVRT"               ] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[10];
-            oldParameters["allowHVRT"               ] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[11];
-            oldParameters["allowSoftStartACCharging"] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[12];
-            oldParameters["allowOverFreqDerating"   ] = !temp.hasOwnProperty( "1") ? "" : temp[ "1"]["s1"].split(",")[7];
-            oldParameters["allowQuDeratingFunction" ] = !temp.hasOwnProperty( "2") ? "" : temp[ "2"]["s1"].split(",")[7];
-            oldParameters["feedInPowerFactor"       ] = !temp.hasOwnProperty("16") ? "" : temp["16"]["s1"];
-            oldParameters["autoAdjustPowerFactor"   ] = !temp.hasOwnProperty("36") ? "" : temp["36"]["s1"];
-            oldParameters["voltageAndReactivePower" ] = !temp.hasOwnProperty("37") ? "" : temp["37"]["s1"];
-            oldParameters["overFreqDropRatedPower"  ] = !temp.hasOwnProperty("38") ? "" : temp["38"]["s1"];
+            oldParameters["allowOverVoltageDerating"] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[6];
+            oldParameters["allowUnderFreqDropPower" ] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[9];
+            oldParameters["allowLVRT"               ] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[10];
+            oldParameters["allowHVRT"               ] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[11];
+            oldParameters["allowSoftStartACCharging"] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[12];
+            oldParameters["allowOverFreqDerating"   ] = !temp.hasOwnProperty( "1") || !temp[ "1"]["s1"].replaceAll(",", "") ? "" : temp[ "1"]["s1"].split(",")[7];
+            oldParameters["allowQuDeratingFunction" ] = !temp.hasOwnProperty( "2") || !temp[ "2"]["s1"].replaceAll(",", "") ? "" : temp[ "2"]["s1"].split(",")[7];
+            oldParameters["feedInPowerFactor"       ] = !temp.hasOwnProperty("16") || !temp["16"]["s1"].replaceAll(",", "") ? "" : temp["16"]["s1"];
+            oldParameters["autoAdjustPowerFactor"   ] = !temp.hasOwnProperty("36") || !temp["36"]["s1"].replaceAll(",", "") ? "" : temp["36"]["s1"];
+            oldParameters["voltageAndReactivePower" ] = !temp.hasOwnProperty("37") || !temp["37"]["s1"].replaceAll(",", "") ? "" : temp["37"]["s1"];
+            oldParameters["overFreqDropRatedPower"  ] = !temp.hasOwnProperty("38") || !temp["38"]["s1"].replaceAll(",", "") ? "" : temp["38"]["s1"];
+            oldParameters["feedInReactivePower"     ] = !temp.hasOwnProperty("43") || !temp["43"]["s1"].replaceAll(",", "") ? "" : temp["43"]["s1"];
+            oldParameters["configTimeConstants"     ] = !temp.hasOwnProperty("47") || !temp["47"]["s1"].replaceAll(",", "") ? "" : temp["47"]["s1"];
+            
+            if(isTor || isEstonia) {
+                oldParameters["gridVoltageProtectionTime"  ] = !temp.hasOwnProperty("44") || !temp["44"]["s1"].replaceAll(",", "") ? "" : temp["44"]["s1"];
+                oldParameters["gridFrequencyProtectionTime"] = !temp.hasOwnProperty("45") || !temp["45"]["s1"].replaceAll(",", "") ? "" : temp["45"]["s1"];
+                oldParameters["gridFirstOrderVoltage"      ] = !temp.hasOwnProperty("39") || !temp["39"]["s1"].replaceAll(",", "") ? "" : temp["39"]["s1"];
+                oldParameters["gridSecondOrderVoltage"     ] = !temp.hasOwnProperty("41") || !temp["41"]["s1"].replaceAll(",", "") ? "" : temp["41"]["s1"];
+                oldParameters["gridFirstOrderFrequency"    ] = !temp.hasOwnProperty("40") || !temp["40"]["s1"].replaceAll(",", "") ? "" : temp["40"]["s1"];
+                oldParameters["maxGridVoltage"             ] = !temp.hasOwnProperty("11") || !temp["11"]["s1"].replaceAll(",", "") ? "" : temp["11"]["s1"];
+                oldParameters["minGridVoltage"             ] = !temp.hasOwnProperty("10") || !temp["10"]["s1"].replaceAll(",", "") ? "" : temp["10"]["s1"];
+                oldParameters["maxGridFrequency"           ] = !temp.hasOwnProperty("13") || !temp["13"]["s1"].replaceAll(",", "") ? "" : temp["13"]["s1"];
+                oldParameters["minGridFrequency"           ] = !temp.hasOwnProperty("12") || !temp["12"]["s1"].replaceAll(",", "") ? "" : temp["12"]["s1"];
+                if(isTor) {
+                    oldParameters["gridAverageVoltage"     ] = !temp.hasOwnProperty("14") || !temp["14"]["s1"].replaceAll(",", "") ? "" : temp["14"]["s1"];
+                    oldParameters["gridAverageVoltageTime" ] = !temp.hasOwnProperty("46") || !temp["46"]["s1"].replaceAll(",", "") ? "" : temp["46"]["s1"];
+                    oldParameters["gridConnectDelay"       ] = !temp.hasOwnProperty( "4") || !temp[ "4"]["s1"].replaceAll(",", "") ? "" : temp[ "4"]["s1"];
+                }
+            }
 
             if(oldParameters["allowOverVoltageDerating"] == "") newParameters["allowOverVoltageDerating"] = "";
             if(oldParameters["allowUnderFreqDropPower" ] == "") newParameters["allowUnderFreqDropPower" ] = "";
@@ -2064,6 +2296,25 @@ function setup_checkParameters() {
             if(oldParameters["autoAdjustPowerFactor"   ] == "") newParameters["autoAdjustPowerFactor"   ] = "";
             if(oldParameters["voltageAndReactivePower" ] == "") newParameters["voltageAndReactivePower" ] = "";
             if(oldParameters["overFreqDropRatedPower"  ] == "") newParameters["overFreqDropRatedPower"  ] = "";
+            if(oldParameters["feedInReactivePower"     ] == "") newParameters["feedInReactivePower"     ] = "";
+            if(oldParameters["configTimeConstants"     ] == "") newParameters["configTimeConstants"     ] = "";
+
+            if(isTor || isEstonia) {
+                if(oldParameters["gridVoltageProtectionTime"  ] == "") newParameters["gridVoltageProtectionTime"  ] = "";
+                if(oldParameters["gridFrequencyProtectionTime"] == "") newParameters["gridFrequencyProtectionTime"] = "";
+                if(oldParameters["gridFirstOrderVoltage"      ] == "") newParameters["gridFirstOrderVoltage"      ] = "";
+                if(oldParameters["gridSecondOrderVoltage"     ] == "") newParameters["gridSecondOrderVoltage"     ] = "";
+                if(oldParameters["gridFirstOrderFrequency"    ] == "") newParameters["gridFirstOrderFrequency"    ] = "";
+                if(oldParameters["maxGridVoltage"             ] == "") newParameters["maxGridVoltage"             ] = "";
+                if(oldParameters["minGridVoltage"             ] == "") newParameters["minGridVoltage"             ] = "";
+                if(oldParameters["maxGridFrequency"           ] == "") newParameters["maxGridFrequency"           ] = "";
+                if(oldParameters["minGridFrequency"           ] == "") newParameters["minGridFrequency"           ] = "";
+                if(isTor) {
+                    if(oldParameters["gridAverageVoltage"     ] == "") newParameters["gridAverageVoltage"         ] = "";
+                    if(oldParameters["gridAverageVoltageTime" ] == "") newParameters["gridAverageVoltageTime"     ] = "";
+                    if(oldParameters["gridConnectDelay"       ] == "") newParameters["gridConnectDelay"           ] = "";
+                }
+            }
 
             oldParameters["regulationMode"] = !response.hasOwnProperty("InjectionMode") ? "0" : response["InjectionMode"]["0"]["v5"];
             oldParameters["extsolMode"    ] = !response.hasOwnProperty("ModbusExtSolarDevice") ? "0" : response["ModbusExtSolarDevice"]["0"]["mode"];
@@ -2111,6 +2362,25 @@ function setup_checkParameters() {
             if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) { retry = true; setup_sendCommand(24118, 0, "",        newParameters["autoAdjustPowerFactor"   ]); }
             if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) { retry = true; setup_sendCommand(24119, 0, "",        newParameters["voltageAndReactivePower" ]); }
             if(newParameters["overFreqDropRatedPower"  ] != oldParameters["overFreqDropRatedPower"  ]) { retry = true; setup_sendCommand(24120, 0, "",        newParameters["overFreqDropRatedPower"  ]); }
+            if(newParameters["feedInReactivePower"     ] != oldParameters["feedInReactivePower"     ]) { retry = true; setup_sendCommand(24131, 0, "",        newParameters["feedInReactivePower"     ]); }
+            if(newParameters["configTimeConstants"     ] != oldParameters["configTimeConstants"     ]) { retry = true; setup_sendCommand(24135, 0, "",        newParameters["configTimeConstants"     ]); }
+
+            if(isTor || isEstonia) {
+                if(newParameters["gridVoltageProtectionTime"  ] != oldParameters["gridVoltageProtectionTime"  ]) { retry = true; setup_sendCommand(24132, 0, "",        newParameters["gridVoltageProtectionTime"  ]); }
+                if(newParameters["gridFrequencyProtectionTime"] != oldParameters["gridFrequencyProtectionTime"]) { retry = true; setup_sendCommand(24133, 0, "",        newParameters["gridFrequencyProtectionTime"]); }
+                if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) { retry = true; setup_sendCommand(24121, 0, "",        newParameters["gridFirstOrderVoltage"      ]); }
+                if(newParameters["gridSecondOrderVoltage"     ] != oldParameters["gridSecondOrderVoltage"     ]) { retry = true; setup_sendCommand(24129, 0, "",        newParameters["gridSecondOrderVoltage"     ]); }
+                if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) { retry = true; setup_sendCommand(24128, 0, "",        newParameters["gridFirstOrderFrequency"    ]); }
+                if(newParameters["maxGridVoltage"             ] != oldParameters["maxGridVoltage"             ]) { retry = true; setup_sendCommand(24081, 0, "",        newParameters["maxGridVoltage"             ]); }
+                if(newParameters["minGridVoltage"             ] != oldParameters["minGridVoltage"             ]) { retry = true; setup_sendCommand(24080, 0, "",        newParameters["minGridVoltage"             ]); }
+                if(newParameters["maxGridFrequency"           ] != oldParameters["maxGridFrequency"           ]) { retry = true; setup_sendCommand(24083, 0, "",        newParameters["maxGridFrequency"           ]); }
+                if(newParameters["minGridFrequency"           ] != oldParameters["minGridFrequency"           ]) { retry = true; setup_sendCommand(24082, 0, "",        newParameters["minGridFrequency"           ]); }
+                if(isTor) {
+                    if(newParameters["gridAverageVoltage"     ] != oldParameters["gridAverageVoltage"         ]) { retry = true; setup_sendCommand(24084, 0, "",        newParameters["gridAverageVoltage"         ]); }
+                    if(newParameters["gridAverageVoltageTime" ] != oldParameters["gridAverageVoltageTime"     ]) { retry = true; setup_sendCommand(24134, 0, "",        newParameters["gridAverageVoltageTime"     ]); }
+                    if(newParameters["gridConnectDelay"       ] != oldParameters["gridConnectDelay"           ]) { retry = true; setup_sendCommand(24068, 0, "",        newParameters["gridConnectDelay"           ]); }
+                }
+            }
 
             if(newParameters["regulationMode"] != oldParameters["regulationMode"]) { retry = true; setup_sendSetting("InjectionMode"        , "0", "v5"   , newParameters["regulationMode"]); }
             if(newParameters["extsolMode"    ] != oldParameters["extsolMode"    ]) { retry = true; setup_sendSetting("ModbusExtSolarDevice" , "0", "mode" , newParameters["extsolMode"    ]); }
@@ -2171,6 +2441,8 @@ function setup_checkParameters() {
                     else if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) showSettingParametersError("Problem when setting autoAdjustPowerFactor"   );
                     else if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) showSettingParametersError("Problem when setting voltageAndReactivePower" );
                     else if(newParameters["overFreqDropRatedPower"  ] != oldParameters["overFreqDropRatedPower"  ]) showSettingParametersError("Problem when setting overFreqDropRatedPower"  );
+                    else if(newParameters["feedInReactivePower"     ] != oldParameters["feedInReactivePower"     ]) showSettingParametersError("Problem when setting feedInReactivePower"     );
+                    else if(newParameters["configTimeConstants"     ] != oldParameters["configTimeConstants"     ]) showSettingParametersError("Problem when setting configTimeConstants"     );
                     else if(newParameters["regulationMode"          ] != oldParameters["regulationMode"          ]) showSettingParametersError("Problem when setting regulationMode"          );
                     else if(newParameters["extsolMode"              ] != oldParameters["extsolMode"              ]) showSettingParametersError("Problem when setting extsolMode"              );
                     else if(newParameters["meter1Mode"              ] != oldParameters["meter1Mode"              ]) showSettingParametersError("Problem when setting meter1Mode"              );
@@ -2183,6 +2455,22 @@ function setup_checkParameters() {
                     else if(newParameters["meter4Label"             ] != oldParameters["meter4Label"             ]) showSettingParametersError("Problem when setting meter4Label"             );
                     else if(newParameters["prepareBatteryExtension" ] != oldParameters["prepareBatteryExtension" ]) showSettingParametersError("Problem when setting prepareBatteryExtension" );
                     else if(newParameters["cloudSet"                ] != oldParameters["cloudSet"                ]) showSettingParametersError("Problem when setting cloudSet"                );
+                    else if(isTor || isEstonia) {
+                        if(newParameters["gridVoltageProtectionTime"  ] != oldParameters["gridVoltageProtectionTime"  ]) showSettingParametersError("Problem when setting gridVoltageProtectionTime"  );
+                        if(newParameters["gridFrequencyProtectionTime"] != oldParameters["gridFrequencyProtectionTime"]) showSettingParametersError("Problem when setting gridFrequencyProtectionTime");
+                        if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) showSettingParametersError("Problem when setting gridFirstOrderVoltage"      );
+                        if(newParameters["gridSecondOrderVoltage"     ] != oldParameters["gridSecondOrderVoltage"     ]) showSettingParametersError("Problem when setting gridSecondOrderVoltage"     );
+                        if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) showSettingParametersError("Problem when setting gridFirstOrderFrequency"    );
+                        if(newParameters["maxGridVoltage"             ] != oldParameters["maxGridVoltage"             ]) showSettingParametersError("Problem when setting maxGridVoltage"             );
+                        if(newParameters["minGridVoltage"             ] != oldParameters["minGridVoltage"             ]) showSettingParametersError("Problem when setting minGridVoltage"             );
+                        if(newParameters["maxGridFrequency"           ] != oldParameters["maxGridFrequency"           ]) showSettingParametersError("Problem when setting maxGridFrequency"           );
+                        if(newParameters["minGridFrequency"           ] != oldParameters["minGridFrequency"           ]) showSettingParametersError("Problem when setting minGridFrequency"           );
+                        if(isTor) {
+                            if(newParameters["gridAverageVoltage"     ] != oldParameters["gridAverageVoltage"         ]) showSettingParametersError("Problem when setting gridAverageVoltage"         );
+                            if(newParameters["gridAverageVoltageTime" ] != oldParameters["gridAverageVoltageTime"     ]) showSettingParametersError("Problem when setting gridAverageVoltageTime"     );
+                            if(newParameters["gridConnectDelay"       ] != oldParameters["gridConnectDelay"           ]) showSettingParametersError("Problem when setting gridConnectDelay"           );
+                        }
+                    }
                 }
             }
 

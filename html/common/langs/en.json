@@ -72,7 +72,8 @@
         "0" : "None",
         "1" : "cosφ(P) Curve",
         "2" : "Fixed cosφ",
-        "3" : "Q(U) Curve"
+        "3" : "Q(U) Curve",
+        "4" : "Fixed Reactive Power (Qfix)"
     },
     
     "dict_bs_sysmode": {
@@ -216,6 +217,13 @@
         "extended_overfrequency_reduction"                         : "Active power reduction in case of over-frequency",
         "extended_start_of_reduction"                              : "Start of power reduction",
         "extended_gradient"                                        : "Gradient",
+        "extended_uefftime"                                        : "Ueff Time",
+        "extended_mingridvoltage"                                  : "Min grid voltage",
+        "extended_maxgridvoltage"                                  : "Max grid voltage",
+        "extended_mingridfrequency"                                : "Min grid frequency",
+        "extended_maxgridfrequency"                                : "Max grid frequency",
+        "extended_gridconnectdelay"                                : "Grid connect delay",
+        "extended_putime"                                          : "P(U) Time",
         "solar"                                                    : "PV-System",
         "solar_size"                                               : "Size of the PV-System",
         "solar_watt_peak"                                          : "Watt Peak (Wp)",
@@ -251,6 +259,8 @@
         "reactive_select_mode"                                     : "Select mode",
         "reactive_overexcited"                                     : "Overexcited",
         "reactive_underexcited"                                    : "Underexcited",
+        "reactive_qutime"                                          : "Q(U) Time",
+        "reactive_kinkpoint"                                       : "Kink Point",
         "msg_setting_parameters"                                   : "Setting Parameters. Please Wait…",
         "msg_setting_success"                                      : "Setting successful",
         "msg_solar_size_very_low"                                  : "The size of the PV-System seems very low.",

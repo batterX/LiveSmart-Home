@@ -106,12 +106,14 @@ main {
 	font-size: 1.5rem;
 }
 
-#inverterDetected #machineModelBox {
+#inverterDetected #machineModelBox,
+#inverterDetected #germanyMachineModelBox {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
-#inverterDetected #machineModelSelect {
+#inverterDetected #machineModelSelect,
+#inverterDetected #germanyMachineModelSelect {
 	height: 2.5rem;
 	width: 10rem;
 	font-weight: bold;
@@ -120,7 +122,8 @@ main {
 	border-width: 2px;
 	padding: 0 0 0 0.5rem;
 }
-#inverterDetected #machineModelBtn {
+#inverterDetected #machineModelBtn,
+#inverterDetected #germanyMachineModelBtn {
 	height: 2.5rem;
 	margin-left: 0;
 	border-top-left-radius: 0;

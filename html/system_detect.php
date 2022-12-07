@@ -89,7 +89,16 @@ $installationCountry = isset($_SESSION["installation_country"]) ? $_SESSION["ins
 					<div class="card-body py-4">
 						<div class="standard-cont">
 							<div class="cert-status notif loading"></div>
-							<span class="standard">VDE4105</span>
+							<span class="standard">TOR</span>
+						</div>
+						<div>
+							<div id="germanyMachineModelBox" class="mt-4 mb-2 d-none">
+								<select id="germanyMachineModelSelect" class="custom-select custom-select-outline border-secondary">
+									<option value="058">VDE4105</option>
+									<option value="050">VDE0126</option>
+								</select>
+								<button id="germanyMachineModelBtn" class="btn btn-secondary ripple"><?php echo $lang["btn"]["apply"] ?></button>
+							</div>
 						</div>
 						<div>
 							<div id="machineModelBox" class="mt-4 mb-2 d-none">
@@ -121,6 +130,7 @@ $installationCountry = isset($_SESSION["installation_country"]) ? $_SESSION["ins
 									<option value="074">TOR</option>
 									<option value="075">EN50549</option>
 									<option value="076">G98</option>
+									<option value="901">Estonia</option>
 								</select>
 								<button id="machineModelBtn" class="btn btn-danger ripple"><?php echo $lang["btn"]["apply"] ?></button>
 							</div>
@@ -136,6 +146,25 @@ $installationCountry = isset($_SESSION["installation_country"]) ? $_SESSION["ins
 
 
 		</main>
+
+
+
+
+
+		<div class="modal fade" id="modalConfirmDeviceStandard" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content">
+					<h5 class="modal-header mb-0">Bestätigung</h5>
+					<div class="modal-body">
+						<p class="message mb-0">Möchten Sie die Auswall der Norm <b id="modalConfirmDeviceStandardValue">___</b> bestätigen?</p>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-sm btn-block btn-danger px-4 py-2 w-auto flex-grow-1 ripple" data-dismiss="modal"><b>Nein</b></button>
+						<button id="modalConfirmDeviceStandardBtn" type="button" class="btn btn-sm px-4 py-2 w-auto flex-grow-1 btn-success ripple"><b>Ja</b></button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 

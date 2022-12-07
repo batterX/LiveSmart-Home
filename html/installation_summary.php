@@ -39,6 +39,42 @@ if(strpos($_SESSION["box_serial"], "XC") && strlen($_SESSION["box_serial"]) == 1
 		$clixVersion = "cliX 1.0";
 }
 
+$isVde4105 = isset($_SESSION["vde4105"]) && $_SESSION["vde4105"] == "1";
+$isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
+$isEstonia = isset($_SESSION["estonia"]) && $_SESSION["estonia"] == "1";
+
+$objDeviceStandards = (array) [
+	"050" => "VDE0126",
+	"051" => "AS4777",
+	"052" => "DK",
+	"053" => "RD1663",
+	"054" => "G83",
+	"055" => "TaiWan",
+	"056" => "USH",
+	"057" => "USL",
+	"058" => "VDE4105",
+	"059" => "Korea",
+	"060" => "HongSun",
+	"061" => "Sweden",
+	"062" => "NRS097",
+	"063" => "Indian",
+	"064" => "EN50438",
+	"065" => "Czech",
+	"066" => "DanMark",
+	"067" => "Finland",
+	"068" => "Ireland",
+	"069" => "Norway",
+	"070" => "CEI-021",
+	"071" => "G59",
+	"072" => "NZLD",
+	"073" => "Cyprus",
+	"074" => "TOR",
+	"075" => "EN50549",
+	"076" => "G98",
+	"901" => "Estonia"
+];
+$deviceStandard = isset($objDeviceStandards[$dataSettings["InverterParameters"]["35"]["s1"]]) ? $objDeviceStandards[$dataSettings["InverterParameters"]["35"]["s1"]] : "";
+
 ?>
 
 
@@ -168,8 +204,8 @@ if(strpos($_SESSION["box_serial"], "XC") && strlen($_SESSION["box_serial"]) == 1
 						<span>
 							<?php
 								echo $_SESSION["system_model"];
-								if($_SESSION["vde4105"] == "1") echo "<br>(" . $lang["summary"]["installation_system_is_vde4105"] . ")";
-								if($_SESSION["tor"    ] == "1") echo "<br>(" . $lang["summary"]["installation_system_is_tor"    ] . ")";
+								if($isVde4105) echo "<br>(" . $lang["summary"]["installation_system_is_vde4105"] . ")";
+								if($isTor    ) echo "<br>(" . $lang["summary"]["installation_system_is_tor"    ] . ")";
 							?>
 						</span>
 					</div>
@@ -184,13 +220,13 @@ if(strpos($_SESSION["box_serial"], "XC") && strlen($_SESSION["box_serial"]) == 1
 				</div>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_sn_inverter"]; ?></span>
-					<span><?php echo $_SESSION["device_serial"] . " (" . $arrayDeviceModel[$_SESSION["device_model"]] . ")"; ?></b></span>
+					<span><?php echo $_SESSION["device_serial"] . " (" . $arrayDeviceModel[$_SESSION["device_model"]] . ") &nbsp; &nbsp; (" . $deviceStandard . ")"; ?></b></span>
 				</div>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_nominal_power"]; ?></span>
 					<span><?php echo $arrayNominalPower[$_SESSION["device_model"]]; ?> W</span>
 				</div>
-				<?php if($_SESSION["vde4105"] == "1" || $_SESSION["tor"] == "1"): ?>
+				<?php if($isVde4105 || $isTor || $isEstonia): ?>
 					<div class="box-row bt">
 						<span class="br"><?php echo $lang["summary"]["installation_reactive_power_supply"]; ?></span>
 						<span>
@@ -200,7 +236,8 @@ if(strpos($_SESSION["box_serial"], "XC") && strlen($_SESSION["box_serial"]) == 1
 										echo $lang["dict_reactive_mode"]["2"] . " = 1.00";
 										break;
 									case "1":
-										echo $lang["dict_reactive_mode"]["1"];
+										echo $lang["dict_reactive_mode"]["1"] . "<br>";
+										echo $lang["system_setup"]["reactive_kinkpoint"] . " = 0." . $_SESSION["reactive_kink"];
 										break;
 									case "2":
 										if($_SESSION["reactive_cosphi"] == "100")
@@ -213,12 +250,15 @@ if(strpos($_SESSION["box_serial"], "XC") && strlen($_SESSION["box_serial"]) == 1
 										break;
 									case "3":
 										echo $lang["dict_reactive_mode"]["3"] . "<br>";
-										echo "U1 = " . $_SESSION["reactive_v1"] . "% &nbsp; ";
-										echo "U2 = " . $_SESSION["reactive_v2"] . "% &nbsp; ";
-										echo "U3 = " . $_SESSION["reactive_v3"] . "% &nbsp; ";
-										echo "U4 = " . $_SESSION["reactive_v4"] . "% &nbsp; ";
-										echo $_SESSION["reactive_cosphi"] == "100" ? "cosφ = 1.00" : ("cosφ = 0." . $_SESSION["reactive_cosphi"]);
+										echo "U1 = " . $_SESSION["reactive_v1"] . "% &nbsp; &nbsp; ";
+										echo "U2 = " . $_SESSION["reactive_v2"] . "% &nbsp; &nbsp; ";
+										echo "U3 = " . $_SESSION["reactive_v3"] . "% &nbsp; &nbsp; ";
+										echo "U4 = " . $_SESSION["reactive_v4"] . "% &nbsp; &nbsp; " . "<br>";
+										echo $_SESSION["reactive_cosphi"] == "100" ? "cosφ = 1.00 &nbsp; &nbsp; " : ("cosφ = 0." . $_SESSION["reactive_cosphi"] . " &nbsp; &nbsp; ");
+										echo $lang["system_setup"]["reactive_qutime"] . " = " . $_SESSION["reactive_qutime"] . " sec";
 										break;
+									case "4":
+										echo $lang["dict_reactive_mode"]["4"] . " = " . $_SESSION["reactive_qfix"] . " VAR";
 									default:
 										break;
 								}
@@ -233,13 +273,105 @@ if(strpos($_SESSION["box_serial"], "XC") && strlen($_SESSION["box_serial"]) == 1
 							<?php echo $lang["summary"]["extended_gradient"] ?> = <?php echo $_SESSION["extended_dropRatedPowerSlope"] ?> %
 						</span>
 					</div>
-					<?php if($_SESSION["tor"] == "1"): ?>
+					<?php if($isTor): ?>
 						<div class="box-row bt">
 							<span class="br"><?php echo $lang["summary"]["extended_overvoltage_reduction"] ?></span>
 							<span>
 								<?php echo $lang["summary"]["extended_enabled"] ?> (✓)<br>
 								<?php echo $lang["summary"]["extended_start_point"] ?> = 110 [% Un]<br>
 								<?php echo $lang["summary"]["extended_end_point"] ?> = 112 [% Un]
+							</span>
+						</div>
+					<?php endif; ?>
+					<?php if($isTor): ?>
+						<div class="box-row bt">
+							<span class="br"><?php echo $lang["system_setup"]["extended_parameters"] ?></span>
+							<span>
+								<?php
+									echo "Ueff"    . "<br>";
+									echo "Ueff >"  . "<br>";
+									echo "Ueff <"  . "<br>";
+									echo "Ueff >>" . "<br>";
+									echo "Ueff <<" . "<br>";
+									echo "f >"     . "<br>";
+									echo "f <";
+								?>
+							</span>
+							<span class="pl-0">
+								<?php
+									echo "= " . $_SESSION["extended_Ueff"] . " Un" . "<br>";
+									echo "= " . $_SESSION["extended_UeffOver1"] . " Un" . "<br>";
+									echo "= " . $_SESSION["extended_UeffUnder1"] . " Un" . "<br>";
+									echo "= " . $_SESSION["extended_UeffOver2"] . " Un" . "<br>";
+									echo "= " . $_SESSION["extended_UeffUnder2"] . " Un" . "<br>";
+									echo "= " . $_SESSION["extended_fOver1"] . " Hz" . "<br>";
+									echo "= " . $_SESSION["extended_fUnder1"] . " Hz";
+								?>
+							</span>
+							<span class="pl-5">
+								<?php
+									echo $lang["system_setup"]["extended_uefftime"] . "<br>";
+									echo $lang["system_setup"]["extended_maxgridvoltage"] . "<br>";
+									echo $lang["system_setup"]["extended_mingridvoltage"] . "<br>";
+									echo $lang["system_setup"]["extended_maxgridfrequency"] . "<br>";
+									echo $lang["system_setup"]["extended_mingridfrequency"] . "<br>";
+									echo $lang["system_setup"]["extended_gridconnectdelay"] . "<br>";
+									echo $lang["system_setup"]["extended_putime"];
+								?>
+							</span>
+							<span class="pl-0">
+								<?php
+									echo "= " . $_SESSION["extended_UeffTime"] . " min" . "<br>";
+									echo "= " . $_SESSION["extended_maxGridVoltage"] . " Un" . "<br>";
+									echo "= " . $_SESSION["extended_minGridVoltage"] . " Un" . "<br>";
+									echo "= " . $_SESSION["extended_maxGridFrequency"] . " Hz" . "<br>";
+									echo "= " . $_SESSION["extended_minGridFrequency"] . " Hz" . "<br>";
+									echo "= " . $_SESSION["extended_gridConnectDelay"] . " sec" . "<br>";
+									echo "= " . $_SESSION["extended_puTime"] . " sec";
+								?>
+							</span>
+						</div>
+					<?php endif; ?>
+					<?php if($isEstonia): ?>
+						<div class="box-row bt">
+							<span class="br"><?php echo $lang["system_setup"]["extended_parameters"] ?></span>
+							<span>
+								<?php
+									echo "Ueff >"  . "<br>";
+									echo "Ueff <"  . "<br>";
+									echo "Ueff >>" . "<br>";
+									echo "Ueff <<" . "<br>";
+									echo "f >"     . "<br>";
+									echo "f <";
+								?>
+							</span>
+							<span class="pl-0">
+								<?php
+									echo "= " . "1.11" . " Un" . "<br>";
+									echo "= " . "0.85" . " Un" . "<br>";
+									echo "= " . "1.15" . " Un" . "<br>";
+									echo "= " . "0.20" . " Un" . "<br>";
+									echo "= " . "51.6" . " Hz" . "<br>";
+									echo "= " . "47.4" . " Hz";
+								?>
+							</span>
+							<span class="pl-5">
+								<?php
+									echo $lang["system_setup"]["extended_maxgridvoltage"] . "<br>";
+									echo $lang["system_setup"]["extended_mingridvoltage"] . "<br>";
+									echo $lang["system_setup"]["extended_maxgridfrequency"] . "<br>";
+									echo $lang["system_setup"]["extended_mingridfrequency"] . "<br>";
+									//echo "&nbsp;<br>&nbsp;";
+								?>
+							</span>
+							<span class="pl-0">
+								<?php
+									echo "= " . "1.15" . " Un" . "<br>";
+									echo "= " . "0.85" . " Un" . "<br>";
+									echo "= " . "52.0" . " Hz" . "<br>";
+									echo "= " . "47.0" . " Hz" . "<br>";
+									//echo "&nbsp;<br>&nbsp;";
+								?>
 							</span>
 						</div>
 					<?php endif; ?>

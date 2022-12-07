@@ -72,7 +72,8 @@
         "0" : "Kein",
         "1" : "cosφ(P) Kennlinie",
         "2" : "Fester cosφ",
-        "3" : "Q(U) Kennlinie"
+        "3" : "Q(U) Kennlinie",
+        "4" : "Feste Blindleistung (Qfix)"
     },
     
     "dict_bs_sysmode": {
@@ -216,6 +217,13 @@
         "extended_overfrequency_reduction"                         : "Wirkleistungsreduzierung bei Überfrequenz",
         "extended_start_of_reduction"                              : "Beginn der Leistungsreduzierung",
         "extended_gradient"                                        : "Gradient",
+        "extended_uefftime"                                        : "Ueff Mittelwert Zeitkonst.",
+        "extended_mingridvoltage"                                  : "Min. Netzspannung",
+        "extended_maxgridvoltage"                                  : "Max. Netzspannung",
+        "extended_mingridfrequency"                                : "Min. Netzfrequenz",
+        "extended_maxgridfrequency"                                : "Max. Netzfrequenz",
+        "extended_gridconnectdelay"                                : "Netzzuschaltverzögerung",
+        "extended_putime"                                          : "P(U) Zeitkonst. (PT1-Glied)",
         "solar"                                                    : "PV-System",
         "solar_size"                                               : "Größe der PV-Anlage",
         "solar_watt_peak"                                          : "Watt Peak (Wp)",
@@ -251,6 +259,8 @@
         "reactive_select_mode"                                     : "Modus auswählen",
         "reactive_overexcited"                                     : "Übererregt",
         "reactive_underexcited"                                    : "Untererregt",
+        "reactive_qutime"                                          : "Q(U) Zeitkonst. (PT1-Glied)",
+        "reactive_kinkpoint"                                       : "Knickpunkt",
         "msg_setting_parameters"                                   : "Wir setzen die Parameter. Bitte warten…",
         "msg_setting_success"                                      : "Einstellung erfolgreich abgeschlossen",
         "msg_solar_size_very_low"                                  : "Die Leistung des PV-Systems scheint sehr gering zu sein.",
