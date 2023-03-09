@@ -19,8 +19,7 @@ $_SESSION["last_step"] = $step;
 // Define Arrays
 $arrayGender       = $lang["dict_gender"   ];
 $arrayCountry      = $lang["dict_countries"];
-$arrayDeviceModel  = [ "batterx_h5" => "batterX h5", "batterx_h10" => "batterX h10" ];
-$arrayNominalPower = [ "batterx_h5" => "5000"      , "batterx_h10" => "10000"       ];
+$arrayNominalPower = ["batterx_h5" => "5000", "batterx_h10" => "10000"];
 
 // Get Battery Type
 $batteryType = isset($_SESSION["battery_type"]) ? $_SESSION["battery_type"] : "";
@@ -30,14 +29,6 @@ if($batteryType == "other" && $_SESSION["battery_capacity"] == "0") $batteryType
 $dataSettings = json_decode(file_get_contents("http://localhost/api.php?get=settings"), true);
 
 $backupMode = (isset($_SESSION["system_mode"]) && $_SESSION["system_mode"] == "1") ? true : false;
-
-$clixVersion = "";
-if(strpos($_SESSION["box_serial"], "XC") && strlen($_SESSION["box_serial"]) == 10) {
-	if(intval(substr($_SESSION["box_serial"], 0, 2) >= 21))
-		$clixVersion = "cliX 2.0";
-	else
-		$clixVersion = "cliX 1.0";
-}
 
 $isVde4105 = isset($_SESSION["vde4105"]) && $_SESSION["vde4105"] == "1";
 $isTor     = isset($_SESSION["tor"    ]) && $_SESSION["tor"    ] == "1";
@@ -220,11 +211,11 @@ $deviceStandard = isset($objDeviceStandards[$dataSettings["InverterParameters"][
 				</div>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_sn_inverter"]; ?></span>
-					<span><?php echo $_SESSION["device_serial"] . " (" . $arrayDeviceModel[$_SESSION["device_model"]] . ") &nbsp; &nbsp; (" . $deviceStandard . ")"; ?></b></span>
+					<span><?php echo $_SESSION["device_serial"] . " (" . PNS_DEVICE[$_SESSION["device_partnumber"]]["name"] . ") (" . $_SESSION["device_partnumber"] . ") (" . $deviceStandard . ")"; ?></b></span>
 				</div>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_nominal_power"]; ?></span>
-					<span><?php echo $arrayNominalPower[$_SESSION["device_model"]]; ?> W</span>
+					<span><?php echo $arrayNominalPower[PNS_DEVICE[$_SESSION["device_partnumber"]]["type"]]; ?> W</span>
 				</div>
 				<?php if($isVde4105 || $isTor || $isEstonia): ?>
 					<div class="box-row bt">
@@ -378,7 +369,7 @@ $deviceStandard = isset($objDeviceStandards[$dataSettings["InverterParameters"][
 				<?php endif; ?>
 				<div class="box-row bt">
 					<span class="br"><?php echo $lang["summary"]["installation_sn_livex"]; ?></span>
-					<span><?php echo $_SESSION["box_serial"] . " (" . $_SESSION["software_version"] . ") " . $clixVersion; ?></span>
+					<span><?php echo $_SESSION["box_serial"] . " (" . PNS_BOX[$_SESSION["box_partnumber"]]["name"] . ") (" . $_SESSION["box_partnumber"] . ") (" . $_SESSION["software_version"] . ")"; ?></span>
 				</div>
 				<?php if($batteryType == "lifepo"): ?>
 					<div class="box-row bt">

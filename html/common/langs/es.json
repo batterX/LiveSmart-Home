@@ -166,6 +166,7 @@
     "system_test": {
         "system_test"                    : "Prueba del sistema",
         "energy_meter"                   : "Medidor de energía",
+        "solar_controllers"              : "Solar Controllers",
         "battery_charging"               : "Bateria cargando",
         "ups_mode"                       : "Modo UPS",
         "warning"                        : "Advertencia",

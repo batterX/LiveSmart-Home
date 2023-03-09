@@ -69,6 +69,8 @@ $_SESSION["last_step"] = $step;
 				<span id="errorInfo" class="d-none"><?php echo $lang["software_update"]["check_network_cable_connection"]; ?></span>
 			</div>
 
+			<div id="downloadProgress" class="small mt-3"></div>
+
 		</main>
 
 		

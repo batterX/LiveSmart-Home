@@ -57,6 +57,7 @@ function performUpdate() {
 						clearInterval(checkUpdateInterval);
 						checkUpdateInterval = undefined;
 						checkUpdateInterval = setInterval(checkUpdate_waitForError, 5000);
+						showUpdateProgress();
 					} else {
 						// Update Completed
 						$("#notif").removeClass("loading error success").addClass("success");
@@ -81,6 +82,7 @@ function checkUpdate_waitForError() {
 	$.get({
 		url: "cmd/working.txt",
 		cache: false,
+		timeout: 5000,
 		error: () => {
 			// Rebooting...
 			$("#message").html(lang.software_update.rebooting);
@@ -103,6 +105,7 @@ function checkUpdate_waitForSuccess() {
 	$.get({
 		url: "cmd/working.txt",
 		cache: false,
+		timeout: 5000,
 		success: (response) => {
 			if(!response) return;
 			// Finishing Update...
@@ -118,6 +121,46 @@ function checkUpdate_waitForSuccess() {
 			}, 60000);
 		}
 	});
+}
+
+
+
+
+
+let updateSize = 0; // Load from GitHub (Size in MB)
+
+function showUpdateProgress() {
+	$.get({
+		url: "https://raw.githubusercontent.com/batterX/LiveSmart-Home/master/size.txt",
+		dataType: "text",
+		cache: false,
+		error: () => {
+			setTimeout(showUpdateProgress, 5000);
+		},
+		success: (size) => {
+			updateSize = size;
+			updateProgress();
+			setInterval(updateProgress, 5000);
+		}
+	});
+}
+
+function updateProgress() {
+	if(updateSize > 0) {
+		$.get({
+			url: "cmd/updatesize.php",
+			cache: false,
+			error: () => {
+				// TODO: Maybe we can use this to show that it's rebooting? instead of the working.txt file
+			},
+			success: (response) => {
+				if(!response) return;
+				let total = parseInt(updateSize) * 1048576 // MB = 2^20
+				let current = parseInt(response);
+				$("#downloadProgress").html(`${Math.round(current / 1048576)} / ${Math.round(total / 1048576)} MB (${Math.min(100, Math.round(current / total * 100))} %)`);
+			}
+		});
+	}
 }
 
 

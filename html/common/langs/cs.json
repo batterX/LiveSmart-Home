@@ -166,6 +166,7 @@
     "system_test": {
         "system_test"                    : "Test systému",
         "energy_meter"                   : "Měřič energie",
+        "solar_controllers"              : "Solar Controllers",
         "battery_charging"               : "Nabíjení baterie",
         "ups_mode"                       : "Režim UPS",
         "warning"                        : "Varování",

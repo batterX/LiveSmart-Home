@@ -3,6 +3,8 @@
 
 cd /home/pi
 
+sudo rm -rf livesmart-home
+
 git clone https://github.com/batterx/livesmart-home.git
 
 sudo cp /home/pi/livesmart-home/update.sh /home/pi

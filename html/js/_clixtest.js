@@ -978,7 +978,7 @@ function connect_default_mode_4() {
 function generate_report() {
 	enableStep("generate_report");
 	$.post({
-		url: "https://api.batterx.app/v1/_clixtest.php",
+		url: "https://api.batterx.app/v2/_clixtest.php",
 		data: {
 			action: "get_livex_serialnumber",
 			apikey: $("#report_apikey").text()
@@ -1001,7 +1001,7 @@ $("#report_send").on("click", () => {
 	$("#report_send").prop("disabled", true);
 	$("#report_note").prop("disabled", true);
 	$.post({
-		url: "https://api.batterx.app/v1/_clixtest.php",
+		url: "https://api.batterx.app/v2/_clixtest.php",
 		data: {
 			action                : "register_livex",
 			apikey                : $("#report_apikey  ").text(),

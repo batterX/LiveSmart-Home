@@ -276,7 +276,7 @@ function verifyModulesLiFePO() {
         if(canContinue) {
             canContinue = false;
             $.post({
-                url: "https://api.batterx.app/v1/install.php",
+                url: "https://api.batterx.app/v2/install.php",
                 async: false,
                 data: {
                     action: "verify_battery",
@@ -660,7 +660,7 @@ function showImportDataFromCloud() {
     if(dataSettings["CloudSet"]["0"]["mode"].toString() != "0") return;
 
     $.post({
-        url: "https://api.batterx.app/v1/install.php",
+        url: "https://api.batterx.app/v2/install.php",
         data: {
             action : "get_system_data",
             system : isLiFePO() ? $("#bx_system").val().trim() : $("#system_co_sn").val().trim(),
@@ -1070,7 +1070,7 @@ function step1() {
 function step2() {
 
     $.post({
-        url: "https://api.batterx.app/v1/install.php",
+        url: "https://api.batterx.app/v2/install.php",
         data: {
             action : "get_installation_info",
             apikey : systemApikey
@@ -1107,9 +1107,9 @@ function step2() {
 function step3() {
 
     $.post({
-        url: "https://api.batterx.app/v1/install.php",
+        url: "https://api.batterx.app/v2/install.php",
         data: {
-            action : "get_box_serial",
+            action : "get_box_info",
             apikey : systemApikey
         },
         error: () => { alert("E005. Please refresh the page!"); },
@@ -1117,16 +1117,20 @@ function step3() {
 
             console.log(response);
 
-            var box_serial = response;
+            var box_info = response;
 
-            if(!box_serial) return $("#errorBoxNotRegistered").modal("show");
+            if(!box_info) return $("#errorBoxNotRegistered").modal("show");
 
             // Check If cliX v2
-            if(box_serial.includes("XC") && box_serial.length == 10 && parseInt(box_serial.substring(0, 2)) >= 21) isClixV2 = true;
+            
+            let clix_info = null;
+            if(PNS_BOX.hasOwnProperty(box_info.partnumber) && PNS_BOX[box_info.partnumber].type == "xc")
+                clix_info = PNS_BOX[box_info.partnumber];
+            isClixV2 = clix_info && clix_info.version > 1;
             if(!isClixV2) $("#bx_sysmode option[value=1]").remove();
 
             // Enable|Disable Battery Type Selection
-            if(box_serial.includes("XC") && box_serial.length == 10) {
+            if(clix_info) {
                 // Only LiFePO|None
             } else {
                 // Only Carbon|Other
@@ -1134,15 +1138,18 @@ function step3() {
                 $("#bx_battery_type_0").attr("disabled", true);
             }
 
-            // Save LiveX Serial-Number to Session
+            // Save LiveX Serial-Number & Part-Number to Session
             $.post({
                 url: "cmd/session.php",
-                data: { box_serial: box_serial },
+                data: {
+                    box_serial: box_info.serialnumber,
+                    box_partnumber: box_info.partnumber
+                },
                 error: () => { alert("E006. Please refresh the page!"); },
                 success: (response) => {
                     console.log(response);
                     if(response !== "1") return alert("E007. Please refresh the page!");
-                    $("#bx_box").val(box_serial);
+                    $("#bx_box").val(box_info.serialnumber);
                     step4();
                 }
             });
@@ -1174,31 +1181,44 @@ function step4() {
 
             console.log(response);
 
-            if(!response || typeof response != "object" || !response.hasOwnProperty("device_serial_number") || !response.hasOwnProperty("device_model"))
+            if(!response || typeof response != "object" || !response.hasOwnProperty("device_serial_number"))
                 return alert("E009. Please refresh the page!");
 
-            var objDeviceModels = {
-                "batterX h5"  : "batterx_h5",
-                "batterX h10" : "batterx_h10"
-            }
-
             var device_serial_number = response.device_serial_number;
-            var device_model = objDeviceModels.hasOwnProperty(response.device_model) ? objDeviceModels[response.device_model] : "";
-            deviceModel = device_model;
 
-            // Save Serial-Number & Model to Session
             $.post({
-                url: "cmd/session.php",
+                url: "https://api.batterx.app/v2/install.php",
                 data: {
-                    device_serial : device_serial_number,
-                    device_model  : device_model
+                    action       : "get_device_partnumber",
+                    serialnumber : device_serial_number
                 },
-                error: () => { alert("E010. Please refresh the page!"); },
+                error: () => { alert("Error. Please refresh the page!"); },
                 success: (response) => {
+                    
                     console.log(response);
-                    if(response !== "1") return alert("E011. Please refresh the page!");
-                    $("#bx_device").val(device_serial_number);
-                    step5();
+
+                    var device_part_number = response;
+
+                    if(!device_part_number) return alert("Error! Device partnumber cannot be empty!");
+
+                    deviceModel = PNS_DEVICE.hasOwnProperty(device_part_number) ? PNS_DEVICE[device_part_number].type : "";
+
+                    // Save Device Serialnumber & Partnumber to Session
+                    $.post({
+                        url: "cmd/session.php",
+                        data: {
+                            device_serial: device_serial_number,
+                            device_partnumber: device_part_number
+                        },
+                        error: () => { alert("E010. Please refresh the page!"); },
+                        success: (response) => {
+                            console.log(response);
+                            if(response !== "1") return alert("E011. Please refresh the page!");
+                            $("#bx_device").val(device_serial_number);
+                            step5();
+                        }
+                    });
+
                 }
             });
 
@@ -1382,7 +1402,7 @@ function mainFormSubmit_5() {
 
     // Check Inverter S/N
     $.post({
-        url: "https://api.batterx.app/v1/install.php",
+        url: "https://api.batterx.app/v2/install.php",
         data: {
             action       : "verify_device",
             serialnumber : $("#bx_device").val(),
