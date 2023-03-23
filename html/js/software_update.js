@@ -157,6 +157,7 @@ function updateProgress() {
 				if(!response) return;
 				let total = parseInt(updateSize) * 1048576 // MB = 2^20
 				let current = parseInt(response);
+				if(current > total) current = total;
 				$("#downloadProgress").html(`${Math.round(current / 1048576)} / ${Math.round(total / 1048576)} MB (${Math.min(100, Math.round(current / total * 100))} %)`);
 			}
 		});
