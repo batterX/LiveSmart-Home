@@ -32,13 +32,3 @@ then
 	sudo ./MqttStream &
 	cd /
 fi
-
-if ! pgrep -x "CloudStream" > /dev/null
-then
-	gpio -g mode 24 out
-	gpio -g write 24 0
-	cd /
-	cd home/pi
-	sudo ./CloudStream &
-	cd /
-fi
