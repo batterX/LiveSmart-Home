@@ -72,7 +72,7 @@ $("#loginForm").on("submit", (e) => {
 				password : pass,
 				apikey   : apikey
 			},
-			error: () => { alert("E001. Please refresh the page!"); },
+			error: () => { alert("E001. Please refresh the page! (Error during cloud installer login process)"); },
 			success: (response) => {
 
 				console.log(response);
@@ -103,11 +103,11 @@ $("#loginForm").on("submit", (e) => {
 						installer_telephone: response.hasOwnProperty("telephone") ? response["telephone"] : "",
 						installer_country:   response.hasOwnProperty("country"  ) ? response["country"  ] : ""
 					},
-					error: () => { alert("E002. Please refresh the page!"); },
+					error: () => { alert("E002. Please refresh the page! (Error while saving data to session)"); },
 					success: (response) => {
 						console.log(response);
 						if(response != "1") {
-							alert("E003. Please refresh the page!");
+							alert("E003. Please refresh the page! (Bad response while saving data to session)");
 							return;
 						}
 						// Show Warning Message If Wrong Installer

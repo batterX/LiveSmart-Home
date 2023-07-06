@@ -121,9 +121,9 @@ function finishStep() {
 function checkWarnings() {
 	$.get({
 		url: "api.php?get=warnings",
-		error: () => { alert("E001. Please refresh the page!"); },
+		error: () => { alert("E001. Please refresh the page! (Error while reading local warnings table)"); },
 		success: (response) => {
-			if(!response || !Array.isArray(response)) return alert("E002. Please refresh the page!");
+			if(!response || !Array.isArray(response)) return alert("E002. Please refresh the page! (Bad response from local warnings table)");
 			var warnings = response[0][1];
 			// Warning - AC Input Loss
 			if(warnings.includes(16640)) {
@@ -165,9 +165,9 @@ function testEnergyMeter() {
 
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E003. Please refresh the page!"); },
+		error: () => { alert("E003. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
-			if(!response || typeof response != "object") return alert("E004. Please refresh the page!");
+			if(!response || typeof response != "object") return alert("E004. Please refresh the page! (Bad response from local currentstate table)");
 			setTimeout(() => {
 				$("#testEnergyMeter .notif").removeClass("loading error success");
 				var currentErrorId = "";
@@ -235,17 +235,17 @@ function testBatteryCharging() {
 	// Check Battery Level
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E005. Please refresh the page!"); },
+		error: () => { alert("E005. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
-			
+
 			if(!response || typeof response != "object")
-				return alert("E006. Please refresh the page!");
+				return alert("E006. Please refresh the page! (Bad response from local currentstate table)");
 			if(!response.hasOwnProperty("1074") || !response["1074"].hasOwnProperty("1"))
-				return alert("E007. Please refresh the page!");
-			
+				return alert("E007. Please refresh the page! (Missing value 1074,1 from local currentstate table)");
+
 			var batteryLevel = parseInt(response["1074"]["1"]);
 			var batteryVoltage = parseInt(response["1042"]["1"]) / 100;
-			
+
 			// Charge Battery
 			if(!batteryCharging_alreadyCharged && (isLiFePO() && batteryLevel < batteryMinLevel || !isLiFePO() && batteryVoltage < batteryMinVoltage)) {
 				if(isLiFePO()) {
@@ -257,9 +257,9 @@ function testBatteryCharging() {
 				}
 				$.get({
 					url: "api.php?set=command&type=20738&entity=0&text1=3&text2=1",
-					error: () => { alert("E008. Please refresh the page!"); },
+					error: () => { alert("E008. Please refresh the page! (Error while writing command to local database)"); },
 					success: (response) => {
-						if(response != "1") return alert("E009. Please refresh the page!");
+						if(response != "1") return alert("E009. Please refresh the page! (Bad response while writing command to local database)");
 						batteryCharging_count = 0;
 						batteryWaitCounter = 10;
 						setTimeout(testBatteryCharging_waitUntilCharged, 15000);
@@ -277,9 +277,9 @@ function testBatteryCharging() {
 				}
 				$.get({
 					url: "api.php?set=command&type=20738&entity=0&text1=5&text2=1",
-					error: () => { alert("E010. Please refresh the page!"); },
+					error: () => { alert("E010. Please refresh the page! (Error while writing command to local database)"); },
 					success: (response) => {
-						if(response != "1") return alert("E011. Please refresh the page!");
+						if(response != "1") return alert("E011. Please refresh the page! (Bad response while writing command to local database)");
 						batteryCharging_count = 0;
 						batteryWaitCounter = 10;
 						setTimeout(testBatteryCharging_waitUntilDischarged, 15000);
@@ -287,8 +287,8 @@ function testBatteryCharging() {
 				});
 				$.get({
 					url: "api.php?set=command&type=20738&entity=0&text1=3&text2=0",
-					error: () => { alert("E012. Please refresh the page!"); },
-					success: (response) => { if(response != "1") alert("E013. Please refresh the page!"); }
+					error: () => { alert("E012. Please refresh the page! (Error while writing command to local database)"); },
+					success: (response) => { if(response != "1") alert("E013. Please refresh the page! (Bad response while writing command to local database)"); }
 				});
 			}
 			// Continue Testing
@@ -302,9 +302,9 @@ function testBatteryCharging() {
 				}
 				$.get({
 					url: "api.php?set=command&type=20738&entity=0&text1=3&text2=1",
-					error: () => { alert("E014. Please refresh the page!"); },
+					error: () => { alert("E014. Please refresh the page! (Error while writing command to local database)"); },
 					success: (response) => {
-						if(response != "1") return alert("E015. Please refresh the page!");
+						if(response != "1") return alert("E015. Please refresh the page! (Bad response while writing command to local database)");
 						batteryCharging_count = 0;
 						setTimeout(testBatteryCharging_waitUntilSet, 5000);
 					}
@@ -323,15 +323,15 @@ function testBatteryCharging() {
 function testBatteryCharging_waitUntilCharged() {
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E016. Please refresh the page!"); },
+		error: () => { alert("E016. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
 
-			if(!response || typeof response != "object") return alert("E017. Please refresh the page!");
-			if(!response.hasOwnProperty("1121") || !response["1121"].hasOwnProperty("1")) return alert("E018. Please refresh the page!");
-			if(!response.hasOwnProperty("1074") || !response["1074"].hasOwnProperty("1")) return alert("E019. Please refresh the page!");
-			if(!response.hasOwnProperty("1042") || !response["1042"].hasOwnProperty("1")) return alert("E02A. Please refresh the page!");
-			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("3")) return alert("E020. Please refresh the page!");
-			if(response["2465"]["3"] != 11) return alert("E021. Please refresh the page!");
+			if(!response || typeof response != "object") return alert("E017. Please refresh the page! (Bad response from local currentstate table)");
+			if(!response.hasOwnProperty("1121") || !response["1121"].hasOwnProperty("1")) return alert("E018. Please refresh the page! (Missing value 1121,1 from local currentstate table)");
+			if(!response.hasOwnProperty("1074") || !response["1074"].hasOwnProperty("1")) return alert("E019. Please refresh the page! (Missing value 1074,1 from local currentstate table)");
+			if(!response.hasOwnProperty("1042") || !response["1042"].hasOwnProperty("1")) return alert("E02A. Please refresh the page! (Missing value 1042,1 from local currentstate table)");
+			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("3")) return alert("E020. Please refresh the page! (Missing value 2465,3 from local currentstate table)");
+			if(response["2465"]["3"] != 11) return alert("E021. Please refresh the page! (BatteryChargingAC could not be set to forced-on)");
 
 			if(isLiFePO()) {
 				if(batteryWaitCounter < 1 && response["1074"]["1"] >= batteryMinLevel) {
@@ -366,16 +366,16 @@ function testBatteryCharging_waitUntilCharged() {
 function testBatteryCharging_waitUntilDischarged() {
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E022. Please refresh the page!"); },
+		error: () => { alert("E022. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
 
-			if(!response || typeof response != "object") return alert("E023. Please refresh the page!");
-			if(!response.hasOwnProperty("1121") || !response["1121"].hasOwnProperty("1")) return alert("E024. Please refresh the page!");
-			if(!response.hasOwnProperty("1074") || !response["1074"].hasOwnProperty("1")) return alert("E025. Please refresh the page!");
-			if(!response.hasOwnProperty("1042") || !response["1042"].hasOwnProperty("1")) return alert("E026. Please refresh the page!");
-			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("5")) return alert("E026. Please refresh the page!");
-			if(!response.hasOwnProperty("1634") || !response["1634"].hasOwnProperty("0")) return alert("E027. Please refresh the page!");
-			if(response["2465"]["5"] != 11) return alert("E028. Please refresh the page!");
+			if(!response || typeof response != "object") return alert("E023. Please refresh the page! (Bad response from local currentstate table)");
+			if(!response.hasOwnProperty("1121") || !response["1121"].hasOwnProperty("1")) return alert("E024. Please refresh the page! (Missing value 1121,1 from local currentstate table)");
+			if(!response.hasOwnProperty("1074") || !response["1074"].hasOwnProperty("1")) return alert("E025. Please refresh the page! (Missing value 1074,1 from local currentstate table)");
+			if(!response.hasOwnProperty("1042") || !response["1042"].hasOwnProperty("1")) return alert("E026. Please refresh the page! (Missing value 1042,1 from local currentstate table)");
+			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("5")) return alert("E026. Please refresh the page! (Missing value 2465,5 from local currentstate table)");
+			if(!response.hasOwnProperty("1634") || !response["1634"].hasOwnProperty("0")) return alert("E027. Please refresh the page! (Missing value 1634,0 from local currentstate table)");
+			if(response["2465"]["5"] != 11) return alert("E028. Please refresh the page! (BatteryDischargingAC could not be set to forced-on)");
 
 			if(isLiFePO()) {
 				if(batteryWaitCounter < 1 && response["1074"]["1"] <= batteryMaxLevel) {
@@ -412,12 +412,12 @@ function testBatteryCharging_waitUntilDischarged() {
 function testBatteryCharging_waitUntilSet() {
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E029. Please refresh the page!"); },
+		error: () => { alert("E029. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
 			if(!response || typeof response != "object")
-				return alert("E030. Please refresh the page!");
+				return alert("E030. Please refresh the page! (Bad response from local currentstate table)");
 			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("3"))
-				return alert("E031. Please refresh the page!");
+				return alert("E031. Please refresh the page! (Missing value 2465,3 from local currentstate table)");
 			// Check If Enabled
 			if(response["2465"]["3"] != 11)
 				setTimeout(testBatteryCharging_waitUntilSet, 5000);
@@ -438,11 +438,11 @@ function testBatteryCharging_waitUntilSet() {
 function testBatteryCharging_test() {
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E032. Please refresh the page!"); },
+		error: () => { alert("E032. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
 
 			if(!response || typeof response != "object" || !response.hasOwnProperty("1121") || !response["1121"].hasOwnProperty("1"))
-				return alert("E033. Please refresh the page!");
+				return alert("E033. Please refresh the page! (Bad response or missing value 1121,1 from local currentstate table)");
 
 			var batteryPower = parseInt(response["1121"]["1"]);
 			batteryCharging_count += 1;
@@ -455,9 +455,9 @@ function testBatteryCharging_test() {
 					$("#log p:last-child").html(`<b class="mr-1">✓</b> ${lang.system_test.performing_test} (${batteryCharging_count} / 5)`);
 					$.get({
 						url: "api.php?set=command&type=20738&entity=0&text1=3&text2=0",
-						error: () => { alert("E034. Please refresh the page!"); },
+						error: () => { alert("E034. Please refresh the page! (Error while writing command to local database)"); },
 						success: (response) => {
-							if(response != "1") return alert("E035. Please refresh the page!");
+							if(response != "1") return alert("E035. Please refresh the page! (Bad response while writing command to local database)");
 							$("#log").append(`<p>${lang.system_test.disable_ac_charging}</p>`);
 							scrollToBottom();
 							testBatteryCharging_waitUntilReset();
@@ -465,8 +465,8 @@ function testBatteryCharging_test() {
 					});
 					$.get({
 						url: "api.php?set=command&type=20738&entity=0&text1=5&text2=0",
-						error: () => { alert("E036. Please refresh the page!"); },
-						success: (response) => { if(response != "1") alert("E037. Please refresh the page!"); }
+						error: () => { alert("E036. Please refresh the page! (Error while writing command to local database)"); },
+						success: (response) => { if(response != "1") alert("E037. Please refresh the page! (Bad response while writing command to local database)"); }
 					});
 				}
 			} else {
@@ -486,20 +486,20 @@ function testBatteryCharging_test() {
 function testBatteryCharging_waitUntilReset() {
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E038. Please refresh the page!"); },
+		error: () => { alert("E038. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
-			if(!response || typeof response != "object") return alert("E039. Please refresh the page!");
-			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("3")) return alert("E040. Please refresh the page!");
-			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("5")) return alert("E041. Please refresh the page!");
+			if(!response || typeof response != "object") return alert("E039. Please refresh the page! (Bad response from local currentstate table)");
+			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("3")) return alert("E040. Please refresh the page! (Missing value 2465,3 from local currentstate table)");
+			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("5")) return alert("E041. Please refresh the page! (Missing value 2465,5 from local currentstate table)");
 			// Check If Disabled
 			if(response["2465"]["3"] != 10 && response["2465"]["5"] != 10)
 				setTimeout(testBatteryCharging_waitUntilReset, 5000);
 			else {
 				$.get({
 					url: "api.php?set=command&type=20738&entity=0&text1=3&text2=2",
-					error: () => { alert("E042. Please refresh the page!"); },
+					error: () => { alert("E042. Please refresh the page! (Error while writing command to local database)"); },
 					success: (response) => {
-						if(response != "1") return alert("E043. Please refresh the page!");
+						if(response != "1") return alert("E043. Please refresh the page! (Bad response while writing command to local database)");
 						$("#testBatteryCharging .notif").removeClass("loading error success").addClass("success");
 						$("#log p:last-child").html(`<b class="mr-1">✓</b> ${lang.system_test.disable_ac_charging}`);
 						setTimeout(testUpsMode, 2500);
@@ -507,8 +507,8 @@ function testBatteryCharging_waitUntilReset() {
 				});
 				$.get({
 					url: "api.php?set=command&type=20738&entity=0&text1=5&text2=2",
-					error: () => { alert("E044. Please refresh the page!"); },
-					success: (response) => { if(response != "1") alert("E045. Please refresh the page!"); }
+					error: () => { alert("E044. Please refresh the page! (Error while writing command to local database)"); },
+					success: (response) => { if(response != "1") alert("E045. Please refresh the page! (Bad response while writing command to local database)"); }
 				});
 			}
 		}
@@ -543,11 +543,11 @@ function testUpsMode() {
 	// Check Output Voltage
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E046. Please refresh the page!"); },
+		error: () => { alert("E046. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
 
 			if(!response || typeof response != "object" || !response.hasOwnProperty("1297") || !response["1297"].hasOwnProperty("1"))
-				return alert("E047. Please refresh the page!");
+				return alert("E047. Please refresh the page! (Bad response or missing value 1297,1 from local currentstate table)");
 
 			var voltage1 = undefined;
 			var voltage2 = undefined;
@@ -563,7 +563,7 @@ function testUpsMode() {
 				outputIsActive = (voltage1 > 10000);
 			else if(voltage1 != undefined && voltage2 != undefined && voltage3 != undefined)
 				outputIsActive = (voltage1 > 10000 && voltage2 > 10000 && voltage3 > 10000);
-			else alert("E048. Please refresh the page!");
+			else alert("E048. Please refresh the page! (Some of the ups output voltage values are missing from currentstate table)");
 
 			if(outputIsActive == true) {
 				// Continue With Test
@@ -594,11 +594,11 @@ function testUpsMode_waitingForInput() {
 
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E049. Please refresh the page!"); },
+		error: () => { alert("E049. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
 
 			if(!response || typeof response != "object" || !response.hasOwnProperty("273") || !response["273"].hasOwnProperty("1") || !response.hasOwnProperty("1634") || !response["1634"].hasOwnProperty("0"))
-				return alert("E050. Please refresh the page!");
+				return alert("E050. Please refresh the page! (Bad response or missing value 273,1 from local currentstate table)");
 
 			var voltage1 = undefined;
 			var voltage2 = undefined;
@@ -617,7 +617,7 @@ function testUpsMode_waitingForInput() {
 				inputIsActive = (voltage1 > 10000);
 			else if(voltage1 != undefined && voltage2 != undefined && voltage3 != undefined)
 				inputIsActive = (voltage1 > 10000 && voltage2 > 10000 && voltage3 > 10000);
-			else alert("E051. Please refresh the page!");
+			else alert("E051. Please refresh the page! (Some of the ups input voltage values are missing from currentstate table)");
 
 			if(inputIsActive == false && solarIsActive == false) {
 				// Continue With Test
@@ -644,11 +644,11 @@ function testUpsMode_test() {
 
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E052. Please refresh the page!"); },
+		error: () => { alert("E052. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
 
 			if(!response || typeof response != "object" || !response.hasOwnProperty("1297") || !response["1297"].hasOwnProperty("1"))
-				return alert("E053. Please refresh the page!");
+				return alert("E053. Please refresh the page! (Bad response or missing value 1297,1 from local currentstate table)");
 
 			upsMode_count += 1;
 			$("#log p:last-child").html(`${lang.system_test.performing_test} (${upsMode_count} / 5)`);
@@ -667,7 +667,7 @@ function testUpsMode_test() {
 				outputIsActive = (voltage1 > 10000);
 			else if(voltage1 != undefined && voltage2 != undefined && voltage3 != undefined)
 				outputIsActive = (voltage1 > 10000 && voltage2 > 10000 && voltage3 > 10000);
-			else alert("E054. Please refresh the page!");
+			else alert("E054. Please refresh the page! (Some of the ups output voltage values are missing from currentstate table)");
 
 			if(outputIsActive == true) {
 				if(upsMode_count < 5)
@@ -696,11 +696,11 @@ function testUpsMode_finish() {
 	// Check Input Voltage
 	$.get({
 		url: "api.php?get=currentstate",
-		error: () => { alert("E055. Please refresh the page!"); },
+		error: () => { alert("E055. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
 
 			if(!response || typeof response != "object" || !response.hasOwnProperty("273") || !response["273"].hasOwnProperty("1"))
-				return alert("E056. Please refresh the page!");
+				return alert("E056. Please refresh the page! (Bad response from local currentstate table)");
 
 			var voltage1 = undefined;
 			var voltage2 = undefined;
@@ -716,7 +716,7 @@ function testUpsMode_finish() {
 				inputIsActive = (voltage1 > 10000);
 			else if(voltage1 != undefined && voltage2 != undefined && voltage3 != undefined)
 				inputIsActive = (voltage1 > 10000 && voltage2 > 10000 && voltage3 > 10000);
-			else alert("E057. Please refresh the page!");
+			else alert("E057. Please refresh the page! (Some of the ups input voltages are missing from currentstate table)");
 
 			if(inputIsActive == true) {
 				// Finish Step

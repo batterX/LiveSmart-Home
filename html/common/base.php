@@ -97,4 +97,4 @@ $lang = json_decode($lang, true);
 
 $versionHash = time();
 
-$softwareVersion = "v23.3.1";
+$softwareVersion = "v23.7.1";

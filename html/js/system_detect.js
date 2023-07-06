@@ -91,11 +91,11 @@ function step2() {
 
 	$.get({
 		url: "api.php?get=deviceinfo",
-		error: () => { alert("E001. Please refresh the page!"); },
+		error: () => { alert("E001. Please refresh the page! (Error while reading device info from local database)"); },
 		success: (json) => {
 			console.log(json);
 			if(!json || typeof json != "object" || !json.hasOwnProperty("device_model") || !json.hasOwnProperty("device_serial_number"))
-				return alert("E002. Please refresh the page!");
+				return alert("E002. Please refresh the page! (Missing or malformed data in local device info table)");
 			var device_model         = json["device_model"        ];
 			var device_serial_number = json["device_serial_number"];
 			$(".serialnumber b").html(device_serial_number);
@@ -132,7 +132,7 @@ function step3(json) {
 			action: "verify_device",
 			serialnumber: device_serial_number
 		},
-		error: () => { alert("E003. Please refresh the page!"); },
+		error: () => { alert("E003. Please refresh the page! (Error while verifying device serialnumber in cloud)"); },
 		success: (response) => {
 			// Show Not Registered
 			if(response != "1") {
@@ -160,7 +160,7 @@ function step4() {
 
 	$.get({
 		url: "api.php?get=settings",
-		error: () => { alert("E004. Please refresh the page!"); },
+		error: () => { alert("E004. Please refresh the page! (Error while reading local settings table)"); },
 		success: (response) => {
 
 			// Log Response
@@ -235,11 +235,11 @@ function step4() {
 					tor:     isTor,
 					estonia: isEstonia
 				},
-				error: () => { alert("E006. Please refresh the page!"); },
+				error: () => { alert("E006. Please refresh the page! (Error while saving data to session)"); },
 				success: (response) => {
 					console.log(response);
 					if(response === "1") $("#btn_next").attr("disabled", false);
-					else alert("E007. Please refresh the page!");
+					else alert("E007. Please refresh the page! (Bad response while saving data to session)");
 				}
 			});
 
@@ -262,7 +262,7 @@ $("#machineModelBtn").on("click", () => {
 	// Switch to Selected MachineModel
 	$.get({
 		url: "api.php?set=command&type=24117&entity=0&text2=" + $("#machineModelSelect").val(),
-		error: () => { alert("E008. Please refresh the page!"); },
+		error: () => { alert("E008. Please refresh the page! (Error while writing command to local database)"); },
 		success: () => {
 			$("#germanyMachineModelBox").hide();
 			$("#machineModelBox").hide();
@@ -277,11 +277,11 @@ var deviceDatetime = "";
 function checkParameters() {
 	$.get({
 		url: "api.php?get=settings",
-		error: () => { alert("E009. Please refresh the page!"); },
+		error: () => { alert("E009. Please refresh the page! (Error while reading local settings table)"); },
 		success: (response) => {
 			console.log(response);
 			if(!response || typeof response != "object" || !response.hasOwnProperty("InverterParameters"))
-				return alert("E010. Please refresh the page!");
+				return alert("E010. Please refresh the page! (Missing or malformed data in local settings table)");
 			response = response["InverterParameters"];
 			if(deviceDatetime == "") { deviceDatetime = response["0"]["s1"]; setTimeout(checkParameters, 5000); return; }
 			if(response["0"]["s1"] == deviceDatetime) { setTimeout(checkParameters, 5000); return; }
@@ -299,7 +299,7 @@ $("#btn_next").on("click", () => {
 	// Disable Buzzer
 	$.get({
 		url: "api.php?set=command&type=24065&entity=0&text2=A,1",
-		error: () => { alert("E011. Please refresh the page!"); },
+		error: () => { alert("E011. Please refresh the page! (Error while writing command to local database)"); },
 		success: () => {
 
 			// Show Confirmation Modal IF Germany Without VDE4105

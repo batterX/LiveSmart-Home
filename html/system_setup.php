@@ -118,6 +118,16 @@ $customerEmail = empty($_SESSION["customer_email"]) ? "" : $_SESSION["customer_e
 			</div>
 		</div>
 
+		<div class="modal fade" id="errorSystemRegisteredWithOtherUser" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+						<span style="color: red"><b>System already registered with another user!</b></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="modal fade" id="errorInverterRegisteredWithOtherSystem" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-dialog-centered modal-sm">
 				<div class="modal-content">

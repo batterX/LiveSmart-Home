@@ -31,7 +31,7 @@ $.post({
 		action: "get_installation_info",
 		apikey: apikey
 	},
-	error: () => { alert("E001. Please refresh the page!"); },
+	error: () => { alert("E001. Please refresh the page! (Error while getting installation info from cloud)"); },
 	success: (json) => {
 
 		console.log(json);
@@ -106,7 +106,7 @@ $("#customerInformation .email").on("change", function() {
 			customer  : email,
 			installer : installerEmail
 		},
-		error: () => { alert("E002. Please refresh the page!"); },
+		error: () => { alert("E002. Please refresh the page! (Error while getting customer info from cloud)"); },
 		success: (json) => {
 
 			console.log(json);
@@ -242,13 +242,13 @@ $("#mainForm").on("submit", (e) => {
 				installation_zipcode: $("#sameAddress").is(":checked") ? $("#customerInformation .location-zip    ").val().trim() : $("#installationAddress  .location-zip    ").val().trim(),
 				installation_address: $("#sameAddress").is(":checked") ? $("#customerInformation .location-address").val().trim() : $("#installationAddress  .location-address").val().trim()
 			},
-			error: () => { alert("E003. Please refresh the page!"); },
+			error: () => { alert("E003. Please refresh the page! (Error while saving data to session)"); },
 			success: (response) => {
 				console.log(response);
 				if(response == "1")
 					window.location.href = "system_detect.php";
 				else
-					alert("E004. Please refresh the page!");
+					alert("E004. Please refresh the page! (Bad response while saving data to session)");
 			}
 		});
 

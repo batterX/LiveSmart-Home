@@ -250,6 +250,28 @@ function showSettingParametersError(errorStr) {
     Helper Functions
 */
 
+function verifySystem() {
+    let isOK = false;
+    $.post({
+        url: "https://api.batterx.app/v2/install.php",
+        async: false,
+        data: {
+            action : "verify_system",
+            user   : customerEmail.trim(),
+            system : isLiFePO() ? $("#bx_system").val().trim() : isOldSys() ? $("#system_co_sn").val().trim() : "NEW"
+        },
+        error: () => { alert("E032. Please refresh the page! (Error while verifying system serialnumber in cloud)"); },
+        success: (response) => {
+            console.log(response);
+            if(response === "1")
+                isOK = true;
+            else
+                $("#errorSystemRegisteredWithOtherUser").modal("show");
+        }
+    });
+    return isOK;
+}
+
 function verifyModulesLiFePO() {
 
     var system_serial = $("#bx_system").val();
@@ -283,7 +305,7 @@ function verifyModulesLiFePO() {
                     system: system_serial,
                     serialnumber: sn
                 },
-                error: () => { alert("E015. Please refresh the page!"); },
+                error: () => { alert("E015. Please refresh the page! (Error while verifying battery serialnumber in cloud)"); },
                 success: (response) => {
                     if(response === "1") {
                         canContinue = true;
@@ -330,11 +352,11 @@ function verifyModulesLiFePO() {
 function verifyModulesCommunication(callback) {
     $.get({
         url: "api.php?get=settings",
-        error: () => { alert("E022. Please refresh the page!"); },
+        error: () => { alert("E022. Please refresh the page! (Error while reading local settings table)"); },
         success: (response) => {
             console.log(response);
             if(!response || typeof response != "object" || !response.hasOwnProperty("InverterParameters"))
-                return alert("E023. Please refresh the page!");
+                return alert("E023. Please refresh the page! (Missing or malformed data in local settings table)");
             dataSettings = JSON.parse(JSON.stringify(response));
             response = response["InverterParameters"];
             if(tempDatetime == "") { tempDatetime = response["0"]["s1"]; setTimeout(() => { verifyModulesCommunication(callback); }, 5000); return; }
@@ -666,7 +688,7 @@ function showImportDataFromCloud() {
             system : isLiFePO() ? $("#bx_system").val().trim() : $("#system_co_sn").val().trim(),
             customer : customerEmail.trim()
         },
-        error: () => { alert("E004. Please refresh the page!"); },
+        error: () => { alert("E004. Please refresh the page! (Error while reading system data from cloud)"); },
         success: (json) => {
             console.log(json);
             if((isCarbon() || isOther()) && isOldSys() && !json) {
@@ -1048,7 +1070,7 @@ step1();
 
 function step1() {
 
-    if(!apikey || apikey.length != 40) return alert("E003. Please refresh the page!");
+    if(!apikey || apikey.length != 40) return alert("E003. Please refresh the page! (Missing or malformed apikey)");
 
     step2();
 
@@ -1075,7 +1097,7 @@ function step2() {
             action : "get_installation_info",
             apikey : systemApikey
         },
-        error: () => { alert("E004. Please refresh the page!"); },
+        error: () => { alert("E004. Please refresh the page! (Error while reading installation info from cloud)"); },
         success: (json) => {
 
             console.log(json);
@@ -1112,7 +1134,7 @@ function step3() {
             action : "get_box_info",
             apikey : systemApikey
         },
-        error: () => { alert("E005. Please refresh the page!"); },
+        error: () => { alert("E005. Please refresh the page! (Error while reading livex info from cloud)"); },
         success: (response) => {
 
             console.log(response);
@@ -1145,10 +1167,10 @@ function step3() {
                     box_serial: box_info.serialnumber,
                     box_partnumber: box_info.partnumber
                 },
-                error: () => { alert("E006. Please refresh the page!"); },
+                error: () => { alert("E006. Please refresh the page! (Error while saving data to session)"); },
                 success: (response) => {
                     console.log(response);
-                    if(response !== "1") return alert("E007. Please refresh the page!");
+                    if(response !== "1") return alert("E007. Please refresh the page! (Bad response while saving data to session)");
                     $("#bx_box").val(box_info.serialnumber);
                     step4();
                 }
@@ -1176,13 +1198,13 @@ function step4() {
 
     $.get({
         url: "api.php?get=deviceinfo",
-        error: () => { alert("E008. Please refresh the page!"); },
+        error: () => { alert("E008. Please refresh the page! (Error while reading local device info table)"); },
         success: (response) => {
 
             console.log(response);
 
             if(!response || typeof response != "object" || !response.hasOwnProperty("device_serial_number"))
-                return alert("E009. Please refresh the page!");
+                return alert("E009. Please refresh the page! (Missing or malformed data in local device info table)");
 
             var device_serial_number = response.device_serial_number;
 
@@ -1210,10 +1232,10 @@ function step4() {
                             device_serial: device_serial_number,
                             device_partnumber: device_part_number
                         },
-                        error: () => { alert("E010. Please refresh the page!"); },
+                        error: () => { alert("E010. Please refresh the page! (Error while saving data to session)"); },
                         success: (response) => {
                             console.log(response);
-                            if(response !== "1") return alert("E011. Please refresh the page!");
+                            if(response !== "1") return alert("E011. Please refresh the page! (Bad response while saving data to session)");
                             $("#bx_device").val(device_serial_number);
                             step5();
                         }
@@ -1244,12 +1266,12 @@ function step5() {
     
     $.get({
         url: "api.php?get=settings",
-        error: () => { alert("E012. Please refresh the page!"); },
+        error: () => { alert("E012. Please refresh the page! (Error while reading local settings table)"); },
         success: (response) => {
             
             console.log(response);
             
-            if(!response || typeof response != "object") return alert("E013. Please refresh the page!");
+            if(!response || typeof response != "object") return alert("E013. Please refresh the page! (Missing or malformed data in local settings table)");
 
             dataSettings = JSON.parse(JSON.stringify(response));
 
@@ -1396,6 +1418,9 @@ function mainFormSubmit_5() {
     // Check System S/N (For LiFePO)
     if(isLiFePO() && !isAlreadyRegistered && $("#bx_system").val().length != 14)
         return $("#errorSystemSerialNotCorrect").modal("show");
+
+    // Verify System S/N
+    if(!verifySystem()) return;
     
     // Verify Battery Modules
     if(isLiFePO() && !verifyModulesLiFePO()) return;
@@ -1408,7 +1433,7 @@ function mainFormSubmit_5() {
             serialnumber : $("#bx_device").val(),
             system       : isLiFePO() ? $("#bx_system").val().trim() : isOldSys() ? $("#system_co_sn").val().trim() : "NEW"
         },
-        error: () => { alert("E014. Please refresh the page!"); },
+        error: () => { alert("E014. Please refresh the page! (Error while verifying device serialnumber in cloud)"); },
         success: (response) => {
             console.log(response);
             if(response !== "1") return $("#errorInverterRegisteredWithOtherSystem").modal("show");
@@ -1729,10 +1754,10 @@ function setValuesToSession() {
     $.post({
         url: "cmd/session.php",
         data: tempData,
-        error: () => { alert("E056. Please refresh the page!"); },
+        error: () => { alert("E056. Please refresh the page! (Error while saving data to session)"); },
         success: (response) => {
             console.log(response);
-            if(response !== "1") return alert("E057. Please refresh the page!");
+            if(response !== "1") return alert("E057. Please refresh the page! (Bad response while saving data to session)");
             // Start Setup
             checkParametersCounter = 0;
             if(skipSetup)
@@ -1797,8 +1822,8 @@ function setup1() {
         if(selectedPhase == "1" || selectedPhase == "2" || selectedPhase == "3") {
             $.get({
                 url: "api.php?set=command&type=20736&entity=6&text2=" + selectedPhase,
-                error: () => { alert("E016. Please refresh the page!"); },
-                success: (response) => { if(response != "1") return alert("E017. Please refresh the page!"); }
+                error: () => { alert("E016. Please refresh the page! (Error while writing command to local database)"); },
+                success: (response) => { if(response != "1") return alert("E017. Please refresh the page! (Bad response while writing command to local database)"); }
             });
         }
     }
@@ -1812,8 +1837,8 @@ function setup1() {
     var maxGridFeedInPower = Math.round(Math.max(parseInt($("#solar_wattpeak").val()) * parseInt($("#solar_feedinlimitation").val()) / 100, 50)).toString();
     $.get({
         url: "api.php?set=command&type=20736&entity=1&text2=" + maxGridFeedInPower,
-        error: () => { alert("E018. Please refresh the page!"); },
-        success: (response) => { if(response != "1") return alert("E019. Please refresh the page!"); }
+        error: () => { alert("E018. Please refresh the page! (Error while writing command to local database)"); },
+        success: (response) => { if(response != "1") return alert("E019. Please refresh the page! (Bad response while writing command to local database)"); }
     });
 
 
@@ -1834,15 +1859,15 @@ function setup1() {
         setTimeout(() => {
             $.get({
                 url: "api.php?set=command&type=24065&entity=0&text2=I,1",
-                error: () => { alert("E024. Please refresh the page!"); },
+                error: () => { alert("E024. Please refresh the page! (Error while writing command to local database)"); },
                 success: (response) => {
-                    if(response != "1") return alert("E025. Please refresh the page!");
+                    if(response != "1") return alert("E025. Please refresh the page! (Bad response while writing command to local database)");
                     setTimeout(() => {
                         $.get({
                             url: "api.php?set=command&type=24114&entity=0&text2=5320,5300",
-                            error: () => { alert("E020. Please refresh the page!"); },
+                            error: () => { alert("E020. Please refresh the page! (Error while writing command to local database)"); },
                             success: (response) => {
-                                if(response != "1") return alert("E021. Please refresh the page!");
+                                if(response != "1") return alert("E021. Please refresh the page! (Bad response while writing command to local database)");
                                 tempDatetime = "";
                                 verifyModulesCommunication((flag) => {
                                     // Next Step For LiFePO Batteries
@@ -2039,11 +2064,11 @@ function setup2() {
     $.get({
         url: "api.php?get=settings",
         async: false,
-        error: () => { alert("E026. Please refresh the page!"); },
+        error: () => { alert("E026. Please refresh the page! (Error while reading local settings table)"); },
         success: (response) => {
 
             if(!response || typeof response != "object" || !response.hasOwnProperty("InverterParameters"))
-                return alert("E027. Please refresh the page!");
+                return alert("E027. Please refresh the page! (Missing or malformed data in local settings table)");
 
             dataSettings = JSON.parse(JSON.stringify(response));
             
@@ -2215,9 +2240,9 @@ function setup2() {
 function setup_sendCommand(type, entity, text1, text2) {
     $.get({
         url: `api.php?set=command&type=${type}&entity=${entity}&text1=${text1}&text2=${text2}`,
-        error: () => { alert("E028. Please refresh the page!") },
+        error: () => { alert("E028. Please refresh the page! (Error while writing command to local database)") },
         success: function(response) {
-            if(response != "1") return alert("E029. Please refresh the page!");
+            if(response != "1") return alert("E029. Please refresh the page! (Bad response while writing command to local database)");
             if(checkParametersInterval == undefined) checkParametersInterval = setInterval(setup_checkParameters, 5000);
         }
     });
@@ -2245,11 +2270,11 @@ function setup_checkParameters() {
 
     $.get({
         url: "api.php?get=settings",
-        error: () => { alert("E030. Please refresh the page!") },
+        error: () => { alert("E030. Please refresh the page! (Error while reading local settings table)") },
         success: (response) => {
 
             if(!response || typeof response != "object" || !response.hasOwnProperty("InverterParameters"))
-                return alert("E031. Please refresh the page!");
+                return alert("E031. Please refresh the page! (Missing or malformed data in local settings table)");
 
             dataSettings = JSON.parse(JSON.stringify(response));
 

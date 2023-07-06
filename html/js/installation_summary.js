@@ -33,7 +33,7 @@ $("#btnFinishInstallation").on("click", () => {
 
 	if(dataObj.hasOwnProperty("system_serial") && dataObj["system_serial"] == "NEW") {
 		generateSystemSerial((sn) => {
-			if(!sn) return alert("E001. Please refresh the page! (generate_system_serial)");
+			if(!sn) return alert("E001. Please refresh the page! (Bad response while generating new system serialnumber from cloud)");
 			$("#systemSerial").html(sn);
 			dataObj.system_serial = sn;
 			finishInstallation();
@@ -56,7 +56,7 @@ function generateSystemSerial(callback) {
 			action: "generate_system_serial",
 			begin: "XH01" + new Date().getFullYear().toString().substr(-2)
 		},
-		error: () => { alert("E002. Please refresh the page! (generate_system_serial)"); },
+		error: () => { alert("E002. Please refresh the page! (Error while generating new system serialnumber from cloud)"); },
 		success: (response) => {
 			// Show Not Registered
 			callback(response);
@@ -181,7 +181,7 @@ function finishInstallation() {
 			processData: false,
 			contentType: false,
 			cache: false,
-			error: () => { alert("Error, please try again!"); },
+			error: () => { alert("E003. Please refresh the page! (Error while registering installation data to cloud)"); },
 			success: (response) => {
 				if(response == "1") {
 					showSuccess();
