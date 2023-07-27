@@ -60,6 +60,10 @@ define("PNS_DEVICE", (array) [
 
 define("PNS_BOX", (array) [
     ""          => (array) [ "type" => ""   , "version" => 0 , "name" => ""               ],
+    "K800414-6" => (array) [ "type" => "xc" , "version" => 5 , "name" => "cliX 2.0"       ],
+    "K800415-6" => (array) [ "type" => "xc" , "version" => 5 , "name" => "cliX 2.0"       ],
+    "K800414-5" => (array) [ "type" => "xc" , "version" => 4 , "name" => "cliX 2.0"       ],
+    "K800415-5" => (array) [ "type" => "xc" , "version" => 4 , "name" => "cliX 2.0"       ],
     "K800414-4" => (array) [ "type" => "xc" , "version" => 3 , "name" => "cliX 2.0"       ],
     "K800415-4" => (array) [ "type" => "xc" , "version" => 3 , "name" => "cliX 2.0"       ],
     "200414-21" => (array) [ "type" => "xc" , "version" => 2 , "name" => "cliX 2.0"       ],
@@ -97,4 +101,4 @@ $lang = json_decode($lang, true);
 
 $versionHash = time();
 
-$softwareVersion = "v23.7.1";
+$softwareVersion = "v23.7.1-1";
