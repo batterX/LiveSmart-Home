@@ -2022,24 +2022,24 @@ function setup2() {
         newParameters["gridFrequencyProtectionTime"] = "60,60,100,100";
         newParameters["gridAverageVoltage"         ] = `${temp_Ueff}`;
         newParameters["gridAverageVoltageTime"     ] = `${temp_UeffTime}`;
-        newParameters["gridFirstOrderVoltage"      ] = `${temp_UeffOver1},${temp_UeffUnder1}`;
         newParameters["gridSecondOrderVoltage"     ] = `${temp_UeffOver2},${temp_UeffUnder2}`;
-        newParameters["gridFirstOrderFrequency"    ] = `${temp_fOver1},${temp_fUnder1}`;
         newParameters["maxGridVoltage"             ] = `${temp_maxGridVoltage}`;
         newParameters["minGridVoltage"             ] = `${temp_minGridVoltage}`;
         newParameters["maxGridFrequency"           ] = `${temp_maxGridFrequency}`;
         newParameters["minGridFrequency"           ] = `${temp_minGridFrequency}`;
         newParameters["gridConnectDelay"           ] = `${temp_gridConnectDelay}`;
+        newParameters["gridFirstOrderVoltage"      ] = `${temp_UeffOver1},${temp_UeffUnder1}`;
+        newParameters["gridFirstOrderFrequency"    ] = `${temp_fOver1},${temp_fUnder1}`;
     } else if(isEstonia) {
         newParameters["gridVoltageProtectionTime"  ] = "100,360,3000,1200";
         newParameters["gridFrequencyProtectionTime"] = "160,360,100,100";
-        newParameters["gridFirstOrderVoltage"      ] = "25530,19550";
         newParameters["gridSecondOrderVoltage"     ] = "26450,4600";
-        newParameters["gridFirstOrderFrequency"    ] = "5160,4740";
         newParameters["maxGridVoltage"             ] = "26450";
         newParameters["minGridVoltage"             ] = "19550";
         newParameters["maxGridFrequency"           ] = "5200";
         newParameters["minGridFrequency"           ] = "4700";
+        newParameters["gridFirstOrderVoltage"      ] = "25530,19550";
+        newParameters["gridFirstOrderFrequency"    ] = "5160,4740";
     }
 
     newParameters["regulationMode"] = $("#regulation_check").is(":checked") ? "1" : "0";
@@ -2109,9 +2109,7 @@ function setup2() {
             if(isTor || isEstonia) {
                 oldParameters["gridVoltageProtectionTime"  ] = !temp.hasOwnProperty("44") || !temp["44"]["s1"].replaceAll(",", "") ? "" : temp["44"]["s1"];
                 oldParameters["gridFrequencyProtectionTime"] = !temp.hasOwnProperty("45") || !temp["45"]["s1"].replaceAll(",", "") ? "" : temp["45"]["s1"];
-                oldParameters["gridFirstOrderVoltage"      ] = !temp.hasOwnProperty("39") || !temp["39"]["s1"].replaceAll(",", "") ? "" : temp["39"]["s1"];
                 oldParameters["gridSecondOrderVoltage"     ] = !temp.hasOwnProperty("41") || !temp["41"]["s1"].replaceAll(",", "") ? "" : temp["41"]["s1"];
-                oldParameters["gridFirstOrderFrequency"    ] = !temp.hasOwnProperty("40") || !temp["40"]["s1"].replaceAll(",", "") ? "" : temp["40"]["s1"];
                 oldParameters["maxGridVoltage"             ] = !temp.hasOwnProperty("11") || !temp["11"]["s1"].replaceAll(",", "") ? "" : temp["11"]["s1"];
                 oldParameters["minGridVoltage"             ] = !temp.hasOwnProperty("10") || !temp["10"]["s1"].replaceAll(",", "") ? "" : temp["10"]["s1"];
                 oldParameters["maxGridFrequency"           ] = !temp.hasOwnProperty("13") || !temp["13"]["s1"].replaceAll(",", "") ? "" : temp["13"]["s1"];
@@ -2121,6 +2119,8 @@ function setup2() {
                     oldParameters["gridAverageVoltageTime" ] = !temp.hasOwnProperty("46") || !temp["46"]["s1"].replaceAll(",", "") ? "" : temp["46"]["s1"];
                     oldParameters["gridConnectDelay"       ] = !temp.hasOwnProperty( "4") || !temp[ "4"]["s1"].replaceAll(",", "") ? "" : temp[ "4"]["s1"];
                 }
+                oldParameters["gridFirstOrderVoltage"      ] = !temp.hasOwnProperty("39") || !temp["39"]["s1"].replaceAll(",", "") ? "" : temp["39"]["s1"];
+                oldParameters["gridFirstOrderFrequency"    ] = !temp.hasOwnProperty("40") || !temp["40"]["s1"].replaceAll(",", "") ? "" : temp["40"]["s1"];
             }
 
             if(isLiFePO() && oldParameters["dischargingVoltage"].split(",")[2] == "4700") // Old B Modules
@@ -2183,9 +2183,7 @@ function setup2() {
     if(isTor || isEstonia) {
         if(newParameters["gridVoltageProtectionTime"  ] != oldParameters["gridVoltageProtectionTime"  ]) { retry = true; setup_sendCommand(24132, 0, "",        newParameters["gridVoltageProtectionTime"  ]); }
         if(newParameters["gridFrequencyProtectionTime"] != oldParameters["gridFrequencyProtectionTime"]) { retry = true; setup_sendCommand(24133, 0, "",        newParameters["gridFrequencyProtectionTime"]); }
-        if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) { retry = true; setup_sendCommand(24121, 0, "",        newParameters["gridFirstOrderVoltage"      ]); }
         if(newParameters["gridSecondOrderVoltage"     ] != oldParameters["gridSecondOrderVoltage"     ]) { retry = true; setup_sendCommand(24129, 0, "",        newParameters["gridSecondOrderVoltage"     ]); }
-        if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) { retry = true; setup_sendCommand(24128, 0, "",        newParameters["gridFirstOrderFrequency"    ]); }
         if(newParameters["maxGridVoltage"             ] != oldParameters["maxGridVoltage"             ]) { retry = true; setup_sendCommand(24081, 0, "",        newParameters["maxGridVoltage"             ]); }
         if(newParameters["minGridVoltage"             ] != oldParameters["minGridVoltage"             ]) { retry = true; setup_sendCommand(24080, 0, "",        newParameters["minGridVoltage"             ]); }
         if(newParameters["maxGridFrequency"           ] != oldParameters["maxGridFrequency"           ]) { retry = true; setup_sendCommand(24083, 0, "",        newParameters["maxGridFrequency"           ]); }
@@ -2195,6 +2193,8 @@ function setup2() {
             if(newParameters["gridAverageVoltageTime" ] != oldParameters["gridAverageVoltageTime"     ]) { retry = true; setup_sendCommand(24134, 0, "",        newParameters["gridAverageVoltageTime"     ]); }
             if(newParameters["gridConnectDelay"       ] != oldParameters["gridConnectDelay"           ]) { retry = true; setup_sendCommand(24068, 0, "",        newParameters["gridConnectDelay"           ]); }
         }
+        if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) { retry = true; setup_sendCommand(24121, 0, "",        newParameters["gridFirstOrderVoltage"      ]); }
+        if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) { retry = true; setup_sendCommand(24128, 0, "",        newParameters["gridFirstOrderFrequency"    ]); }
     }
 
     if(newParameters["regulationMode"] != oldParameters["regulationMode"]) { retry = true; setup_sendSetting("InjectionMode"        , "0", "v5"   , newParameters["regulationMode"]); }
@@ -2316,9 +2316,7 @@ function setup_checkParameters() {
             if(isTor || isEstonia) {
                 oldParameters["gridVoltageProtectionTime"  ] = !temp.hasOwnProperty("44") || !temp["44"]["s1"].replaceAll(",", "") ? "" : temp["44"]["s1"];
                 oldParameters["gridFrequencyProtectionTime"] = !temp.hasOwnProperty("45") || !temp["45"]["s1"].replaceAll(",", "") ? "" : temp["45"]["s1"];
-                oldParameters["gridFirstOrderVoltage"      ] = !temp.hasOwnProperty("39") || !temp["39"]["s1"].replaceAll(",", "") ? "" : temp["39"]["s1"];
                 oldParameters["gridSecondOrderVoltage"     ] = !temp.hasOwnProperty("41") || !temp["41"]["s1"].replaceAll(",", "") ? "" : temp["41"]["s1"];
-                oldParameters["gridFirstOrderFrequency"    ] = !temp.hasOwnProperty("40") || !temp["40"]["s1"].replaceAll(",", "") ? "" : temp["40"]["s1"];
                 oldParameters["maxGridVoltage"             ] = !temp.hasOwnProperty("11") || !temp["11"]["s1"].replaceAll(",", "") ? "" : temp["11"]["s1"];
                 oldParameters["minGridVoltage"             ] = !temp.hasOwnProperty("10") || !temp["10"]["s1"].replaceAll(",", "") ? "" : temp["10"]["s1"];
                 oldParameters["maxGridFrequency"           ] = !temp.hasOwnProperty("13") || !temp["13"]["s1"].replaceAll(",", "") ? "" : temp["13"]["s1"];
@@ -2328,6 +2326,8 @@ function setup_checkParameters() {
                     oldParameters["gridAverageVoltageTime" ] = !temp.hasOwnProperty("46") || !temp["46"]["s1"].replaceAll(",", "") ? "" : temp["46"]["s1"];
                     oldParameters["gridConnectDelay"       ] = !temp.hasOwnProperty( "4") || !temp[ "4"]["s1"].replaceAll(",", "") ? "" : temp[ "4"]["s1"];
                 }
+                oldParameters["gridFirstOrderVoltage"      ] = !temp.hasOwnProperty("39") || !temp["39"]["s1"].replaceAll(",", "") ? "" : temp["39"]["s1"];
+                oldParameters["gridFirstOrderFrequency"    ] = !temp.hasOwnProperty("40") || !temp["40"]["s1"].replaceAll(",", "") ? "" : temp["40"]["s1"];
             }
 
             if(oldParameters["allowOverVoltageDerating"] == "") newParameters["allowOverVoltageDerating"] = "";
@@ -2347,9 +2347,7 @@ function setup_checkParameters() {
             if(isTor || isEstonia) {
                 if(oldParameters["gridVoltageProtectionTime"  ] == "") newParameters["gridVoltageProtectionTime"  ] = "";
                 if(oldParameters["gridFrequencyProtectionTime"] == "") newParameters["gridFrequencyProtectionTime"] = "";
-                if(oldParameters["gridFirstOrderVoltage"      ] == "") newParameters["gridFirstOrderVoltage"      ] = "";
                 if(oldParameters["gridSecondOrderVoltage"     ] == "") newParameters["gridSecondOrderVoltage"     ] = "";
-                if(oldParameters["gridFirstOrderFrequency"    ] == "") newParameters["gridFirstOrderFrequency"    ] = "";
                 if(oldParameters["maxGridVoltage"             ] == "") newParameters["maxGridVoltage"             ] = "";
                 if(oldParameters["minGridVoltage"             ] == "") newParameters["minGridVoltage"             ] = "";
                 if(oldParameters["maxGridFrequency"           ] == "") newParameters["maxGridFrequency"           ] = "";
@@ -2359,6 +2357,8 @@ function setup_checkParameters() {
                     if(oldParameters["gridAverageVoltageTime" ] == "") newParameters["gridAverageVoltageTime"     ] = "";
                     if(oldParameters["gridConnectDelay"       ] == "") newParameters["gridConnectDelay"           ] = "";
                 }
+                if(oldParameters["gridFirstOrderVoltage"      ] == "") newParameters["gridFirstOrderVoltage"      ] = "";
+                if(oldParameters["gridFirstOrderFrequency"    ] == "") newParameters["gridFirstOrderFrequency"    ] = "";
             }
 
             oldParameters["regulationMode"] = !response.hasOwnProperty("InjectionMode") ? "0" : response["InjectionMode"]["0"]["v5"];
@@ -2411,20 +2411,20 @@ function setup_checkParameters() {
             if(newParameters["configTimeConstants"     ] != oldParameters["configTimeConstants"     ]) { retry = true; setup_sendCommand(24135, 0, "",        newParameters["configTimeConstants"     ]); }
 
             if(isTor || isEstonia) {
-                if(newParameters["gridVoltageProtectionTime"  ] != oldParameters["gridVoltageProtectionTime"  ]) { retry = true; setup_sendCommand(24132, 0, "",        newParameters["gridVoltageProtectionTime"  ]); }
-                if(newParameters["gridFrequencyProtectionTime"] != oldParameters["gridFrequencyProtectionTime"]) { retry = true; setup_sendCommand(24133, 0, "",        newParameters["gridFrequencyProtectionTime"]); }
-                if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) { retry = true; setup_sendCommand(24121, 0, "",        newParameters["gridFirstOrderVoltage"      ]); }
-                if(newParameters["gridSecondOrderVoltage"     ] != oldParameters["gridSecondOrderVoltage"     ]) { retry = true; setup_sendCommand(24129, 0, "",        newParameters["gridSecondOrderVoltage"     ]); }
-                if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) { retry = true; setup_sendCommand(24128, 0, "",        newParameters["gridFirstOrderFrequency"    ]); }
-                if(newParameters["maxGridVoltage"             ] != oldParameters["maxGridVoltage"             ]) { retry = true; setup_sendCommand(24081, 0, "",        newParameters["maxGridVoltage"             ]); }
-                if(newParameters["minGridVoltage"             ] != oldParameters["minGridVoltage"             ]) { retry = true; setup_sendCommand(24080, 0, "",        newParameters["minGridVoltage"             ]); }
-                if(newParameters["maxGridFrequency"           ] != oldParameters["maxGridFrequency"           ]) { retry = true; setup_sendCommand(24083, 0, "",        newParameters["maxGridFrequency"           ]); }
-                if(newParameters["minGridFrequency"           ] != oldParameters["minGridFrequency"           ]) { retry = true; setup_sendCommand(24082, 0, "",        newParameters["minGridFrequency"           ]); }
+                if(newParameters["gridVoltageProtectionTime"  ] != oldParameters["gridVoltageProtectionTime"  ]) { retry =  true; setup_sendCommand(24132, 0, "",        newParameters["gridVoltageProtectionTime"  ]); }
+                if(newParameters["gridFrequencyProtectionTime"] != oldParameters["gridFrequencyProtectionTime"]) { retry =  true; setup_sendCommand(24133, 0, "",        newParameters["gridFrequencyProtectionTime"]); }
+                if(newParameters["gridSecondOrderVoltage"     ] != oldParameters["gridSecondOrderVoltage"     ]) { retry =  true; setup_sendCommand(24129, 0, "",        newParameters["gridSecondOrderVoltage"     ]); }
+                if(newParameters["maxGridVoltage"             ] != oldParameters["maxGridVoltage"             ]) { retry =  true; setup_sendCommand(24081, 0, "",        newParameters["maxGridVoltage"             ]); }
+                if(newParameters["minGridVoltage"             ] != oldParameters["minGridVoltage"             ]) { retry =  true; setup_sendCommand(24080, 0, "",        newParameters["minGridVoltage"             ]); }
+                if(newParameters["maxGridFrequency"           ] != oldParameters["maxGridFrequency"           ]) { retry =  true; setup_sendCommand(24083, 0, "",        newParameters["maxGridFrequency"           ]); }
+                if(newParameters["minGridFrequency"           ] != oldParameters["minGridFrequency"           ]) { retry =  true; setup_sendCommand(24082, 0, "",        newParameters["minGridFrequency"           ]); }
                 if(isTor) {
-                    if(newParameters["gridAverageVoltage"     ] != oldParameters["gridAverageVoltage"         ]) { retry = true; setup_sendCommand(24084, 0, "",        newParameters["gridAverageVoltage"         ]); }
-                    if(newParameters["gridAverageVoltageTime" ] != oldParameters["gridAverageVoltageTime"     ]) { retry = true; setup_sendCommand(24134, 0, "",        newParameters["gridAverageVoltageTime"     ]); }
-                    if(newParameters["gridConnectDelay"       ] != oldParameters["gridConnectDelay"           ]) { retry = true; setup_sendCommand(24068, 0, "",        newParameters["gridConnectDelay"           ]); }
+                    if(newParameters["gridAverageVoltage"     ] != oldParameters["gridAverageVoltage"         ]) { retry =  true; setup_sendCommand(24084, 0, "",        newParameters["gridAverageVoltage"         ]); }
+                    if(newParameters["gridAverageVoltageTime" ] != oldParameters["gridAverageVoltageTime"     ]) { retry =  true; setup_sendCommand(24134, 0, "",        newParameters["gridAverageVoltageTime"     ]); }
+                    if(newParameters["gridConnectDelay"       ] != oldParameters["gridConnectDelay"           ]) { retry =  true; setup_sendCommand(24068, 0, "",        newParameters["gridConnectDelay"           ]); }
                 }
+                if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) { retry = false; setup_sendCommand(24121, 0, "",        newParameters["gridFirstOrderVoltage"      ]); }
+                if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) { retry = false; setup_sendCommand(24128, 0, "",        newParameters["gridFirstOrderFrequency"    ]); }
             }
 
             if(newParameters["regulationMode"] != oldParameters["regulationMode"]) { retry = true; setup_sendSetting("InjectionMode"        , "0", "v5"   , newParameters["regulationMode"]); }
@@ -2503,9 +2503,7 @@ function setup_checkParameters() {
                     else if(isTor || isEstonia) {
                         if(newParameters["gridVoltageProtectionTime"  ] != oldParameters["gridVoltageProtectionTime"  ]) showSettingParametersError("Problem when setting gridVoltageProtectionTime"  );
                         if(newParameters["gridFrequencyProtectionTime"] != oldParameters["gridFrequencyProtectionTime"]) showSettingParametersError("Problem when setting gridFrequencyProtectionTime");
-                        if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) showSettingParametersError("Problem when setting gridFirstOrderVoltage"      );
                         if(newParameters["gridSecondOrderVoltage"     ] != oldParameters["gridSecondOrderVoltage"     ]) showSettingParametersError("Problem when setting gridSecondOrderVoltage"     );
-                        if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) showSettingParametersError("Problem when setting gridFirstOrderFrequency"    );
                         if(newParameters["maxGridVoltage"             ] != oldParameters["maxGridVoltage"             ]) showSettingParametersError("Problem when setting maxGridVoltage"             );
                         if(newParameters["minGridVoltage"             ] != oldParameters["minGridVoltage"             ]) showSettingParametersError("Problem when setting minGridVoltage"             );
                         if(newParameters["maxGridFrequency"           ] != oldParameters["maxGridFrequency"           ]) showSettingParametersError("Problem when setting maxGridFrequency"           );
@@ -2515,6 +2513,8 @@ function setup_checkParameters() {
                             if(newParameters["gridAverageVoltageTime" ] != oldParameters["gridAverageVoltageTime"     ]) showSettingParametersError("Problem when setting gridAverageVoltageTime"     );
                             if(newParameters["gridConnectDelay"       ] != oldParameters["gridConnectDelay"           ]) showSettingParametersError("Problem when setting gridConnectDelay"           );
                         }
+                        if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) showSettingParametersError("Problem when setting gridFirstOrderVoltage"      );
+                        if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) showSettingParametersError("Problem when setting gridFirstOrderFrequency"    );
                     }
                 }
             }
