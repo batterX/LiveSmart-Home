@@ -333,23 +333,27 @@ function ups_mode_test() {
 function ups_mode_test_1() {
 	removeLastMsg("ups_mode_test");
 	logMsg("ups_mode_test", "", "Setting System Mode to UPS. Please wait... (±60 sec)");
+	// [NEW] Set BatteryType to LiFePO (Not Tested Yet)
+	$.get({ url: "api.php?set=command&type=24069&text1=0&text2=1", success: (response) => { console.log(response); } });
 	// Set SystemMode to UPS
-	$.get({ url: "api.php?set=command&type=20752&text1=0&text2=0", success: (response) => { console.log(response); } });
-	// Wait 15 seconds, then check if SystemMode is UPS
 	setTimeout(() => {
-		getCurrentStateUpdate(() => {
-			getSettings((json) => {
-				if(json == null) { ups_mode_test_1(); return; }
-				// Check SystemMode
-				if(!json.hasOwnProperty("SystemMode")) { ups_mode_test_1(); return; }
-				if(json["SystemMode"]["0"]["mode"] != "0") { ups_mode_test_1(); return; }
-				removeLastMsg("ups_mode_test");
-				logMsg("ups_mode_test", "green", "System Mode = UPS");
-				logMsg("ups_mode_test", "", "");
-				ups_mode_test_2();
+		$.get({ url: "api.php?set=command&type=20752&text1=0&text2=0", success: (response) => { console.log(response); } });
+		// Wait 15 seconds, then check if SystemMode is UPS
+		setTimeout(() => {
+			getCurrentStateUpdate(() => {
+				getSettings((json) => {
+					if(json == null) { ups_mode_test_1(); return; }
+					// Check SystemMode
+					if(!json.hasOwnProperty("SystemMode")) { ups_mode_test_1(); return; }
+					if(json["SystemMode"]["0"]["mode"] != "0") { ups_mode_test_1(); return; }
+					removeLastMsg("ups_mode_test");
+					logMsg("ups_mode_test", "green", "System Mode = UPS");
+					logMsg("ups_mode_test", "", "");
+					ups_mode_test_2();
+				});
 			});
-		});
-	}, 15000);
+		}, 15000);
+	}, 5000);
 }
 
 function ups_mode_test_2() {
