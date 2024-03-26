@@ -119,6 +119,7 @@ $batteryType = isset($_SESSION["battery_type"]) ? $_SESSION["battery_type"] : "o
 
 
 		<script src="js/dist/bundle.js?v=<?php echo $versionHash ?>"></script>
+		<script src="js/dist/moment.js?v=<?php echo $versionHash ?>"></script>
 		<script src="js/common.js?v=<?php echo $versionHash ?>"></script>
 		<script>
 			const lang        = <?php echo json_encode($lang) ?>;

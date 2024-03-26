@@ -97,7 +97,7 @@ $("#customerInformation .email").on("change", function() {
 	if(!validateEmail(email)) return;
 
 	// Email can't be same as installer mail
-	if(email == installerEmail.trim()) return $("#errorSameAsInstaller").modal("show");
+	if(email.trim().toLowerCase() == installerEmail.trim().toLowerCase()) return $("#errorSameAsInstaller").modal("show");
 	
 	$.post({
 		url: "https://api.batterx.app/v2/install.php",
@@ -216,7 +216,7 @@ $("#mainForm").on("submit", (e) => {
 		)
 	) {
 
-		if($("#customerInformation .email").val().trim() == installerEmail.trim())
+		if($("#customerInformation .email").val().trim().toLowerCase() == installerEmail.trim().toLowerCase())
 			return $("#errorSameAsInstaller").modal("show");
 
 		if(!hasAccessToUser)

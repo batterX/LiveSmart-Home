@@ -66,6 +66,8 @@ $objDeviceStandards = (array) [
 ];
 $deviceStandard = isset($objDeviceStandards[$dataSettings["InverterParameters"]["35"]["s1"]]) ? $objDeviceStandards[$dataSettings["InverterParameters"]["35"]["s1"]] : "";
 
+$inverterFirmwareVersion = isset($dataSettings["InverterFirmwareVersion"]) ? $dataSettings["InverterFirmwareVersion"]["0"]["s1"] : "";
+
 ?>
 
 
@@ -245,7 +247,9 @@ $deviceStandard = isset($objDeviceStandards[$dataSettings["InverterParameters"][
 										echo "U2 = " . $_SESSION["reactive_v2"] . "% &nbsp; &nbsp; ";
 										echo "U3 = " . $_SESSION["reactive_v3"] . "% &nbsp; &nbsp; ";
 										echo "U4 = " . $_SESSION["reactive_v4"] . "% &nbsp; &nbsp; " . "<br>";
-										echo $_SESSION["reactive_cosphi"] == "100" ? "cosφ = 1.00 &nbsp; &nbsp; " : ("cosφ = 0." . $_SESSION["reactive_cosphi"] . " &nbsp; &nbsp; ");
+										echo "Qmax/Sn = " . round(floatval($_SESSION["reactive_qmaxsn"]), 3) . " &nbsp; &nbsp; ";
+										echo "-Qmax/S = -" . round(floatval($_SESSION["reactive_qmaxsn"]), 3) . " &nbsp; &nbsp; " . "<br>";
+										echo "Minimum cosφ = 0.4" . " &nbsp; &nbsp; ";
 										echo $lang["system_setup"]["reactive_qutime"] . " = " . $_SESSION["reactive_qutime"] . " sec";
 										break;
 									case "4":
@@ -261,25 +265,85 @@ $deviceStandard = isset($objDeviceStandards[$dataSettings["InverterParameters"][
 						<span>
 							<?php echo $lang["summary"]["extended_enabled"] ?> (✓)<br>
 							<?php echo $lang["summary"]["extended_start_of_reduction"] ?> = <?php echo round(intval($_SESSION["extended_dropRatedPowerPoint"]) / 100, 1) ?> Hz<br>
-							<?php echo $lang["summary"]["extended_gradient"] ?> = <?php echo $_SESSION["extended_dropRatedPowerSlope"] ?> %
+							<?php echo $lang["summary"]["extended_gradient"] ?> = <?php echo $_SESSION["extended_dropRatedPowerSlope"] ?>% Pn/Hz
 						</span>
 					</div>
 					<?php if($isTor): ?>
+						<div class="box-row bt">
+							<span class="br"><?php echo $lang["summary"]["extended_underfrequency_reduction"] ?></span>
+							<span>
+								<?php echo $lang["summary"]["extended_enabled"] ?> (✓)<br>
+								<?php echo $lang["summary"]["extended_start_of_reduction"] ?> = 49.5 Hz<br>
+								<?php echo $lang["summary"]["extended_gradient"] ?> = 10% Pn/Hz
+							</span>
+						</div>
 						<div class="box-row bt">
 							<span class="br"><?php echo $lang["summary"]["extended_overvoltage_reduction"] ?></span>
 							<span>
 								<?php echo $lang["summary"]["extended_enabled"] ?> (✓)<br>
 								<?php echo $lang["summary"]["extended_start_point"] ?> = 110 [% Un]<br>
-								<?php echo $lang["summary"]["extended_end_point"] ?> = 112 [% Un]
+								<?php echo $lang["summary"]["extended_end_point"] ?> = 112 [% Un]<br>
+								<?php echo $lang["system_setup"]["extended_putime"] ?> = <?php echo $_SESSION["extended_puTime"] ?> sec
 							</span>
 						</div>
-					<?php endif; ?>
-					<?php if($isTor): ?>
 						<div class="box-row bt">
-							<span class="br"><?php echo $lang["system_setup"]["extended_parameters"] ?></span>
+							<span class="br"><?php echo $lang["summary"]["extended_lvrt"] ?></span>
+							<span>
+								<?php echo $lang["summary"]["extended_enabled"] ?> (✓)<br>
+								LVRT Point 1<br>
+								LVRT Point 2<br>
+								LVRT Point 3
+							</span>
+							<span class="pl-0">
+								&nbsp;<br>
+								= 0.30 Un<br>
+								= 0.75 Un<br>
+								= 0.85 Un<br>
+							</span>
+							<span class="pl-5">
+								&nbsp;<br>
+								LVRT Point 1<br>
+								LVRT Point 2<br>
+								LVRT Point 3
+							</span>
+							<span class="pl-0">
+								&nbsp;<br>
+								= 0.15 sec<br>
+								= 0.40 sec<br>
+								= 0.95 sec
+							</span>
+						</div>
+						<div class="box-row bt">
+							<span class="br"><?php echo $lang["summary"]["extended_grid_connection_conditions"] ?></span>
 							<span>
 								<?php
-									echo "Ueff"    . "<br>";
+									echo $lang["system_setup"]["extended_maxgridvoltage"] . "<br>";
+									echo $lang["system_setup"]["extended_mingridvoltage"] . "<br>";
+								?>
+							</span>
+							<span class="pl-0">
+								<?php
+									echo "= " . $_SESSION["extended_maxGridVoltage"] . " V" . "<br>";
+									echo "= " . $_SESSION["extended_minGridVoltage"] . " V" . "<br>";
+								?>
+							</span>
+							<span class="pl-5">
+								<?php
+									echo $lang["system_setup"]["extended_maxgridfrequency"] . "<br>";
+									echo $lang["system_setup"]["extended_mingridfrequency"] . "<br>";
+								?>
+							</span>
+							<span class="pl-0">
+								<?php
+									echo "= " . $_SESSION["extended_maxGridFrequency"] . " Hz" . "<br>";
+									echo "= " . $_SESSION["extended_minGridFrequency"] . " Hz" . "<br>";
+								?>
+							</span>
+						</div>
+						<div class="box-row bt">
+							<span class="br"><?php echo $lang["summary"]["extended_grid_decoupling_protection"] ?></span>
+							<span>
+								<?php
 									echo "Ueff >"  . "<br>";
 									echo "Ueff <"  . "<br>";
 									echo "Ueff >>" . "<br>";
@@ -290,35 +354,49 @@ $deviceStandard = isset($objDeviceStandards[$dataSettings["InverterParameters"][
 							</span>
 							<span class="pl-0">
 								<?php
-									echo "= " . $_SESSION["extended_Ueff"] . " Un" . "<br>";
-									echo "= " . $_SESSION["extended_UeffOver1"] . " Un" . "<br>";
-									echo "= " . $_SESSION["extended_UeffUnder1"] . " Un" . "<br>";
-									echo "= " . $_SESSION["extended_UeffOver2"] . " Un" . "<br>";
-									echo "= " . $_SESSION["extended_UeffUnder2"] . " Un" . "<br>";
+									echo "= " . $_SESSION["extended_UeffOver1"] . " V" . "<br>";
+									echo "= " . $_SESSION["extended_UeffUnder1"] . " V" . "<br>";
+									echo "= " . $_SESSION["extended_UeffOver2"] . " V" . "<br>";
+									echo "= " . $_SESSION["extended_UeffUnder2"] . " V" . "<br>";
 									echo "= " . $_SESSION["extended_fOver1"] . " Hz" . "<br>";
 									echo "= " . $_SESSION["extended_fUnder1"] . " Hz";
 								?>
 							</span>
 							<span class="pl-5">
 								<?php
-									echo $lang["system_setup"]["extended_uefftime"] . "<br>";
-									echo $lang["system_setup"]["extended_maxgridvoltage"] . "<br>";
-									echo $lang["system_setup"]["extended_mingridvoltage"] . "<br>";
-									echo $lang["system_setup"]["extended_maxgridfrequency"] . "<br>";
-									echo $lang["system_setup"]["extended_mingridfrequency"] . "<br>";
-									echo $lang["system_setup"]["extended_gridconnectdelay"] . "<br>";
-									echo $lang["system_setup"]["extended_putime"];
+									echo "Ueff >"  . "<br>";
+									echo "Ueff <"  . "<br>";
+									echo "Ueff >>" . "<br>";
+									echo "Ueff <<" . "<br>";
+									echo "f >"     . "<br>";
+									echo "f <";
 								?>
 							</span>
 							<span class="pl-0">
 								<?php
+									echo "= " . $_SESSION["extended_UeffOver1Time"] . " sec" . "<br>";
+									echo "= " . $_SESSION["extended_UeffUnder1Time"] . " sec" . "<br>";
+									echo "= " . $_SESSION["extended_UeffOver2Time"] . " sec" . "<br>";
+									echo "= " . $_SESSION["extended_UeffUnder2Time"] . " sec" . "<br>";
+									echo "= " . $_SESSION["extended_fOver1Time"] . " sec" . "<br>";
+									echo "= " . $_SESSION["extended_fUnder1Time"] . " sec";
+								?>
+							</span>
+						</div>
+						<div class="box-row">
+							<span class="br"></span>
+							<span>
+								<?php
+									echo $lang["system_setup"]["extended_ueff"] . "<br>";
+									echo $lang["system_setup"]["extended_uefftime"] . "<br>";
+									echo $lang["system_setup"]["extended_gridconnectdelay"];
+								?>
+							</span>
+							<span class="pl-0">
+								<?php
+									echo "= " . $_SESSION["extended_Ueff"] . " V" . "<br>";
 									echo "= " . $_SESSION["extended_UeffTime"] . " min" . "<br>";
-									echo "= " . $_SESSION["extended_maxGridVoltage"] . " Un" . "<br>";
-									echo "= " . $_SESSION["extended_minGridVoltage"] . " Un" . "<br>";
-									echo "= " . $_SESSION["extended_maxGridFrequency"] . " Hz" . "<br>";
-									echo "= " . $_SESSION["extended_minGridFrequency"] . " Hz" . "<br>";
-									echo "= " . $_SESSION["extended_gridConnectDelay"] . " sec" . "<br>";
-									echo "= " . $_SESSION["extended_puTime"] . " sec";
+									echo "= " . $_SESSION["extended_gridConnectDelay"] . " sec";
 								?>
 							</span>
 						</div>
@@ -337,32 +415,26 @@ $deviceStandard = isset($objDeviceStandards[$dataSettings["InverterParameters"][
 								?>
 							</span>
 							<span class="pl-0">
-								<?php
-									echo "= " . "1.11" . " Un" . "<br>";
-									echo "= " . "0.85" . " Un" . "<br>";
-									echo "= " . "1.15" . " Un" . "<br>";
-									echo "= " . "0.20" . " Un" . "<br>";
-									echo "= " . "51.6" . " Hz" . "<br>";
-									echo "= " . "47.4" . " Hz";
-								?>
+								= 1.11 Un<br>
+								= 0.85 Un<br>
+								= 1.15 Un<br>
+								= 0.20 Un<br>
+								= 51.6 Hz<br>
+								= 47.4 Hz
 							</span>
 							<span class="pl-5">
 								<?php
 									echo $lang["system_setup"]["extended_maxgridvoltage"] . "<br>";
 									echo $lang["system_setup"]["extended_mingridvoltage"] . "<br>";
 									echo $lang["system_setup"]["extended_maxgridfrequency"] . "<br>";
-									echo $lang["system_setup"]["extended_mingridfrequency"] . "<br>";
-									//echo "&nbsp;<br>&nbsp;";
+									echo $lang["system_setup"]["extended_mingridfrequency"];
 								?>
 							</span>
 							<span class="pl-0">
-								<?php
-									echo "= " . "1.15" . " Un" . "<br>";
-									echo "= " . "0.85" . " Un" . "<br>";
-									echo "= " . "52.0" . " Hz" . "<br>";
-									echo "= " . "47.0" . " Hz" . "<br>";
-									//echo "&nbsp;<br>&nbsp;";
-								?>
+								= 264.5 V<br>
+								= 195.5 V<br>
+								= 52.0 Hz<br>
+								= 47.0 Hz
 							</span>
 						</div>
 					<?php endif; ?>
@@ -418,6 +490,12 @@ $deviceStandard = isset($objDeviceStandards[$dataSettings["InverterParameters"][
 					<span class="br"><?php echo $lang["summary"]["installation_solar_size"]; ?></span>
 					<span><?php echo $_SESSION["solar_wattpeak"] . " Wp"; ?></span>
 				</div>
+				<?php if($inverterFirmwareVersion >= "23-11-15"): ?>
+					<div class="box-row bt">
+						<span class="br"><?php echo $lang["system_setup"]["solar_wide_input_range"]; ?></span>
+						<span><?php echo (isset($_SESSION["solar_wideinputrange"]) && $_SESSION["solar_wideinputrange"] == "1") ? $lang["summary"]["extended_enabled"] . " (✓)" : $lang["summary"]["extended_disabled"] ?></span>
+					</div>
+				<?php endif; ?>
 				<?php if(!empty($_SESSION["solar_info"])): ?>
 					<div class="box-row bt">
 						<span class="br"><?php echo $lang["summary"]["installation_solar_info"]; ?></span>

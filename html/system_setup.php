@@ -20,6 +20,7 @@ $_SESSION["last_step"] = $step;
 if(isset($_SESSION["reactive_mode"  ])) unset($_SESSION["reactive_mode"  ]);
 if(isset($_SESSION["reactive_kink"  ])) unset($_SESSION["reactive_kink"  ]);
 if(isset($_SESSION["reactive_cosphi"])) unset($_SESSION["reactive_cosphi"]);
+if(isset($_SESSION["reactive_q"     ])) unset($_SESSION["reactive_qmaxsn"]);
 if(isset($_SESSION["reactive_v1"    ])) unset($_SESSION["reactive_v1"    ]);
 if(isset($_SESSION["reactive_v2"    ])) unset($_SESSION["reactive_v2"    ]);
 if(isset($_SESSION["reactive_v3"    ])) unset($_SESSION["reactive_v3"    ]);
@@ -170,12 +171,165 @@ $customerEmail = empty($_SESSION["customer_email"]) ? "" : $_SESSION["customer_e
 
 						<?php if($isTor): ?>
 
+							<h6 class="pb-2 mt-2 mb-2" style="font-size:0.875rem"><b><?php echo $lang["system_setup"]["extended_grid_connection_conditions"] ?></b></h6>
+
 							<div class="form-group row mb-2">
-								<label class="col-6 col-form-label col-form-label-sm">Ueff</label>
+								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_maxgridvoltage"] ?></label>
 								<div class="col-6 d-flex align-items-center">
 									<div class="input-group input-group-sm">
-										<input id="extended_Ueff" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="1.00" max="1.30" value="1.11" placeholder="1.11" title="Range: 1.00 - 1.30">
-										<div class="input-group-append"><span class="input-group-text">Un</span></div>
+										<input id="extended_maxGridVoltage" class="form-control form-control-outline text-monospace" type="number" step="0.1" min="230.0" max="264.5" value="255.3" placeholder="255.3" title="Range: 230.0 - 264.5">
+										<div class="input-group-append"><span class="input-group-text">V</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_mingridvoltage"] ?></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_minGridVoltage" class="form-control form-control-outline text-monospace" type="number" step="0.1" min="184.0" max="230.0" value="184.0" placeholder="184.0" title="Range: 184.0 - 230.0">
+										<div class="input-group-append"><span class="input-group-text">V</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_maxgridfrequency"] ?></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_maxGridFrequency" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="50.00" max="51.50" value="51.5" placeholder="51.5" title="Range: 50.00 - 51.50">
+										<div class="input-group-append"><span class="input-group-text">Hz</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-3">
+								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_mingridfrequency"] ?></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_minGridFrequency" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="47.50" max="50.00" value="47.5" placeholder="47.5" title="Range: 47.50 - 50.00">
+										<div class="input-group-append"><span class="input-group-text">Hz</span></div>
+									</div>
+								</div>
+							</div>
+
+							<hr>
+
+							<h6 class="pb-2 mt-2 mb-2" style="font-size:0.875rem"><b><?php echo $lang["system_setup"]["extended_grid_decoupling_protection"] ?></b></h6>
+
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">Ueff ></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_UeffOver1" class="form-control form-control-outline text-monospace" type="number" step="0.1" min="230.0" max="299.0" value="255.3" placeholder="255.3" title="Range: 230.0 - 299.0">
+										<div class="input-group-append"><span class="input-group-text">V</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">Ueff <</label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_UeffUnder1" class="form-control form-control-outline text-monospace" type="number" step="0.1" min="23.0" max="230.0" value="184.0" placeholder="184.0" title="Range: 23.0 - 230.0">
+										<div class="input-group-append"><span class="input-group-text">V</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">Ueff >></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_UeffOver2" class="form-control form-control-outline text-monospace" type="number" step="0.1" min="230.0" max="299.0" value="264.5" placeholder="264.5" title="Range: 230.0 - 299.0">
+										<div class="input-group-append"><span class="input-group-text">V</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">Ueff <<</label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_UeffUnder2" class="form-control form-control-outline text-monospace" type="number" step="0.1" min="23.0" max="230.0" value="57.5" placeholder="57.5" title="Range: 23.0 - 230.0">
+										<div class="input-group-append"><span class="input-group-text">V</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">f ></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_fOver1" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="50.00" max="55.00" value="51.5" placeholder="51.5" title="Range: 50.00 - 55.00">
+										<div class="input-group-append"><span class="input-group-text">Hz</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-3">
+								<label class="col-6 col-form-label col-form-label-sm">f <</label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_fUnder1" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="45.00" max="50.00" value="47.5" placeholder="47.5" title="Range: 45.00 - 50.00">
+										<div class="input-group-append"><span class="input-group-text">Hz</span></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">Ueff ></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_UeffOver1Time" class="form-control form-control-outline text-monospace" type="number" step="0.02" min="0" value="0.1" placeholder="0.10">
+										<div class="input-group-append"><span class="input-group-text">sec</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">Ueff <</label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_UeffUnder1Time" class="form-control form-control-outline text-monospace" type="number" step="0.02" min="0" value="1.5" placeholder="1.50">
+										<div class="input-group-append"><span class="input-group-text">sec</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">Ueff >></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_UeffOver2Time" class="form-control form-control-outline text-monospace" type="number" step="0.02" min="0" value="0.1" placeholder="0.10">
+										<div class="input-group-append"><span class="input-group-text">sec</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">Ueff <<</label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_UeffUnder2Time" class="form-control form-control-outline text-monospace" type="number" step="0.02" min="0" value="0.5" placeholder="0.50">
+										<div class="input-group-append"><span class="input-group-text">sec</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm">f ></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_fOver1Time" class="form-control form-control-outline text-monospace" type="number" step="0.02" min="0" value="0.1" placeholder="0.10">
+										<div class="input-group-append"><span class="input-group-text">sec</span></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-3">
+								<label class="col-6 col-form-label col-form-label-sm">f <</label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_fUnder1Time" class="form-control form-control-outline text-monospace" type="number" step="0.02" min="0" value="0.1" placeholder="0.10">
+										<div class="input-group-append"><span class="input-group-text">sec</span></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group row mb-2">
+								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_ueff"] ?></label>
+								<div class="col-6 d-flex align-items-center">
+									<div class="input-group input-group-sm">
+										<input id="extended_Ueff" class="form-control form-control-outline text-monospace" type="number" step="0.1" min="230.0" max="299.0" value="255.3" placeholder="255.3" title="Range: 230.0 - 299.0">
+										<div class="input-group-append"><span class="input-group-text">V</span></div>
 									</div>
 								</div>
 							</div>
@@ -189,101 +343,7 @@ $customerEmail = empty($_SESSION["customer_email"]) ? "" : $_SESSION["customer_e
 								</div>
 							</div>
 
-							<div class="form-group row mb-2">
-								<label class="col-6 col-form-label col-form-label-sm">Ueff ></label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_UeffOver1" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="1.00" max="1.30" value="1.11" placeholder="1.11" title="Range: 1.00 - 1.30">
-										<div class="input-group-append"><span class="input-group-text">Un</span></div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row mb-2">
-								<label class="col-6 col-form-label col-form-label-sm">Ueff <</label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_UeffUnder1" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="0.10" max="1.00" value="0.80" placeholder="0.80" title="Range: 0.10 - 1.00">
-										<div class="input-group-append"><span class="input-group-text">Un</span></div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row mb-2">
-								<label class="col-6 col-form-label col-form-label-sm">Ueff >></label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_UeffOver2" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="1.00" max="1.30" value="1.15" placeholder="1.15" title="Range: 1.00 - 1.30">
-										<div class="input-group-append"><span class="input-group-text">Un</span></div>
-									</div>
-								</div>
-							</div>
 							<div class="form-group row mb-3">
-								<label class="col-6 col-form-label col-form-label-sm">Ueff <<</label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_UeffUnder2" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="0.10" max="1.00" value="0.25" placeholder="0.25" title="Range: 0.10 - 1.00">
-										<div class="input-group-append"><span class="input-group-text">Un</span></div>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group row mb-2">
-								<label class="col-6 col-form-label col-form-label-sm">f ></label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_fOver1" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="50.00" max="55.00" value="51.50" placeholder="51.50" title="Range: 50.00 - 55.00">
-										<div class="input-group-append"><span class="input-group-text">Hz</span></div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row mb-3">
-								<label class="col-6 col-form-label col-form-label-sm">f <</label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_fUnder1" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="45.00" max="50.00" value="47.50" placeholder="47.50" title="Range: 45.00 - 50.00">
-										<div class="input-group-append"><span class="input-group-text">Hz</span></div>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group row mb-2">
-								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_maxgridvoltage"] ?></label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_maxGridVoltage" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="1.00" max="1.15" value="1.15" placeholder="1.15" title="Range: 1.00 - 1.15">
-										<div class="input-group-append"><span class="input-group-text">Un</span></div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row mb-2">
-								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_mingridvoltage"] ?></label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_minGridVoltage" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="0.80" max="1.00" value="0.80" placeholder="0.80" title="Range: 0.80 - 1.00">
-										<div class="input-group-append"><span class="input-group-text">Un</span></div>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group row mb-2">
-								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_maxgridfrequency"] ?></label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_maxGridFrequency" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="50.00" max="51.50" value="51.50" placeholder="51.50" title="Range: 50.00 - 51.50">
-										<div class="input-group-append"><span class="input-group-text">Hz</span></div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group row mb-3">
-								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_mingridfrequency"] ?></label>
-								<div class="col-6 d-flex align-items-center">
-									<div class="input-group input-group-sm">
-										<input id="extended_minGridFrequency" class="form-control form-control-outline text-monospace" type="number" step="0.01" min="47.50" max="50.00" value="47.50" placeholder="47.50" title="Range: 47.50 - 50.00">
-										<div class="input-group-append"><span class="input-group-text">Hz</span></div>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group row mb-2">
 								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_gridconnectdelay"] ?></label>
 								<div class="col-6 d-flex align-items-center">
 									<div class="input-group input-group-sm">
@@ -292,6 +352,11 @@ $customerEmail = empty($_SESSION["customer_email"]) ? "" : $_SESSION["customer_e
 									</div>
 								</div>
 							</div>
+
+							<hr>
+
+							<h6 class="pb-2 mt-2 mb-2" style="font-size:0.875rem"><b><?php echo $lang["summary"]["extended_overvoltage_reduction"] ?></b></h6>
+
 							<div class="form-group row mb-3">
 								<label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_putime"] ?></label>
 								<div class="col-6 d-flex align-items-center">
@@ -446,20 +511,26 @@ $customerEmail = empty($_SESSION["customer_email"]) ? "" : $_SESSION["customer_e
 					<div class="modal-body">
 						<p class="message mb-3">Please confirm that the extended inverter parameters are correctly set, or modify their values.</p>
 						<hr>
-						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff              </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_Ueff"             class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Un </span></div></div></div></div>
-						<div class="form-group row mb-3"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_uefftime"] ?>         </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffTime"         class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">min</span></div></div></div></div>
-						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff >            </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffOver1"        class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Un </span></div></div></div></div>
-						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff <            </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffUnder1"       class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Un </span></div></div></div></div>
-						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff >>           </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffOver2"        class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Un </span></div></div></div></div>
-						<div class="form-group row mb-3"><label class="col-6 col-form-label col-form-label-sm">Ueff <<           </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffUnder2"       class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Un </span></div></div></div></div>
-						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">f >               </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_fOver1"           class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Hz </span></div></div></div></div>
-						<div class="form-group row mb-3"><label class="col-6 col-form-label col-form-label-sm">f <               </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_fUnder1"          class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Hz </span></div></div></div></div>
-						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_maxgridvoltage"] ?>  </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_maxGridVoltage"   class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Un </span></div></div></div></div>
-						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_mingridvoltage"] ?>  </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_minGridVoltage"   class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Un </span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_maxgridvoltage"] ?>  </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_maxGridVoltage"   class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">V  </span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_mingridvoltage"] ?>  </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_minGridVoltage"   class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">V  </span></div></div></div></div>
 						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_maxgridfrequency"] ?></label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_maxGridFrequency" class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Hz </span></div></div></div></div>
 						<div class="form-group row mb-3"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_mingridfrequency"] ?></label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_minGridFrequency" class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Hz </span></div></div></div></div>
-						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_gridconnectdelay"] ?></label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_gridConnectDelay" class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
-						<div class="form-group row mb-0"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_putime"] ?>         </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_puTime"           class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff >                                                          </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffOver1"        class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">V  </span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff <                                                          </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffUnder1"       class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">V  </span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff >>                                                         </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffOver2"        class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">V  </span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff <<                                                         </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffUnder2"       class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">V  </span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">f >                                                             </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_fOver1"           class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Hz </span></div></div></div></div>
+						<div class="form-group row mb-3"><label class="col-6 col-form-label col-form-label-sm">f <                                                             </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_fUnder1"          class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">Hz </span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff >                                                          </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffOver1Time"    class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff <                                                          </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffUnder1Time"   class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff >>                                                         </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffOver2Time"    class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">Ueff <<                                                         </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffUnder2Time"   class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm">f >                                                             </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_fOver1Time"       class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
+						<div class="form-group row mb-3"><label class="col-6 col-form-label col-form-label-sm">f <                                                             </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_fUnder1Time"      class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
+						<div class="form-group row mb-2"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_ueff"] ?>            </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_Ueff"             class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">V  </span></div></div></div></div>
+						<div class="form-group row mb-3"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_uefftime"] ?>        </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_UeffTime"         class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">min</span></div></div></div></div>
+						<div class="form-group row mb-3"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_gridconnectdelay"] ?></label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_gridConnectDelay" class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
+						<div class="form-group row mb-0"><label class="col-6 col-form-label col-form-label-sm"><?php echo $lang["system_setup"]["extended_putime"] ?>          </label><div class="col-6 d-flex align-items-center"><div class="input-group input-group-sm"><input id="confirmExtended_puTime"           class="form-control form-control-outline text-monospace" type="text" disabled><div class="input-group-append"><span class="input-group-text">sec</span></div></div></div></div>
 					</div>
 					<div class="modal-footer justify-content-between">
 						<button type="button" class="modify  btn btn-sm px-4 py-2 btn-primary ripple" style="min-width:40%"><b>Modify</b></button>
@@ -560,6 +631,18 @@ $customerEmail = empty($_SESSION["customer_email"]) ? "" : $_SESSION["customer_e
 								<div class="row m-0 p-0">
 									<div class="col-6 d-flex align-items-center m-0 p-0"><input id="solar_wattpeak" class="form-control form-control-outline" type="number" step="1" min="0" required></div>
 									<div class="col-6 d-flex align-items-center m-0 py-0 pr-0 pl-2"><span><?php echo $lang["system_setup"]["solar_watt_peak"]; ?></span></div>
+								</div>
+							</div>
+							<div id="solar_wideinputrange_container" class="card-body border-bottom pt-3 d-none">
+								<label for="solar_wideinputrange"><?php echo $lang["system_setup"]["solar_wide_input_range"]; ?></label>
+								<div class="row m-0 p-0">
+									<div class="col-6 d-flex align-items-center m-0 p-0">
+										<select id="solar_wideinputrange" class="form-control form-control-outline" required>
+											<option value=""></option>
+											<option value="0"><?php echo $lang["summary"]["extended_disabled"] ?></option>
+											<option value="1"><?php echo $lang["summary"]["extended_enabled"] ?></option>
+										</select>
+									</div>
 								</div>
 							</div>
 							<div class="card-body border-bottom pt-3">
@@ -819,20 +902,20 @@ MPPT 2
 										<div class="form-group row mx-n2 mb-2"><label for="reactive_mode3_v3" class="col-3 col-form-label px-2 text-center">U3</label><div class="col-7 px-2"><input value="<?php echo $isTor ? "105" : "103" ?>" placeholder="<?php echo $isTor ? "105" : "103" ?>" type="number" class="form-control form-control-outline" id="reactive_mode3_v3"></div><label class="col-2 col-form-label px-2">%</label></div>
 										<div class="form-group row mx-n2 mb-4"><label for="reactive_mode3_v4" class="col-3 col-form-label px-2 text-center">U4</label><div class="col-7 px-2"><input value="<?php echo $isTor ? "108" : "107" ?>" placeholder="<?php echo $isTor ? "108" : "107" ?>" type="number" class="form-control form-control-outline" id="reactive_mode3_v4"></div><label class="col-2 col-form-label px-2">%</label></div>
 										<div class="form-group row mx-n2 mb-4">
-											<label for="reactive_mode3_cosphi" class="col-3 col-form-label px-2 text-center">cosφ</label>
+											<label for="reactive_mode3_qmaxsn" class="col-3 col-form-label px-2 text-center">Qmax/Sn</label>
 											<div class="col-7 px-2">
-												<select class="form-control form-control-outline" id="reactive_mode3_cosphi">
-													<option value="90">0.90</option>
-													<option value="91">0.91</option>
-													<option value="92">0.92</option>
-													<option value="93">0.93</option>
-													<option value="94">0.94</option>
-													<option value="95">0.95</option>
-													<option value="96">0.96</option>
-													<option value="97">0.97</option>
-													<option value="98">0.98</option>
-													<option value="99">0.99</option>
-													<option value="100">1.00</option>
+												<select class="form-control form-control-outline" id="reactive_mode3_qmaxsn">
+													<option value="0.436">0.436</option>
+													<option value="0.415">0.415</option>
+													<option value="0.392">0.392</option>
+													<option value="0.368">0.368</option>
+													<option value="0.341">0.341</option>
+													<option value="0.312">0.312</option>
+													<option value="0.280">0.280</option>
+													<option value="0.243">0.243</option>
+													<option value="0.199">0.199</option>
+													<option value="0.141">0.141</option>
+													<option value="0.000">0.000</option>
 												</select>
 											</div>
 											<label class="col-2 col-form-label px-2"></label>

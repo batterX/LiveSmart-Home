@@ -137,7 +137,7 @@ function step3(json) {
 			// Show Not Registered
 			if(response != "1") {
 				$(".notif").removeClass("loading error success").addClass("error");
-				$(".message").html(lang.system_detect.inverter_not_registered).css("color", "red");
+				$(".message").html(lang.system_detect.inverter_not_registered + "<br>" + "(S/N: " + device_serial_number + ")").css("color", "red");
 				return;
 			}
 			// Show Working

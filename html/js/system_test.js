@@ -168,6 +168,7 @@ function testEnergyMeter() {
 		error: () => { alert("E003. Please refresh the page! (Error while reading local currentstate table)"); },
 		success: (response) => {
 			if(!response || typeof response != "object") return alert("E004. Please refresh the page! (Bad response from local currentstate table)");
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
 			setTimeout(() => {
 				$("#testEnergyMeter .notif").removeClass("loading error success");
 				var currentErrorId = "";
@@ -240,8 +241,11 @@ function testBatteryCharging() {
 
 			if(!response || typeof response != "object")
 				return alert("E006. Please refresh the page! (Bad response from local currentstate table)");
+
 			if(!response.hasOwnProperty("1074") || !response["1074"].hasOwnProperty("1"))
 				return alert("E007. Please refresh the page! (Missing value 1074,1 from local currentstate table)");
+
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
 
 			var batteryLevel = parseInt(response["1074"]["1"]);
 			var batteryVoltage = parseInt(response["1042"]["1"]) / 100;
@@ -333,6 +337,8 @@ function testBatteryCharging_waitUntilCharged() {
 			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("3")) return alert("E020. Please refresh the page! (Missing value 2465,3 from local currentstate table)");
 			if(response["2465"]["3"] != 11) return alert("E021. Please refresh the page! (BatteryChargingAC could not be set to forced-on)");
 
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
+
 			if(isLiFePO()) {
 				if(batteryWaitCounter < 1 && response["1074"]["1"] >= batteryMinLevel) {
 					$("#log p:last-child").html(`<b class="mr-1">✓</b> ${lang.system_test.charging_battery_to} ${batteryMinLevel}%`);
@@ -377,6 +383,8 @@ function testBatteryCharging_waitUntilDischarged() {
 			if(!response.hasOwnProperty("1634") || !response["1634"].hasOwnProperty("0")) return alert("E027. Please refresh the page! (Missing value 1634,0 from local currentstate table)");
 			if(response["2465"]["5"] != 11) return alert("E028. Please refresh the page! (BatteryDischargingAC could not be set to forced-on)");
 
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
+
 			if(isLiFePO()) {
 				if(batteryWaitCounter < 1 && response["1074"]["1"] <= batteryMaxLevel) {
 					$("#log p:last-child").html(`<b class="mr-1">✓</b> ${lang.system_test.discharging_battery_to} ${batteryMaxLevel}%`);
@@ -418,6 +426,7 @@ function testBatteryCharging_waitUntilSet() {
 				return alert("E030. Please refresh the page! (Bad response from local currentstate table)");
 			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("3"))
 				return alert("E031. Please refresh the page! (Missing value 2465,3 from local currentstate table)");
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
 			// Check If Enabled
 			if(response["2465"]["3"] != 11)
 				setTimeout(testBatteryCharging_waitUntilSet, 5000);
@@ -443,6 +452,8 @@ function testBatteryCharging_test() {
 
 			if(!response || typeof response != "object" || !response.hasOwnProperty("1121") || !response["1121"].hasOwnProperty("1"))
 				return alert("E033. Please refresh the page! (Bad response or missing value 1121,1 from local currentstate table)");
+
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
 
 			var batteryPower = parseInt(response["1121"]["1"]);
 			batteryCharging_count += 1;
@@ -491,6 +502,7 @@ function testBatteryCharging_waitUntilReset() {
 			if(!response || typeof response != "object") return alert("E039. Please refresh the page! (Bad response from local currentstate table)");
 			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("3")) return alert("E040. Please refresh the page! (Missing value 2465,3 from local currentstate table)");
 			if(!response.hasOwnProperty("2465") || !response["2465"].hasOwnProperty("5")) return alert("E041. Please refresh the page! (Missing value 2465,5 from local currentstate table)");
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
 			// Check If Disabled
 			if(response["2465"]["3"] != 10 && response["2465"]["5"] != 10)
 				setTimeout(testBatteryCharging_waitUntilReset, 5000);
@@ -549,6 +561,8 @@ function testUpsMode() {
 			if(!response || typeof response != "object" || !response.hasOwnProperty("1297") || !response["1297"].hasOwnProperty("1"))
 				return alert("E047. Please refresh the page! (Bad response or missing value 1297,1 from local currentstate table)");
 
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
+
 			var voltage1 = undefined;
 			var voltage2 = undefined;
 			var voltage3 = undefined;
@@ -600,6 +614,8 @@ function testUpsMode_waitingForInput() {
 			if(!response || typeof response != "object" || !response.hasOwnProperty("273") || !response["273"].hasOwnProperty("1") || !response.hasOwnProperty("1634") || !response["1634"].hasOwnProperty("0"))
 				return alert("E050. Please refresh the page! (Bad response or missing value 273,1 from local currentstate table)");
 
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
+
 			var voltage1 = undefined;
 			var voltage2 = undefined;
 			var voltage3 = undefined;
@@ -649,6 +665,8 @@ function testUpsMode_test() {
 
 			if(!response || typeof response != "object" || !response.hasOwnProperty("1297") || !response["1297"].hasOwnProperty("1"))
 				return alert("E053. Please refresh the page! (Bad response or missing value 1297,1 from local currentstate table)");
+
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
 
 			upsMode_count += 1;
 			$("#log p:last-child").html(`${lang.system_test.performing_test} (${upsMode_count} / 5)`);
@@ -701,6 +719,8 @@ function testUpsMode_finish() {
 
 			if(!response || typeof response != "object" || !response.hasOwnProperty("273") || !response["273"].hasOwnProperty("1"))
 				return alert("E056. Please refresh the page! (Bad response from local currentstate table)");
+			
+			if(!response.hasOwnProperty("logtime") || !moment(response["logtime"]).isAfter(moment(moment.utc().subtract(1, "minute").format("YYYY-MM-DD hh:mm:ss")))) return alert("Error! Connection to inverter has been lost. Please refresh the page!"); // NEW
 
 			var voltage1 = undefined;
 			var voltage2 = undefined;
