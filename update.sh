@@ -1,9 +1,6 @@
 #!/bin/sh
 # update.sh
 
-sudo cp /home/pi/livesmart-home/html /var/www -r
-sudo chmod 777 /var/www -R
-
 sudo rm /home/pi/BatterX
 sudo cp /home/pi/livesmart-home/BatterX /home/pi
 sudo chmod 777 /home/pi/BatterX
@@ -17,6 +14,9 @@ sudo chmod 777 /home/pi/launcher.sh
 
 sudo cp /home/pi/livesmart-home/updater.sh /home/pi
 sudo chmod 777 /home/pi/updater.sh
+
+sudo cp /home/pi/livesmart-home/html /var/www -r
+sudo chmod 777 /var/www -R
 
 
 
