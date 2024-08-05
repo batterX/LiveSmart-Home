@@ -1924,24 +1924,33 @@ function setup1() {
     if(isLiFePO()) {
         setTimeout(() => {
             $.get({
-                url: "api.php?set=command&type=24065&entity=0&text2=I,1",
+                url: "api.php?set=command&type=24069&entity=0&text2=1", // battery type
                 error: () => { alert("E024. Please refresh the page! (Error while writing command to local database)"); },
                 success: (response) => {
                     if(response != "1") return alert("E025. Please refresh the page! (Bad response while writing command to local database)");
                     setTimeout(() => {
                         $.get({
-                            url: "api.php?set=command&type=24114&entity=0&text2=5320,5300",
-                            error: () => { alert("E020. Please refresh the page! (Error while writing command to local database)"); },
+                            url: "api.php?set=command&type=24065&entity=0&text2=I,1", // bms battery connect
+                            error: () => { alert("E024. Please refresh the page! (Error while writing command to local database)"); },
                             success: (response) => {
-                                if(response != "1") return alert("E021. Please refresh the page! (Bad response while writing command to local database)");
-                                tempDatetime = "";
-                                verifyModulesCommunication((flag) => {
-                                    // Next Step For LiFePO Batteries
-                                    if(flag) setup2();
-                                });
+                                if(response != "1") return alert("E025. Please refresh the page! (Bad response while writing command to local database)");
+                                setTimeout(() => {
+                                    $.get({
+                                        url: "api.php?set=command&type=24114&entity=0&text2=5320,5300", // battery voltage
+                                        error: () => { alert("E020. Please refresh the page! (Error while writing command to local database)"); },
+                                        success: (response) => {
+                                            if(response != "1") return alert("E021. Please refresh the page! (Bad response while writing command to local database)");
+                                            tempDatetime = "";
+                                            verifyModulesCommunication((flag) => {
+                                                // Next Step For LiFePO Batteries
+                                                if(flag) setup2();
+                                            });
+                                        }
+                                    });
+                                }, 10000);
                             }
                         });
-                    }, 10000);
+                    }, 5000);
                 }
             });
         }, 5000);
