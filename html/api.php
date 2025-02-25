@@ -228,6 +228,48 @@ else if(isset($_GET["set"]) && strtolower($_GET["set"]) == "command") {
 
 
 
+// POST CurrentState
+
+else if(isset($_GET["post"]) && strtolower($_GET["post"]) == "currentstate") {
+
+	try {
+
+		// Connect to Database
+		$db = new PDO("sqlite:/srv/bx/ram/currentP.db3");
+
+		// Get the raw POST data
+		$json_str = file_get_contents("php://input");
+
+		// Decode the JSON data
+		$data = json_decode($json_str, true);
+
+		// Check if data is was received and decoded correctly
+		if($data === null) exit();
+
+		// Prepare an insert statement
+		$stmt = $db->prepare("INSERT OR REPLACE INTO CurrentState (`type`, `entity`, `entityvalue`) VALUES (:type, :entity, :value)");
+
+		// Insert data
+		foreach($data as $type => $entities) {
+			foreach($entities as $entity => $value) {
+				$stmt->bindValue(':type', $type, PDO::PARAM_INT);
+				$stmt->bindValue(':entity', $entity, PDO::PARAM_INT);
+				$stmt->bindValue(':value', $value, PDO::PARAM_INT);
+				$stmt->execute();
+			}
+		}
+
+		// Success
+		echo "1";
+
+	} catch(Exception $e) {}
+
+}
+
+
+
+
+
 // GET DeviceInfo
 
 else if(isset($_GET["get"]) && strtolower($_GET["get"]) == "deviceinfo") {

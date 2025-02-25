@@ -2005,7 +2005,7 @@ function setup2() {
         if($("#lifepo_battery_15").val() != "") numberOfModules += 1;
         if($("#lifepo_battery_16").val() != "") numberOfModules += 1;
         newParameters["chargingVoltage"         ] = "5320,5320";
-        newParameters["dischargingVoltage"      ] = "4600,5000,4600,5000";
+        newParameters["dischargingVoltage"      ] = "4600,4800,4600,4800";
         newParameters["maxDischargingCurrent"   ] = Math.min(numberOfModules * 37, maxDischargingCurrent).toString();
     } else if(isCarbon()) {
         var batteryCapacity = parseInt($("#carbon_battery_capacity").val().split(" ")[0]);
@@ -2209,7 +2209,7 @@ function setup2() {
             if(isLiFePO() && oldParameters["dischargingVoltage"].split(",")[2] == "4700") // Old B Modules
                 newParameters["dischargingVoltage"] = "4700,5000,4700,5000";
             else if(isLiFePO() && oldParameters["dischargingVoltage"].split(",")[2] == "4500") // New C Modules
-                newParameters["dischargingVoltage"] = "4500,5000,4500,5000";
+                newParameters["dischargingVoltage"] = "4500,4800,4500,4800";
 
             oldParameters["regulationMode"] = !response.hasOwnProperty("InjectionMode") ? "0" : response["InjectionMode"]["0"]["v5"];
             oldParameters["extsolMode"    ] = !response.hasOwnProperty("ModbusExtSolarDevice") ? "0" : response["ModbusExtSolarDevice"]["0"]["mode"];

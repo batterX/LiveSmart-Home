@@ -417,9 +417,9 @@ $installerCountry = isset($_SESSION["installer_country"]) ? $_SESSION["installer
 				<div class="custom-control custom-checkbox py-2">
 					<input type="checkbox" class="custom-control-input" id="checkboxAccept">
 					<?php if(in_array($installerCountry, ["de", "at", "ch"])): ?>
-						<label class="custom-control-label" for="checkboxAccept">Ich bestätige, dass ich alle <a href="#">Garantiebestimmungen</a> sowie <a href="https://www.iubenda.com/privacy-policy/13455058" target="_blank">Datenschutz</a> und <a href="https://www.iubenda.com/privacy-policy/gdpr/13455058/cookie-policy" target="_blank">Cookie-Richtlinien</a> gelesen und sie vollständig verstanden und akzeptiert habe.</label>
+						<label class="custom-control-label" for="checkboxAccept">Ich bestätige, dass ich alle <a href="#">Garantiebestimmungen</a> sowie <a href="https://www.batterx.io/datenschutz/" target="_blank">Datenschutz</a> und <a href="https://www.batterx.io/datenschutz/" target="_blank">Cookie-Richtlinien</a> gelesen und sie vollständig verstanden und akzeptiert habe.</label>
 					<?php else: ?>
-						<label class="custom-control-label" for="checkboxAccept">I confirm that I have read all <a href="#">warranty conditions</a> as well as <a href="https://www.iubenda.com/privacy-policy/13455058" target="_blank">privacy</a> and <a href="https://www.iubenda.com/privacy-policy/gdpr/13455058/cookie-policy" target="_blank">cookie policies</a> and that I fully understand and accept them.</label>
+						<label class="custom-control-label" for="checkboxAccept">I confirm that I have read all <a href="#">warranty conditions</a> as well as <a href="https://www.batterx.io/datenschutz/" target="_blank">privacy</a> and <a href="https://www.batterx.io/datenschutz/" target="_blank">cookie policies</a> and that I fully understand and accept them.</label>
 					<?php endif; ?>
 				</div>
 			</div>

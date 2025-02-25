@@ -36,6 +36,10 @@ session_regenerate_id();
 
 define("PNS_DEVICE", (array) [
     ""          => (array) [ "type" => ""              , "version" => 0 , "name" => ""                             ],
+    "K800301"   => (array) [ "type" => "batterx_i"     , "version" => 1 , "name" => "batterX i10"                  ],
+    "K800302"   => (array) [ "type" => "batterx_i"     , "version" => 1 , "name" => "batterX i15"                  ],
+    "K800303"   => (array) [ "type" => "batterx_i"     , "version" => 1 , "name" => "batterX i20"                  ],
+    "K800304"   => (array) [ "type" => "batterx_i"     , "version" => 1 , "name" => "batterX i30"                  ],
     "K010000-2" => (array) [ "type" => "batterx_h10"   , "version" => 2 , "name" => "batterX h10"                  ],
     "100384"    => (array) [ "type" => "batterx_h10"   , "version" => 1 , "name" => "batterX h10"                  ],
     "100339"    => (array) [ "type" => "batterx_h5"    , "version" => 1 , "name" => "batterX h5"                   ],
@@ -60,6 +64,7 @@ define("PNS_DEVICE", (array) [
 
 define("PNS_BOX", (array) [
     ""          => (array) [ "type" => ""   , "version" => 0 , "name" => ""               ],
+    "K800311"   => (array) [ "type" => "ie" , "version" => 1 , "name" => "batterX EMX"    ],
     "K800414-6" => (array) [ "type" => "xc" , "version" => 5 , "name" => "cliX 2.0"       ],
     "K800415-6" => (array) [ "type" => "xc" , "version" => 5 , "name" => "cliX 2.0"       ],
     "K800414-5" => (array) [ "type" => "xc" , "version" => 4 , "name" => "cliX 2.0"       ],
@@ -101,4 +106,4 @@ $lang = json_decode($lang, true);
 
 $versionHash = time();
 
-$softwareVersion = "v24.3.2";
+$softwareVersion = "v25.2.1";

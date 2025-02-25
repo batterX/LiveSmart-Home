@@ -1,5 +1,9 @@
 const PNS_DEVICE = {
     ""          : { "type" : ""              , "version" : 0 , "name" : ""                             },
+    "K800301"   : { "type" : "batterx_i"     , "version" : 1 , "name" : "batterX i10"                  },
+    "K800302"   : { "type" : "batterx_i"     , "version" : 1 , "name" : "batterX i15"                  },
+    "K800303"   : { "type" : "batterx_i"     , "version" : 1 , "name" : "batterX i20"                  },
+    "K800304"   : { "type" : "batterx_i"     , "version" : 1 , "name" : "batterX i30"                  },
     "K010000-2" : { "type" : "batterx_h10"   , "version" : 2 , "name" : "batterX h10"                  },
     "100384"    : { "type" : "batterx_h10"   , "version" : 1 , "name" : "batterX h10"                  },
     "100339"    : { "type" : "batterx_h5"    , "version" : 1 , "name" : "batterX h5"                   },
@@ -24,6 +28,7 @@ const PNS_DEVICE = {
 
 const PNS_BOX = {
     ""          : { "type" : ""   , "version" : 0 , "name" : ""               },
+    "K800311"   : { "type" : "ie" , "version" : 1 , "name" : "batterX EMX"    },
     "K800414-6" : { "type" : "xc" , "version" : 5 , "name" : "cliX 2.0"       },
     "K800415-6" : { "type" : "xc" , "version" : 5 , "name" : "cliX 2.0"       },
     "K800414-5" : { "type" : "xc" , "version" : 4 , "name" : "cliX 2.0"       },
