@@ -486,7 +486,7 @@ function showSystemInfo(json) {
     if(json.hasOwnProperty("device")) {
         if(json.device.hasOwnProperty("solar_watt_peak"))
             $("#solar_wattpeak").val(json.device.solar_watt_peak);
-        if(json.device.hasOwnProperty("grid_feedin_limitation"))
+        if(json.device.hasOwnProperty("grid_feedin_limitation") && !isVde4105)
             $("#solar_feedinlimitation").val(json.device.grid_feedin_limitation);
     }
 
@@ -679,6 +679,16 @@ function showSystemSettings(response) {
             $("#meter4_mode ").val(temp["4"]["mode"]);
             $("#meter4_label").val(temp["4"]["s1"  ]);
         }
+    }
+
+    // Control Power
+    if(response.hasOwnProperty("ControlMaxChargingPowerAC")) {
+        var temp = response["ControlMaxChargingPowerAC"];
+        $("#controlMaxChargingPowerAC_check").prop("checked", temp["0"]["mode"] != "0");
+    }
+    if(response.hasOwnProperty("ControlMaxInjectionPower")) {
+        var temp = response["ControlMaxInjectionPower"];
+        $("#controlMaxInjectionPower_check").prop("checked", temp["0"]["mode"] != "0");
     }
 
 }
@@ -1611,6 +1621,9 @@ function mainFormSubmit_6() {
         #meter4_mode,
         #meter4_label,
 
+        #controlMaxChargingPowerAC_check,
+        #controlMaxInjectionPower_check,
+
         #system_co_new,
         #system_co_old,
         #system_co_sn
@@ -1810,6 +1823,15 @@ function setValuesToSession() {
     tempData.has_meter2 = $("#meter2_mode").val();
     tempData.has_meter3 = $("#meter3_mode").val();
     tempData.has_meter4 = $("#meter4_mode").val();
+
+
+
+
+
+    // Control Power
+
+    tempData.control_max_charging_power_ac = $("#controlMaxChargingPowerAC_check").is(":checked") ? "1" : "0";
+    tempData.control_max_injection_power = $("#controlMaxInjectionPower_check").is(":checked") ? "1" : "0";
 
 
 
@@ -2135,6 +2157,9 @@ function setup2() {
     newParameters["meter3Label"   ] = $("#meter3_label    ").val();
     newParameters["meter4Label"   ] = $("#meter4_label    ").val();
 
+    newParameters["controlMaxChargingPowerACMode"] = $("#controlMaxChargingPowerAC_check").is(":checked") ? "1" : "0";
+    newParameters["controlMaxInjectionPowerMode" ] = $("#controlMaxInjectionPower_check" ).is(":checked") ? "1" : "0";
+
     newParameters["prepareBatteryExtension"] = "0";
     newParameters["cloudSet"               ] = "1";
 
@@ -2222,6 +2247,9 @@ function setup2() {
             oldParameters["meter3Label"   ] = !response.hasOwnProperty("UserMeter") || !response["UserMeter"].hasOwnProperty("3") ? ""  : response["UserMeter"]["3"]["s1"  ];
             oldParameters["meter4Label"   ] = !response.hasOwnProperty("UserMeter") || !response["UserMeter"].hasOwnProperty("4") ? ""  : response["UserMeter"]["4"]["s1"  ];
 
+            oldParameters["controlMaxChargingPowerACMode"] = !response.hasOwnProperty("ControlMaxChargingPowerAC") ? "0" : response["ControlMaxChargingPowerAC"]["0"]["mode"];
+            oldParameters["controlMaxInjectionPowerMode" ] = !response.hasOwnProperty("ControlMaxInjectionPower" ) ? "0" : response["ControlMaxInjectionPower" ]["0"]["mode"];
+
             oldParameters["prepareBatteryExtension"] = !response.hasOwnProperty("PrepareBatteryExtension") || !response["PrepareBatteryExtension"].hasOwnProperty("0") ? "0" : response["PrepareBatteryExtension"]["0"]["mode"];
             oldParameters["cloudSet"               ] = !response.hasOwnProperty("CloudSet"               ) || !response["CloudSet"               ].hasOwnProperty("0") ? ""  : response["CloudSet"               ]["0"]["mode"];
 
@@ -2291,6 +2319,9 @@ function setup2() {
     if(newParameters["meter2Label"   ] != oldParameters["meter2Label"   ]) { retry = true; setup_sendSetting("UserMeter"            , "2", "s1"   , newParameters["meter2Label"   ]); }
     if(newParameters["meter3Label"   ] != oldParameters["meter3Label"   ]) { retry = true; setup_sendSetting("UserMeter"            , "3", "s1"   , newParameters["meter3Label"   ]); }
     if(newParameters["meter4Label"   ] != oldParameters["meter4Label"   ]) { retry = true; setup_sendSetting("UserMeter"            , "4", "s1"   , newParameters["meter4Label"   ]); }
+
+    if(newParameters["controlMaxChargingPowerACMode"] != oldParameters["controlMaxChargingPowerACMode"]) { retry = true; setup_sendCommand(20769, 0, "", newParameters["controlMaxChargingPowerACMode"]); }
+    if(newParameters["controlMaxInjectionPowerMode" ] != oldParameters["controlMaxInjectionPowerMode" ]) { retry = true; setup_sendCommand(20770, 0, "", newParameters["controlMaxInjectionPowerMode" ]); }
 
     if(newParameters["prepareBatteryExtension"] != oldParameters["prepareBatteryExtension"]) { retry = true; setup_sendSetting("PrepareBatteryExtension", "0", "mode", newParameters["prepareBatteryExtension"]) }
     if(newParameters["cloudSet"               ] != oldParameters["cloudSet"               ]) { retry = true; setup_sendSetting("CloudSet"               , "0", "mode", newParameters["cloudSet"               ]) }
@@ -2457,6 +2488,9 @@ function setup_checkParameters() {
             oldParameters["meter3Label"   ] = !response.hasOwnProperty("UserMeter") || !response["UserMeter"].hasOwnProperty("3") ? ""  : response["UserMeter"]["3"]["s1"  ];
             oldParameters["meter4Label"   ] = !response.hasOwnProperty("UserMeter") || !response["UserMeter"].hasOwnProperty("4") ? ""  : response["UserMeter"]["4"]["s1"  ];
 
+            oldParameters["controlMaxChargingPowerACMode"] = !response.hasOwnProperty("ControlMaxChargingPowerAC") ? "0" : response["ControlMaxChargingPowerAC"]["0"]["mode"];
+            oldParameters["controlMaxInjectionPowerMode" ] = !response.hasOwnProperty("ControlMaxInjectionPower" ) ? "0" : response["ControlMaxInjectionPower" ]["0"]["mode"];
+
             oldParameters["prepareBatteryExtension"] = !response.hasOwnProperty("PrepareBatteryExtension") || !response["PrepareBatteryExtension"].hasOwnProperty("0") ? "0" : response["PrepareBatteryExtension"]["0"]["mode"];
             oldParameters["cloudSet"               ] = !response.hasOwnProperty("CloudSet"               ) || !response["CloudSet"               ].hasOwnProperty("0") ? ""  : response["CloudSet"               ]["0"]["mode"];
 
@@ -2524,6 +2558,9 @@ function setup_checkParameters() {
             if(newParameters["meter3Label"   ] != oldParameters["meter3Label"   ]) { retry = true; setup_sendSetting("UserMeter"            , "3", "s1"   , newParameters["meter3Label"   ]); }
             if(newParameters["meter4Label"   ] != oldParameters["meter4Label"   ]) { retry = true; setup_sendSetting("UserMeter"            , "4", "s1"   , newParameters["meter4Label"   ]); }
 
+            if(newParameters["controlMaxChargingPowerACMode"] != oldParameters["controlMaxChargingPowerACMode"]) { retry = true; setup_sendCommand(20769, 0, "", newParameters["controlMaxChargingPowerACMode"]); }
+            if(newParameters["controlMaxInjectionPowerMode" ] != oldParameters["controlMaxInjectionPowerMode" ]) { retry = true; setup_sendCommand(20770, 0, "", newParameters["controlMaxInjectionPowerMode" ]); }
+
             if(newParameters["prepareBatteryExtension"] != oldParameters["prepareBatteryExtension"]) { retry = true; setup_sendSetting("PrepareBatteryExtension", "0", "mode", newParameters["prepareBatteryExtension"]) }
             if(newParameters["cloudSet"               ] != oldParameters["cloudSet"               ]) { retry = true; setup_sendSetting("CloudSet"               , "0", "mode", newParameters["cloudSet"               ]) }
 
@@ -2550,58 +2587,60 @@ function setup_checkParameters() {
                             $.get({ url: "api.php?set=command&type=20738&entity=0&text1=3&text2=1", success: () => {} });
                         }
                     }
-                    else if(newParameters["chargingVoltage"         ] != oldParameters["chargingVoltage"         ]) showSettingParametersError("Problem when setting chargingVoltage"         );
-                    else if(newParameters["dischargingVoltage"      ] != oldParameters["dischargingVoltage"      ]) showSettingParametersError("Problem when setting dischargingVoltage"      );
-                    else if(newParameters["batteryType"             ] != oldParameters["batteryType"             ]) showSettingParametersError("Problem when setting batteryType"             );
-                    else if(newParameters["solarEnergyPriority"     ] != oldParameters["solarEnergyPriority"     ]) showSettingParametersError("Problem when setting solarEnergyPriority"     );
-                    else if(newParameters["allowBatteryCharging"    ] != oldParameters["allowBatteryCharging"    ]) showSettingParametersError("Problem when setting allowBatteryCharging"    );
-                    else if(newParameters["allowBatteryChargingAC"  ] != oldParameters["allowBatteryChargingAC"  ]) showSettingParametersError("Problem when setting allowBatteryChargingAC"  );
-                    else if(newParameters["allowGridInjection"      ] != oldParameters["allowGridInjection"      ]) showSettingParametersError("Problem when setting allowGridInjection"      );
-                    else if(newParameters["allowDischargingSolarOK" ] != oldParameters["allowDischargingSolarOK" ]) showSettingParametersError("Problem when setting allowDischargingSolarOK" );
-                    else if(newParameters["allowDischargingSolarNOK"] != oldParameters["allowDischargingSolarNOK"]) showSettingParametersError("Problem when setting allowDischargingSolarNOK");
-                    else if(newParameters["systemMode"              ] != oldParameters["systemMode"              ]) showSettingParametersError("Problem when setting systemMode"              );
-                    else if(newParameters["wideSolarInputRange"     ] != oldParameters["wideSolarInputRange"     ]) showSettingParametersError("Problem when setting wideSolarInputRange"     );
-                    else if(newParameters["allowNGRelCloseInBatMode"] != oldParameters["allowNGRelCloseInBatMode"]) showSettingParametersError("Problem when setting allowNGRelCloseInBatMode");
-                    else if(newParameters["allowOverVoltageDerating"] != oldParameters["allowOverVoltageDerating"]) showSettingParametersError("Problem when setting allowOverVoltageDerating");
-                    else if(newParameters["allowUnderFreqDropPower" ] != oldParameters["allowUnderFreqDropPower" ]) showSettingParametersError("Problem when setting allowUnderFreqDropPower" );
-                    else if(newParameters["allowLVRT"               ] != oldParameters["allowLVRT"               ]) showSettingParametersError("Problem when setting allowLVRT"               );
-                    else if(newParameters["allowHVRT"               ] != oldParameters["allowHVRT"               ]) showSettingParametersError("Problem when setting allowHVRT"               );
-                    else if(newParameters["allowSoftStartACCharging"] != oldParameters["allowSoftStartACCharging"]) showSettingParametersError("Problem when setting allowSoftStartACCharging");
-                    else if(newParameters["allowOverFreqDerating"   ] != oldParameters["allowOverFreqDerating"   ]) showSettingParametersError("Problem when setting allowOverFreqDerating"   );
-                    else if(newParameters["allowQuDeratingFunction" ] != oldParameters["allowQuDeratingFunction" ]) showSettingParametersError("Problem when setting allowQuDeratingFunction" );
-                    else if(newParameters["feedInPowerFactor"       ] != oldParameters["feedInPowerFactor"       ]) showSettingParametersError("Problem when setting feedInPowerFactor"       );
-                    else if(newParameters["autoAdjustPowerFactor"   ] != oldParameters["autoAdjustPowerFactor"   ]) showSettingParametersError("Problem when setting autoAdjustPowerFactor"   );
-                    else if(newParameters["voltageAndReactivePower" ] != oldParameters["voltageAndReactivePower" ]) showSettingParametersError("Problem when setting voltageAndReactivePower" );
-                    else if(newParameters["overFreqDropRatedPower"  ] != oldParameters["overFreqDropRatedPower"  ]) showSettingParametersError("Problem when setting overFreqDropRatedPower"  );
-                    else if(newParameters["feedInReactivePower"     ] != oldParameters["feedInReactivePower"     ]) showSettingParametersError("Problem when setting feedInReactivePower"     );
-                    else if(newParameters["configTimeConstants"     ] != oldParameters["configTimeConstants"     ]) showSettingParametersError("Problem when setting configTimeConstants"     );
-                    else if(newParameters["regulationMode"          ] != oldParameters["regulationMode"          ]) showSettingParametersError("Problem when setting regulationMode"          );
-                    else if(newParameters["extsolMode"              ] != oldParameters["extsolMode"              ]) showSettingParametersError("Problem when setting extsolMode"              );
-                    else if(newParameters["meter1Mode"              ] != oldParameters["meter1Mode"              ]) showSettingParametersError("Problem when setting meter1Mode"              );
-                    else if(newParameters["meter2Mode"              ] != oldParameters["meter2Mode"              ]) showSettingParametersError("Problem when setting meter2Mode"              );
-                    else if(newParameters["meter3Mode"              ] != oldParameters["meter3Mode"              ]) showSettingParametersError("Problem when setting meter3Mode"              );
-                    else if(newParameters["meter4Mode"              ] != oldParameters["meter4Mode"              ]) showSettingParametersError("Problem when setting meter4Mode"              );
-                    else if(newParameters["meter1Label"             ] != oldParameters["meter1Label"             ]) showSettingParametersError("Problem when setting meter1Label"             );
-                    else if(newParameters["meter2Label"             ] != oldParameters["meter2Label"             ]) showSettingParametersError("Problem when setting meter2Label"             );
-                    else if(newParameters["meter3Label"             ] != oldParameters["meter3Label"             ]) showSettingParametersError("Problem when setting meter3Label"             );
-                    else if(newParameters["meter4Label"             ] != oldParameters["meter4Label"             ]) showSettingParametersError("Problem when setting meter4Label"             );
-                    else if(newParameters["prepareBatteryExtension" ] != oldParameters["prepareBatteryExtension" ]) showSettingParametersError("Problem when setting prepareBatteryExtension" );
-                    else if(newParameters["cloudSet"                ] != oldParameters["cloudSet"                ]) showSettingParametersError("Problem when setting cloudSet"                );
+                    else if(newParameters["chargingVoltage"              ] != oldParameters["chargingVoltage"              ]) showSettingParametersError("Problem when setting chargingVoltage"              );
+                    else if(newParameters["dischargingVoltage"           ] != oldParameters["dischargingVoltage"           ]) showSettingParametersError("Problem when setting dischargingVoltage"           );
+                    else if(newParameters["batteryType"                  ] != oldParameters["batteryType"                  ]) showSettingParametersError("Problem when setting batteryType"                  );
+                    else if(newParameters["solarEnergyPriority"          ] != oldParameters["solarEnergyPriority"          ]) showSettingParametersError("Problem when setting solarEnergyPriority"          );
+                    else if(newParameters["allowBatteryCharging"         ] != oldParameters["allowBatteryCharging"         ]) showSettingParametersError("Problem when setting allowBatteryCharging"         );
+                    else if(newParameters["allowBatteryChargingAC"       ] != oldParameters["allowBatteryChargingAC"       ]) showSettingParametersError("Problem when setting allowBatteryChargingAC"       );
+                    else if(newParameters["allowGridInjection"           ] != oldParameters["allowGridInjection"           ]) showSettingParametersError("Problem when setting allowGridInjection"           );
+                    else if(newParameters["allowDischargingSolarOK"      ] != oldParameters["allowDischargingSolarOK"      ]) showSettingParametersError("Problem when setting allowDischargingSolarOK"      );
+                    else if(newParameters["allowDischargingSolarNOK"     ] != oldParameters["allowDischargingSolarNOK"     ]) showSettingParametersError("Problem when setting allowDischargingSolarNOK"     );
+                    else if(newParameters["systemMode"                   ] != oldParameters["systemMode"                   ]) showSettingParametersError("Problem when setting systemMode"                   );
+                    else if(newParameters["wideSolarInputRange"          ] != oldParameters["wideSolarInputRange"          ]) showSettingParametersError("Problem when setting wideSolarInputRange"          );
+                    else if(newParameters["allowNGRelCloseInBatMode"     ] != oldParameters["allowNGRelCloseInBatMode"     ]) showSettingParametersError("Problem when setting allowNGRelCloseInBatMode"     );
+                    else if(newParameters["allowOverVoltageDerating"     ] != oldParameters["allowOverVoltageDerating"     ]) showSettingParametersError("Problem when setting allowOverVoltageDerating"     );
+                    else if(newParameters["allowUnderFreqDropPower"      ] != oldParameters["allowUnderFreqDropPower"      ]) showSettingParametersError("Problem when setting allowUnderFreqDropPower"      );
+                    else if(newParameters["allowLVRT"                    ] != oldParameters["allowLVRT"                    ]) showSettingParametersError("Problem when setting allowLVRT"                    );
+                    else if(newParameters["allowHVRT"                    ] != oldParameters["allowHVRT"                    ]) showSettingParametersError("Problem when setting allowHVRT"                    );
+                    else if(newParameters["allowSoftStartACCharging"     ] != oldParameters["allowSoftStartACCharging"     ]) showSettingParametersError("Problem when setting allowSoftStartACCharging"     );
+                    else if(newParameters["allowOverFreqDerating"        ] != oldParameters["allowOverFreqDerating"        ]) showSettingParametersError("Problem when setting allowOverFreqDerating"        );
+                    else if(newParameters["allowQuDeratingFunction"      ] != oldParameters["allowQuDeratingFunction"      ]) showSettingParametersError("Problem when setting allowQuDeratingFunction"      );
+                    else if(newParameters["feedInPowerFactor"            ] != oldParameters["feedInPowerFactor"            ]) showSettingParametersError("Problem when setting feedInPowerFactor"            );
+                    else if(newParameters["autoAdjustPowerFactor"        ] != oldParameters["autoAdjustPowerFactor"        ]) showSettingParametersError("Problem when setting autoAdjustPowerFactor"        );
+                    else if(newParameters["voltageAndReactivePower"      ] != oldParameters["voltageAndReactivePower"      ]) showSettingParametersError("Problem when setting voltageAndReactivePower"      );
+                    else if(newParameters["overFreqDropRatedPower"       ] != oldParameters["overFreqDropRatedPower"       ]) showSettingParametersError("Problem when setting overFreqDropRatedPower"       );
+                    else if(newParameters["feedInReactivePower"          ] != oldParameters["feedInReactivePower"          ]) showSettingParametersError("Problem when setting feedInReactivePower"          );
+                    else if(newParameters["configTimeConstants"          ] != oldParameters["configTimeConstants"          ]) showSettingParametersError("Problem when setting configTimeConstants"          );
+                    else if(newParameters["regulationMode"               ] != oldParameters["regulationMode"               ]) showSettingParametersError("Problem when setting regulationMode"               );
+                    else if(newParameters["extsolMode"                   ] != oldParameters["extsolMode"                   ]) showSettingParametersError("Problem when setting extsolMode"                   );
+                    else if(newParameters["meter1Mode"                   ] != oldParameters["meter1Mode"                   ]) showSettingParametersError("Problem when setting meter1Mode"                   );
+                    else if(newParameters["meter2Mode"                   ] != oldParameters["meter2Mode"                   ]) showSettingParametersError("Problem when setting meter2Mode"                   );
+                    else if(newParameters["meter3Mode"                   ] != oldParameters["meter3Mode"                   ]) showSettingParametersError("Problem when setting meter3Mode"                   );
+                    else if(newParameters["meter4Mode"                   ] != oldParameters["meter4Mode"                   ]) showSettingParametersError("Problem when setting meter4Mode"                   );
+                    else if(newParameters["meter1Label"                  ] != oldParameters["meter1Label"                  ]) showSettingParametersError("Problem when setting meter1Label"                  );
+                    else if(newParameters["meter2Label"                  ] != oldParameters["meter2Label"                  ]) showSettingParametersError("Problem when setting meter2Label"                  );
+                    else if(newParameters["meter3Label"                  ] != oldParameters["meter3Label"                  ]) showSettingParametersError("Problem when setting meter3Label"                  );
+                    else if(newParameters["meter4Label"                  ] != oldParameters["meter4Label"                  ]) showSettingParametersError("Problem when setting meter4Label"                  );
+                    else if(newParameters["controlMaxChargingPowerACMode"] != oldParameters["controlMaxChargingPowerACMode"]) showSettingParametersError("Problem when setting controlMaxChargingPowerACMode");
+                    else if(newParameters["controlMaxInjectionPowerMode" ] != oldParameters["controlMaxInjectionPowerMode" ]) showSettingParametersError("Problem when setting controlMaxInjectionPowerMode" );
+                    else if(newParameters["prepareBatteryExtension"      ] != oldParameters["prepareBatteryExtension"      ]) showSettingParametersError("Problem when setting prepareBatteryExtension"      );
+                    else if(newParameters["cloudSet"                     ] != oldParameters["cloudSet"                     ]) showSettingParametersError("Problem when setting cloudSet"                     );
                     else if(isTor || isEstonia) {
-                        if(newParameters["gridVoltageProtectionTime"  ] != oldParameters["gridVoltageProtectionTime"  ]) showSettingParametersError("Problem when setting gridVoltageProtectionTime"  );
-                        if(newParameters["gridFrequencyProtectionTime"] != oldParameters["gridFrequencyProtectionTime"]) showSettingParametersError("Problem when setting gridFrequencyProtectionTime");
-                        if(newParameters["gridSecondOrderVoltage"     ] != oldParameters["gridSecondOrderVoltage"     ]) showSettingParametersError("Problem when setting gridSecondOrderVoltage"     );
-                        if(newParameters["maxGridVoltage"             ] != oldParameters["maxGridVoltage"             ]) showSettingParametersError("Problem when setting maxGridVoltage"             );
-                        if(newParameters["minGridVoltage"             ] != oldParameters["minGridVoltage"             ]) showSettingParametersError("Problem when setting minGridVoltage"             );
-                        if(newParameters["maxGridFrequency"           ] != oldParameters["maxGridFrequency"           ]) showSettingParametersError("Problem when setting maxGridFrequency"           );
-                        if(newParameters["minGridFrequency"           ] != oldParameters["minGridFrequency"           ]) showSettingParametersError("Problem when setting minGridFrequency"           );
+                        if(newParameters["gridVoltageProtectionTime"     ] != oldParameters["gridVoltageProtectionTime"    ]) showSettingParametersError("Problem when setting gridVoltageProtectionTime"    );
+                        if(newParameters["gridFrequencyProtectionTime"   ] != oldParameters["gridFrequencyProtectionTime"  ]) showSettingParametersError("Problem when setting gridFrequencyProtectionTime"  );
+                        if(newParameters["gridSecondOrderVoltage"        ] != oldParameters["gridSecondOrderVoltage"       ]) showSettingParametersError("Problem when setting gridSecondOrderVoltage"       );
+                        if(newParameters["maxGridVoltage"                ] != oldParameters["maxGridVoltage"               ]) showSettingParametersError("Problem when setting maxGridVoltage"               );
+                        if(newParameters["minGridVoltage"                ] != oldParameters["minGridVoltage"               ]) showSettingParametersError("Problem when setting minGridVoltage"               );
+                        if(newParameters["maxGridFrequency"              ] != oldParameters["maxGridFrequency"             ]) showSettingParametersError("Problem when setting maxGridFrequency"             );
+                        if(newParameters["minGridFrequency"              ] != oldParameters["minGridFrequency"             ]) showSettingParametersError("Problem when setting minGridFrequency"             );
                         if(isTor) {
-                            if(newParameters["gridAverageVoltage"     ] != oldParameters["gridAverageVoltage"         ]) showSettingParametersError("Problem when setting gridAverageVoltage"         );
-                            if(newParameters["gridAverageVoltageTime" ] != oldParameters["gridAverageVoltageTime"     ]) showSettingParametersError("Problem when setting gridAverageVoltageTime"     );
-                            if(newParameters["gridConnectDelay"       ] != oldParameters["gridConnectDelay"           ]) showSettingParametersError("Problem when setting gridConnectDelay"           );
+                            if(newParameters["gridAverageVoltage"        ] != oldParameters["gridAverageVoltage"           ]) showSettingParametersError("Problem when setting gridAverageVoltage"           );
+                            if(newParameters["gridAverageVoltageTime"    ] != oldParameters["gridAverageVoltageTime"       ]) showSettingParametersError("Problem when setting gridAverageVoltageTime"       );
+                            if(newParameters["gridConnectDelay"          ] != oldParameters["gridConnectDelay"             ]) showSettingParametersError("Problem when setting gridConnectDelay"             );
                         }
-                        if(newParameters["gridFirstOrderVoltage"      ] != oldParameters["gridFirstOrderVoltage"      ]) showSettingParametersError("Problem when setting gridFirstOrderVoltage"      );
-                        if(newParameters["gridFirstOrderFrequency"    ] != oldParameters["gridFirstOrderFrequency"    ]) showSettingParametersError("Problem when setting gridFirstOrderFrequency"    );
+                        if(newParameters["gridFirstOrderVoltage"         ] != oldParameters["gridFirstOrderVoltage"        ]) showSettingParametersError("Problem when setting gridFirstOrderVoltage"        );
+                        if(newParameters["gridFirstOrderFrequency"       ] != oldParameters["gridFirstOrderFrequency"      ]) showSettingParametersError("Problem when setting gridFirstOrderFrequency"      );
                     }
                 }
             }
