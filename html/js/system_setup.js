@@ -387,7 +387,7 @@ function verifyModulesCommunication(callback) {
             // Verify Battery Charging Voltage
             var chargingVoltage = response["32"]["s1"];
             console.log(chargingVoltage);
-            if(chargingVoltage != "5320,5320") {
+            if(chargingVoltage != "5320,5320" && chargingVoltage != "5280,5280") {
                 $("#notif").removeClass("loading error success").addClass("error");
                 $("#message").html(lang.system_setup.msg_lifepo_communication_problem).css("color", "red");
                 $("#btn_next").unbind().removeAttr("form").removeAttr("type").on("click", () => { setup1(); });
@@ -1958,7 +1958,7 @@ function setup1() {
                                 if(response != "1") return alert("E025. Please refresh the page! (Bad response while writing command to local database)");
                                 setTimeout(() => {
                                     $.get({
-                                        url: "api.php?set=command&type=24114&entity=0&text2=5320,5300", // battery voltage
+                                        url: "api.php?set=command&type=24114&entity=0&text2=5300,5300", // battery voltage
                                         error: () => { alert("E020. Please refresh the page! (Error while writing command to local database)"); },
                                         success: (response) => {
                                             if(response != "1") return alert("E021. Please refresh the page! (Bad response while writing command to local database)");
@@ -2026,7 +2026,7 @@ function setup2() {
         if($("#lifepo_battery_14").val() != "") numberOfModules += 1;
         if($("#lifepo_battery_15").val() != "") numberOfModules += 1;
         if($("#lifepo_battery_16").val() != "") numberOfModules += 1;
-        newParameters["chargingVoltage"         ] = "5320,5320";
+        //newParameters["chargingVoltage"         ] = "5320,5320";
         newParameters["dischargingVoltage"      ] = "4600,4800,4600,4800";
         newParameters["maxDischargingCurrent"   ] = Math.min(numberOfModules * 37, maxDischargingCurrent).toString();
     } else if(isCarbon()) {
@@ -2261,7 +2261,7 @@ function setup2() {
 
     var retry = false;
 
-    if(newParameters["chargingVoltage"         ] != oldParameters["chargingVoltage"         ]) { retry = true; setup_sendCommand(24114, 0, "",        newParameters["chargingVoltage"         ]); }
+    if(newParameters.hasOwnProperty("chargingVoltage") && newParameters["chargingVoltage"         ] != oldParameters["chargingVoltage"         ]) { retry = true; setup_sendCommand(24114, 0, "",        newParameters["chargingVoltage"         ]); }
     if(newParameters["dischargingVoltage"      ] != oldParameters["dischargingVoltage"      ]) { retry = true; setup_sendCommand(24115, 0, "",        newParameters["dischargingVoltage"      ]); }
     if(newParameters["maxDischargingCurrent"   ] != oldParameters["maxDischargingCurrent"   ]) { retry = true; setup_sendCommand(24116, 0, "",        newParameters["maxDischargingCurrent"   ]); }
     if(newParameters["batteryType"             ] != oldParameters["batteryType"             ]) { retry = true; setup_sendCommand(24069, 0, "",        newParameters["batteryType"             ]); }
@@ -2499,7 +2499,7 @@ function setup_checkParameters() {
 
             var retry = false;
 
-            if(newParameters["chargingVoltage"         ] != oldParameters["chargingVoltage"         ]) { retry = true; setup_sendCommand(24114, 0, "",        newParameters["chargingVoltage"         ]); }
+            if(newParameters.hasOwnProperty("chargingVoltage") && newParameters["chargingVoltage"         ] != oldParameters["chargingVoltage"         ]) { retry = true; setup_sendCommand(24114, 0, "",        newParameters["chargingVoltage"         ]); }
             if(newParameters["dischargingVoltage"      ] != oldParameters["dischargingVoltage"      ]) { retry = true; setup_sendCommand(24115, 0, "",        newParameters["dischargingVoltage"      ]); }
             if(newParameters["maxDischargingCurrent"   ] != oldParameters["maxDischargingCurrent"   ]) { retry = true; setup_sendCommand(24116, 0, "",        newParameters["maxDischargingCurrent"   ]); }
             if(newParameters["batteryType"             ] != oldParameters["batteryType"             ]) { retry = true; setup_sendCommand(24069, 0, "",        newParameters["batteryType"             ]); }
@@ -2587,7 +2587,7 @@ function setup_checkParameters() {
                             $.get({ url: "api.php?set=command&type=20738&entity=0&text1=3&text2=1", success: () => {} });
                         }
                     }
-                    else if(newParameters["chargingVoltage"              ] != oldParameters["chargingVoltage"              ]) showSettingParametersError("Problem when setting chargingVoltage"              );
+                    else if(newParameters.hasOwnProperty("chargingVoltage") && newParameters["chargingVoltage"              ] != oldParameters["chargingVoltage"              ]) showSettingParametersError("Problem when setting chargingVoltage"              );
                     else if(newParameters["dischargingVoltage"           ] != oldParameters["dischargingVoltage"           ]) showSettingParametersError("Problem when setting dischargingVoltage"           );
                     else if(newParameters["batteryType"                  ] != oldParameters["batteryType"                  ]) showSettingParametersError("Problem when setting batteryType"                  );
                     else if(newParameters["solarEnergyPriority"          ] != oldParameters["solarEnergyPriority"          ]) showSettingParametersError("Problem when setting solarEnergyPriority"          );
