@@ -7,6 +7,13 @@
 // Include Base
 include_once "common/base.php";
 
+// Make sure it's liveX software
+if($boxType != "livex") {
+    http_response_code(404);
+    echo "404 - Page Not Found";
+    exit(); // Stop script execution
+}
+
 // Password Restricted Page
 $secretPass = '$2y$10$BTwS3NZ4g4VgRFjjdBOrHeN4o4gyEAeUCDVhNnNCNuhigZ4MCIuXS';
 if(empty($_POST["secretPass"]) || !password_verify($_POST["secretPass"], $secretPass)) {

@@ -1,6 +1,14 @@
 <?php
 
+// Include Base
 include_once "common/base.php";
+
+// Make sure it's liveX software
+if($boxType != "livex") {
+    http_response_code(404);
+    echo "404 - Page Not Found";
+    exit(); // Stop script execution
+}
 
 // Get List with available SSIDs
 $ssidArr = shell_exec('sudo iwlist wlan0 scan|grep SSID');
