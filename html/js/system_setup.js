@@ -2098,8 +2098,8 @@ function setup2() {
             $("#lifepo_serialnumbers").val().trim().split("\n").forEach(sn => {
                 if(sn.trim() != "") numberOfModules += 1;
             });
-            if(dataSettings.hasOwnProperty("Inverter") && dataSettings["Inverter"].hasOwnProperty("414")) {
-                newParameters["battery_cutoff_voltage_ongrid"] = dataSettings["Inverter"]["414"].s1; // battery_cutoff_voltage_offgrid
+            if(dataSettings.hasOwnProperty("Inverter") && dataSettings["Inverter"].hasOwnProperty("412")) {
+                newParameters["battery_cutoff_voltage_ongrid"] = dataSettings["Inverter"]["412"].s1; // battery_cutoff_voltage_offgrid
             }
             newParameters["battery_recovery_voltage_ongrid"     ] = "4800";
             newParameters["battery_recovery_voltage_offgrid"    ] = "4800";
