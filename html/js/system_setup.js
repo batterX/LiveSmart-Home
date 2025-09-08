@@ -2539,8 +2539,8 @@ async function setup2() {
         newParameters["grid_connect_upper_frequency"] = inverterModel >= "11000" ? "5200" : "5150";
         newParameters["stage_1_uv_threshold"        ] = "19550";
         newParameters["stage_1_ov_threshold"        ] = inverterModel >= "11000" ? "25530" : "26500";
-        newParameters["stage_1_uf_threshold"        ] = "4740";
-        newParameters["stage_1_of_threshold"        ] = "5160";
+        newParameters["stage_1_uf_threshold"        ] = inverterModel >= "11000" ? "4740" : "4750"; // 4740 out-of-range for h-Series
+        newParameters["stage_1_of_threshold"        ] = inverterModel >= "11000" ? "5160" : "5150"; // 5160 out-of-range for h-Series
         newParameters["stage_1_uv_duration"         ] = "1200";
         newParameters["stage_1_ov_duration"         ] = "3000";
         newParameters["stage_1_uf_duration"         ] = "360";
