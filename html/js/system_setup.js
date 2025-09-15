@@ -2378,7 +2378,7 @@ async function setup1() {
             await sleep(10000);
             // Set battery voltage
             const response3 = await $.get({
-                url: "api.php?set=command&type=24064&entity=416&text2=5300" // battery voltage
+                url: "api.php?set=command&type=24064&entity=416&text2=5260" // battery voltage
             });
             if(response3 != "1") return alert("E021. Please refresh the page! (Bad response while writing command to local database)");
             
