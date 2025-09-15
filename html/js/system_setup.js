@@ -3073,8 +3073,8 @@ async function setup_checkParameters() {
         if(newParameters.hasOwnProperty("battery_max_discharge_current_ongrid") && oldParameters.hasOwnProperty("battery_max_discharge_current_ongrid") && newParameters["battery_max_discharge_current_ongrid"] != oldParameters["battery_max_discharge_current_ongrid"]) { retry = true; setup_sendCommand(24064, 418, "", newParameters["battery_max_discharge_current_ongrid"]); }
 
         if(!retry) {
-            // Restore initial BMS battery connect value before moving to next step
-            if(initialBmsConnectValue !== null) {
+            // Restore initial BMS battery connect value before moving to next step (only for already registered devices)
+            if(initialBmsConnectValue !== null && isAlreadyRegistered) {
                 try {
                     const restoreResponse = await $.get({
                         url: `api.php?set=command&type=24064&entity=10003&text2=${initialBmsConnectValue}`
