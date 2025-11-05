@@ -75,4 +75,4 @@ $versionHash = time();
 
 $boxType = "livex";
 
-$softwareVersion = "v25.10.2";
+$softwareVersion = "v25.11.1";
