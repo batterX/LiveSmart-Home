@@ -375,38 +375,120 @@ async function verifyModulesLiFePO() {
         });
     }
     try {
-        // Verify batteries
-        for(const sn of batteries) {
-            const response = await $.post({
-                url: "https://api.batterx.app/v2/install.php",
-                data: {
-                    action: "verify_battery",
-                    system: system_serial,
-                    serialnumber: sn.trim()
+        // Verify Batteries and BMS
+        if(false) { // livex
+            // Verify batteries - check all first and show all failures at once
+            const failedBatteries = [];
+            for(const sn of batteries) {
+                const response = await $.post({
+                    url: "https://api.batterx.app/v2/install.php",
+                    data: {
+                        action: "verify_battery",
+                        system: system_serial,
+                        serialnumber: sn.trim()
+                    }
+                });
+                if(response !== "1") {
+                    failedBatteries.push(sn.trim());
                 }
-            });
-            if(response !== "1") {
-                $("#errorBatterySerial").val(sn.trim());
-                $("#errorBatteryNotExistOrWithOtherSystem").modal("show");
+            }
+            // If any batteries failed, check which ones exist in database and which don't
+            const batteriesExist = []; // Batteries that exist but are assigned to another system
+            const batteriesNotExist = []; // Batteries that don't exist in database
+            if(failedBatteries.length > 0) {
+                for(const sn of failedBatteries) {
+                    const response = await $.post({
+                        url: "https://api.batterx.app/v2/install.php",
+                        data: {
+                            action: "battery_exists",
+                            serialnumber: sn
+                        }
+                    });
+                    if(response === "1") {
+                        batteriesExist.push(sn);
+                    } else {
+                        batteriesNotExist.push(sn);
+                    }
+                }
+            }
+            // Show appropriate modal based on battery status
+            if(batteriesExist.length > 0) {
+                // Batteries exist but are assigned to another system
+                $("#errorBatteriesWithOtherSystemList").text(batteriesExist.join("\n"));
+                $("#errorBatteriesWithOtherSystem").modal("show");
+                enableBatteryFieldsAndHideLoading();
+                return false;
+            } else if(batteriesNotExist.length > 0) {
+                // Batteries don't exist in database
+                $("#errorBatteriesNotExistList").text(batteriesNotExist.join("\n"));
+                // Attach click handler to register button
+                $("#errorBatteriesNotExistBtnRegister").off("click").on("click", async function() {
+                    let hasError = false;
+                    for(const sn of batteriesNotExist) {
+                        try {
+                            const response = await $.post({
+                                url: "https://api.batterx.app/v2/install.php",
+                                data: {
+                                    action: "register_battery",
+                                    serialnumber: sn,
+                                    type: 0,
+                                    capacity: 3500,
+                                    voltage: 48
+                                }
+                            });
+                            if(response !== "1") {
+                                hasError = true;
+                                break;
+                            }
+                        } catch(error) {
+                            hasError = true;
+                            break;
+                        }
+                    }
+                    if(hasError) {
+                        alert("E033. Please try again! (Error while registering battery serialnumber to cloud)");
+                    } else {
+                        $("#btn_next").trigger("click"); // continue setup
+                    }
+                });
+                $("#errorBatteriesNotExist").modal("show");
                 enableBatteryFieldsAndHideLoading();
                 return false;
             }
-        }
-        // Verify BMS
-        for(const sn of bms) {
-            const response = await $.post({
-                url: "https://api.batterx.app/v2/install.php",
-                data: {
-                    action: "verify_bms",
-                    system: system_serial,
-                    serialnumber: sn.trim()
+        } else {
+            // Verify batteries
+            for(const sn of batteries) {
+                const response = await $.post({
+                    url: "https://api.batterx.app/v2/install.php",
+                    data: {
+                        action: "verify_battery",
+                        system: system_serial,
+                        serialnumber: sn.trim()
+                    }
+                });
+                if(response !== "1") {
+                    $("#errorBatterySerial").val(sn.trim());
+                    $("#errorBatteryNotExistOrWithOtherSystem").modal("show");
+                    enableBatteryFieldsAndHideLoading();
+                    return false;
                 }
-            });
-            if(response !== "1") {
-                $("#errorBmsSerial").val(sn.trim());
-                $("#errorBmsNotExistOrWithOtherSystem").modal("show");
-                enableBatteryFieldsAndHideLoading();
-                return false;
+            }
+            // Verify BMS
+            for(const sn of bms) {
+                const response = await $.post({
+                    url: "https://api.batterx.app/v2/install.php",
+                    data: {
+                        action: "verify_bms",
+                        system: system_serial,
+                        serialnumber: sn.trim()
+                    }
+                });
+                if(response !== "1") {
+                    $("#errorBmsSerial").val(sn.trim());
+                    $("#errorBmsNotExistOrWithOtherSystem").modal("show");
+                    enableBatteryFieldsAndHideLoading();
+                    return false;
+                }
             }
         }
         // All verifications passed
@@ -600,13 +682,6 @@ function showSystemInfo(json) {
         if(json.system.hasOwnProperty("serialnumber")) {
             $("#bx_system, #system_co_sn").val(json.system.serialnumber).attr("disabled", true);
             systemSerial = json.system.serialnumber;
-        }
-        if(boxType == "livex") { 
-            if(json.system.hasOwnProperty("model")) {
-                systemType = json.system.model.includes("W") ? "w" : "r";
-                $(`#bx_system_type_${systemType}`).click();
-                $("#bx_system_type_w, #bx_system_type_r").attr("disabled", true);
-            }
         }
     }
 
@@ -1166,13 +1241,13 @@ $("input[name=bx_battery_type]").on("change", function() {
             $("#system_type, #system_mode").show();
             $("#system_co_box").hide();
             $("#bx_system").val(systemSerial).trigger("change");
-            $(`#bx_system_type_${systemType}`).prop("checked", true);
+            $(`#bx_system_type_${systemType}`).prop("checked", true).trigger("change");
         } else {
             // Carbon|Other
             $("#system_type, #system_mode").hide();
             $("#system_co_box").show();
             $("#bx_system").val(systemSerial).trigger("change");
-            $("#bx_system_type_w").prop("checked", true);
+            $("#bx_system_type_w").prop("checked", true).trigger("change");
             $("#bx_sysmode").val("0");
         }
     } else {
@@ -1454,6 +1529,12 @@ async function step3() {
             // Do nothing
         }
 
+        // Set Correct system_type r/w
+        if(boxType == "livex") {
+            systemType = box_info.partnumber.startsWith("200415") || box_info.partnumber.startsWith("K800415") ? "w" : "r";
+            $(`#bx_system_type_${systemType}`).prop("checked", true).trigger("change");
+        }
+
         // Save LiveX Serial-Number & Part-Number to Session
         try {
             const sessionResponse = await $.post({
@@ -1598,6 +1679,7 @@ async function step4() {
 
 
 /*
+    Set BMS Battery Serialnumbers
     Load Other Parameters From Settings Table
 */
 
@@ -1613,6 +1695,58 @@ async function step5() {
         if(!response || typeof response != "object") {
             alert("E013. Please refresh the page! (Missing or malformed data in local settings table)");
             return;
+        }
+
+        // Set BMS Battery Serialnumbers based on connection status and counts
+        const bmsSerialnumbers = [];
+        const moduleSerialnumbers = [];
+        // Check if Master is connected (1001: 0=NotConnected, 1=Connected)
+        const masterConnected = response["Inverter"]["1001"] && response["Inverter"]["1001"]["s1"] == "1";
+        const masterCount = masterConnected && response["Inverter"]["1004"] ? parseInt(response["Inverter"]["1004"]["s1"]) || 0 : 0;
+        let slavesToCheck = [];
+        if(masterConnected) {
+            // Add Master serial number
+            if(response["Inverter"]["1002"] && response["Inverter"]["1002"]["s1"]) {
+                bmsSerialnumbers.push(response["Inverter"]["1002"]["s1"]);
+            }
+            // Determine which slaves to check based on master count
+            if(masterCount >= 1) slavesToCheck.push(1);
+            if(masterCount >= 2) slavesToCheck.push(2);
+            if(masterCount >= 3) slavesToCheck.push(3);
+        } else {
+            // Master not connected, check only Slave 1 (might be connected alone)
+            slavesToCheck.push(1);
+        }
+        // Process each relevant slave
+        slavesToCheck.forEach(slaveNum => {
+            const modelId = slaveNum === 1 ? 1101 : (slaveNum === 2 ? 1201 : 1301);
+            const serialId = slaveNum === 1 ? 1102 : (slaveNum === 2 ? 1202 : 1302);
+            const countId = slaveNum === 1 ? 1104 : (slaveNum === 2 ? 1204 : 1304);
+            const moduleBaseId = slaveNum === 1 ? 1110 : (slaveNum === 2 ? 1210 : 1310);
+            // Check if slave is connected (model != 0)
+            const slaveConnected = response["Inverter"][modelId] && response["Inverter"][modelId]["s1"] != "0";
+            if(slaveConnected) {
+                // Add slave serial number to BMS list
+                if(response["Inverter"][serialId] && response["Inverter"][serialId]["s1"]) {
+                    bmsSerialnumbers.push(response["Inverter"][serialId]["s1"]);
+                }
+                // Get slave module count
+                const slaveCount = response["Inverter"][countId] ? parseInt(response["Inverter"][countId]["s1"]) || 0 : 0;
+                // Add module serial numbers based on count (up to 10 modules)
+                for(let i = 0; i < Math.min(slaveCount, 10); i++) {
+                    const moduleId = moduleBaseId + i;
+                    if(response["Inverter"][moduleId] && response["Inverter"][moduleId]["s1"]) {
+                        moduleSerialnumbers.push(response["Inverter"][moduleId]["s1"]);
+                    }
+                }
+            }
+        });
+        // Populate fields if data exists
+        if(bmsSerialnumbers.length > 0) {
+            $("#lifepo_bms").val(bmsSerialnumbers.join("\n")).attr("disabled", true);
+        }
+        if(moduleSerialnumbers.length > 0) {
+            $("#lifepo_serialnumbers").val(moduleSerialnumbers.join("\n")).attr("disabled", true);
         }
 
         dataSettings = JSON.parse(JSON.stringify(response));
@@ -1827,8 +1961,6 @@ function mainFormSubmit_6() {
     // Disable All Fields
 
     $(` #bx_system,
-        #bx_system_type_r,
-        #bx_system_type_w,
         #bx_device,
         #bx_box,
         #bx_sysmode,
@@ -2893,7 +3025,6 @@ async function setup2() {
             // Reset the stored value
             initialBmsConnectValue = null;
         }
-        // Show Success
         $(".setting-progress span").html(lang.system_setup.msg_setting_success).css("color", "#28a745");
         $("#notif").removeClass("loading error success").addClass("success");
         // Next Step
