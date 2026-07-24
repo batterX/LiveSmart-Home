@@ -50,7 +50,7 @@ $firmwareVersion = $dataSettings["Inverter"]["3"]["s1"];
 $hasGridReconnectDelay = isset($dataSettings["Inverter"]["225"]);
 $hasLfsmoDroop = isset($dataSettings["Inverter"]["349"]);
 $isSinglePhase = $inverterModel == "10001";
-$hasSolarWideInputRange = $inverterModel == "10002" && substr(explode(',', $firmwareVersion)[0], 4) > "23-11-15";
+$hasSolarWideInputRange = $inverterModel == "10002" && substr(explode(',', $firmwareVersion)[0], 4) >= "23-11-15";
 
 // Get System Timezone (based on country)
 $installationCountry = $_SESSION["installation_country"] ? $_SESSION["installation_country"] : "de";
