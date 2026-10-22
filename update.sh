@@ -34,6 +34,13 @@ sudo apt-get install rng-tools -y
 
 
 
+if [ -f /etc/dhcpcd.conf ] && ! grep -q "static ip_address=10.10.100.100/24" /etc/dhcpcd.conf; then
+    printf '\n\ninterface eth1\nstatic ip_address=10.10.100.100/24\nnoipv4ll\n' | sudo tee -a /etc/dhcpcd.conf > /dev/null
+    sudo systemctl restart dhcpcd
+fi
+
+
+
 sudo kill $(pgrep "BatterX")
 sudo kill $(pgrep "MqttStream")
 sudo kill $(pgrep "ModbusTCP")
