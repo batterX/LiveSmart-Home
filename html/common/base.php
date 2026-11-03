@@ -10,7 +10,7 @@
 // MARK: Constants
 
 $boxType         = "livex";
-$softwareVersion = "v26.10.1";
+$softwareVersion = "v26.10.1-1";
 
 $versionHash     = time();
 
